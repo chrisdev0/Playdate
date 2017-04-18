@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<!-- This file contains the configuration of Hibernate-->
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            <!-- What SQL dialect which will be used -->
+            org.hibernate.dialect.MySQLDialect
+        </property>
+        <property name="hibernate.connection.driver_class">
+            <!-- What driver will be used to "talk" with the database -->
+            com.mysql.cj.jdbc.Driver
+        </property>
+        <property name="hibernate.connection.url">
+            <!-- URL to the database (and parameters that will be used in the connection (unicode ON, SSL OFF, different than default timezone configuration -->
+
+        </property>
+        <property name="hibernate.connection.username">
+            <!-- name of the database user -->
+
+        </property>
+        <property name="hibernate.connection.password">
+            <!-- password of the database user -->
+
+        </property>
+        <property name="show_sql">
+            <!-- output the SQL-queries to the console -->
+            false
+        </property>
+
+        <property name="hibernate.hbm2ddl.auto">
+            create-drop
+            <!-- what kind of behaviour Hibernate will have when starting up the server
+                validate just check that the database is correct
+                create-drop will drop the database and recreate it
+             -->
+        </property>
+
+        <!--Mappings to the classes that will be used as blueprints of the tables-->
+        <mapping class="model.Playground" />
+
+    </session-factory>
+</hibernate-configuration>
