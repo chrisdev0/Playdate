@@ -1,3 +1,5 @@
+package dblayer;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

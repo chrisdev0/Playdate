@@ -1,3 +1,8 @@
+package apilayer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static spark.Spark.*;
 
 public class WebServer {
@@ -16,12 +21,20 @@ public class WebServer {
         initRoutes();
     }
 
-    private void initRoutes() {
+    private FBHandler fbHandler;
 
+    private void initRoutes() {
+        get("/a", (request, response) -> "hej");
+        post("/fblogin", fbHandler.getFbInfoRequestReceiver()::handle);
+        get("/redirect", (request, response) -> {
+            Logger logger = LoggerFactory.getLogger(getClass());
+            logger.info("Request body on redirect " + request.body());
+            return request.body();
+        });
     }
 
     private void initRouteHandlers() {
-        get("/a", (request, response) -> "hej");
+        fbHandler = new FBHandler();
     }
 
 }

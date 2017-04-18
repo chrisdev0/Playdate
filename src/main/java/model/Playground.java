@@ -27,6 +27,32 @@ public class Playground {
     public Playground() {
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Playground that = (Playground) o;
+
+        if (geoX != that.geoX) return false;
+        if (geoY != that.geoY) return false;
+        if (!id.equals(that.id)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!timeCreated.equals(that.timeCreated)) return false;
+        return timeUpdated.equals(that.timeUpdated);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + timeCreated.hashCode();
+        result = 31 * result + timeUpdated.hashCode();
+        result = 31 * result + geoX;
+        result = 31 * result + geoY;
+        return result;
+    }
+
     public String getId() {
         return id;
     }

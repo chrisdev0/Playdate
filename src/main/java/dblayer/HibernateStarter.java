@@ -1,3 +1,5 @@
+package dblayer;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import secrets.Secrets;
