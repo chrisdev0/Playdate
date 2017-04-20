@@ -36,7 +36,7 @@ public class WebServer {
         }
         //staticFileLocation("/public");
         initHibernate();
-        initData();
+        initDEVData();
         initRouteHandlers();
         initRoutes();
     }
@@ -51,7 +51,7 @@ public class WebServer {
     }
 
 
-    private void initData() {
+    private void initDEVData() {
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "..");
         User user2 = new User("abc", "Hej Hejsan", "hej@b.com", "password", "..");
         try (Session session = sessionFactory.openSession()) {
@@ -73,6 +73,8 @@ public class WebServer {
 
     private void initRoutes() {
         get("/a", (request, response) -> "hej");
+
+        //Hanterar inloggningsförsök
         post("/trylogin", new LoginTryHandler(sessionFactory)::handle);
     }
 

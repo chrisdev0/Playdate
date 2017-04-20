@@ -1,5 +1,6 @@
 package apilayer.handlers;
 
+import apilayer.Constants;
 import apilayer.RequestHandler;
 import com.google.gson.Gson;
 import model.User;
@@ -52,19 +53,37 @@ public class LoginTryHandler implements RequestHandler {
         String password = request.queryParams("password");
         try {
             Optional<User> userOpt = checkEmailAndPasswordExist(username, password);
-        } catch (Exception e) {
+            if (userOpt.isPresent()) {
+                setUserSessionLoggedIn(request, userOpt.get());
+                return returnForLoginCheck(true);
+            } else {
+                return returnForLoginCheck(false);
+            }
+        } catch (IllegalArgumentException e) {
             logger.info("Illegal login try using following query params:");
             request.queryParams().forEach(logger::info);
             logger.info("End of query params");
+            return halt(401);
         }
     }
 
-    private void setUserSessionLoggedIn(User user) {
+    /** Returnerar olika strängar (som finns i Constants) beroende på om login lyckades eller misslyckades
+     * */
+    private Object returnForLoginCheck(boolean wasSuccessful) {
+        return wasSuccessful ? Constants.ON_LOGIN_SUCCESS_RETURN : Constants.ON_LOGIN_FAIL_RETURN;
+    }
 
+    /** Sätter användaren som inloggad
+     * */
+    private void setUserSessionLoggedIn(Request request, User user) {
+        request.session(true).attribute("user", user);
     }
 
 
-    public Optional<User> checkEmailAndPasswordExist(String email, String password) {
+    /** Returnerar en användare (om den finns) som har email och lösenord som skickas som argument
+     *  Om email eller password är null eller tomt så skickas ett IllegalArgumentException
+     * */
+    public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException{
         if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
             try (Session session = sessionFactory.openSession()) {
                 String hql = "FROM User WHERE upper(email) = :email AND password = :password";
@@ -73,17 +92,14 @@ public class LoginTryHandler implements RequestHandler {
                 query.setParameter("password", password);
                 List result = query.list();
                 if (result.size() != 1) {
-                    return new Gson().toJson("{error: 'Felaktigt användarnamn/lösenord')} ");
+                    return Optional.empty();
                 } else {
-                    //set logged in
-                    User user = (User) result.get(0);
-                    request.session(true);
-                    request.session().attribute("user", user);
-                    return new Gson().toJson("{login: 'success'}");
+                    return Optional.of((User) result.get(0));
                 }
+
             }
         } else {
-            return halt(500);
+            throw new IllegalArgumentException();
         }
     }
 
