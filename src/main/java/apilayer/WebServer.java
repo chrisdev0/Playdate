@@ -43,12 +43,7 @@ public class WebServer {
         });
 
         get("/a", (request, response) -> "hej");
-        post("/fblogin", fbHandler.getFbInfoRequestReceiver()::handle);
-        get("/redirect", (request, response) -> {
-            Logger logger = LoggerFactory.getLogger(getClass());
-            logger.info("Request body on redirect " + request.body());
-            return request.body();
-        });
+
 
     }
 

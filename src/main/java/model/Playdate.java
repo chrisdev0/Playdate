@@ -13,11 +13,11 @@ public class Playdate {
     private long startTime;
     private long endTime;
 
-    private Playground playground;
+    //private Playground playground;
 
     private PlaydateVisibilityType playdateVisibilityType;
-    private User owner;
-    private Set<User> participants;
+    //private User owner;
+    //private Set<User> participants;
 
 
 

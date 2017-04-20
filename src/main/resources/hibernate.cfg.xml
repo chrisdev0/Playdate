@@ -40,6 +40,8 @@
 
         <!--Mappings to the classes that will be used as blueprints of the tables-->
         <mapping class="model.Playground" />
+        <mapping class="model.User" />
+        <mapping class="model.Playdate" />
 
     </session-factory>
 </hibernate-configuration>

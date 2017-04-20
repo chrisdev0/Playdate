@@ -15,6 +15,7 @@ public class User {
 
     private String profilePictureUrl;
 
-    private Set<User> friends;
+
+    //private Set<User> friends;
 
 }
