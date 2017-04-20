@@ -5,27 +5,32 @@
     <title>Playdate!</title>
     <link rel=stylesheet href="css/normalize.css" type="text/css">
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
-    <link rel=stylesheet href="css/login.css" type="text/css">
+    <link rel=stylesheet href="css/buttons.css" type="text/css">
+    <link rel=stylesheet href="css/fields.css" type="text/css">
+    <link rel=stylesheet href="css/background.css" type="text/css">
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="js/onInit.js"></script>
 </head>
 <body>
-<div id="login">
-    <form>
-        <div id="logo">
-            <img src="images/pd-logga.png"/>
-        </div>
-            <input type="text" id="username"
-                   placeholder="Enter Username"/>
-            <input type="text" id="password"
-                   placeholder="Enter Password"/>
-            <input type="button" id="login-btn"
-                   value="Logga in"/>
-            <input type="fbbutton" id="fblogin-btn"
-                   value="Logga in med Facebook"/>
-    </form>
-</div>
 
+<div id="buttons">
+
+<form>
+    <div id="logo">
+        <img src="images/pd-logga.png" width = "75%"/>
+        <br>
+        <br>
+        <input type="text" id="username" class="loginFields"
+               placeholder="Enter Username">
+        <input type="password" id="password" class="loginFields"
+               placeholder="Enter Password">
+        <input type="button" id="login-btn"
+               value="Logga in">
+        <input type="fbbutton" id="fblogin-btn"
+               value="Logga in med Facebook">
+    </div>
+</form>
+</div>
 </body>
 </html>
