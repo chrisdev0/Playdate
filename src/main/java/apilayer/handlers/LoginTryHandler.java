@@ -13,6 +13,7 @@ import spark.Response;
 import utils.Utils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static spark.Spark.halt;
 
@@ -49,11 +50,26 @@ public class LoginTryHandler implements RequestHandler {
     public Object handle(Request request, Response response) {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
-        if (Utils.isNotNullAndNotEmpty(username) && Utils.isNotNullAndNotEmpty(password)) {
+        try {
+            Optional<User> userOpt = checkEmailAndPasswordExist(username, password);
+        } catch (Exception e) {
+            logger.info("Illegal login try using following query params:");
+            request.queryParams().forEach(logger::info);
+            logger.info("End of query params");
+        }
+    }
+
+    private void setUserSessionLoggedIn(User user) {
+
+    }
+
+
+    public Optional<User> checkEmailAndPasswordExist(String email, String password) {
+        if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
             try (Session session = sessionFactory.openSession()) {
                 String hql = "FROM User WHERE upper(email) = :email AND password = :password";
                 Query query = session.createQuery(hql);
-                query.setParameter("email", username);
+                query.setParameter("email", email);
                 query.setParameter("password", password);
                 List result = query.list();
                 if (result.size() != 1) {
