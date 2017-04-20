@@ -5,3 +5,4 @@ target/
 playdate.iml
 MavenBuild.properties
 project/
+.DS_Store
