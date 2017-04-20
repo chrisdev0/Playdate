@@ -14,14 +14,14 @@ public class WebServer {
     public WebServer() {
         port(Constants.PORT);
         staticHandler = new StaticFilesConfiguration();
-        if (Constants.LOCALHOST) {
-            String projectDir = System.getProperty("user.dir");
-            String staticDir = "/src/main/resources/public";
-            staticHandler.configureExternal(projectDir + staticDir);
-        } else {
-            staticHandler.configure("/public");
-        }
-        //staticFileLocation("/public");
+//        if (Constants.LOCALHOST) {
+//            String projectDir = System.getProperty("user.dir");
+//            String staticDir = "/src/main/resources/public";
+//            staticHandler.configureExternal(projectDir + staticDir);
+//        } else {
+//            staticHandler.configure("/public");
+//        }
+        staticFileLocation("/public");
         initRouteHandlers();
         initRoutes();
     }
@@ -35,11 +35,7 @@ public class WebServer {
     private void initRoutes() {
 
         before((request, response) -> {
-            if (first) {
-                first = false;
-                halt(401);
-            }
-            staticHandler.consume(request.raw(), response.raw());
+            //staticHandler.consume(request.raw(), response.raw());
         });
 
         get("/a", (request, response) -> "hej");
