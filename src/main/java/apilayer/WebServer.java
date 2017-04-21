@@ -50,7 +50,6 @@ public class WebServer {
         }
     }
 
-
     private void initDEVData() {
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "..");
         User user2 = new User("abc", "Hej Hejsan", "hej@b.com", "password", "..");
@@ -62,7 +61,6 @@ public class WebServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private FBHandler fbHandler;

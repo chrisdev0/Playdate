@@ -39,9 +39,14 @@
         </property>
 
         <!--Mappings to the classes that will be used as blueprints of the tables-->
-        <mapping class="model.Playground" />
+        <mapping class="model.Place" />
         <mapping class="model.User" />
         <mapping class="model.Playdate" />
+        <mapping class="model.Child" />
+        <mapping class="model.Comment" />
+        <mapping class="model.Invite" />
+        <mapping class="model.Friendship" />
+        <mapping class="model.FriendshipRequest" />
 
     </session-factory>
 </hibernate-configuration>

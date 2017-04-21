@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Playground {
+public class Place {
 
     @Id
     private String id;
@@ -15,7 +15,7 @@ public class Playground {
     private int geoX;
     private int geoY;
 
-    public Playground(String id, String name, String timeCreated, String timeUpdated, int geoX, int geoY) {
+    public Place(String id, String name, String timeCreated, String timeUpdated, int geoX, int geoY) {
         this.id = id;
         this.name = name;
         this.timeCreated = timeCreated;
@@ -24,7 +24,7 @@ public class Playground {
         this.geoY = geoY;
     }
 
-    public Playground() {
+    public Place() {
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Playground {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Playground that = (Playground) o;
+        Place that = (Place) o;
 
         if (geoX != that.geoX) return false;
         if (geoY != that.geoY) return false;

@@ -2,6 +2,8 @@ package model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.util.Set;
 
 @Entity
@@ -10,14 +12,22 @@ public class Playdate {
     @Id
     private int id;
 
+    private String header;
+    private String description;
+
     private long startTime;
     private long endTime;
 
-    //private Playground playground;
+    @ManyToOne
+    private User owner;
+
+    @ManyToMany
+    private Set<User> participants;
+
+    @ManyToOne
+    private Place place;
 
     private PlaydateVisibilityType playdateVisibilityType;
-    //private User owner;
-    //private Set<User> participants;
 
 
 

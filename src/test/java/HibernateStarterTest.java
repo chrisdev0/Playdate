@@ -1,5 +1,5 @@
 import dblayer.HibernateSessionFactory;
-import model.Playground;
+import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
@@ -27,16 +27,16 @@ public class HibernateStarterTest {
 
     @Test
     public void testSaveObject() {
-        Playground playground = new Playground("abc", "a", "123", "123", 5, 5);
-        assertEquals(true, doSave(playground));
+        Place place = new Place("abc", "a", "123", "123", 5, 5);
+        assertEquals(true, doSave(place));
     }
 
-    public boolean doSave(Playground playground) {
+    public boolean doSave(Place place) {
         Session session = hibernateSessionFactory.getNewSession();
         Transaction tx = session.getTransaction();
         try {
             tx.begin();
-            session.save(playground);
+            session.save(place);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class HibernateStarterTest {
         Session session = hibernateSessionFactory.getNewSession();
         Transaction tx = session.getTransaction();
         tx.begin();
-        Playground toSave = new Playground("def", "abc", "123", "123", 10, 10);;
+        Place toSave = new Place("def", "abc", "123", "123", 10, 10);;
         try {
             assertEquals(true, doSave(toSave));
         } catch (Exception e) {
@@ -68,8 +68,8 @@ public class HibernateStarterTest {
         tx = session.getTransaction();
         tx.begin();
         try {
-            Playground playground = session.get(Playground.class, "def");
-            assertEquals(playground, toSave);
+            Place place = session.get(Place.class, "def");
+            assertEquals(place, toSave);
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
