@@ -85,11 +85,11 @@ body{
     animation-delay: 7s;
     animation-duration: 12s;
 }.bubbles li:nth-child(11){
-    width: 50px;
-    height: 50px;
-    left: 50%;
-    animation-delay: 7s;
-    animation-duration: 12s;
+    width: 35px;
+    height: 35px;
+    left: 20%;
+    animation-delay: 6s;
+    animation-duration: 4s;
 }.bubbles li:nth-child(12){
     width: 25px;
     height: 25px;
