@@ -91,11 +91,11 @@ body{
     animation-delay: 7s;
     animation-duration: 12s;
 }.bubbles li:nth-child(12){
-    width: 50px;
-    height: 50px;
-    left: 50%;
-    animation-delay: 7s;
-    animation-duration: 12s;
+    width: 25px;
+    height: 25px;
+    left: 75%;
+    animation-delay: 1s;
+    animation-duration: 15s;
 }
 @keyframes square{
     0%{
