@@ -22,22 +22,22 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "owner")
-    private Set<Playdate> playdatesAsOwner;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private Set<Playdate> playdatesAsOwner = new HashSet<>();
 
-    @OneToMany(mappedBy = "invited")
-    private Set<Invite> invitesToPlaydates;
+    @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
+    private Set<Invite> invitesToPlaydates = new HashSet<>();
 
 
 
     @Column(nullable = true)
     private Gender gender;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Child> children;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Child> children = new HashSet<>();
 
     public User() {
-        children = new HashSet<>();
+
     }
 
     public boolean addChild(Child child) {
@@ -163,5 +163,22 @@ public class User {
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (children != null ? children.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", sthlmAPIID='" + sthlmAPIID + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                ", playdatesAsOwner=" + playdatesAsOwner +
+                ", invitesToPlaydates=" + invitesToPlaydates +
+                ", gender=" + gender +
+                ", children=" + children +
+                '}';
     }
 }
