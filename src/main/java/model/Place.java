@@ -9,19 +9,30 @@ public class Place {
     @Id
     private String id;
     private String name;
+
+    private String description;
+
     private String timeCreated;
     private String timeUpdated;
 
     private int geoX;
     private int geoY;
 
-    public Place(String id, String name, String timeCreated, String timeUpdated, int geoX, int geoY) {
-        this.id = id;
+    public Place(String name, String description, String timeCreated, String timeUpdated, int geoX, int geoY) {
         this.name = name;
+        this.description = description;
         this.timeCreated = timeCreated;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Place() {

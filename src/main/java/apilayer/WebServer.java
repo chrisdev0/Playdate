@@ -2,6 +2,7 @@ package apilayer;
 
 import apilayer.handlers.LoginTryHandler;
 import dblayer.HibernateStarter;
+import model.Gender;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -51,8 +52,8 @@ public class WebServer {
     }
 
     private void initDEVData() {
-        User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "..");
-        User user2 = new User("abc", "Hej Hejsan", "hej@b.com", "password", "..");
+        User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FLICKE);
+        User user2 = new User("abc", "Hej Hejsan", "hej@b.com", "password", "1231", "..", Gender.POJKE);
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             session.save(user);

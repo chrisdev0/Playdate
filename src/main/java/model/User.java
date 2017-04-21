@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,13 +18,36 @@ public class User {
 
     private String password;
 
+    private String phoneNumber;
+
     private String profilePictureUrl;
 
-    @OneToMany
+    @Column(nullable = true)
+    private Gender gender;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Child> children;
 
     public User() {
+        children = new HashSet<>();
+    }
 
+    public boolean addChild(Child child) {
+        return children.add(child);
+    }
+
+    public boolean removeChild(Child child) {
+        return children.remove(child);
+    }
+
+    public User(String sthlmAPIID, String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
+        this.sthlmAPIID = sthlmAPIID;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.profilePictureUrl = profilePictureUrl;
+        this.gender = gender;
     }
 
     public Long getId() {
@@ -66,6 +90,14 @@ public class User {
         this.password = password;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getProfilePictureUrl() {
         return profilePictureUrl;
     }
@@ -74,49 +106,19 @@ public class User {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public User(String sthlmAPIID, String name, String email, String password, String profilePictureUrl) {
-        this.sthlmAPIID = sthlmAPIID;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.profilePictureUrl = profilePictureUrl;
+    public Gender getGender() {
+        return gender;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (!id.equals(user.id)) return false;
-        if (!sthlmAPIID.equals(user.sthlmAPIID)) return false;
-        if (!name.equals(user.name)) return false;
-        if (!email.equals(user.email)) return false;
-        if (!password.equals(user.password)) return false;
-        return profilePictureUrl.equals(user.profilePictureUrl);
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + sthlmAPIID.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + profilePictureUrl.hashCode();
-        return result;
+    public Set<Child> getChildren() {
+        return children;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", sthlmAPIID='" + sthlmAPIID + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                '}';
+    public void setChildren(Set<Child> children) {
+        this.children = children;
     }
 }
