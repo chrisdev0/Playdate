@@ -14,24 +14,46 @@
     <script src="js/onLogin.js"></script>
 </head>
 <body>
-
+<ul class="bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
 <div id="buttons">
-
 <form>
-    <div id="logo">
-        <img src="images/pd-logga.png" width = "75%"/>
+            <div id="logo">
+        <img src="images/pd-logga.png" width = "80%"/>
         <br>
         <br>
         <input type="text" id="username" class="loginFields"
-               placeholder="Enter Username">
+               placeholder="Användarnamn">
         <input type="password" id="password" class="loginFields"
-               placeholder="Enter Password">
+               placeholder="Lösenord">
+        <div id="login-btns">
+        <div data-role="content">
         <input type="button" id="login-btn"
                value="Logga in">
-        <input type="fbbutton" id="fblogin-btn"
+        </div>
+
+        <input type="button" id="fblogin-btn"
                value="Logga in med Facebook">
+        <a href="#">Skapa konto</a>
+        <br>
+        <a href="#">Glömt lösenord?</a>
     </div>
+
 </form>
+
 </div>
+
 </body>
 </html>
