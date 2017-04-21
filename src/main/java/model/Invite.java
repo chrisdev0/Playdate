@@ -17,8 +17,10 @@ public class Invite {
     @ManyToOne
     private Playdate playdate;
 
+    @ManyToOne
     private User invited;
 
+    @ManyToOne
     private User inviter;
 
 
