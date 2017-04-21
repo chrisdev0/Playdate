@@ -1,6 +1,7 @@
 .loginFields {
     display: block;
-    width: 100%;
+    text-align:center;
+    width: 90%;
     height: 30px;
     padding: 10px;
     font-size: 14px;
