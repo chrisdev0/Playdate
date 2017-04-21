@@ -20,15 +20,11 @@ public class Invite {
     @ManyToOne
     private User invited;
 
-    @ManyToOne
-    private User inviter;
-
     public Invite(String message, boolean declined, Playdate playdate, User invited, User inviter) {
         this.message = message;
         this.declined = declined;
         this.playdate = playdate;
         this.invited = invited;
-        this.inviter = inviter;
     }
 
     public Invite() {
@@ -75,11 +71,4 @@ public class Invite {
         this.invited = invited;
     }
 
-    public User getInviter() {
-        return inviter;
-    }
-
-    public void setInviter(User inviter) {
-        this.inviter = inviter;
-    }
 }

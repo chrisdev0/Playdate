@@ -22,6 +22,14 @@ public class User {
 
     private String profilePictureUrl;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Playdate> playdatesAsOwner;
+
+    @OneToMany(mappedBy = "invited")
+    private Set<Invite> invitesToPlaydates;
+
+
+
     @Column(nullable = true)
     private Gender gender;
 
@@ -120,5 +128,40 @@ public class User {
 
     public void setChildren(Set<Child> children) {
         this.children = children;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (sthlmAPIID != null ? !sthlmAPIID.equals(user.sthlmAPIID) : user.sthlmAPIID != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
+        if (profilePictureUrl != null ? !profilePictureUrl.equals(user.profilePictureUrl) : user.profilePictureUrl != null)
+            return false;
+        if (playdatesAsOwner != null ? !playdatesAsOwner.equals(user.playdatesAsOwner) : user.playdatesAsOwner != null)
+            return false;
+        if (invitesToPlaydates != null ? !invitesToPlaydates.equals(user.invitesToPlaydates) : user.invitesToPlaydates != null)
+            return false;
+        if (gender != user.gender) return false;
+        return children != null ? children.equals(user.children) : user.children == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = sthlmAPIID != null ? sthlmAPIID.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (profilePictureUrl != null ? profilePictureUrl.hashCode() : 0);;
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (children != null ? children.hashCode() : 0);
+        return result;
     }
 }

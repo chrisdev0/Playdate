@@ -2,10 +2,7 @@ package model;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -14,10 +11,10 @@ public class Friendship {
     @Id
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user2;
 
     @Type(type = "timestamp")

@@ -1,7 +1,7 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Place {
@@ -14,6 +14,17 @@ public class Place {
 
     private String timeCreated;
     private String timeUpdated;
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Comment> comments;
 
     private int geoX;
     private int geoY;

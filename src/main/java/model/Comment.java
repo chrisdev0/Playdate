@@ -1,6 +1,5 @@
 package model;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -25,9 +24,6 @@ public class Comment {
     @Type(type = "timestamp")
     private Date createdAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Place place;
-
     public Comment() {
 
     }
@@ -38,7 +34,6 @@ public class Comment {
         this.hidden = hidden;
         this.commentDate = commentDate;
         this.createdAt = createdAt;
-        this.place = place;
     }
 
     public Long getId() {
@@ -89,11 +84,4 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
-    }
 }

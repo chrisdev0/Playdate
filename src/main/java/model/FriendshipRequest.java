@@ -2,6 +2,7 @@ package model;
 
 import org.hibernate.annotations.Type;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -16,7 +17,7 @@ public class FriendshipRequest {
     @ManyToOne
     private User sender;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User reciever;
 
     @Type(type = "timestamp")
