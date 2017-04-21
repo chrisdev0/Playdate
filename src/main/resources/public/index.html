@@ -8,6 +8,8 @@
     <link rel=stylesheet href="css/buttons.css" type="text/css">
     <link rel=stylesheet href="css/fields.css" type="text/css">
     <link rel=stylesheet href="css/background.css" type="text/css">
+    <link rel=stylesheet href="css/main.css" type="text/css">
+
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="js/onInit.js"></script>
@@ -28,32 +30,32 @@
     <li></li>
     <li></li>
 </ul>
-<div id="buttons">
-<form>
-            <div id="logo">
-        <img src="images/pd-logga.png" width = "80%"/>
-        <br>
-        <br>
+<div id="login-content">
+    <div id="logo">
+        <img src="images/pd-logga.png" id="imglogo"/>
+    </div>
+    <div id="login-input-fields">
+        <form id="loginform" method="POST">
         <input type="text" id="username" class="loginFields"
                placeholder="Användarnamn">
         <input type="password" id="password" class="loginFields"
                placeholder="Lösenord">
-        <div id="login-btns">
-        <div data-role="content">
-        <input type="button" id="login-btn"
-               value="Logga in">
-        </div>
-
+            <input type="submit" id="login-btn"
+                   value="Logga in">
+        </form>
+    </div>
+    <div>
         <input type="button" id="fblogin-btn"
                value="Logga in med Facebook">
+        <div id="login-links">
         <a href="#">Skapa konto</a>
         <br>
         <a href="#">Glömt lösenord?</a>
+        </div>
     </div>
-
-</form>
-
 </div>
+
+
 
 </body>
 </html>

@@ -103,7 +103,7 @@ body{
         transform: translateY(0);
     }
     100%{
-        -webkit-transform: translateY(-800px) rotate(630deg);
-        transform: translateY(-800px) rotate(630deg);
+        -webkit-transform: translateY(-2000px) rotate(630deg);
+        transform: translateY(-2000px) rotate(630deg);
     }
 }
