@@ -1,18 +1,15 @@
-body{
-    background: #daf7a6;
-    z-index: 1;
-}
+
 .bubbles{
     position: absolute;
     top: 0;
     left:0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     z-index: 0;
     transform: translateZ(0);
 }
 
-.bubbles  li{
+.bubbles li{
     position: absolute;
     list-style: none;
     display: block;
