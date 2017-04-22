@@ -27,11 +27,11 @@
         </property>
         <property name="show_sql">
             <!-- output the SQL-queries to the console -->
-            false
+            true
         </property>
 
         <property name="hibernate.hbm2ddl.auto">
-            create-drop
+            create
             <!-- what kind of behaviour Hibernate will have when starting up the server
                 validate just check that the database is correct
                 create-drop will drop the database and recreate it

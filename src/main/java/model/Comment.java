@@ -9,6 +9,7 @@ import java.util.Date;
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String comment;
@@ -18,22 +19,18 @@ public class Comment {
 
     private boolean hidden;
 
-    @Type(type = "date")
-    private Date commentDate;
-
-    @Type(type = "timestamp")
-    private Date createdAt;
+    @Column(columnDefinition="DATETIME", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date commentDate = new Date();
 
     public Comment() {
 
     }
 
-    public Comment(String comment, User commenter, boolean hidden, Date commentDate, Date createdAt, Place place) {
+    public Comment(String comment, User commenter, boolean hidden, Place place) {
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
-        this.commentDate = commentDate;
-        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -74,14 +71,6 @@ public class Comment {
 
     public void setCommentDate(Date commentDate) {
         this.commentDate = commentDate;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

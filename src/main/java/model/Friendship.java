@@ -9,6 +9,7 @@ import java.util.Date;
 public class Friendship {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -17,8 +18,9 @@ public class Friendship {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user2;
 
-    @Type(type = "timestamp")
-    private Date createdAt;
+    @Column(columnDefinition="DATETIME", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt = new Date();
 
 
 }

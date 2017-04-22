@@ -2,7 +2,7 @@ package apilayer;
 
 public class Constants {
 
-    public static final boolean LOCALHOST = true;
+    public static final boolean DEV = true;
 
     public static final int PORT = 9000;
 

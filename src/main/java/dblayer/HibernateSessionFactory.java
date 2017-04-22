@@ -14,8 +14,10 @@ public class HibernateSessionFactory {
     }
 
     private void initHibernate() throws Exception {
-        HibernateStarter hibernateStarter = new HibernateStarter();
-        sessionFactory = hibernateStarter.initConfig();
+        if (sessionFactory == null) {
+            HibernateStarter hibernateStarter = new HibernateStarter();
+            sessionFactory = hibernateStarter.initConfig();
+        }
     }
 
     public static HibernateSessionFactory getInstance() throws Exception {

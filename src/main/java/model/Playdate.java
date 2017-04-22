@@ -7,6 +7,7 @@ import java.util.Set;
 public class Playdate {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String header;

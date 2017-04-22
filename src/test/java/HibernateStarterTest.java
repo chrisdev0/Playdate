@@ -27,24 +27,24 @@ public class HibernateStarterTest {
 
     @Test
     public void testSaveObject() {
-        Place place = new Place("abc", "a", "123", "123", 5, 5);
-        assertEquals(true, doSave(place));
+        Place place = new Place("abc","a", "a", "123", "123", 5, 5);
+        assertNotEquals(-1L, doSave(place).longValue());
     }
 
-    public boolean doSave(Place place) {
+    public Long doSave(Place place) {
+        Long placeId = -1L;
         Session session = hibernateSessionFactory.getNewSession();
         Transaction tx = session.getTransaction();
         try {
             tx.begin();
-            session.save(place);
+            placeId = (Long) session.save(place);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
-            return false;
         } finally {
             session.close();
-            return true;
+            return placeId;
         }
     }
 
@@ -54,9 +54,12 @@ public class HibernateStarterTest {
         Session session = hibernateSessionFactory.getNewSession();
         Transaction tx = session.getTransaction();
         tx.begin();
-        Place toSave = new Place("def", "abc", "123", "123", 10, 10);;
+        long placeId = -1L;
+        Place toSave = new Place("def", "abd", "abc", "123", "123", 10, 10);
         try {
-            assertEquals(true, doSave(toSave));
+            placeId = doSave(toSave);
+            System.out.println(placeId);
+            assertNotEquals(-1L, placeId);
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
@@ -68,7 +71,7 @@ public class HibernateStarterTest {
         tx = session.getTransaction();
         tx.begin();
         try {
-            Place place = session.get(Place.class, "def");
+            Place place = session.get(Place.class, placeId);
             assertEquals(place, toSave);
         } catch (Exception e) {
             e.printStackTrace();
