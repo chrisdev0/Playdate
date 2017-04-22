@@ -11,6 +11,7 @@
 <body>
 <h1>Showing place</h1>
 <h3>$!{place.getName()}</h3>
+<img src="../${place.getImageUrl()}" alt="bild på lekplats">
 <h4>Beskrivning:</h4>
 <p>$!{place.getDescription()}</p>
 <h4>Kommentarer</h4>

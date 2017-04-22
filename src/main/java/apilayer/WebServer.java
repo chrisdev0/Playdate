@@ -62,7 +62,7 @@ public class WebServer {
         Child child = new Child(18, Gender.FLICKE, user);
         user.addChild(child);
         User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.POJKE);
-        Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger aula nod på DSV", "123", "123", 10, 10);
+        Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10);
         Comment comment = new Comment("Bästa stället i stockholm", user, false, place);
         Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false, place);
         place.addComment(comment);

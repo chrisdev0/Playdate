@@ -16,6 +16,8 @@ public class Place {
 
     private String description;
 
+    private String imageUrl;
+
     private String timeCreated;
     private String timeUpdated;
 
@@ -27,15 +29,24 @@ public class Place {
     private int geoX;
     private int geoY;
 
-    public Place(String sthlmAPIid, String name, String description, String timeCreated, String timeUpdated, int geoX, int geoY) {
+    public Place(String sthlmAPIid, String name, String description, String imageUrl, String timeCreated, String timeUpdated, int geoX, int geoY) {
         this.sthlmAPIid = sthlmAPIid;
         this.name = name;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.timeCreated = timeCreated;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
         comments = new HashSet<>();
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {

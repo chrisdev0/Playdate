@@ -27,7 +27,7 @@ public class HibernateStarterTest {
 
     @Test
     public void testSaveObject() {
-        Place place = new Place("abc","a", "a", "123", "123", 5, 5);
+        Place place = new Place("abc","a", "a", "image/testlekplats.png", "123", "123", 5, 5);
         assertNotEquals(-1L, doSave(place).longValue());
     }
 
@@ -55,7 +55,7 @@ public class HibernateStarterTest {
         Transaction tx = session.getTransaction();
         tx.begin();
         long placeId = -1L;
-        Place toSave = new Place("def", "abd", "abc", "123", "123", 10, 10);
+        Place toSave = new Place("def", "abd", "abc", "image/testlekplats.png", "123", "123", 10, 10);
         try {
             placeId = doSave(toSave);
             System.out.println(placeId);
