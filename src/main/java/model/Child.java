@@ -1,13 +1,12 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Child {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private int months;
@@ -18,7 +17,7 @@ public class Child {
     public Child() {
     }
 
-    public Child(int months, Gender gender) {
+    public Child(int months, Gender gender, User parent) {
         this.months = months;
         this.gender = gender;
     }

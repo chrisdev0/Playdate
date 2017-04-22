@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title>Document</title>
 </head>
 <body>
-<h1>du är inloggad</h1>
+<h1>Du är inte inloggad</h1>
 </body>
 </html>

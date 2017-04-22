@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<h1>du är inloggad</h1>
+<p>$user.getName() har</p>
+<ul>
+    #foreach($child in $user.getChildren())
+        <li>En $child.getMonths() månader gammal $child.getGender()</li>
+    #end
+</ul>
+</body>
+</html>

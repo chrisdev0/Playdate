@@ -3,6 +3,7 @@ package apilayer;
 import apilayer.handlers.LoginTryHandler;
 import com.google.gson.Gson;
 import dblayer.HibernateStarter;
+import model.Child;
 import model.Gender;
 import model.User;
 import org.hibernate.Session;
@@ -39,9 +40,9 @@ public class WebServer {
         if (Constants.LOCALHOST) {
             String projectDir = System.getProperty("user.dir");
             String staticDir = "/src/main/resources/public";
-            staticFileLocation(projectDir + staticDir);
+            staticFiles.externalLocation(projectDir + staticDir);
         } else {
-            staticFileLocation("/public");
+            staticFiles.location("/public");
         }
     }
 
@@ -57,11 +58,14 @@ public class WebServer {
 
     private void initDEVData() {
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FLICKE);
+        Child child = new Child(18, Gender.FLICKE, user);
+        user.addChild(child);
         User user2 = new User("abc", "Hej Hejsan", "hej@b.com", "password", "1231", "..", Gender.POJKE);
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             session.save(user);
             session.save(user2);
+            session.save(child);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,11 +75,21 @@ public class WebServer {
 
 
     private void initRoutes() {
-
         get("/index.html", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             return new ModelAndView(model, "index.vm");
         }, new VelocityTemplateEngine());
+
+        get("/protectedpage.html", (request, response) -> {
+            if (!isLoggedIn(request)) {
+                return new ModelAndView(new HashMap<String,Object>(), "notloggedin.vm");
+            }
+            Map<String, Object> model = new HashMap<>();
+            model.put("user", ((User) request.session().attribute("user")));
+            return new ModelAndView(model, "protectedpage.vm");
+        }, new VelocityTemplateEngine());
+
+
 
         //Hanterar inloggningsförsök
         post("/trylogin", new LoginTryHandler(sessionFactory)::handle);
