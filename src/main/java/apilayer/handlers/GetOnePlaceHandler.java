@@ -3,6 +3,7 @@ package apilayer.handlers;
 import apilayer.StaticFileTemplateHandler;
 import dblayer.HibernateSessionFactory;
 import model.Place;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class GetOnePlaceHandler extends StaticFileTemplateHandler {
             try (Session session = sessionFactory.openSession()) {
                 Place place = session.get(Place.class, placeId);
                 LoggerFactory.getLogger(GetOnePlaceHandler.class).info("Found place with id " + placeId +" = " + (place != null));
+                Hibernate.initialize(place.getComments());
                 Map<String, Object> map = new HashMap<>();
                 map.put("place", place);
                 return Optional.of(map);
