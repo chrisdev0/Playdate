@@ -1,28 +1,22 @@
-import dblayer.HibernateSessionFactory;
+import dblayer.HibernateUtil;
 import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import testhelpers.HibernateTests;
 
 import static org.junit.Assert.*;
 
-public class HibernateStarterTest {
+public class HibernateUtilTest extends HibernateTests {
 
-    private HibernateSessionFactory hibernateSessionFactory;
-
-    @Before
-    public void init() {
-        try {
-            hibernateSessionFactory = HibernateSessionFactory.getInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Test
     public void testStartup() {
-        assertNotEquals(null, hibernateSessionFactory);
+        Session session = openSession();
+        assertNotEquals(null, session);
+        session.close();
     }
 
     @Test
@@ -33,52 +27,47 @@ public class HibernateStarterTest {
 
     public Long doSave(Place place) {
         Long placeId = -1L;
-        Session session = hibernateSessionFactory.getNewSession();
-        Transaction tx = session.getTransaction();
-        try {
-            tx.begin();
+        Transaction tx = null;
+        try (Session session = openSession()){
+            tx = session.beginTransaction();
             placeId = (Long) session.save(place);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            tx.rollback();
-        } finally {
-            session.close();
-            return placeId;
+            if (tx != null) {
+                tx.rollback();
+            }
         }
+        return placeId;
     }
 
 
     @Test
     public void testLoadObject() {
-        Session session = hibernateSessionFactory.getNewSession();
-        Transaction tx = session.getTransaction();
-        tx.begin();
         long placeId = -1L;
         Place toSave = new Place("def", "abd", "abc", "image/testlekplats.png", "123", "123", 10, 10);
-        try {
+        Transaction tx = null;
+        try (Session session = openSession()) {
+            tx = session.beginTransaction();
             placeId = doSave(toSave);
             System.out.println(placeId);
             assertNotEquals(-1L, placeId);
+            tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            tx.rollback();
-            assertEquals(false, true);
-        } finally {
-            session.close();
+            fail(e.getMessage());
+            if (tx != null) {
+                tx.rollback();
+            }
         }
-        session = hibernateSessionFactory.getNewSession();
-        tx = session.getTransaction();
-        tx.begin();
-        try {
+
+        try (Session session = openSession()){
             Place place = session.get(Place.class, placeId);
             assertEquals(place, toSave);
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
-            assertEquals(false, true);
-        } finally {
-            session.close();
+            fail(e.getMessage());
         }
     }
 

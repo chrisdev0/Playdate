@@ -10,4 +10,10 @@ public class Constants {
     public static final Object ON_LOGIN_SUCCESS_RETURN = "login_success";
     public static final Object ON_LOGIN_FAIL_RETURN = "login_failed";
 
+    public static final String USER_SESSION_KEY = "user";
+
+    public class MSG {
+
+        public static final String USER_NOT_LOGGED_IN = "user_not_logged_in";
+    }
 }

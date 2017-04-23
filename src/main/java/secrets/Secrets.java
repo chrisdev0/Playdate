@@ -1,15 +1,17 @@
 package secrets;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.*;
+import java.util.*;
+
+@Slf4j
 public class Secrets {
 
     private static Secrets instance;
     private Map<String,String> keyValueMap;
     private SecretsLoader secretsLoader;
+    private Set<File> loadedFiles;
 
     /** Skapar .txt-läsar-objektet
      *  och initierar nyckel-värdemappen
@@ -17,6 +19,7 @@ public class Secrets {
     private Secrets() {
         secretsLoader = new SecretsLoader();
         keyValueMap = new HashMap<>();
+        loadedFiles = new HashSet<>();
     }
 
 
@@ -39,7 +42,14 @@ public class Secrets {
      *  returnerar this för method chaining
      * */
     public Secrets loadSecretsFile(File file) throws IOException, SecretsParserException {
-        secretsLoader.extractKeyValuesFromFile(file, this);
+        if (loadedFiles.contains(file)) {
+            log.info("Tried to load already loaded file " + file.getName());
+            return this;
+        } else {
+            secretsLoader.extractKeyValuesFromFile(file, this);
+            loadedFiles.add(file);
+            log.info("Loaded " + file.getName() + " secret values file");
+        }
         return this;
     }
 

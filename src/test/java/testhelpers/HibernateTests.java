@@ -1,22 +1,21 @@
 package testhelpers;
 
-import dblayer.HibernateStarter;
+import dblayer.HibernateUtil;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 public class HibernateTests {
 
-    private static SessionFactory sessionFactory;
+    private static HibernateUtil hibernateUtil;
 
     @BeforeClass
-    public static void setUp() throws Exception {
-        HibernateStarter hibernateStarter = new HibernateStarter();
-        sessionFactory = hibernateStarter.initConfig();
+    public static void setUp() {
+        hibernateUtil = HibernateUtil.getInstance();
     }
 
 
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public static Session openSession() {
+        return hibernateUtil.openSession();
     }
 }

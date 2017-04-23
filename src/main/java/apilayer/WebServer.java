@@ -1,31 +1,23 @@
 package apilayer;
 
-import apilayer.handlers.GetOnePlaceHandler;
-import apilayer.handlers.LoginTryHandler;
+import apilayer.handlers.*;
 import com.google.gson.Gson;
-import dblayer.HibernateStarter;
+import dblayer.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.ModelAndView;
 import spark.Request;
-import spark.TemplateEngine;
 import spark.route.RouteOverview;
 import spark.template.velocity.VelocityTemplateEngine;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import static spark.Spark.*;
 
+@Slf4j
 public class WebServer {
 
-    private SessionFactory sessionFactory;
-    private Logger logger = LoggerFactory.getLogger(WebServer.class);
-    private TemplateEngine templateEngine;
+    private HibernateUtil hibernateUtil;
 
     public WebServer() {
         port(Constants.PORT);
@@ -33,7 +25,6 @@ public class WebServer {
         RouteOverview.enableRouteOverview();
         initHibernate();
         initDEVData();
-        templateEngine = new VelocityTemplateEngine();
         initRoutes();
     }
 
@@ -48,26 +39,20 @@ public class WebServer {
     }
 
     private void initHibernate() {
-        try {
-            HibernateStarter hibernateStarter = new HibernateStarter();
-            sessionFactory = hibernateStarter.initConfig();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+        hibernateUtil = HibernateUtil.getInstance();
     }
 
     private void initDEVData() {
-        User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FLICKE);
-        Child child = new Child(18, Gender.FLICKE, user);
+        User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FEMALE);
+        Child child = new Child(18, Gender.FEMALE, user);
         user.addChild(child);
-        User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.POJKE);
+        User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
         Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10);
-        Comment comment = new Comment("Bästa stället i stockholm", user, false, place);
-        Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false, place);
+        Comment comment = new Comment("Bästa stället i stockholm", user, false);
+        Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);
         place.addComment(comment);
         place.addComment(comment2);
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = hibernateUtil.openSession()) {
             Transaction tx = session.beginTransaction();
             session.save(user);
             session.save(user2);
@@ -77,71 +62,62 @@ public class WebServer {
             session.save(comment2);
             tx.commit();
         } catch (Exception e) {
-            logger.error("hibernate error", e);
+            log.error("hibernate error", e);
         }
     }
 
 
 
     private void initRoutes() {
+        staticFileRoutes();
 
-        get("/index.html",
-                new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
-                templateEngine);
+        protectedPaths();
 
+        //Hanterar inloggningsförsök
+        post(Paths.TRYLOGIN, new LoginTryHandler()::handle);
+    }
 
-        path("/protected", () -> {
+    private void protectedPaths() {
+        path(Paths.PROTECTED, () -> {
             before("/*", (request, response) -> {
-                if (!isLoggedIn(request)) {
-                    logger.info("client " + request.ip() + " isn't logged in. Halting request");
-                    throw halt(401);
+                if (AuthChecker.isLoggedIn(request, response)) {
+                    throw halt(401,Constants.MSG.USER_NOT_LOGGED_IN);
                 }
             });
 
-            get("/getallplaydates", (request, response) -> {
+            get(Paths.GETALLPLAYDATES, (request, response) -> {
                 //todo
                 throw halt(400);
             });
 
-            get("/getallplace", ((request, response) -> {
+            get(Paths.GETALLPLACE, ((request, response) -> {
                 //todo
                 throw halt(400);
             }));
 
-            get("/getoneplace", (request, response) -> {
-                //todo
-                String id = request.queryParams("placeId");
-                try {
-                    long lId = Long.parseLong(id);
-                    logger.info("fetching place with id = " + lId);
-                    return new GetOnePlaceHandler("showplacepage.vm", lId, 400, sessionFactory)
-                            .handleTemplateFileRequest(request, response);
-                } catch (NullPointerException | NumberFormatException e) {
-                    logger.info("client: " + request.ip() + " sent illegal place id = " + id + " e = " + e.getMessage());
-                    throw halt(400);
-                }
-            },templateEngine);
+            get(Paths.GETONEPLACE, PlaceHandler::handleGetOnePlace ,new VelocityTemplateEngine());
 
-            get("/protectedpage.html", (request, response) -> {
-                Map<String, Object> model = new HashMap<>();
-                model.put("user", request.session().attribute("user"));
-                return new ModelAndView(model, "protectedpage.vm");
-            }, templateEngine);
+            post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
+
         });
 
-        get("/logout", (request, response) -> {
+        get(Paths.LOGOUT, (request, response) -> {
             request.session().invalidate();
             throw halt(200);
         });
+    }
 
-
-
-        //Hanterar inloggningsförsök
-        post("/trylogin", new LoginTryHandler(sessionFactory)::handle);
+    private void staticFileRoutes() {
+        get(Paths.StaticFilePaths.INDEX_HTML,
+                new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
+        get("/",
+                new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
     }
 
     private boolean isLoggedIn(Request request) {
-        logger.info("client " + request.ip() + " checking loginstatus = " + request.session().attribute("user"));
+
         return request.session().attribute("user") != null;
     }
 
@@ -149,9 +125,9 @@ public class WebServer {
         get("/getusername", (request, response) -> {
             User user = request.session().attribute("user");
             if (user == null) {
-                logger.info("user is null and not logged in");
+                log.info("user is null and not logged in");
             } else {
-                logger.info(user.getName());
+                log.info(user.getName());
             }
             return new Gson().toJson(user);
         });

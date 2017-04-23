@@ -2,13 +2,11 @@ package apilayer.handlers;
 
 import apilayer.Constants;
 import apilayer.RequestHandler;
-import com.google.gson.Gson;
+import dblayer.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import utils.Utils;
@@ -18,14 +16,12 @@ import java.util.Optional;
 
 import static spark.Spark.halt;
 
+@Slf4j
 public class LoginTryHandler implements RequestHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(LoginTryHandler.class);
 
-    private SessionFactory sessionFactory;
+    public LoginTryHandler() {
 
-    public LoginTryHandler(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
     }
 
     /** Hanterar en inloggningsrequest
@@ -60,9 +56,9 @@ public class LoginTryHandler implements RequestHandler {
                 return returnForLoginCheck(false);
             }
         } catch (IllegalArgumentException e) {
-            logger.info("Illegal login try using following query params:");
-            request.queryParams().forEach(logger::info);
-            logger.info("End of query params");
+            log.info("Illegal login try using following query params:");
+            request.queryParams().forEach(log::info);
+            log.info("End of query params");
             return halt(401);
         }
     }
@@ -76,7 +72,7 @@ public class LoginTryHandler implements RequestHandler {
     /** Sätter användaren som inloggad
      * */
     private void setUserSessionLoggedIn(Request request, User user) {
-        request.session(true).attribute("user", user);
+        request.session(true).attribute(Constants.USER_SESSION_KEY, user);
     }
 
 
@@ -85,7 +81,7 @@ public class LoginTryHandler implements RequestHandler {
      * */
     public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException{
         if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
-            try (Session session = sessionFactory.openSession()) {
+            try (Session session = HibernateUtil.getInstance().openSession()) {
                 String hql = "FROM User WHERE upper(email) = :email AND password = :password";
                 Query query = session.createQuery(hql);
                 query.setParameter("email", email);
@@ -96,7 +92,6 @@ public class LoginTryHandler implements RequestHandler {
                 } else {
                     return Optional.of((User) result.get(0));
                 }
-
             }
         } else {
             throw new IllegalArgumentException();

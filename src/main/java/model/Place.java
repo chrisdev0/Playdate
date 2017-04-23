@@ -1,11 +1,15 @@
 package model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Place {
+@Data public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,22 +45,6 @@ public class Place {
         comments = new HashSet<>();
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public boolean addComment(Comment comment) {
         return comments.add(comment);
     }
@@ -65,24 +53,10 @@ public class Place {
         return comments.remove(comment);
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Place() {
     }
 
-    public Set<Comment> getComments() {
-        return comments;
-    }
 
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,53 +96,5 @@ public class Place {
                 ", geoX=" + geoX +
                 ", geoY=" + geoY +
                 '}';
-    }
-
-    public String getSthlmAPIid() {
-        return sthlmAPIid;
-    }
-
-    public void setSthlmAPIid(String id) {
-        this.sthlmAPIid = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTimeCreated() {
-        return timeCreated;
-    }
-
-    public void setTimeCreated(String timeCreated) {
-        this.timeCreated = timeCreated;
-    }
-
-    public String getTimeUpdated() {
-        return timeUpdated;
-    }
-
-    public void setTimeUpdated(String timeUpdated) {
-        this.timeUpdated = timeUpdated;
-    }
-
-    public int getGeoX() {
-        return geoX;
-    }
-
-    public void setGeoX(int geoX) {
-        this.geoX = geoX;
-    }
-
-    public int getGeoY() {
-        return geoY;
-    }
-
-    public void setGeoY(int geoY) {
-        this.geoY = geoY;
     }
 }

@@ -1,7 +1,7 @@
 package apilayer.handlers;
 
 import apilayer.StaticFileTemplateHandler;
-import dblayer.HibernateSessionFactory;
+import dblayer.HibernateUtil;
 import model.Place;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -16,18 +16,16 @@ import java.util.Optional;
 public class GetOnePlaceHandler extends StaticFileTemplateHandler {
 
     private Long placeId;
-    private SessionFactory sessionFactory;
 
-    public GetOnePlaceHandler(String templateName, long placeId, int onErrorHTTPStatusCode, SessionFactory sessionFactory) throws IllegalArgumentException {
+    public GetOnePlaceHandler(String templateName, long placeId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
         super(templateName,onErrorHTTPStatusCode);
         this.placeId = placeId;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public Optional<Map<String, Object>> createModelMap() {
         try {
-            try (Session session = sessionFactory.openSession()) {
+            try (Session session = HibernateUtil.getInstance().openSession()) {
                 Place place = session.get(Place.class, placeId);
                 LoggerFactory.getLogger(GetOnePlaceHandler.class).info("Found place with id " + placeId +" = " + (place != null));
                 Hibernate.initialize(place.getComments());
