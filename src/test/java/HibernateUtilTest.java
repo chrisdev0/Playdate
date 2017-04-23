@@ -1,9 +1,6 @@
-import dblayer.HibernateUtil;
 import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 
@@ -21,7 +18,7 @@ public class HibernateUtilTest extends HibernateTests {
 
     @Test
     public void testSaveObject() {
-        Place place = new Place("abc","a", "a", "image/testlekplats.png", "123", "123", 5, 5);
+        Place place = new Place("abc","a", "a", "image/testlekplats.png", "123", "123", 5, 5, "");
         assertNotEquals(-1L, doSave(place).longValue());
     }
 
@@ -45,7 +42,7 @@ public class HibernateUtilTest extends HibernateTests {
     @Test
     public void testLoadObject() {
         long placeId = -1L;
-        Place toSave = new Place("def", "abd", "abc", "image/testlekplats.png", "123", "123", 10, 10);
+        Place toSave = new Place("def", "abd", "abc", "image/testlekplats.png", "123", "123", 10, 10, "");
         Transaction tx = null;
         try (Session session = openSession()) {
             tx = session.beginTransaction();

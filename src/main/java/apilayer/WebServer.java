@@ -1,13 +1,11 @@
 package apilayer;
 
 import apilayer.handlers.*;
-import com.google.gson.Gson;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import spark.Request;
 import spark.route.RouteOverview;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -58,7 +56,7 @@ public class WebServer {
         Child child = new Child(18, Gender.FEMALE, user);
         user.addChild(child);
         User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
-        Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10);
+        Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
         Comment comment = new Comment("Bästa stället i stockholm", user, false);
         Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);
         place.addComment(comment);

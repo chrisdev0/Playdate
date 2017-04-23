@@ -1,8 +1,6 @@
 package model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,7 +18,11 @@ import java.util.Set;
 
     private String description;
 
+    private String shortDescription;
+
+
     private String imageUrl;
+
 
     private String timeCreated;
     private String timeUpdated;
@@ -33,7 +35,7 @@ import java.util.Set;
     private int geoX;
     private int geoY;
 
-    public Place(String sthlmAPIid, String name, String description, String imageUrl, String timeCreated, String timeUpdated, int geoX, int geoY) {
+    public Place(String sthlmAPIid, String name, String description, String imageUrl, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
         this.sthlmAPIid = sthlmAPIid;
         this.name = name;
         this.description = description;
@@ -42,7 +44,8 @@ import java.util.Set;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
-        comments = new HashSet<>();
+        this.comments = new HashSet<>();
+        this.shortDescription = shortDescription;
     }
 
     public boolean addComment(Comment comment) {
@@ -54,6 +57,7 @@ import java.util.Set;
     }
 
     public Place() {
+        shortDescription = "";
     }
 
 
