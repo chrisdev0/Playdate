@@ -1,5 +1,5 @@
 package handlerstests;
-import apilayer.handlers.LoginTryHandler;
+import apilayer.handlers.LoginHandler;
 import model.Gender;
 import model.User;
 import org.hibernate.Session;
@@ -42,38 +42,38 @@ public class CheckUserTest extends HibernateTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void illegalArgument1() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
-        loginTryHandler.checkEmailAndPasswordExist("", "abc");
+        LoginHandler loginHandler = new LoginHandler();
+        loginHandler.checkEmailAndPasswordExist("", "abc");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void illegalArgument2() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
-        loginTryHandler.checkEmailAndPasswordExist("abc", "");
+        LoginHandler loginHandler = new LoginHandler();
+        loginHandler.checkEmailAndPasswordExist("abc", "");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void illegalArgument3() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
-        loginTryHandler.checkEmailAndPasswordExist("abc", null);
+        LoginHandler loginHandler = new LoginHandler();
+        loginHandler.checkEmailAndPasswordExist("abc", null);
     }
 
 
 
     @Test(expected = IllegalArgumentException.class)
     public void illegalArgument4() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
-        loginTryHandler.checkEmailAndPasswordExist(null, "abc");
+        LoginHandler loginHandler = new LoginHandler();
+        loginHandler.checkEmailAndPasswordExist(null, "abc");
     }
 
     @Test
     public void testUserExists() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
+        LoginHandler loginHandler = new LoginHandler();
         for (User user : testUsers) {
             String email = user.getEmail();
             String password = user.getPassword();
-            Optional<User> userOpt = loginTryHandler.checkEmailAndPasswordExist(email, password);
+            Optional<User> userOpt = loginHandler.checkEmailAndPasswordExist(email, password);
             assertTrue(userOpt.isPresent());
             System.out.println(user.toString() + " compared to " + userOpt.get().toString());
             assertTrue(user.equals(userOpt.get()));
@@ -82,8 +82,8 @@ public class CheckUserTest extends HibernateTests {
 
     @Test
     public void testUserNotExists() {
-        LoginTryHandler loginTryHandler = new LoginTryHandler();
-        Optional<User> userOptional = loginTryHandler.checkEmailAndPasswordExist("poasdpoasd", "piopq+o2i2");
+        LoginHandler loginHandler = new LoginHandler();
+        Optional<User> userOptional = loginHandler.checkEmailAndPasswordExist("poasdpoasd", "piopq+o2i2");
         assertEquals(false, userOptional.isPresent());
     }
 

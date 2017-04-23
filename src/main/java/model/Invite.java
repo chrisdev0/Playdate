@@ -19,7 +19,7 @@ public class Invite {
     @ManyToOne
     private User invited;
 
-    public Invite(String message, boolean declined, Playdate playdate, User invited, User inviter) {
+    public Invite(String message, boolean declined, Playdate playdate, User invited) {
         this.message = message;
         this.declined = declined;
         this.playdate = playdate;

@@ -24,6 +24,9 @@ public class CommentHandler {
             try (Session session = HibernateUtil.getInstance().openSession()) {
                 tx = session.beginTransaction();
                 Place place = session.get(Place.class, placeId);
+                if (place == null) {
+                    return halt(400);
+                }
                 place.addComment(comment);
                 session.update(place);
                 session.save(comment);

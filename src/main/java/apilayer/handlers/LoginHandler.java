@@ -17,12 +17,9 @@ import java.util.Optional;
 import static spark.Spark.halt;
 
 @Slf4j
-public class LoginTryHandler implements RequestHandler {
+public class LoginHandler {
 
 
-    public LoginTryHandler() {
-
-    }
 
     /** Hanterar en inloggningsrequest
      *
@@ -43,8 +40,7 @@ public class LoginTryHandler implements RequestHandler {
      *
      *  om username eller password är null eller tomma så skickas error code 500 tillbaka som svar.
      * */
-    @Override
-    public Object handle(Request request, Response response) {
+    public Object handleLoginTry(Request request, Response response) {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
         try {
@@ -96,6 +92,12 @@ public class LoginTryHandler implements RequestHandler {
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public static Object logOut(Request request, Response response) {
+        request.session().invalidate();
+        response.redirect("/index.html");
+        return "";
     }
 
 

@@ -3984,7 +3984,7 @@ div.ui-slider-switch.ui-mini {
 	right: 0;
 	text-indent: 1.5em;
 }
-/* The corner radii for ui-slider-switch/track can be specified in theme CSS. The bg and handle inherits. */
+/* The corner radii for ui-slider-switch/track can be specified in theme CSS. The bg and handleLoginTry inherits. */
 .ui-slider-track .ui-slider-bg,
 .ui-slider-switch .ui-slider-label,
 .ui-slider-switch .ui-slider-inneroffset,

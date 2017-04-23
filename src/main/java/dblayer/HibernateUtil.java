@@ -24,6 +24,10 @@ public class HibernateUtil {
         return instance;
     }
 
+    /** Hämtar username, password och URL till db från secrets.txt-filen
+     *  Om alla värden finns så skapas databasen med hjälp av hibernate.cfg.xml
+     *  i initConfig()
+     * */
     private HibernateUtil() {
         try {
             Secrets secrets = Secrets.getInstance().loadSecretsFile("secrets.txt");
@@ -41,9 +45,10 @@ public class HibernateUtil {
         }
     }
 
-
-
-    private SessionFactory initConfig(String dbUrl, String username, String password) throws Exception{
+    /**
+     * Skapar SessionFactory med hibernate.cfg.xml och värdena från secrets.txt
+     */
+    private SessionFactory initConfig(String dbUrl, String username, String password) throws Exception {
         return new Configuration().configure("hibernate.cfg.xml")
                 .setProperty("hibernate.connection.password", password)
                 .setProperty("hibernate.connection.username", username)
@@ -51,6 +56,12 @@ public class HibernateUtil {
                 .buildSessionFactory();
     }
 
+    /** Returnerar en ny session.
+     *
+     *  !!!!!!!!!!!
+     *  GLÖM INTE ATT STÄNGA session med session.close()
+     *  !!!!!!!!!!!
+     * */
     public Session openSession() {
         return sessionFactory.openSession();
     }

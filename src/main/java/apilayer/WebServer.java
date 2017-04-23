@@ -28,6 +28,11 @@ public class WebServer {
         initRoutes();
     }
 
+    /** Sätter vart statiska filer ska hämtas ifrån
+     *  todo måste förmodligen köra på "/public" när vi bygger Place med hjälp av Stockholms API
+     *  todo om vi kör på att skapa statiska resurser för Place bilder istället för att köra på
+     *  todo typ BLOB i databasen. Fungerar heller inte för velocity-template-filerna
+     * */
     private void setStaticFilesPath() {
         if (Constants.DEV) {
             String projectDir = System.getProperty("user.dir");
@@ -38,10 +43,16 @@ public class WebServer {
         }
     }
 
+    /** Skapar hibernate.
+     *  Om skapandet misslyckas av någon anledning så stänger applikationen ner sig
+     * */
     private void initHibernate() {
         hibernateUtil = HibernateUtil.getInstance();
     }
 
+    /** Lägger till lite testdata
+     *  todo Flytta till egen klass och skapa devdata för hela modellen
+     * */
     private void initDEVData() {
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FEMALE);
         Child child = new Child(18, Gender.FEMALE, user);
@@ -67,46 +78,82 @@ public class WebServer {
     }
 
 
-
+    /** Initierar routes för applikationen
+     *  Går att se vilka som finns (om RouteOverview.enableRouteOverview(); blir anropat innan)
+     *  på "/debug/routeoverview/"
+     * */
     private void initRoutes() {
+        //initierar de routes för statiska filer (templates) som inte är protected
         staticFileRoutes();
 
+        //initierar de routes för statiska filer (templates) och API som är protected
         protectedPaths();
 
         //Hanterar inloggningsförsök
-        post(Paths.TRYLOGIN, new LoginTryHandler()::handle);
+        post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
+
+        //hanterar logout
+        get(Paths.LOGOUT, LoginHandler::logOut);
     }
 
+    /** Initierar de routes som kräver att användaren är inloggad
+     *
+     *  Kollar först om användaren är inloggad, om användaren inte är inloggad så returneras
+     *  halt(401) med ett meddelande
+     * */
     private void protectedPaths() {
         path(Paths.PROTECTED, () -> {
+            //Kollar att användaren är inloggad innan varje request hanteras
             before("/*", (request, response) -> {
-                if (AuthChecker.isLoggedIn(request, response)) {
+                if (!AuthChecker.isLoggedIn(request, response)) {
                     throw halt(401,Constants.MSG.USER_NOT_LOGGED_IN);
                 }
             });
 
+            /*  Hanterar retur av alla playdates
+            *   todo bör förmodligen endast returnera en del med ett offset som returnerar fler
+            *   todo asykront när användaren scrollar
+            * */
             get(Paths.GETALLPLAYDATES, (request, response) -> {
                 //todo
                 throw halt(400);
             });
 
+            /*  Hanterar retur av alla Place
+            *   todo bör förmodligen endast returnera en del med ett offset som returnerar fler
+            *   todo asykront när användaren scrollar
+            * */
             get(Paths.GETALLPLACE, ((request, response) -> {
                 //todo
                 throw halt(400);
             }));
 
-            get(Paths.GETONEPLACE, PlaceHandler::handleGetOnePlace ,new VelocityTemplateEngine());
+            /*  Hanterar retur av en Place
+            *   id för place specificeras i ?placeId=<ID:t>
+            *   todo returnerar nu halt(400) ifall ingen plats med det ID:t hittas, borde nog ändras
+            *   todo någon typ av error-sida visas (som eventuellt är gemensam med andra
+            *   todo template-routes som kan returnera error)
+            * */
+            get(Paths.GETONEPLACE, PlaceHandler::handleGetOnePlace, new VelocityTemplateEngine());
 
+            /*  Hanterar add av kommentarer till ett place
+            *   place bestäms av "placeId", kommentaren av "comment"
+            *   vid success så redirectas användaren tillbaka till sidan för place
+            *   todo göra asynkront med automatisk inläggning av kommentaren
+            *   todo (också att göra då är att ladda kommentarerna asynkront)
+            *   returnerar halt(400) vid error
+            * */
             post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
 
         });
-
-        get(Paths.LOGOUT, (request, response) -> {
-            request.session().invalidate();
-            throw halt(200);
-        });
     }
 
+    /** Initierar de routes som ska leda till statiska template-filer
+     *  så att index.html (och "/") leder till att index.vm blir renderat
+     *
+     *  todo eventuellt ta bort de resurser som inte behöver någon renderad data och
+     *  todo låt de vara statiska .html-filer i /public istället.
+     * */
     private void staticFileRoutes() {
         get(Paths.StaticFilePaths.INDEX_HTML,
                 new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
@@ -115,22 +162,4 @@ public class WebServer {
                 new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
     }
-
-    private boolean isLoggedIn(Request request) {
-
-        return request.session().attribute("user") != null;
-    }
-
-    private void protectedAPI() {
-        get("/getusername", (request, response) -> {
-            User user = request.session().attribute("user");
-            if (user == null) {
-                log.info("user is null and not logged in");
-            } else {
-                log.info(user.getName());
-            }
-            return new Gson().toJson(user);
-        });
-    }
-
 }
