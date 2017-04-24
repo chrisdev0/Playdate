@@ -44,7 +44,7 @@
             <input type="button" id="fblogin-btn" class="large-button centered-text" value="Logga in med Facebook">
         </div>
         <div id="login-links" class="centered-text">
-            <a href="public/signup.html">Skapa konto</a>
+            <a href="registerform.html">Skapa konto</a>
             <a href="#">Glömt lösenord?</a>
         </div>
     </div>

@@ -15,7 +15,7 @@
     display: block;
     background-color: rgba(255,255,255,0.4);
     bottom: -100px;
-    animation: square 100s infinite;
+    animation: bubble 100s infinite;
     transition-timing-function: linear;
 }
 .bubbles li:nth-child(1){
@@ -94,7 +94,7 @@
     animation-delay: 1s;
     animation-duration: 15s;
 }
-@keyframes square{
+@keyframes bubble{
     0%{
         -webkit-transform: translateY(0);
         transform: translateY(0);
