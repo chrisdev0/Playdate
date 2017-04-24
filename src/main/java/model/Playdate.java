@@ -3,6 +3,7 @@ package model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class Playdate {
     private User owner;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> participants;
+    private Set<User> participants = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Place place;

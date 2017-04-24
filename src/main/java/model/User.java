@@ -5,6 +5,7 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.swing.text.PlainDocument;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,19 +16,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String sthlmAPIID;
-
     private String name;
     private String email;
 
     private String password;
 
+    private String description;
+
     private String phoneNumber;
 
     private String profilePictureUrl;
-
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Playdate> playdatesAsOwner = new HashSet<>();
 
     @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
@@ -42,6 +40,7 @@ public class User {
     public User() {
 
     }
+
 
     public boolean addInvite(Invite invite) {
         return invitesToPlaydates.add(invite);
@@ -60,7 +59,6 @@ public class User {
     }
 
     public User(String sthlmAPIID, String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
-        this.sthlmAPIID = sthlmAPIID;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -75,14 +73,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSthlmAPIID() {
-        return sthlmAPIID;
-    }
-
-    public void setSthlmAPIID(String sthlmAPIID) {
-        this.sthlmAPIID = sthlmAPIID;
     }
 
     public String getName() {
@@ -148,14 +138,11 @@ public class User {
 
         User user = (User) o;
 
-        if (sthlmAPIID != null ? !sthlmAPIID.equals(user.sthlmAPIID) : user.sthlmAPIID != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
         if (profilePictureUrl != null ? !profilePictureUrl.equals(user.profilePictureUrl) : user.profilePictureUrl != null)
-            return false;
-        if (playdatesAsOwner != null ? !playdatesAsOwner.equals(user.playdatesAsOwner) : user.playdatesAsOwner != null)
             return false;
         if (invitesToPlaydates != null ? !invitesToPlaydates.equals(user.invitesToPlaydates) : user.invitesToPlaydates != null)
             return false;
@@ -165,7 +152,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = sthlmAPIID != null ? sthlmAPIID.hashCode() : 0;
+        int result = 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
@@ -180,13 +167,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", sthlmAPIID='" + sthlmAPIID + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                ", playdatesAsOwner=" + playdatesAsOwner +
                 ", invitesToPlaydates=" + invitesToPlaydates +
                 ", gender=" + gender +
                 ", children=" + children +
