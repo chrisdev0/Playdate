@@ -11,8 +11,23 @@
     <link rel=stylesheet href="css/normalize.css" type="text/css">
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
     <link rel=stylesheet href="css/main.css" type="text/css">
+    <link rel=stylesheet href="css/background.css" type="text/css">
 </head>
 <body>
+<ul class="bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
 <div>
 <div class="container" id="login-signup-content">
     <img src="/images/pd-logga.png" id="imglogo"/>

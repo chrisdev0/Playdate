@@ -46,6 +46,7 @@
         <div id="login-links" class="centered-text">
             <a href="registerform.html">Skapa konto</a>
             <a href="#">Glömt lösenord?</a>
+            <a href="createplaydate.html">createplaydate</a>
         </div>
     </div>
 </div>

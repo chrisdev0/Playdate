@@ -163,5 +163,8 @@ public class WebServer {
         get("/registerform.html",
                 new StaticFileTemplateHandlerImpl("registerform.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
+        get("/createplaydate.html",
+                new StaticFileTemplateHandlerImpl("createplaydate.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
     }
 }

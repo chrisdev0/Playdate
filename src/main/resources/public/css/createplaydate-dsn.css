@@ -1,0 +1,13 @@
+#header-content-big-logo{
+    width: 100%;
+    text-align: center;
+    position: relative;
+    border-bottom:3px solid rgba(115, 143, 82, 0.6);
+}
+
+.centered-text, #page-desc{
+    font-family: sans-serif;
+    color: black;
+    font-size: 1em;
+
+}
