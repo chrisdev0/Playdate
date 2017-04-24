@@ -143,6 +143,7 @@ public class WebServer {
             * */
             post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
 
+            post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
         });
     }
 
@@ -158,6 +159,9 @@ public class WebServer {
                 new VelocityTemplateEngine());
         get("/",
                 new StaticFileTemplateHandlerImpl("index.vm",500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
+        get("/registrera.html",
+                new StaticFileTemplateHandlerImpl("registrera.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
     }
 }

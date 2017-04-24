@@ -33,6 +33,16 @@ public class Playdate {
     public Playdate() {
     }
 
+    public Playdate(String header, String description, long startTime, long endTime, User owner, Place place, PlaydateVisibilityType playdateVisibilityType) {
+        this.header = header;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.owner = owner;
+        this.place = place;
+        this.playdateVisibilityType = playdateVisibilityType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
