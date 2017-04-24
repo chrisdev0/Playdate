@@ -27,9 +27,9 @@ public class WebServer {
     }
 
     /** Sätter vart statiska filer ska hämtas ifrån
-     *  todo måste förmodligen köra på "/public" när vi bygger Place med hjälp av Stockholms API
-     *  todo om vi kör på att skapa statiska resurser för Place bilder istället för att köra på
-     *  todo typ BLOB i databasen. Fungerar heller inte för velocity-template-filerna
+     *  todo    måste förmodligen köra på "/public" när vi bygger Place med hjälp av Stockholms API
+     *  todo    om vi kör på att skapa statiska resurser för Place bilder istället för att köra på
+     *  todo    typ BLOB i databasen. Fungerar heller inte för velocity-template-filerna
      * */
     private void setStaticFilesPath() {
         if (Constants.DEV) {
@@ -49,7 +49,7 @@ public class WebServer {
     }
 
     /** Lägger till lite testdata
-     *  todo Flytta till egen klass och skapa devdata för hela modellen
+     *  todo    Flytta till egen klass och skapa devdata för hela modellen
      * */
     private void initDEVData() {
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FEMALE);
@@ -109,8 +109,8 @@ public class WebServer {
             });
 
             /*  Hanterar retur av alla playdates
-            *   todo bör förmodligen endast returnera en del med ett offset som returnerar fler
-            *   todo asykront när användaren scrollar
+            *       todo bör förmodligen endast returnera en del med ett offset som returnerar fler
+            *       todo asykront när användaren scrollar
             * */
             get(Paths.GETALLPLAYDATES, (request, response) -> {
                 //todo
@@ -118,8 +118,8 @@ public class WebServer {
             });
 
             /*  Hanterar retur av alla Place
-            *   todo bör förmodligen endast returnera en del med ett offset som returnerar fler
-            *   todo asykront när användaren scrollar
+            *       todo bör förmodligen endast returnera en del med ett offset som returnerar fler
+            *       todo asykront när användaren scrollar
             * */
             get(Paths.GETALLPLACE, ((request, response) -> {
                 //todo
@@ -128,17 +128,17 @@ public class WebServer {
 
             /*  Hanterar retur av en Place
             *   id för place specificeras i ?placeId=<ID:t>
-            *   todo returnerar nu halt(400) ifall ingen plats med det ID:t hittas, borde nog ändras
-            *   todo någon typ av error-sida visas (som eventuellt är gemensam med andra
-            *   todo template-routes som kan returnera error)
+            *       todo returnerar nu halt(400) ifall ingen plats med det ID:t hittas, borde nog ändras
+            *       todo någon typ av error-sida visas (som eventuellt är gemensam med andra
+            *       todo template-routes som kan returnera error)
             * */
             get(Paths.GETONEPLACE, PlaceHandler::handleGetOnePlace, new VelocityTemplateEngine());
 
             /*  Hanterar add av kommentarer till ett place
             *   place bestäms av "placeId", kommentaren av "comment"
             *   vid success så redirectas användaren tillbaka till sidan för place
-            *   todo göra asynkront med automatisk inläggning av kommentaren
-            *   todo (också att göra då är att ladda kommentarerna asynkront)
+            *       todo göra asynkront med automatisk inläggning av kommentaren
+            *       todo (också att göra då är att ladda kommentarerna asynkront)
             *   returnerar halt(400) vid error
             * */
             post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
@@ -149,8 +149,8 @@ public class WebServer {
     /** Initierar de routes som ska leda till statiska template-filer
      *  så att index.html (och "/") leder till att index.vm blir renderat
      *
-     *  todo eventuellt ta bort de resurser som inte behöver någon renderad data och
-     *  todo låt de vara statiska .html-filer i /public istället.
+     *      todo eventuellt ta bort de resurser som inte behöver någon renderad data och
+     *      todo låt de vara statiska .html-filer i /public istället.
      * */
     private void staticFileRoutes() {
         get(Paths.StaticFilePaths.INDEX_HTML,
