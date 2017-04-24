@@ -15,22 +15,26 @@
 </head>
 <body>
 <div class="header" id="header-content-big-logo">
-    <img src="images/pdbiglogo.png" id="biglogo">
+    <img src="/images/pdbiglogo.png" id="biglogo">
 </div>
 <div class="centered-text" id="page-desc" >
     <h3>Skapa Playdate</h3>
 </div>
 <div id="create-playdate-panel">
-<form>
-    <div id="text-form-input-fields">
-        <input type="text" id="username" class="text-input-field centered-text" placeholder="Ditt användarnamn">
-        <input type="text" id="username" class="text-input-field centered-text" placeholder="Din e-postadress">
-        <input type="password" id="password" class="text-input-field centered-text" placeholder="Nytt lösenord">
-        <input type="password" id="upprepaLösenord" class="text-input-field centered-text" placeholder="Upprepa lösenord">
-    </div>
-    <div>
-        <input type="button" id="regBtn" class="large-button centered-text" value="Registrera">
-    </div>
-</form>
+    <form>
+        <div id="text-form-input-fields">
+            Titel:<br>
+            <input type="text" id="titelnamn" class="text-input-field centered-text"><br>
+            Välj tid och datum:<br>
+            <input type="datetime-local" name="pdtime">
+            <div id=pd-description-field>
+                Beskrivning:<br>
+                <input type="text" id="pd-description" class="text-input-field centered-text"></div>
+            <input type="checkbox" name="private" value="Private"> Privat<br>
+        </div>
+        <div>
+            <input type="button" id="create-btn" class=annanklass value="Skapa Playdate!">
+        </div>
+    </form>
 </body>
 </html>
