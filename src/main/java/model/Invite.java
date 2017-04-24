@@ -1,13 +1,12 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Invite {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String message;
@@ -20,7 +19,7 @@ public class Invite {
     @ManyToOne
     private User invited;
 
-    public Invite(String message, boolean declined, Playdate playdate, User invited, User inviter) {
+    public Invite(String message, boolean declined, Playdate playdate, User invited) {
         this.message = message;
         this.declined = declined;
         this.playdate = playdate;

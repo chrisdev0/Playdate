@@ -1,87 +1,37 @@
 package model;
 
+import lombok.Data;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "comments")
-public class Comment {
+@Data public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User commenter;
 
     private boolean hidden;
 
-    @Type(type = "date")
-    private Date commentDate;
-
-    @Type(type = "timestamp")
-    private Date createdAt;
+    @Column(columnDefinition="DATETIME", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date commentDate = new Date();
 
     public Comment() {
 
     }
 
-    public Comment(String comment, User commenter, boolean hidden, Date commentDate, Date createdAt, Place place) {
+    public Comment(String comment, User commenter, boolean hidden) {
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
-        this.commentDate = commentDate;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public User getCommenter() {
-        return commenter;
-    }
-
-    public void setCommenter(User commenter) {
-        this.commenter = commenter;
-    }
-
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
-
-    public Date getCommentDate() {
-        return commentDate;
-    }
-
-    public void setCommentDate(Date commentDate) {
-        this.commentDate = commentDate;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

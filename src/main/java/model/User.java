@@ -1,6 +1,10 @@
 package model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,16 +32,23 @@ public class User {
     @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
-
-
     @Column(nullable = true)
     private Gender gender;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.ALL})
     private Set<Child> children = new HashSet<>();
 
     public User() {
 
+    }
+
+    public boolean addInvite(Invite invite) {
+        return invitesToPlaydates.add(invite);
+    }
+
+    public boolean removeInvite(Invite invite) {
+        return invitesToPlaydates.remove(invite);
     }
 
     public boolean addChild(Child child) {

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playdate!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel=stylesheet href="css/normalize.css" type="text/css">
+    <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
+    <link rel=stylesheet href="css/buttons.css" type="text/css">
+    <link rel=stylesheet href="css/fields.css" type="text/css">
+    <link rel=stylesheet href="css/background.css" type="text/css">
+    <link rel=stylesheet href="css/main.css" type="text/css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="js/onInit.js"></script>
+    <script src="js/onLogin.js"></script>
+</head>
+<body>
+<ul class="bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+<div class="container" id="login-signup-content">
+    <img src="/images/pd-logga.png" id="imglogo"/>
+    <div id="login-signup-panel">
+        <div id="text-form-input-fields">
+            <form id="loginform" method="POST">
+                <input type="text" id="username" class="text-input-field centered-text" placeholder="Användarnamn">
+                <input type="password" id="password" class="text-input-field centered-text" placeholder="Lösenord">
+                <input type="submit" id="login-btn" class="large-button centered-text" value="Logga in">
+            </form>
+        </div>
+        <div>
+            <input type="button" id="fblogin-btn" class="large-button centered-text" value="Logga in med Facebook">
+        </div>
+        <div id="login-links" class="centered-text">
+            <a href="public/signup.html">Skapa konto</a>
+            <a href="#">Glömt lösenord?</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

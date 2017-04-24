@@ -1,0 +1,36 @@
+#* @vtlvariable name="place" type="model.Place" *#
+#* @vtlvariable name="comment" type="model.Comment" *#
+#* @vtlvariable name="commentDate" type="java.util.Date" *#
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../js/jquery-3.2.1.js"></script>
+</head>
+<script>
+
+</script>
+<body>
+<h1>Showing place</h1>
+<h3>$!{place.getName()}</h3>
+<img src="../${place.getImageUrl()}" alt="bild på lekplats">
+<h4>Beskrivning:</h4>
+<p>$!{place.getDescription()}</p>
+<h4>Kommentarer</h4>
+#foreach($com in $place.getComments())
+    <div style="margin-bottom: 1em">
+        <span>Av: $com.commenter.getName() den $com.getCommentDate()</span>
+        <div>$com.comment</div>
+    </div>
+#end
+<div id="commentform">
+    <form method="POST" id="postcomment" action="/protected/postcomment">
+        <input type="hidden" value="$place.getId()" name="placeId">
+        <textarea name="comment" id="commenttext" rows="5" cols="20"></textarea><br>
+        <input type="submit" value="Lägg till kommentar">
+    </form>
+</div>
+</body>
+</html>
