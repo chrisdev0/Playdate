@@ -12,7 +12,7 @@ public class Playdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private String header;
     private String description;

@@ -1,0 +1,23 @@
+#* @vtlvariable name="playdate" type="model.Playdate" *#
+#* @vtlvariable name="place" type="model.Place" *#
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../js/jquery-3.2.1.js"></script>
+</head>
+<script>
+
+</script>
+<body>
+<h1>showing playdate</h1>
+<h3>$!{playdate.getHeader()}</h3>
+<img src="../${playdate.getPlace().getImageUrl()}" alt="bild på lekplats">
+<h4>Beskrivning:</h4>
+<p>$!{playdate.getDescription()}</p>
+<a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}">följ med hit</a>
+
+</body>
+</html>

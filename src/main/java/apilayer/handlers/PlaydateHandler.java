@@ -10,6 +10,7 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import spark.HaltException;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
@@ -72,11 +73,23 @@ public class PlaydateHandler {
         }
     }
 
-
     public static Long parseToLong(String str) throws HaltException {
         try {
             return Long.parseLong(str);
         } catch (NumberFormatException e) {
+            throw halt(400);
+        }
+    }
+/*lagt till detta*/
+    public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
+        String id = request.queryParams("playdateId");
+        try {
+            long lId = Long.parseLong(id);
+            log.info("fetching playdate with id = " + lId);
+            return new GetOnePlaydateHandler("showplaydatepage.vm", lId, 400)
+                    .handleTemplateFileRequest(request, response);
+        } catch (NullPointerException | NumberFormatException e) {
+            log.info("client: " + request.ip() + " sent illegal playdate id = " + id + " e = " + e.getMessage());
             throw halt(400);
         }
     }

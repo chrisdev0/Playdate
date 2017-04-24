@@ -59,6 +59,7 @@ public class WebServer {
         Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
         Comment comment = new Comment("Bästa stället i stockholm", user, false);
         Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);
+        Playdate playdate = new Playdate("Hej", "blbl", 123, 321, user, place, PlaydateVisibilityType.intToPlaydateVisibilityType(0));
         place.addComment(comment);
         place.addComment(comment2);
         try (Session session = hibernateUtil.openSession()) {
@@ -69,6 +70,7 @@ public class WebServer {
             session.save(place);
             session.save(comment);
             session.save(comment2);
+            session.save(playdate);
             tx.commit();
         } catch (Exception e) {
             log.error("hibernate error", e);
@@ -144,6 +146,8 @@ public class WebServer {
             post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
 
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
+
+            get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
         });
     }
 
