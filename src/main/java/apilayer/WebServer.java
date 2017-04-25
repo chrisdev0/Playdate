@@ -2,7 +2,6 @@ package apilayer;
 
 import apilayer.handlers.*;
 import dblayer.HibernateUtil;
-import javafx.scene.shape.Path;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
@@ -151,6 +150,8 @@ public class WebServer {
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
+
+            put(Paths.CREATEPROFILE, new ProfileHandler("showprofile.vm",400)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
 
         });
