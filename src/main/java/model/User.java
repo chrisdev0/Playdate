@@ -2,6 +2,7 @@ package model;
 
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import utils.PasswordHandler;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -17,7 +18,10 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
+
 
     private String password;
     private String salt;
@@ -185,5 +189,11 @@ public class User {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public static User createUserHelper(User userWithoutPassword, String password) {
+        userWithoutPassword.setSalt(PasswordHandler.generateUserSalt());
+        userWithoutPassword.setPassword(PasswordHandler.hashUserPwd(password, userWithoutPassword.getSalt()));
+        return userWithoutPassword;
     }
 }

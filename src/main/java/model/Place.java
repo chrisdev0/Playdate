@@ -14,6 +14,7 @@ import java.util.Set;
     private Long id;
 
     private String sthlmAPIid;
+
     private String name;
 
     private String description;
