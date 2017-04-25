@@ -26,11 +26,10 @@ import static spark.Spark.halt;
 public class ShowProfileHandler extends StaticFileTemplateHandler {
     /* ska ta in från user, kolla att user är inloggad*/
 
-    private Long userId;
 
-    public ShowProfileHandler(String templateName, long userId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
+    public ShowProfileHandler(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {
         super(templateName, onErrorHTTPStatusCode);
-        this.userId = userId;
+
     }
 
     @Override
@@ -41,15 +40,13 @@ public class ShowProfileHandler extends StaticFileTemplateHandler {
                 throw halt(400, "user is null");
             }
             try (Session session = HibernateUtil.getInstance().openSession()) {
-                user = session.get(User.class, userId);
-                LoggerFactory.getLogger(ShowProfileHandler.class).info("Found user with id " + userId + " = " + (user != null));
                 /*Hibernate.initialize(user.getInvites()); eventuellt använda för att hämta invite*/
                 Map<String, Object> map = new HashMap<>();
-                map.put("Profile", user);
+                map.put("user", user);
                 return Optional.of(map);
 
             } catch (Exception e) {
-            LoggerFactory.getLogger(ShowProfileHandler.class).info("hibernate error " + Arrays.toString(e.getStackTrace()));
+            log.info("hibernate error " + Arrays.toString(e.getStackTrace()));
             return Optional.empty();
         }
     }

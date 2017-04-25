@@ -150,6 +150,9 @@ public class WebServer {
 
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
 
+            get(Paths.SHOWPROFILE,
+                    new ShowProfileHandler("showProfile.vm",500)::handleTemplateFileRequest,
+                    new VelocityTemplateEngine());
 
         });
     }
