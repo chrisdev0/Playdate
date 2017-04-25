@@ -13,10 +13,6 @@ import spark.Response;
 
 import static spark.Spark.*;
 
-/**
- * Created by martinsenden on 2017-04-25.
- */
-
 @Slf4j
 public class CreateUserHandler {
 
