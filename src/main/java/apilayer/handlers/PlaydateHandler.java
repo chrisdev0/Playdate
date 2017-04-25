@@ -9,12 +9,10 @@ import model.PlaydateVisibilityType;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import spark.HaltException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-
-import java.io.*;
+import utils.ParserHelpers;
 
 import static spark.Spark.halt;
 
@@ -28,10 +26,10 @@ public class PlaydateHandler {
         String visiblityId = request.queryParams("visibilityId");
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        Long placeId = parseToLong(placeIdStr);
-        Long startTime = parseToLong(startTimeStr);
-        Long endTime = parseToLong(endTimeStr);
-        Integer visibilityId = parseToInt(visiblityId);
+        Long placeId = ParserHelpers.parseToLong(placeIdStr);
+        Long startTime = ParserHelpers.parseToLong(startTimeStr);
+        Long endTime = ParserHelpers.parseToLong(endTimeStr);
+        Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
@@ -65,22 +63,7 @@ public class PlaydateHandler {
         throw halt(200);
     }
 
-    public static Integer parseToInt(String str) throws HaltException {
-        try {
-            return Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            throw halt(400);
-        }
-    }
-
-    public static Long parseToLong(String str) throws HaltException {
-        try {
-            return Long.parseLong(str);
-        } catch (NumberFormatException e) {
-            throw halt(400);
-        }
-    }
-/*lagt till detta*/
+    /*lagt till detta*/
     public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
         String id = request.queryParams("playdateId");
         try {
