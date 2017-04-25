@@ -2,9 +2,9 @@ body{
     margin-left: auto;
     margin-right: auto;
     background: #daf7a6;
-    background: -moz-linear-gradient(top, #daf7a6 0%, #d1ee9d 43%, #daf7a6 100%);
-    background: -webkit-linear-gradient(top, #daf7a6 0%,#d1ee9d 43%,#daf7a6 100%);
-    background: linear-gradient(to bottom, #daf7a6 0%,#d1ee9d 43%,#daf7a6 100%);
+    background: -moz-linear-gradient(top, #daf7a6 0%, #bef25e 43%, #daf7a6 100%);
+    background: -webkit-linear-gradient(top, #daf7a6 0%,#bef25e 43%,#daf7a6 100%);
+    background: linear-gradient(to bottom, #daf7a6 0%,#bef25e 43%,#daf7a6 100%);
     z-index: 1;
 }
 
@@ -17,6 +17,7 @@ body{
     z-index: 1001;
     position: relative;
 }
+
 
 .centered-text {
     text-align: center;
@@ -49,7 +50,7 @@ body{
 .text-input-field {
     font-family: sans-serif;
     color: white;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 6px;
     border: 1px solid rgba(0, 0, 0, 0.3);
 }
@@ -64,7 +65,7 @@ body{
     margin-bottom: 10px;
 }
 
-#text-form-input-fields  input::-webkit-input-placeholder {
+#text-form-input-fields input::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
@@ -106,7 +107,7 @@ body{
     margin-bottom: 0.4em;
 }
 
-#login-btn, #regBtn {
+#login-btn {
     background-color: #daf7b9;
 }
 

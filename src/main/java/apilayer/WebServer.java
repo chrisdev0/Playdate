@@ -150,6 +150,11 @@ public class WebServer {
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
+
+
+            put(Paths.CREATEPROFILE, new ProfileHandler("showProfile.vm",400)::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
         });
     }
 
@@ -171,6 +176,9 @@ public class WebServer {
                 new VelocityTemplateEngine());
         get("/createplaydate.html",
                 new StaticFileTemplateHandlerImpl("createplaydate.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
+        get("/glomtlosenord.html",
+                new StaticFileTemplateHandlerImpl("forgotpassword.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
     }
 }
