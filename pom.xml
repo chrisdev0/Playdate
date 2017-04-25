@@ -149,7 +149,11 @@
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
         </dependency>
-
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.4.1</version>
+        </dependency>
 
     </dependencies>
 
