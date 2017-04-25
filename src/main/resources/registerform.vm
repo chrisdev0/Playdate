@@ -35,8 +35,7 @@
 <div id="register-panel">
     <form>
         <div id="text-form-input-fields">
-            <input type="text" id="username" class="text-input-field centered-text" placeholder="Ditt användarnamn">
-            <input type="email" id="username" class="text-input-field centered-text" placeholder="Din e-postadress">
+          <input type="email" id="username" class="text-input-field centered-text" placeholder="Din e-postadress">
             <input type="password" id="password" class="text-input-field centered-text" placeholder="Nytt lösenord">
             <input type="password" id="upprepaLösenord" class="text-input-field centered-text" placeholder="Upprepa lösenord">
         </div>

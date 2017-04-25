@@ -6,7 +6,6 @@
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
     <script src="js/onInit.js"></script>
     <script src="js/onLogin.js"></script>
@@ -20,24 +19,34 @@
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
     <link rel=stylesheet href="css/main.css" type="text/css">
     <link rel=stylesheet href="css/createplaydate-dsn.css" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
 <div class="header" id="header-content-big-logo">
     <img src="/images/pdbiglogo.png" id="biglogo">
 </div>
 <div class="centered-text" id="page-desc" >
-    <h3>Skapa Playdate</h3>
+    <h4>Skapa Playdate</h4>
+        <select name="select-native-s" id="select-native-s">
+            <option value="small">Privat</option>
+            <option value="medium">Offentlig</option>
+        </select>
 </div>
 <div id="create-playdate-panel">
     <form>
-        <div class="small-text-fields">
-            Titel:<br>
+        <div class="container-playdate">
+                <label for="textinput-s" class="titel-cpd">Titel</label><br>
+
             <input type="text" id="titelnamn" class="small-text-fields"><br>
             <div id="date-time">
-                Datum:<br><input type="text" id="datepicker">
+                <label for="textinput-s" class="titel-cpd">Datum</label> <br><input type="text" id="datepicker">
+            </div>
+            <div id="searchplace">
+                <label for="textinput-s" class="titel-cpd">Plats</label><br>
+                <input id="filter-for-listview" data-type="search" placeholder="Sök plats...">
             </div>
                 <div id=pd-description-field>
-                Beskrivning:<br>
+                    <label for="textinput-s" class="titel-cpd">Beskrivning</label><br>
                 <input type="text" id="pd-description" class="small-text-fields">
         </div>
         <div>
