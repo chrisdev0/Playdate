@@ -31,8 +31,6 @@ public class CommentHandler {
                 session.update(place);
                 session.save(comment);
                 tx.commit();
-                response.redirect(Paths.PROTECTED + Paths.GETONEPLACE + "?placeId=" + placeId);
-                throw halt(200);
             } catch (Exception e) {
                 log.error("error saving comment", e);
                 if (tx != null) {
