@@ -162,14 +162,6 @@ public class User {
         return children != null ? children.equals(user.children) : user.children == null;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-
-    }
 
     @Override
     public int hashCode() {

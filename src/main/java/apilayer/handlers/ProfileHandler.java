@@ -42,7 +42,8 @@ public class ProfileHandler extends StaticFileTemplateHandler{
         } catch (HaltException e) {
             throw e;
         }
-        if (user == null || userInformationIsCorrect(name, description, phoneNumber)) {
+        if (user == null || !userInformationIsCorrect(name, description, phoneNumber)) {
+            log.error("userinformation was invalid");
             throw halt(400);
         }
         user.setName(name);
