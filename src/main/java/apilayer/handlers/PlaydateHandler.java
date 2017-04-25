@@ -14,8 +14,6 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.io.*;
-
 import static spark.Spark.halt;
 
 @Slf4j
