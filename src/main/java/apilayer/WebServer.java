@@ -153,5 +153,8 @@ public class WebServer {
         get("/glomtlosenord.html",
                 new StaticFileTemplateHandlerImpl("forgotpassword.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
+        get("/visaplats.html",
+                new StaticFileTemplateHandlerImpl("visaplats.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
     }
 }

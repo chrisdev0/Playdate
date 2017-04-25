@@ -13,6 +13,7 @@
 
 </script>
 <body>
+
 <h1>Showing place</h1>
 <h3>$!{place.getName()}</h3>
 <img src="../${place.getImageUrl()}" alt="bild på lekplats">
@@ -25,6 +26,9 @@
         <div>$com.comment</div>
     </div>
 #end
+
+
+
 <div id="commentform">
     <form method="POST" id="postcomment" action="/protected/postcomment">
         <input type="hidden" value="$place.getId()" name="placeId">

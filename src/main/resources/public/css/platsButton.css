@@ -1,0 +1,53 @@
+.Absolute-Center {
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+#longLogo {
+    text-align:center;
+    padding: 10px;
+}
+
+#platsPicture {
+    text-align:center;
+    width: 25%;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+#tillbaka-btn{
+    text-align:center;
+    background-color: #fff53c;
+    font-size: 18px;
+    color: white;
+    vertical-align: middle;
+{
+    height: 26px;
+    display : block;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    box-shadow: inset 0px -5px 45px rgba(100, 100, 100, 0.5),
+    0px 1px 1px rgba(255, 255, 255, 0.5);
+    margin-bottom: 7px;
+    position:relative;
+    top:50%;
+    left:50%;
+}
+
+a{
+    text-decoration:none;
+    color:#65c34a;
+    font-family: sans-serif;
+}
+
+a:hover{
+    color: #1a6207;
+    font-family: sans-serif;
+    margin-bottom: 50%;
+}
+
+

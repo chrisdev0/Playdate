@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Plats</title>
+    <link rel=stylesheet href="css/normalize.css" type="text/css">
+    <link rel=stylesheet href="platsButton.css" type="text/css">
+    <link rel=stylesheet href="css/main.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
+    <link rel=stylesheet href="css/platsButton.css" type="text/css">
+    <link rel=stylesheet href="backgroundPlats.css" type="text/css">
+
+
+</head>
+<body>
+<form>
+
+    <div id="longLogo">
+        <img src="/images/playdate_logga_1.png" width = "12%"/>
+        <br>
+    </div>
+
+
+
+    <div id="platsPicture">
+        <style="margin: 0 auto; width:60%; height:60px;  position: absolute>
+        <object type="text/html" data="http://www.theamazingpics.com/wp-content/uploads/2014/05/Amazing-Picture-of-A-Japanese-Garden-in-Portland-USA.jpg"
+                style="width:80%; height:80%; margin:1%;" >
+
+        </object>
+        <img src="/images/pd-logga.png" width = "10%"/>
+    </div>
+
+
+
+    <div id="plats-panel">
+        <form>
+            <div id="text-form-input-fields">
+                <h5>Platsnamn</h5>
+                <input type="text" id="Platsnamn" class="text-output-field centered-text" placeholder="Platsnamn">
+                <h5>Beskrivning</h5>
+                <input type="text" id="Beskrivning" class="text-input-field centered-text" placeholder="Beskrivning">
+            </div>
+        </form>
+    </div>
+
+
+        <div id="tillbaka">
+            <br>
+            <br>
+            <input type="submit" id="tillbaka-btn" value="Tillbaka" class="small-button centered-text">
+        </div>
+
+</form>
+</body>
+</html>
