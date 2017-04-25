@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import model.Playdate;
 import org.hibernate.Session;
 import org.slf4j.LoggerFactory;
+import spark.Request;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandler {
     }
 
     @Override
-    public Optional<Map<String, Object>> createModelMap() {
+    public Optional<Map<String, Object>> createModelMap(Request request) {
         try {
             try (Session session = HibernateUtil.getInstance().openSession()) {
                 Playdate playdate = session.get(Playdate.class, playdateId);

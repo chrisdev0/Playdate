@@ -12,6 +12,7 @@ public class Paths {
     public static final String TRYLOGIN = "/trylogin";
     public static final String CREATEPLAYDATE = "/createplaydate";
     public static final String GETONEPLAYDATE = "/getoneplaydate";
+    public static final String CREATEPROFILE = "/createprofile";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";

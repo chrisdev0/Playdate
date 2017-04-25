@@ -35,7 +35,6 @@ public class User {
     @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
-    @Column(nullable = true)
     private Gender gender;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -153,6 +152,15 @@ public class User {
             return false;
         if (gender != user.gender) return false;
         return children != null ? children.equals(user.children) : user.children == null;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+
     }
 
     @Override
