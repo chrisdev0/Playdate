@@ -174,5 +174,8 @@ public class WebServer {
         get("/registrera.html",
                 new StaticFileTemplateHandlerImpl("registrera.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
+        get("/glomtlosenord.html",
+                new StaticFileTemplateHandlerImpl("forgotpassword.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
     }
 }
