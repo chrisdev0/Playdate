@@ -5,8 +5,16 @@
     <title>Skapa Playdate!</title>
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
     <script src="js/onInit.js"></script>
     <script src="js/onLogin.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker();
+        } );
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel=stylesheet href="css/normalize.css" type="text/css">
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
@@ -22,19 +30,21 @@
 </div>
 <div id="create-playdate-panel">
     <form>
-        <div id="text-form-input-fields">
+        <div class="small-text-fields">
             Titel:<br>
-            <input type="text" id="titelnamn" class="text-input-field centered-text"><br>
-            Välj tid och datum:<br>
-            <input type="datetime-local" name="pdtime">
-            <div id=pd-description-field>
+            <input type="text" id="titelnamn" class="small-text-fields"><br>
+            <div id="date-time">
+                Datum:<br><input type="text" id="datepicker">
+            </div>
+                <div id=pd-description-field>
                 Beskrivning:<br>
-                <input type="text" id="pd-description" class="text-input-field centered-text"></div>
-            <input type="checkbox" name="private" value="Private"> Privat<br>
+                <input type="text" id="pd-description" class="small-text-fields">
         </div>
         <div>
             <input type="button" id="create-btn" class=annanklass value="Skapa Playdate!">
         </div>
+        </div>
     </form>
+</div>
 </body>
 </html>
