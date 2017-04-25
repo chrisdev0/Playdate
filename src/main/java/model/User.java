@@ -20,6 +20,7 @@ public class User {
     private String email;
 
     private String password;
+    private String salt;
 
     private String description;
 
@@ -176,5 +177,13 @@ public class User {
                 ", gender=" + gender +
                 ", children=" + children +
                 '}';
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }
