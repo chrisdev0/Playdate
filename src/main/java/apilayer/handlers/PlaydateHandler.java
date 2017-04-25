@@ -9,7 +9,6 @@ import model.PlaydateVisibilityType;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import spark.HaltException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
