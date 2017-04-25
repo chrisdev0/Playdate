@@ -26,8 +26,19 @@ body{
 
 #login-signup-panel {
     border-radius: 0.7em;
-    border: 1px solid black;
-    background: rgba(44, 101, 44, 0.46);
+    border: 1px solid #738f52;
+    background: rgba(44, 101, 44, 0.4);
+    padding: 0.5em 1em 0.5em 1em;
+    z-index: 1000;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 53px -14px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 53px -14px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 53px -14px rgba(0,0,0,0.75);
+}
+#register-panel {
+    border-radius: 0.7em;
+    border: 1px solid #738f52;
+    background: rgba(44, 101, 44, 0.4);
     padding: 0.5em 1em 0.5em 1em;
     z-index: 1000;
     position: relative;
@@ -44,7 +55,8 @@ body{
     border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-#text-form-input-fields input[type=text], #text-form-input-fields input[type=password] {
+
+#text-form-input-fields input[type=text], #text-form-input-fields input[type=password], #text-form-input-fields input[type=email]{
     box-shadow: inset 0 0 7px #222222;
     font-size: 1.2em;
     height: 1.3em;
