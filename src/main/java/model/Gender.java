@@ -2,6 +2,24 @@ package model;
 
 public enum Gender {
 
-    MALE, FEMALE, OTHER
+    MALE(0), FEMALE(1), OTHER(2);
 
+    private int id;
+
+    Gender(int id) {
+        this.id = id;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Gender genderIdToGender(int id) {
+        switch (id) {
+            case 0:
+                return MALE;
+            case 1:
+                return FEMALE;
+            case 2:
+                return OTHER;
+        }
+        throw new IllegalArgumentException("illegal gender id");
+    }
 }

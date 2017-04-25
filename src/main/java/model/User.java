@@ -35,7 +35,6 @@ public class User {
     @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
-    @Column(nullable = true)
     private Gender gender;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -136,6 +135,14 @@ public class User {
         this.children = children;
     }
 
+    public String getDescription (){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -154,6 +161,8 @@ public class User {
         if (gender != user.gender) return false;
         return children != null ? children.equals(user.children) : user.children == null;
     }
+
+
 
     @Override
     public int hashCode() {

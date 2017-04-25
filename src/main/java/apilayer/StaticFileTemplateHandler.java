@@ -25,7 +25,7 @@ public abstract class StaticFileTemplateHandler  {
     }
 
     public ModelAndView handleTemplateFileRequest(Request request, Response response) {
-        Optional<Map<String, Object>> opt = createModelMap();
+        Optional<Map<String, Object>> opt = createModelMap(request);
         if (opt.isPresent()) {
             return new ModelAndView(opt.get(), templateName);
         } else {
@@ -33,7 +33,7 @@ public abstract class StaticFileTemplateHandler  {
         }
     }
 
-    public Optional<Map<String,Object>> createModelMap() {
+    public Optional<Map<String,Object>> createModelMap(Request request) {
         return Optional.of(new HashMap<>());
     }
 }
