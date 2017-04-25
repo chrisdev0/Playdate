@@ -54,7 +54,8 @@ body{
     border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-#text-form-input-fields input[type=text], #text-form-input-fields input[type=password] {
+
+#text-form-input-fields input[type=text], #text-form-input-fields input[type=password], #text-form-input-fields input[type=email]{
     box-shadow: inset 0 0 7px #222222;
     font-size: 1.2em;
     height: 1.3em;
