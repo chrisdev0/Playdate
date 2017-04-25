@@ -53,10 +53,12 @@ public class WebServer {
      *  todo    Flytta till egen klass och skapa devdata för hela modellen
      * */
     private void initDEVData() {
-        User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FEMALE);
+        User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "123", "..", Gender.FEMALE);
+        user = User.createUserHelper(user, "password");
         Child child = new Child(18, Gender.FEMALE, user);
         user.addChild(child);
         User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
+        user2 = User.createUserHelper(user2, "password2");
         Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
         Comment comment = new Comment("Bästa stället i stockholm", user, false);
         Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);

@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import spark.Request;
 import spark.Response;
+import utils.PasswordHandler;
 import utils.Utils;
 
 import java.util.List;
@@ -78,15 +79,18 @@ public class LoginHandler {
     public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException{
         if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
             try (Session session = HibernateUtil.getInstance().openSession()) {
-                String hql = "FROM User WHERE upper(email) = :email AND password = :password";
+                String hql = "FROM User WHERE upper(email) = :email";
                 Query query = session.createQuery(hql);
                 query.setParameter("email", email);
-                query.setParameter("password", password);
                 List result = query.list();
                 if (result.size() != 1) {
                     return Optional.empty();
                 } else {
-                    return Optional.of((User) result.get(0));
+                    User user = (User) result.get(0);
+                    if (PasswordHandler.validateUserPwd(user, password)) {
+                        return Optional.of(user);
+                    }
+                    return Optional.empty();
                 }
             }
         } else {
