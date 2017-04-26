@@ -114,8 +114,6 @@ public class PlaydateHandler {
 
             if (!playdate.getOwner().equals(user)){
                 log.error("User is not owner of playdate");
-                log.info("User = " + user);
-                log.info("Owner = " + playdate.getOwner());
                 throw halt(400, "User is not owner of playdate");
             }
             tx = session.beginTransaction();
