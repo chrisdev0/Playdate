@@ -2,6 +2,7 @@ package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.w3c.dom.Document;
+import stockholmapi.jsontojava.Attribute;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 
 
@@ -16,6 +17,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ApiLoader {
 
@@ -33,15 +36,25 @@ public class ApiLoader {
         //printDocument(document,System.out);
         String jsonURL = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/134597ad-0ed7-47fc-b324-31686537d1b6/json?apikey=a42963ca81a64e55869481b281ad36c0";
 
-        String json = getUrl(jsonURL);
+        String json = getUrl(jsonURL).replace("Value\":{","Value2\":{");
         System.out.println(json);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(json, DetailedServiceUnit.class);
-
+/*
         System.out.println(detailedServiceUnit.toString());
-
+        for (int i = 0; i < detailedServiceUnit.getAttributes().size(); i++) {
+            System.out.println("index " + i + " " + detailedServiceUnit.getAttributes().get(i));
+        }*/
+        System.out.println("printing values");
+        String fileID = detailedServiceUnit.getAttributes().get(3).getValue2().getId();
+        String fileUrl = "http://api.stockholm.se/ServiceGuideService/ImageFiles/{ID}/Data?apikey=" + API_KEY;
+        fileUrl = fileUrl.replace("{ID}", fileID);
+        URL fileURL = new URL(fileUrl);
+        try (InputStream is = fileURL.openStream()) {
+            Files.copy(is, Paths.get("D:/image.png"));
+        }
     }
 
     public static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
