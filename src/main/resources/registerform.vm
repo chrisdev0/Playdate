@@ -40,7 +40,7 @@
             <input type="password" id="upprepaLösenord" class="text-input-field centered-text" placeholder="Upprepa lösenord">
         </div>
         <div>
-            <input type="button" id="regBtn" class="large-button centered-text" value="Registrera">
+            <input type="button" id="greenbtn" class="large-button centered-text" value="Registrera">
         </div>
     </form>
 </div>
