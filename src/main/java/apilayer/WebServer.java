@@ -121,6 +121,9 @@ public class WebServer {
 
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
 
+            get(Paths.SHOWPROFILE,
+                    new ShowProfileHandler("showProfile.vm",500)::handleTemplateFileRequest,
+                    new VelocityTemplateEngine());
 
             put(Paths.CREATEPROFILE, new ProfileHandler("showProfile.vm",400)::handleTemplateFileRequest, new VelocityTemplateEngine());
 

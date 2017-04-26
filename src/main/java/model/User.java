@@ -135,7 +135,7 @@ public class User {
         this.children = children;
     }
 
-    public String getDescription (){
+    public String getDescription(){
         return description;
     }
 

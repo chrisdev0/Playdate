@@ -14,6 +14,7 @@ public class Paths {
     public static final String GETONEPLAYDATE = "/getoneplaydate";
     public static final String CREATEPROFILE = "/createprofile";
     public static final String SHOWROFILE = "/showprofile";
+    public static final String SHOWPROFILE = "/showprofile";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
