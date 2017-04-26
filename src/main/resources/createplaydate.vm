@@ -19,6 +19,10 @@
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
     <link rel=stylesheet href="css/main.css" type="text/css">
     <link rel=stylesheet href="css/createplaydate-dsn.css" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+
 </head>
 <body>
 <div class="header" id="header-content-big-logo">
