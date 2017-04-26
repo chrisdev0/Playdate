@@ -20,13 +20,16 @@ public class Playdate {
     private long startTime;
     private long endTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User owner;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "playdate", cascade = CascadeType.REMOVE)
+    private Set<Invite> invites = new HashSet<>();
+
+    @ManyToMany
     private Set<User> participants = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Place place;
 
     private PlaydateVisibilityType playdateVisibilityType;
