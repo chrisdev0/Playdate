@@ -35,7 +35,7 @@
     <div id="login-signup-panel">
         <div id="text-form-input-fields">
             <form id="loginform" method="POST">
-                <input type="text" id="username" class="text-input-field centered-text" placeholder="Användarnamn">
+                <input type="text" id="username" class="text-input-field centered-text" placeholder="E-postadress">
                 <input type="password" id="password" class="text-input-field centered-text" placeholder="Lösenord">
                 <input type="submit" id="login-btn" class="large-button centered-text" value="Logga in">
             </form>
