@@ -39,16 +39,9 @@ public class ShowProfileHandler extends StaticFileTemplateHandler {
                 log.error("User is null");
                 throw halt(400, "user is null");
             }
-            try (Session session = HibernateUtil.getInstance().openSession()) {
-                /*Hibernate.initialize(user.getInvites()); eventuellt använda för att hämta invite*/
                 Map<String, Object> map = new HashMap<>();
                 map.put("user", user);
                 return Optional.of(map);
-
-            } catch (Exception e) {
-            log.info("hibernate error " + Arrays.toString(e.getStackTrace()));
-            return Optional.empty();
-        }
     }
 }
 
