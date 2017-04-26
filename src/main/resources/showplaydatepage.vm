@@ -7,18 +7,63 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <script src="../js/jquery-3.2.1.js"></script>
+
+    <link rel=stylesheet href="/css/normalize.css" type="text/css">
+    <link rel=stylesheet href="/css/platsButton.css" type="text/css">
+    <link rel=stylesheet href="/css/main.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel=stylesheet href="/css/jquery.mobile-1.4.5.css" type="text/css">
+    <link rel=stylesheet href="/css/platsButton.css" type="text/css">
+    <link rel=stylesheet href="/css/background.css" type="text/css">
+
+    <style>
+        .boxes{
+            width:50%;
+            float:left;
+        }
+        #platsBild{
+            width:50%;
+            margin:auto;
+        }
+        img{
+            max-width:100%;
+        }
+    </style>
+
+
 </head>
 <script>
 
 </script>
 <body>
-<h1>showing playdate</h1>
-<h3>$!{playdate.getHeader()}</h3>
-<img src="../${playdate.getPlace().getImageUrl()}" alt="bild på lekplats">
-##${playdate.getPlace().getName()}
-<h4>Beskrivning:</h4>
-<p>$!{playdate.getDescription()}</p>
-<a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}">följ med hit</a>
+
+<div id="longLogo">
+    <img src="/images/playdate_logga_1.png" width = "14%"/>
+    <br>
+</div>
+
+<h3>$!{playdate.getHeader()}
+</h3>
+
+
+<div id="platsBild">
+    <img id="plats" img src="../${playdate.getPlace().getImageUrl()}" alt="bild på lekplats" >
+    <input type="image" src="/images/pd-logga.png" alt="Submit Form"  height="15%"/>
+</div>
+
+<div id="textbox">
+    <h4>Beskrivning:
+    </h4>
+    <p>$!{playdate.getDescription()}</p>
+    <a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}">följ med hit</a>
+</div>
+
+<div id="tillbaka">
+    <br>
+    <br>
+    <input type="submit" id="tillbaka-btn" value="Tillbaka" class="small-button centered-text">
+</div>
 
 </body>
 </html>

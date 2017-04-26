@@ -6,16 +6,33 @@
 
 #longLogo {
     text-align:center;
-    padding: 10px;
+    padding: 5px;
+    background: #daf7a6;
 }
 
-#platsPicture {
-    text-align:center;
+.image{
     width: 25%;
-    height: 250px;
+    height: 25%;
+}
+
+
+#platsBild{
     margin-left: auto;
     margin-right: auto;
+    width: 25%;
+    height: 250px;
+    background: #daf7a6;
+    text-align:center;
+    padding-left: 3em;
+}
 
+#textbox{
+    width: 800px;
+    border: 3px solid rgba(131, 159, 98, 0.6);
+    padding: 10px;
+    margin: 2px;
+    display: block;
+    margin-top: 80px;
 }
 
 
@@ -25,7 +42,6 @@
     font-size: 18px;
     color: white;
     vertical-align: middle;
-{
     height: 26px;
     display : block;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -42,12 +58,19 @@ a{
     text-decoration:none;
     color:#65c34a;
     font-family: sans-serif;
+    background: #daf7a6;
 }
 
 a:hover{
     color: #1a6207;
     font-family: sans-serif;
     margin-bottom: 50%;
+}
+
+
+
+body{
+    background: #daf7a6;
 }
 
 

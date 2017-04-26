@@ -49,6 +49,35 @@ public class WebServer {
         hibernateUtil = HibernateUtil.getInstance();
     }
 
+    /** Lägger till lite testdata
+     *  todo    Flytta till egen klass och skapa devdata för hela modellen
+     * */
+    private void initDEVData() {
+        User user = new User("abc", "Hej Hejsan", "a@b.com", "password","123", "..", Gender.FEMALE);
+        Child child = new Child(18, Gender.FEMALE, user);
+        user.addChild(child);
+        User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
+        Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
+        Comment comment = new Comment("Bästa stället i stockholm", user, false);
+        Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);
+        Playdate playdate = new Playdate("Hej", "blbl", 123, 321, user, place, PlaydateVisibilityType.intToPlaydateVisibilityType(0));
+        place.addComment(comment);
+        place.addComment(comment2);
+        try (Session session = hibernateUtil.openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.save(user);
+            session.save(user2);
+            session.save(child);
+            session.save(place);
+            session.save(comment);
+            session.save(comment2);
+            session.save(playdate);
+            tx.commit();
+        } catch (Exception e) {
+            log.error("hibernate error", e);
+        }
+    }
+
 
     /** Initierar routes för applikationen
      *  Går att se vilka som finns (om RouteOverview.enableRouteOverview(); blir anropat innan)
@@ -153,8 +182,8 @@ public class WebServer {
         get("/glomtlosenord.html",
                 new StaticFileTemplateHandlerImpl("forgotpassword.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
-        get("/visaplats.html",
-                new StaticFileTemplateHandlerImpl("visaplats.vm", 500)::handleTemplateFileRequest,
+        get("/showplaydatepage.html",
+                new StaticFileTemplateHandlerImpl("showplaydatepage.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
     }
 }
