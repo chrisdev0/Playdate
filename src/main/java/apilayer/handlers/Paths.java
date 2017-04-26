@@ -13,10 +13,7 @@ public class Paths {
     public static final String CREATEPLAYDATE = "/createplaydate";
     public static final String GETONEPLAYDATE = "/getoneplaydate";
     public static final String CREATEPROFILE = "/createprofile";
-<<<<<<< HEAD
     public static final String SHOWROFILE = "/showprofile";
-=======
->>>>>>> 84894efe00e87c3a959c1cc021ff2e21a978656f
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
