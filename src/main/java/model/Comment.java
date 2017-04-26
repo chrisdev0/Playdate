@@ -18,7 +18,7 @@ import java.util.Date;
     @ManyToOne
     private User commenter;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Place place;
 
     private boolean hidden;

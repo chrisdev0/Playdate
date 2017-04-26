@@ -34,7 +34,6 @@ public class User {
 
 
     @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     private Gender gender;

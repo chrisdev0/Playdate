@@ -29,9 +29,8 @@ import java.util.Set;
     private String timeUpdated;
 
 
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "place")
-    private Set<Comment> comments;
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
+    private Set<Comment> comments = new HashSet<>();
 
     private int geoX;
     private int geoY;

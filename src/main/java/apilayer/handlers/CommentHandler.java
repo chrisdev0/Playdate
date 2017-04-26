@@ -78,7 +78,6 @@ public class CommentHandler {
                 place.removeComment(comment);
                 Hibernate.initialize(place.getComments());
                 session.delete(comment);
-                session.merge(place);
                 tx.commit();
             } catch (Exception e) {
                 if (tx != null) {
