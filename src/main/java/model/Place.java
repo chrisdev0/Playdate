@@ -30,7 +30,7 @@ import java.util.Set;
 
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "place")
     private Set<Comment> comments;
 
     private int geoX;
