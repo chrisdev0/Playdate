@@ -14,6 +14,13 @@ import static spark.Spark.halt;
 @Slf4j
 public class CommentHandler {
 
+    /** Hanterar post av en kommentar på en plats
+     *
+     *  Kontrollerar att
+     *
+     * @param request request för post av kommentaren
+     * @param response response for post av kommentaren
+     * */
     public static Object handlePostComment(Request request, Response response) {
         String placeIdStr = request.queryParams("placeId");
         try {
