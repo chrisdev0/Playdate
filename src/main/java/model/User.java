@@ -1,10 +1,10 @@
 package model;
 
 import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 import utils.PasswordHandler;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.swing.text.PlainDocument;
 import java.util.HashSet;
@@ -32,13 +32,14 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     private Gender gender;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Cascade({CascadeType.ALL})
     private Set<Child> children = new HashSet<>();
 
     public User() {
@@ -143,12 +144,23 @@ public class User {
         this.description = description;
     }
 
+    public Set<Invite> getInvitesToPlaydates() {
+        return invitesToPlaydates;
+    }
+
+    public void setInvitesToPlaydates(Set<Invite> invitesToPlaydates) {
+        this.invitesToPlaydates = invitesToPlaydates;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
+        if ((id != null && user.getId() != null)){
+            return id.equals(user.getId());
+        }
 
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
