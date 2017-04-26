@@ -12,15 +12,26 @@
     color: #1a6207;
 }
 #filter-for-listview{
-    font-family: Avenir;
-    font-size: 1.4em;
+    font-family: sans-serif;
     color: #1a6207;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
 .small-text-fields{
     font-family: sans-serif;
     color: #1a6207;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.describe-text-fields{
+    text-align: auto;
+    max-width: 12em;
+    font-family: sans-serif;
+    color: #1a6207;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    height: 5em;
+
 }
 
 #page-desc{
@@ -35,6 +46,7 @@
     margin-right: auto;
 }
 
-#datepicker{
-    width: 6em;
+#create-playdate-panel{
+    display: table;
+    margin: 0 auto;
 }
