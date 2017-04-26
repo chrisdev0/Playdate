@@ -11,12 +11,8 @@
     font-size: 0.7em;
     color: #1a6207;
 }
-#filter-for-listview{
-    font-family: sans-serif;
-    color: #1a6207;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-}
+
+
 .small-text-fields{
     font-family: sans-serif;
     color: #1a6207;
@@ -25,13 +21,14 @@
 }
 
 .describe-text-fields{
-    text-align: auto;
-    max-width: 12em;
     font-family: sans-serif;
-    color: #1a6207;
+    color: white;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
     border: 1px solid rgba(0, 0, 0, 0.3);
-    height: 5em;
-
 }
 
 #page-desc{
@@ -49,4 +46,14 @@
 #create-playdate-panel{
     display: table;
     margin: 0 auto;
+}
+
+#create-btn{
+    width: 10em;
+    background-color: #daf7b9;
+    object-position: center;
+}
+
+#pd-description{
+
 }
