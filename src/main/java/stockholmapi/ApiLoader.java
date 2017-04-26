@@ -1,10 +1,8 @@
 package stockholmapi;
 
-import com.google.gson.Gson;
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.w3c.dom.Document;
+import stockholmapi.jsontojava.DetailedServiceUnit;
 
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,15 +24,23 @@ public class ApiLoader {
         final String BASE_API_URL = "http://api.stockholm.se";
         String serviceUnits = "/ServiceGuideService/ServiceUnitTypes/9da341e4-bdc6-4b51-9563-e65ddc2f7434/ServiceUnits?apikey=";
         String url = BASE_API_URL + serviceUnits + API_KEY;
-        System.out.println(url);
+        //System.out.println(url);
         //String xml = getUrl(url);
 
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(new URL(url).openStream());
-        printDocument(document,System.out);
+        //Document document = documentBuilder.parse(new URL(url).openStream());
+        //printDocument(document,System.out);
+        String jsonURL = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/134597ad-0ed7-47fc-b324-31686537d1b6/json?apikey=a42963ca81a64e55869481b281ad36c0";
 
+        String json = getUrl(jsonURL);
+        System.out.println(json);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(json, DetailedServiceUnit.class);
+
+        System.out.println(detailedServiceUnit.toString());
 
     }
 
