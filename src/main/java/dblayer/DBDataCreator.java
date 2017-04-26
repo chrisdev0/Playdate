@@ -24,7 +24,6 @@ public class DBDataCreator {
         Playdate playdate = new Playdate("Hej", "blbl", 123, 321, user, place, PlaydateVisibilityType.intToPlaydateVisibilityType(0));
         Invite invite = new Invite("Hej", false, playdate, user2);
 
-
         user2.addInvite(invite);
         place.addComment(comment);
         place.addComment(comment2);

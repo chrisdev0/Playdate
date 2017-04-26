@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
 import model.Playdate;
+import model.User;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -66,6 +67,10 @@ public class CommentHandler {
         throw halt(400);
     }
 
+    /** Hanterar att ta bort en kommentar
+     *
+     * @return halt(200) om kommentaren hittades och kunde tas bort
+     * */
     public static Object handleRemoveComment(Request request, Response response) {
         String commentIdStr = request.queryParams("commentId");
         try {
