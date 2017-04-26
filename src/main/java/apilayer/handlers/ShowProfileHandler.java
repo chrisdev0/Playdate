@@ -18,13 +18,8 @@ import java.util.Optional;
 import static spark.Spark.halt;
 
 
-/**
- * Created by johnny on 2017-04-25.
- */
-
 @Slf4j
 public class ShowProfileHandler extends StaticFileTemplateHandler {
-    /* ska ta in från user, kolla att user är inloggad*/
 
 
     public ShowProfileHandler(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {
@@ -44,6 +39,3 @@ public class ShowProfileHandler extends StaticFileTemplateHandler {
                 return Optional.of(map);
     }
 }
-
-
-
