@@ -2,10 +2,19 @@ package stockholmapi.temporaryobjects;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.sql.rowset.serial.SerialBlob;
 
+@Entity
 @Data
 public class PlaceHolder {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long internal_id;
 
     private String id;
     private long x, y;
@@ -14,6 +23,7 @@ public class PlaceHolder {
     private String description;
 
     private SerialBlob image;
+
     private String zip;
     private String cityAddress;
     private String streetAddress;
@@ -32,5 +42,8 @@ public class PlaceHolder {
         this.streetAddress = streetAddress;
         this.geoArea = geoArea;
         this.category = category;
+    }
+
+    public PlaceHolder() {
     }
 }

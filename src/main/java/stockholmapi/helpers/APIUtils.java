@@ -35,7 +35,7 @@ public class APIUtils {
     }
 
     public static String stupidStockholmAPIJSONToNotStupidJSON(String stupidJSON) {
-        return stupidJSON.replace("Value\":{", "Value2\":{");
+        return stupidJSON.replace("Value\":{", "Value2\":{").replace("Values\":{","Values2\":{");
     }
 
     public static String getUrl(URL url) throws Exception {

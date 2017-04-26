@@ -1,6 +1,10 @@
 package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dblayer.HibernateUtil;
+import model.Place;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import secrets.Secrets;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
@@ -11,6 +15,7 @@ import stockholmapi.temporaryobjects.PlaceHolderBuilder;
 
 
 import javax.sql.rowset.serial.SerialBlob;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +25,9 @@ public class ApiLoader {
 
     public static void main(String[] args) throws Exception{
         final String API_KEY = Secrets.getInstance().loadSecretsFile("secrets.txt").getValue("stockholmAPIKEY").get();
-
+        HibernateUtil hibernateUtil = HibernateUtil.getInstance();
+        System.out.println("Starting");
+        long startTime = System.currentTimeMillis();
         String jsonURL = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/134597ad-0ed7-47fc-b324-31686537d1b6/json?apikey=a42963ca81a64e55869481b281ad36c0";
 
         String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(URLS.urlHelper(URLS.BASIC_INFO_PLACEHOLDER, URLS.LEKPLATSER, API_KEY)));
@@ -35,26 +42,57 @@ public class ApiLoader {
             placeHolders.add(buildPlaceHolder(serviceUnitTypes));
         }
 
-        String placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(URLS.urlHelper(URLS.DETAILED_INFO_PLACEHOLDER, placeHolders.get(0).getId(), API_KEY)));
-        DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(placeJson, DetailedServiceUnit.class);
-        System.out.println(detailedServiceUnit);
-        detailedServiceUnit.createMapOfAttributes();
-        PlaceHolder placeHolder = placeHolders.get(0);
-        placeHolder.setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
-        placeHolder.setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
-        placeHolder.setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
-        placeHolder.setDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
-        placeHolder.setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
-        placeHolder.setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
-        Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
-        if (object != null && object instanceof Value2) {
-            Value2 value2 = (Value2) object;
-            byte[] image = imageUrlToByteArray(URLS.urlHelper(URLS.IMAGE_PLACEHOLDER, value2.getId(), API_KEY));
-            System.out.println("image byte array length =" + image.length);
-            placeHolder.setImage(new SerialBlob(image));
+        int imageFail = 0;
+        for (PlaceHolder placeHolder : placeHolders) {
+            URL url = URLS.urlHelper(URLS.DETAILED_INFO_PLACEHOLDER, placeHolder.getId(), API_KEY);
+            System.out.println(url.toString());
+            String placeJson = null;
+            try {
+                placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(url));
+            } catch (Exception e) {
+                System.out.println("Failed to load url " + url.toString() + " code " + e.getMessage());
+                continue;
+            }
+            DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(placeJson, DetailedServiceUnit.class);
+            detailedServiceUnit.createMapOfAttributes();
+            placeHolder.setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
+            placeHolder.setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
+            placeHolder.setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
+            placeHolder.setDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
+            placeHolder.setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
+            placeHolder.setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+            Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
+            if (object != null && object instanceof Value2) {
+                Value2 value2 = (Value2) object;
+                byte[] image;
+                try {
+                    image = imageUrlToByteArray(URLS.urlHelper(URLS.IMAGE_PLACEHOLDER, value2.getId(), API_KEY));
+                } catch (Exception e) {
+                    System.out.println("Failed to load image because " + e.getMessage());
+                    imageFail++;
+                    continue;
+                }
+                System.out.println("image byte array length =" + image.length);
+                placeHolder.setImage(new SerialBlob(image));
+            }
         }
+        System.out.println("Starting db save after " + ((System.currentTimeMillis() - startTime) / 1000) + " sekunder.\n Hämtade " + placeHolders.size() + " Place av totalt " + sut.length + "möjliga");
+        System.out.println("Failed to load " + imageFail + " images");
 
-        System.out.println(placeHolder);
+        Transaction tx = null;
+        try (Session session = hibernateUtil.openSession()) {
+            tx = session.beginTransaction();
+            for (PlaceHolder placeHolder : placeHolders) {
+                session.save(placeHolder);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        System.out.println("loading ended after " + ((System.currentTimeMillis() - startTime) / 1000) + " sekunder.\n Hämtade " + placeHolders.size() + " Place");
     }
 
     public static PlaceHolder buildPlaceHolder(ServiceUnitTypes sut) {

@@ -41,10 +41,14 @@ public class Attribute {
     private String value;
     @JsonProperty("Value2")
     private Value2 value2;
+    /*
+    @JsonProperty("Values2")
+    private List<Value> values2 = null;
+    */
     @JsonProperty("ServiceUnitTypeInfo")
     private ServiceUnitTypeInfo serviceUnitTypeInfo;
     @JsonProperty("Values")
-    private List<String> values = new ArrayList<String>();
+    private List<Object> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -87,7 +91,17 @@ public class Attribute {
     public void setId(String id) {
         this.id = id;
     }
+/*
+    @JsonProperty("Values2")
+    public List<Value> getValues2() {
+        return values2;
+    }
 
+    @JsonProperty("Values2")
+    public void setValues2(List<Value> values2) {
+        this.values2 = values2;
+    }
+*/
     @JsonProperty("Name")
     public String getName() {
         return name;
@@ -129,12 +143,12 @@ public class Attribute {
     }
 
     @JsonProperty("Values")
-    public List<String> getValues() {
+    public List<Object> getValues() {
         return values;
     }
 
     @JsonProperty("Values")
-    public void setValues(List<String> values) {
+    public void setValues(List<Object> values) {
         this.values = values;
     }
 
