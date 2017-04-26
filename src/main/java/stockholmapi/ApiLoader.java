@@ -2,6 +2,7 @@ package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.w3c.dom.Document;
+import secrets.Secrets;
 import stockholmapi.jsontojava.Attribute;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 
@@ -23,7 +24,7 @@ import java.nio.file.Paths;
 public class ApiLoader {
 
     public static void main(String[] args) throws Exception{
-        final String API_KEY = "a42963ca81a64e55869481b281ad36c0";
+        final String API_KEY = Secrets.getInstance().loadSecretsFile("secrets.txt").getValue("stockholmAPIKEY").get();
         final String BASE_API_URL = "http://api.stockholm.se";
         String serviceUnits = "/ServiceGuideService/ServiceUnitTypes/9da341e4-bdc6-4b51-9563-e65ddc2f7434/ServiceUnits?apikey=";
         String url = BASE_API_URL + serviceUnits + API_KEY;
@@ -53,7 +54,7 @@ public class ApiLoader {
         fileUrl = fileUrl.replace("{ID}", fileID);
         URL fileURL = new URL(fileUrl);
         try (InputStream is = fileURL.openStream()) {
-            Files.copy(is, Paths.get("D:/image.png"));
+            Files.copy(is, Paths.get("D:/image2.png"));
         }
     }
 
