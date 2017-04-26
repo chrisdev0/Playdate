@@ -41,7 +41,7 @@ public class PlaydateHandler {
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
-            log.error("", e);
+            log.error("Illegal visibilityType", e);
             throw halt(400, e.getMessage());
         }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
@@ -143,23 +143,67 @@ public class PlaydateHandler {
         String visiblityId = request.queryParams("visibilityId");
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        String playdateId = request.queryParams("playdateId");
+        String playdateIdString = request.queryParams("playdateId");
+        Long playdateId;
         Long placeId = ParserHelpers.parseToLong(placeIdStr);
         Long startTime = ParserHelpers.parseToLong(startTimeStr);
         Long endTime = ParserHelpers.parseToLong(endTimeStr);
         Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
 
-        // if(id på playdate finns och är korrekt)
-        /*
-        if (place.getId.equals(placeIdStr)
-         */
+        try {
+            playdateId = Long.parseLong(playdateIdString);
+            log.info("Trying to find with id = " + playdateId);
+        } catch (NullPointerException | NumberFormatException e) {
+            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateIdString + "error = " + e.getMessage());
+            throw halt(400);
+        }
 
-        //      if(place är ändrat)
-        //          hämta place från databasen, både den nya och den gamla
-        //          ta sedan bort den gamla och ändra place i playdate till den nya
-        //
-        //    uppdatera sedan playdaten, skapa inte en ny, med session.merge(playdate);
+        try {
+            playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
+        } catch (Exception e) {
+            log.error("Illegal visibilityType", e);
+            throw halt(400, e.getMessage());
+        }
 
+        Transaction tx = null;
+        try(Session session = HibernateUtil.getInstance().openSession()){
+            Playdate playdate = session.get(Playdate.class, playdateId);
+            User user = request.session().attribute(Constants.USER_SESSION_KEY);
+
+           if(playdate == null){
+               log.error("playdate is null");
+               throw halt(400);
+           }
+           if(user == null){
+               log.error("user is null");
+               throw halt(400);
+           }
+           if(!playdate.getOwner().equals(user)){
+               log.error("user is not owner of playdate");
+               throw halt(400);
+           }
+
+            playdate.setHeader(header);
+            playdate.setEndTime(endTime);
+            playdate.setStartTime(startTime);
+            playdate.setDescription(description);
+            playdate.setPlaydateVisibilityType(playdateVisibilityType);
+
+            if(playdate.getPlace().getId()!= placeId){
+                Place placeTemp = session.get(Place.class, placeId);
+                playdate.setPlace(placeTemp);
+            }
+
+            tx = session.beginTransaction();
+            session.save(playdate);
+            session.merge(user);
+            tx.commit();
+
+        }catch(Exception e){
+            tx.rollback();
+        }
+
+       return halt(200);
     }
 }
