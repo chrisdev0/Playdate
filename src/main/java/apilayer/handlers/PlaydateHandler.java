@@ -197,7 +197,7 @@ public class PlaydateHandler {
             }
 
             tx = session.beginTransaction();
-            session.save(playdate);
+            session.update(playdate);
             session.merge(user);
             tx.commit();
 
