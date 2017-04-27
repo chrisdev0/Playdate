@@ -32,7 +32,7 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     private Gender gender;

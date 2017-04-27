@@ -12,6 +12,7 @@ public class DBDataCreator {
      *  todo    Flytta till egen klass och skapa devdata för hela modellen
      * */
     public static void initDEVData() {
+        /*
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "123", "..", Gender.FEMALE);
         user = User.createUserHelper(user, "password");
         Child child = new Child(18, Gender.FEMALE, user);
@@ -39,6 +40,7 @@ public class DBDataCreator {
         } catch (Exception e) {
             log.error("hibernate error", e);
         }
+        */
     }
 
 }

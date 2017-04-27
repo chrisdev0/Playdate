@@ -6,8 +6,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">
-            <!-- What SQL dialect which will be used -->
-            org.hibernate.dialect.MySQLDialect
+            org.hibernate.dialect.MySQL5Dialect
         </property>
         <property name="hibernate.connection.driver_class">
             <!-- What driver will be used to "talk" with the database -->
