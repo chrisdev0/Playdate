@@ -19,38 +19,42 @@
     <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
     <link rel=stylesheet href="css/main.css" type="text/css">
     <link rel=stylesheet href="css/createplaydate-dsn.css" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+
 </head>
 <body>
+
 <div class="header" id="header-content-big-logo">
     <img src="/images/pdbiglogo.png" id="biglogo">
 </div>
+<br>
+<br>
+<div id="login-signup-panel">
 <div class="centered-text" id="page-desc" >
     <h4>Skapa Playdate</h4>
-        <select name="select-native-s" id="select-native-s">
-            <option value="small">Privat</option>
-            <option value="medium">Offentlig</option>
-        </select>
+    <select name="select-native-s" id="select-native-s">
+        <option value="small">Privat</option>
+        <option value="medium">Offentlig</option>
+    </select>
 </div>
 <div id="create-playdate-panel">
     <form>
+        <br>
         <div class="container-playdate">
-                <label for="textinput-s" class="titel-cpd">Titel</label><br>
+        <div id="text-form-input-fields">
+        <input type="text" id="titel" class="text-input-field centered-text" placeholder="Titel">
+        <input type="text" id="datepicker" class="text-input-field centered-text" placeholder="Datum">
+        <input type="text" id="time" class="text-input-field centered-text" placeholder="Tid">
+        <input type="text" id="filter-for-listview" class="text-input-field centered-text" placeholder="Sök plats...">
+        <input type="text" id="filter-for-listview" class="text-input-field centered-text" placeholder="Beskrivning" cols="30" rows"5">
+        <textarea type="textarea" placeholder="Beskrivning" id="pd-description"  class="describe-text-fields" color="white" cols="30" rows="5"></textarea>
+        </div>
 
-            <input type="text" id="titelnamn" class="small-text-fields"><br>
-            <div id="date-time">
-                <label for="textinput-s" class="titel-cpd">Datum</label> <br><input type="text" id="datepicker">
+            <div>
+                <input type="button" id="create-btn" class="large-button" value="Skapa Playdate!">
             </div>
-            <div id="searchplace">
-                <label for="textinput-s" class="titel-cpd">Plats</label><br>
-                <input id="filter-for-listview" data-type="search" placeholder="Sök plats...">
-            </div>
-                <div id=pd-description-field>
-                    <label for="textinput-s" class="titel-cpd">Beskrivning</label><br>
-                <input type="text" id="pd-description" class="small-text-fields">
-        </div>
-        <div>
-            <input type="button" id="create-btn" class=annanklass value="Skapa Playdate!">
-        </div>
         </div>
     </form>
 </div>

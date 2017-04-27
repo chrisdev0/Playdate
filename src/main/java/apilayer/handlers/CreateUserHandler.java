@@ -5,7 +5,6 @@ import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import spark.Request;
