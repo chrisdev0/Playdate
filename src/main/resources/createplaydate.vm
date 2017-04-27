@@ -6,13 +6,14 @@
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
     <script src="js/onInit.js"></script>
     <script src="js/onLogin.js"></script>
     <script>
-        $( function() {
-            $( "#datepicker" ).datepicker();
-        } );
+        $(function () {
+            $("#datepicker").datepicker();
+        });
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel=stylesheet href="css/normalize.css" type="text/css">
@@ -22,41 +23,39 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
-
 </head>
 <body>
+<form>
+    <div class="header" id="header-content-big-logo">
+        <img src="/images/pdbiglogo.png" id="biglogo">
+    </div>
+    <div class="centered-text" id="page-desc">
+        <h2>Skapa Playdate</h2>
+    </div>
+    <div id="login-signup-panel">
 
-<div class="header" id="header-content-big-logo">
-    <img src="/images/pdbiglogo.png" id="biglogo">
-</div>
-<br>
-<br>
-<div id="login-signup-panel">
-<div class="centered-text" id="page-desc" >
-    <h4>Skapa Playdate</h4>
-    <select name="select-native-s" id="select-native-s">
-        <option value="small">Privat</option>
-        <option value="medium">Offentlig</option>
-    </select>
-</div>
-<div id="create-playdate-panel">
-    <form>
-        <br>
-        <div class="container-playdate">
-        <div id="text-form-input-fields">
-        <input type="text" id="titel" class="text-input-field centered-text" placeholder="Titel">
-        <input type="text" id="datepicker" class="text-input-field centered-text" placeholder="Datum">
-        <input type="text" id="time" class="text-input-field centered-text" placeholder="Tid">
-        <input type="text" id="filter-for-listview" class="text-input-field centered-text" placeholder="Sök plats...">
-        <input type="text" id="filter-for-listview" class="text-input-field centered-text" placeholder="Beskrivning" cols="30" rows"5">
-        <textarea type="textarea" placeholder="Beskrivning" id="pd-description"  class="describe-text-fields" color="white" cols="30" rows="5"></textarea>
-        </div>
+        <div id="create-playdate-panel">
+            <div class="container-playdate">
+                <div id="text-form-input-fields">
+                    <div id=pd-description-field>
+                        <input type="text" id="titel" class="text-input-field centered-text" placeholder="Titel">
+                        <input type="text" id="datepicker" class="text-input-field centered-text" placeholder="Datum">
+                        <input type="text" id="time" class="text-input-field centered-text" placeholder="Tid">
+                        <input type="text" id="filter-for-listview" class="text-input-field centered-text"
+                               placeholder="Sök plats...">
 
-            <div>
-                <input type="button" id="create-btn" class="large-button" value="Skapa Playdate!">
-            </div>
-        </div>
-    </form>
+                        <select name="select-native-s" id="select-native-s">
+                            <option value="small">Privat</option>
+                            <option value="medium">Offentlig</option>
+                        </select>
+                        <br>
+                        <div id=pd-description-field>
+                            <label for="textinput-s" class="titel-cpd">Beskrivning</label><br>
+                            <textarea name="descarea" id="pd-description" class="describe-text-fields"></textarea><br>
+                            <input type="button" id="create-btn" class="large-button" value="Skapa Playdate!">
+                        </div>
+                    </div>
+</form>
 </div>
 </body>
 </html>
