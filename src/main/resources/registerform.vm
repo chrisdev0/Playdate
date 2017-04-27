@@ -33,14 +33,14 @@
     <img src="/images/pd-logga.png" id="imglogo"/>
 </div>
 <div id="register-panel">
-    <form>
+    <form action="/doreg" method="post">
         <div id="text-form-input-fields">
-          <input type="email" id="username" class="text-input-field centered-text" placeholder="E-postadress">
-            <input type="password" id="password" class="text-input-field centered-text" placeholder="Nytt lösenord">
+          <input type="email" id="username" name="email" class="text-input-field centered-text" placeholder="E-postadress">
+            <input type="password" id="password" name="rawPassword" class="text-input-field centered-text" placeholder="Nytt lösenord">
             <input type="password" id="upprepaLösenord" class="text-input-field centered-text" placeholder="Upprepa lösenord">
         </div>
         <div>
-            <input type="button" id="greenbtn" class="large-button centered-text" value="Registrera">
+            <input type="submit" id="greenbtn" class="large-button centered-text" value="Registrera">
         </div>
     </form>
 </div>
