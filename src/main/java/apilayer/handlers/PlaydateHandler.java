@@ -12,6 +12,9 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +37,11 @@ public class PlaydateHandler {
         Long endTime = ParserHelpers.parseToLong(endTimeStr);
         Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
+
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
-            log.error("", e);
+            log.error("Illegal visibilityType", e);
             throw halt(400, e.getMessage());
         }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
@@ -50,6 +54,7 @@ public class PlaydateHandler {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Place place = session.get(Place.class, placeId);
             if (place == null) {
+                log.error("no place with id = " + placeIdStr);
                 throw halt(400, "no place with this id");
             }
             playdate.setPlace(place);
@@ -138,5 +143,77 @@ public class PlaydateHandler {
             throw halt(400);
         }
         return halt(200);
+    }
+
+    public static Object handleUpdatePlaydate(Request request, Response response){ //put
+        // hämta alla värden från request headern.
+        String placeIdStr = request.queryParams("placeId");
+        String startTimeStr = request.queryParams("startTime");
+        String endTimeStr = request.queryParams("endTime");
+        String visiblityId = request.queryParams("visibilityId");
+        String header = request.queryParams("header");
+        String description = request.queryParams("description");
+        String playdateIdString = request.queryParams("playdateId");
+        Long playdateId;
+        Long placeId = ParserHelpers.parseToLong(placeIdStr);
+        Long startTime = ParserHelpers.parseToLong(startTimeStr);
+        Long endTime = ParserHelpers.parseToLong(endTimeStr);
+        Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
+        PlaydateVisibilityType playdateVisibilityType;
+
+        try {
+            playdateId = Long.parseLong(playdateIdString);
+            log.info("Trying to find with id = " + playdateId);
+        } catch (NullPointerException | NumberFormatException e) {
+            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateIdString + "error = " + e.getMessage());
+            throw halt(400);
+        }
+
+        try {
+            playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
+        } catch (Exception e) {
+            log.error("Illegal visibilityType", e);
+            throw halt(400, e.getMessage());
+        }
+
+        Transaction tx = null;
+        try(Session session = HibernateUtil.getInstance().openSession()){
+            Playdate playdate = session.get(Playdate.class, playdateId);
+            User user = request.session().attribute(Constants.USER_SESSION_KEY);
+
+           if(playdate == null){
+               log.error("playdate is null");
+               throw halt(400);
+           }
+           if(user == null){
+               log.error("user is null");
+               throw halt(400);
+           }
+           if(!playdate.getOwner().equals(user)){
+               log.error("user is not owner of playdate");
+               throw halt(400);
+           }
+
+            playdate.setHeader(header);
+            playdate.setEndTime(endTime);
+            playdate.setStartTime(startTime);
+            playdate.setDescription(description);
+            playdate.setPlaydateVisibilityType(playdateVisibilityType);
+
+            if(playdate.getPlace().getId()!= placeId){
+                Place placeTemp = session.get(Place.class, placeId);
+                playdate.setPlace(placeTemp);
+            }
+
+            tx = session.beginTransaction();
+            session.update(playdate);
+            session.merge(user);
+            tx.commit();
+
+        }catch(Exception e){
+            tx.rollback();
+        }
+
+       return halt(200);
     }
 }

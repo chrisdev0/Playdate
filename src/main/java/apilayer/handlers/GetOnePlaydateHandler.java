@@ -14,9 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Created by johnny on 2017-04-24.
- */
 
 @Slf4j
 public class GetOnePlaydateHandler extends StaticFileTemplateHandler {

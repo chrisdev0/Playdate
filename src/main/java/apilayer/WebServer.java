@@ -124,6 +124,8 @@ public class WebServer {
 
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 
+            put(Paths.CREATEPLAYDATE, PlaydateHandler::handleUpdatePlaydate);
+
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
 
             get(Paths.SHOWPROFILE,
