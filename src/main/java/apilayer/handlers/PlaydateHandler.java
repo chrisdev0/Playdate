@@ -66,7 +66,14 @@ public class PlaydateHandler {
         throw halt(200);
     }
 
-    /*lagt till detta*/
+    /** Hanterar att hämta och visa en Playdate
+     *  Försöker hitta playdate med id
+     *  @param request queryParam = playdateId
+     *
+     *  kontrollerar att detta id är en long och använder sig sen av
+     *  GetOnePlaydateHandler för att hämta och mata ut Playdate-objektet till
+     *  templatefilen som anges i GetOnePlaydateHandler-konstruktorn
+     * */
     public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
         String id = request.queryParams("playdateId");
         try {
@@ -81,6 +88,8 @@ public class PlaydateHandler {
     }
 
 
+    /** Hanterar att ta bort en Playdate
+     * */
     public static Object handleDeletePlaydate(Request request, Response response) {
         String playdateId = request.queryParams("playdateId");
         long lId;

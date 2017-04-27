@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import stockholmapi.helpers.APIUtils;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,6 +48,8 @@ public class DetailedServiceUnit {
     private String timeUpdated;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonIgnore
+    private Map<String, Object> attributesIdToValue = new HashMap<>();
 
     @JsonProperty("Attributes")
     public List<Attribute> getAttributes() {
@@ -140,7 +143,18 @@ public class DetailedServiceUnit {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return "DetailedServiceUnit{" +
+                "attributes=" + attributes +
+                ", geographicalAreas=" + geographicalAreas +
+                ", geographicalPosition=" + geographicalPosition +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", relatedServiceUnits=" + relatedServiceUnits +
+                ", serviceUnitTypes=" + serviceUnitTypes +
+                ", timeCreated='" + timeCreated + '\'' +
+                ", timeUpdated='" + timeUpdated + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                '}';
     }
 
     @JsonAnyGetter
@@ -153,4 +167,18 @@ public class DetailedServiceUnit {
         this.additionalProperties.put(name, value);
     }
 
+    public void createMapOfAttributes() {
+        for (Attribute attribute : attributes) {
+            String attributeId = attribute.getId();
+            if (attributeId.equals(APIUtils.API_HUVUDBILD)) {
+                attributesIdToValue.put(attributeId, attribute.getValue2());
+            } else {
+                attributesIdToValue.put(attributeId, attribute.getValue());
+            }
+        }
+    }
+
+    public Map<String, Object> getAttributesIdToValue() {
+        return attributesIdToValue;
+    }
 }

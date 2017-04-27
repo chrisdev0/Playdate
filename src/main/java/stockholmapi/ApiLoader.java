@@ -1,117 +1,107 @@
 package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.w3c.dom.Document;
+import dblayer.HibernateUtil;
+import model.Place;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import secrets.Secrets;
-import stockholmapi.jsontojava.Attribute;
+import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
+import stockholmapi.jsontojava.ServiceUnitTypes;
+import stockholmapi.jsontojava.Value2;
+import stockholmapi.temporaryobjects.PlaceHolder;
+import stockholmapi.temporaryobjects.PlaceHolderBuilder;
 
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import javax.sql.rowset.serial.SerialBlob;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+import static stockholmapi.helpers.APIUtils.*;
 
 public class ApiLoader {
 
     public static void main(String[] args) throws Exception{
         final String API_KEY = Secrets.getInstance().loadSecretsFile("secrets.txt").getValue("stockholmAPIKEY").get();
-        final String BASE_API_URL = "http://api.stockholm.se";
-        String serviceUnits = "/ServiceGuideService/ServiceUnitTypes/9da341e4-bdc6-4b51-9563-e65ddc2f7434/ServiceUnits?apikey=";
-        String url = BASE_API_URL + serviceUnits + API_KEY;
-        //System.out.println(url);
-        //String xml = getUrl(url);
-
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        //Document document = documentBuilder.parse(new URL(url).openStream());
-        //printDocument(document,System.out);
+        HibernateUtil hibernateUtil = HibernateUtil.getInstance();
+        System.out.println("Starting");
+        long startTime = System.currentTimeMillis();
         String jsonURL = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/134597ad-0ed7-47fc-b324-31686537d1b6/json?apikey=a42963ca81a64e55869481b281ad36c0";
 
-        String json = getUrl(jsonURL).replace("Value\":{","Value2\":{");
-        System.out.println(json);
+        String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(URLS.urlHelper(URLS.BASIC_INFO_PLACEHOLDER, URLS.LEKPLATSER, API_KEY)));
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(json, DetailedServiceUnit.class);
-/*
-        System.out.println(detailedServiceUnit.toString());
-        for (int i = 0; i < detailedServiceUnit.getAttributes().size(); i++) {
-            System.out.println("index " + i + " " + detailedServiceUnit.getAttributes().get(i));
-        }*/
-        System.out.println("printing values");
-        String fileID = detailedServiceUnit.getAttributes().get(3).getValue2().getId();
-        String fileUrl = "http://api.stockholm.se/ServiceGuideService/ImageFiles/{ID}/Data?apikey=" + API_KEY;
-        fileUrl = fileUrl.replace("{ID}", fileID);
-        URL fileURL = new URL(fileUrl);
-        try (InputStream is = fileURL.openStream()) {
-            Files.copy(is, Paths.get("D:/image2.png"));
+        ServiceUnitTypes[] sut = objectMapper.readValue(json, ServiceUnitTypes[].class);
+
+        List<PlaceHolder> placeHolders = new ArrayList<>();
+
+        for (ServiceUnitTypes serviceUnitTypes : sut) {
+            placeHolders.add(buildPlaceHolder(serviceUnitTypes));
         }
+
+        int imageFail = 0;
+        for (PlaceHolder placeHolder : placeHolders) {
+            URL url = URLS.urlHelper(URLS.DETAILED_INFO_PLACEHOLDER, placeHolder.getId(), API_KEY);
+            System.out.println(url.toString());
+            String placeJson = null;
+            try {
+                placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(url));
+            } catch (Exception e) {
+                System.out.println("Failed to load url " + url.toString() + " code " + e.getMessage());
+                continue;
+            }
+            DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(placeJson, DetailedServiceUnit.class);
+            detailedServiceUnit.createMapOfAttributes();
+            placeHolder.setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
+            placeHolder.setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
+            placeHolder.setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
+            placeHolder.setDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
+            placeHolder.setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
+            placeHolder.setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+            Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
+            if (object != null && object instanceof Value2) {
+                Value2 value2 = (Value2) object;
+                byte[] image;
+                try {
+                    image = imageUrlToByteArray(URLS.urlHelper(URLS.IMAGE_PLACEHOLDER, value2.getId(), API_KEY));
+                } catch (Exception e) {
+                    System.out.println("Failed to load image because " + e.getMessage());
+                    imageFail++;
+                    continue;
+                }
+                System.out.println("image byte array length =" + image.length);
+                placeHolder.setImage(new SerialBlob(image));
+            }
+        }
+        System.out.println("Starting db save after " + ((System.currentTimeMillis() - startTime) / 1000) + " sekunder.\n Hämtade " + placeHolders.size() + " Place av totalt " + sut.length + "möjliga");
+        System.out.println("Failed to load " + imageFail + " images");
+
+        Transaction tx = null;
+        try (Session session = hibernateUtil.openSession()) {
+            tx = session.beginTransaction();
+            for (PlaceHolder placeHolder : placeHolders) {
+                session.save(placeHolder);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        System.out.println("loading ended after " + ((System.currentTimeMillis() - startTime) / 1000) + " sekunder.\n Hämtade " + placeHolders.size() + " Place");
     }
 
-    public static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
-        transformer.transform(new DOMSource(doc),
-                new StreamResult(new OutputStreamWriter(out, "UTF-8")));
-    }
-
-
-    public static String getUrl(String urlStr) throws Exception {
-        URL url = new URL(urlStr);
-        URLConnection urlConnection = url.openConnection();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        bufferedReader.close();
-        return stringBuilder.toString();
-    }
-
-    class ServiceUnitTypes {
-        String Name, TimeUpdated, TimeCreated, Id;
-        GeographicalPosition GeographicalPosition;
-
-        @Override
-        public String toString() {
-            return "ServiceUnitTypes{" +
-                    "Name='" + Name + '\'' +
-                    ", Timeupdated='" + TimeUpdated + '\'' +
-                    ", TimeCreated='" + TimeCreated + '\'' +
-                    ", Id='" + Id + '\'' +
-                    ", GeographicalPosition=" + GeographicalPosition +
-                    '}';
-        }
-    }
-
-    class GeographicalPosition {
-        long X, Y;
-
-        @Override
-        public String toString() {
-            return "GeographicalPosition{" +
-                    "X=" + X +
-                    ", Y=" + Y +
-                    '}';
-        }
+    public static PlaceHolder buildPlaceHolder(ServiceUnitTypes sut) {
+        PlaceHolderBuilder builder = new PlaceHolderBuilder();
+        return builder.setId(sut.getId())
+                .setName(sut.getName())
+                .setX(sut.getGeographicalPosition().getX())
+                .setY(sut.getGeographicalPosition().getY())
+                .createPlaceHolder();
     }
 
 

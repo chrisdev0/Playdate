@@ -61,6 +61,11 @@ public class HibernateUtil {
      *  !!!!!!!!!!!
      *  GLÖM INTE ATT STÄNGA session med session.close()
      *  !!!!!!!!!!!
+     *  Eller kör Try-With-Resources genom
+     *  try (Session session = HibernateUtils.getInstance.openSession(){
+     *      blabla
+     *  }
+     *
      * */
     public Session openSession() {
         return sessionFactory.openSession();

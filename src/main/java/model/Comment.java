@@ -18,6 +18,9 @@ import java.util.Date;
     @ManyToOne
     private User commenter;
 
+    @ManyToOne
+    private Place place;
+
     private boolean hidden;
 
     @Column(columnDefinition="DATETIME", nullable = false)
@@ -28,10 +31,11 @@ import java.util.Date;
 
     }
 
-    public Comment(String comment, User commenter, boolean hidden) {
+    public Comment(String comment, User commenter, boolean hidden, Place place) {
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
+        this.place = place;
     }
 
 }
