@@ -7,7 +7,7 @@
 #longLogo {
     text-align:center;
     padding: 5px;
-    background: #daf7a6;
+
 }
 
 .image{
@@ -21,24 +21,43 @@
     margin-right: auto;
     width: 25%;
     height: 250px;
-    background: #daf7a6;
     text-align:center;
-    padding-left: 3em;
+    padding-left: 2em;
 }
 
 #textbox{
-    width: 800px;
+    width: 93%;
     border: 3px solid rgba(131, 159, 98, 0.6);
-    padding: 10px;
+    padding: 5px;
     margin: 2px;
     display: block;
-    margin-top: 80px;
+    margin-top: 5em;
+    padding-bottom: 0em;
+}
+
+h4 {
+    margin-top: 0;
+}
+
+#komment{
+    width: 93%;
+    border: 3px solid rgba(131, 159, 98, 0.6);
+    padding: 5px;
+    margin: 2px;
+    display: block;
+    margin-top: 1em;
+    padding-bottom: 0em;
+}
+
+textarea {
+    width: 100%;
+    background-color: #daf7a6;
 }
 
 
 #tillbaka-btn{
     text-align:center;
-    background-color: #fff53c;
+    background-color: #fbff4c;
     font-size: 18px;
     color: white;
     vertical-align: middle;
@@ -48,17 +67,16 @@
     border-radius: 6px;
     box-shadow: inset 0px -5px 45px rgba(100, 100, 100, 0.5),
     0px 1px 1px rgba(255, 255, 255, 0.5);
-    margin-bottom: 7px;
     position:relative;
-    top:50%;
-    left:50%;
+    margin:0 auto;
 }
+
 
 a{
     text-decoration:none;
     color:#65c34a;
     font-family: sans-serif;
-    background: #daf7a6;
+
 }
 
 a:hover{
@@ -67,10 +85,44 @@ a:hover{
     margin-bottom: 50%;
 }
 
-
-
 body{
+    margin-left: auto;
+    margin-right: auto;
     background: #daf7a6;
+    background: -moz-linear-gradient(top, #daf7a6 0%, #daf7a6 43%, #daf7a6 100%);
+    background: -webkit-linear-gradient(top, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
+    background: linear-gradient(to bottom, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
+    z-index: 1;
 }
+
+
+#imglogo {
+    width: 8em;
+    padding: 3em 0 3em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    z-index: 1001;
+    position: relative;
+    height: 25%;
+}
+
+
+.centered-text {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+
+@media screen and(max-width:500px){
+    #textbox{
+        width: 50%;
+        margin-right: 0;
+    }
+}
+
+
+
 
 

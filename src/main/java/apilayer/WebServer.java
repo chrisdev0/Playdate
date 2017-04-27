@@ -163,5 +163,13 @@ public class WebServer {
         get("/showplaydatepage.html",
                 new StaticFileTemplateHandlerImpl("showplaydatepage.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
+
+        get("/changeProfile.html",
+                new StaticFileTemplateHandlerImpl("changeProfile.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
+
+        get("/makeProfile.html",
+                new StaticFileTemplateHandlerImpl("makeProfile.vm", 500)::handleTemplateFileRequest,
+                new VelocityTemplateEngine());
     }
 }

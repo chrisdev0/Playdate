@@ -5,47 +5,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Show Playdate</title>
     <script src="../js/jquery-3.2.1.js"></script>
-
-    <link rel=stylesheet href="/css/normalize.css" type="text/css">
     <link rel=stylesheet href="/css/platsButton.css" type="text/css">
-    <link rel=stylesheet href="/css/main.css" type="text/css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel=stylesheet href="/css/jquery.mobile-1.4.5.css" type="text/css">
-    <link rel=stylesheet href="/css/platsButton.css" type="text/css">
-    <link rel=stylesheet href="/css/background.css" type="text/css">
+    <link rel=stylesheet href="css/normalize.css" type="text/css">
+    <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
+    <link rel=stylesheet href="css/buttons.css" type="text/css">
+    <link rel=stylesheet href="css/fields.css" type="text/css">
+    <link rel=stylesheet href="css/background.css" type="text/css">
+    <link rel=stylesheet href="css/main.css" type="text/css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script src="js/onInit.js"></script>
+    <script src="js/onLogin.js"></script>
+    <link rel=stylesheet href="css/responsive.css" media="screen and (max-width:900px)">
+
 
     <style>
         .boxes{
-            width:50%;
+            width:80%;
             float:left;
         }
         #platsBild{
-            width:50%;
+            width:70%;
             margin:auto;
         }
         img{
             max-width:100%;
         }
     </style>
-
+    <style type="text/css">
+        textarea { border: none; }
+    </style>
 
 </head>
 <script>
-
 </script>
 <body>
 
-<div id="longLogo">
-    <img src="/images/playdate_logga_1.png" width = "14%"/>
-    <br>
-</div>
-
-<h3>$!{playdate.getHeader()}
-</h3>
-
+<div class="header" id="header-content-big-logo">
+    <img src="/images/pdbiglogo.png" id="biglogo">
 
 <div id="platsBild">
     <img id="plats" img src="../${playdate.getPlace().getImageUrl()}" alt="bild på lekplats" >
@@ -59,11 +60,20 @@
     <a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}">följ med hit</a>
 </div>
 
-<div id="tillbaka">
+<div id="komment">
+<h4>Kommentarer:
+</h4>
+<textarea>Kommentarer:
+</textarea>
+</div>
+<div id="Lägg till kommentar">
     <br>
+    <input type="submit" id="läggtill-btn" value="Lägg till kommentar" class="small-button centered-text">
+</div>
+
+<div id="tillbaka">
     <br>
     <input type="submit" id="tillbaka-btn" value="Tillbaka" class="small-button centered-text">
 </div>
-
 </body>
 </html>
