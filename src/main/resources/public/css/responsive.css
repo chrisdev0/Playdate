@@ -2,9 +2,10 @@ div.one-third {
     width:50%
 }
 
-@media screen and(max-width:500px){
-    div.mobile-collapse{
+@media screen and(max-width:500px) {
+    div.mobile-collapse {
         width: auto;
         float: none;
         margin-right: 0;
     }
+}

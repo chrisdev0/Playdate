@@ -33,7 +33,6 @@
         <h2>Skapa Playdate</h2>
     </div>
     <div id="login-signup-panel">
-
         <div id="create-playdate-panel">
             <div class="container-playdate">
                 <div id="text-form-input-fields">
@@ -56,6 +55,5 @@
                         </div>
                     </div>
 </form>
-</div>
 </body>
 </html>
