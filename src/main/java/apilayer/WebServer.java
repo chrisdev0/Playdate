@@ -134,7 +134,7 @@ public class WebServer {
 
             put(Paths.CREATEPROFILE, new ProfileHandler("showProfile.vm",400)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
-            delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
+            //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
         });

@@ -19,12 +19,10 @@ public class DBDataCreator {
         User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
         user2 = User.createUserHelper(user2, "password2");
         Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
-        Comment comment = new Comment("Bästa stället i stockholm", user, false,place);
-        Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false, place);
+        Comment comment = new Comment("Bästa stället i stockholm", user, false);
+        Comment comment2 = new Comment("Bättre än L50, sämre än L30. Brukar gå hit med min son Bengt-Fridolf för att lyssna på föreläsningar om UML", user2, false);
         Playdate playdate = new Playdate("Hej", "blbl", 123, 321, user, place, PlaydateVisibilityType.intToPlaydateVisibilityType(0));
         Invite invite = new Invite("Hej", false, playdate, user2);
-
-        user2.addInvite(invite);
         place.addComment(comment);
         place.addComment(comment2);
         try (Session session = HibernateUtil.getInstance().openSession()) {

@@ -6,7 +6,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "comments")
+@Entity
 @Data public class Comment {
 
     @Id
@@ -15,12 +15,13 @@ import java.util.Date;
 
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private User commenter;
 
-    @ManyToOne
+    /*
+    @ManyToOne(cascade = CascadeType.ALL)
     private Place place;
-
+*/
     private boolean hidden;
 
     @Column(columnDefinition="DATETIME", nullable = false)
@@ -31,11 +32,18 @@ import java.util.Date;
 
     }
 
+    public Comment(String comment, User commenter, boolean hidden) {
+        this.comment = comment;
+        this.commenter = commenter;
+        this.hidden = hidden;
+    }
+
+    /*
     public Comment(String comment, User commenter, boolean hidden, Place place) {
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
         this.place = place;
-    }
+    }*/
 
 }

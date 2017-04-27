@@ -8,13 +8,14 @@ import org.junit.Test;
 public class PasswordHandlerTest {
 
     @Test
-    private void testSaltPwd(){
+    public void testSaltPwd(){
         /*
           Testar om saltningen funkar
          */
     }
 
-    private void testHashFunction(){
+    @Test
+    public void testHashFunction(){
         /*
         Testar om hashet funkar
          */

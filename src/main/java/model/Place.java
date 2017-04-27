@@ -24,13 +24,14 @@ import java.util.Set;
 
     private String imageUrl;
 
-
     private String timeCreated;
     private String timeUpdated;
 
 
-    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
+
+
 
     private int geoX;
     private int geoY;

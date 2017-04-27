@@ -22,10 +22,14 @@ public class CheckUserTest extends HibernateTests {
     @BeforeClass
     public static void setUp(){
         HibernateTests.setUp();
-        User user0 = new User("123", "Erik", "erik@mail.com", "password", "123", "a", Gender.MALE);
-        User user2 = new User("124", "Lina", "lina@mail.com", "åäö", "123", "a", Gender.FEMALE);
-        User user3 = new User("125", "Henrik", "henrik@mail.com", "หนาว", "2", "a", Gender.OTHER);
-        User user4 = new User("125", "Henrik", "你好@mail.com", "หนาว1234", "13", "a", Gender.FEMALE);
+        User user0 = new User("123", "Erik", "erik@mail.com", null, "123", "a", Gender.MALE);
+        User user2 = new User("124", "Lina", "lina@mail.com", null, "123", "a", Gender.FEMALE);
+        User user3 = new User("125", "Henrik", "henrik@mail.com", null, "2", "a", Gender.OTHER);
+        User user4 = new User("125", "Henrik", "你好@mail.com", null, "13", "a", Gender.FEMALE);
+        user0 = User.createUserHelper(user0, "test");
+        user2 = User.createUserHelper(user2, "าส่ฟกหวสาๆบไยำงวสาว");
+        user3 = User.createUserHelper(user3, "你好123123123");
+        user4 = User.createUserHelper(user4, "sadasdl23;1l23;l>\\");
         testUsers.add(user0);
         testUsers.add(user2);
         testUsers.add(user3);
@@ -67,18 +71,6 @@ public class CheckUserTest extends HibernateTests {
         loginHandler.checkEmailAndPasswordExist(null, "abc");
     }
 
-    @Test
-    public void testUserExists() {
-        LoginHandler loginHandler = new LoginHandler();
-        for (User user : testUsers) {
-            String email = user.getEmail();
-            String password = user.getPassword();
-            Optional<User> userOpt = loginHandler.checkEmailAndPasswordExist(email, password);
-            assertTrue(userOpt.isPresent());
-            System.out.println(user.toString() + " compared to " + userOpt.get().toString());
-            assertTrue(user.equals(userOpt.get()));
-        }
-    }
 
     @Test
     public void testUserNotExists() {

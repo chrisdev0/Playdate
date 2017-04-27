@@ -31,7 +31,7 @@
         </property>
 
         <property name="hibernate.hbm2ddl.auto">
-            create
+            update
             <!-- what kind of behaviour Hibernate will have when starting up the server
                 validate just check that the database is correct
                 create-drop will drop the database and recreate it
@@ -39,8 +39,8 @@
         </property>
 
         <!--Mappings to the classes that will be used as blueprints of the tables-->
-        <mapping class="model.Place" />
         <mapping class="model.Comment" />
+        <mapping class="model.Place" />
         <mapping class="model.User" />
         <mapping class="model.Playdate" />
         <mapping class="model.Child" />
