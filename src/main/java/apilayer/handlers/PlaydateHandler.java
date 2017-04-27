@@ -55,6 +55,7 @@ public class PlaydateHandler {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Place place = session.get(Place.class, placeId);
             if (place == null) {
+                log.error("no place with id = " + placeIdStr);
                 throw halt(400, "no place with this id");
             }
             playdate.setPlace(place);
