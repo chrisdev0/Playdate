@@ -7,7 +7,7 @@
 
 .titel-cpd{
     position: relative;
-    font-family: Avenir;
+    font= sans-serif;
     font-size: 0.7em;
     color: #1a6207;
 }
@@ -32,7 +32,7 @@
 }
 
 #page-desc{
-    font-family: Avenir;
+    font= sans-serif ;
     color: #1a6207;
     font-size: 1em;
 
@@ -49,11 +49,27 @@
 }
 
 #create-btn{
-    width: 10em;
+    width: 100%;
     background-color: #daf7b9;
     object-position: center;
 }
 
 #pd-description{
+    font-family: sans-serif;
+    font-size: 0.78em;
+    width: 100%;
+    height: 9.7em;
+    color: white;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
 
+#select-native-s {
+    padding: 5px;
+    color: white;
+    font-family: sans-serif;
+    font-size: 0.78em;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background: rgba(44, 101, 44, 0.4);
 }
