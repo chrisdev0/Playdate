@@ -38,6 +38,7 @@ public class PlaydateHandler {
         Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
 
+        Long id = null;
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
@@ -54,12 +55,11 @@ public class PlaydateHandler {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Place place = session.get(Place.class, placeId);
             if (place == null) {
-                log.error("no place with id = " + placeIdStr);
                 throw halt(400, "no place with this id");
             }
             playdate.setPlace(place);
             tx = session.beginTransaction();
-            session.save(playdate);
+            id = (Long)session.save(playdate);
             session.merge(user);
             tx.commit();
         } catch (Exception e) {
@@ -67,8 +67,14 @@ public class PlaydateHandler {
                 tx.rollback();
             }
             log.error("error during sql", e);
+            response.status(500);
+            return "";
         }
-        throw halt(200);
+        response.status(200);
+        if (id != null) {
+            response.redirect("/protected" + Paths.GETONEPLAYDATE + "?playdateId=" + id);
+        }
+        return "";
     }
 
     /** Hanterar att hämta och visa en Playdate

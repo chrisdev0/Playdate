@@ -22,9 +22,6 @@ import java.util.Set;
     @ManyToOne
     private User owner;
 
-    @OneToMany(mappedBy = "playdate", cascade = CascadeType.REMOVE)
-    private Set<Invite> invites = new HashSet<>();
-
     @ManyToMany(mappedBy = "invitesToPlaydates", cascade = CascadeType.REMOVE)
     private Set<User> participants = new HashSet<>();
 
