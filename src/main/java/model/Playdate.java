@@ -7,8 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
-public class Playdate {
+@Data public class Playdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +25,7 @@ public class Playdate {
     @OneToMany(mappedBy = "playdate", cascade = CascadeType.REMOVE)
     private Set<Invite> invites = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "invitesToPlaydates", cascade = CascadeType.REMOVE)
     private Set<User> participants = new HashSet<>();
 
     @ManyToOne

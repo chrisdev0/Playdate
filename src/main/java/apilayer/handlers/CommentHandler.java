@@ -41,7 +41,7 @@ public class CommentHandler {
         try {
             Long placeId = Long.parseLong(placeIdStr);
             String commentStr = request.queryParams("comment");
-            Comment comment = new Comment(commentStr, request.session().attribute("user"), false, null);
+            Comment comment = new Comment(commentStr, request.session().attribute("user"), false);
             Transaction tx = null;
             try (Session session = HibernateUtil.getInstance().openSession()) {
                 tx = session.beginTransaction();
@@ -49,7 +49,7 @@ public class CommentHandler {
                 if (place == null) {
                     return halt(400);
                 }
-                comment.setPlace(place);
+                //comment.setPlace(place);
                 place.addComment(comment);
                 session.update(place);
                 session.save(comment);
@@ -67,10 +67,11 @@ public class CommentHandler {
         throw halt(400);
     }
 
+    /*
     /** Hanterar att ta bort en kommentar
      *
      * @return halt(200) om kommentaren hittades och kunde tas bort
-     * */
+     *
     public static Object handleRemoveComment(Request request, Response response) {
         String commentIdStr = request.queryParams("commentId");
         try {
@@ -98,5 +99,6 @@ public class CommentHandler {
             throw halt(400);
         }
     }
+    */
 
 }

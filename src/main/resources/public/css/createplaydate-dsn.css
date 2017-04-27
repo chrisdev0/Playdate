@@ -1,4 +1,4 @@
-#header-content-big-logo{
+gti#header-content-big-logo{
     width: 100%;
     text-align: center;
     position: relative;
@@ -7,7 +7,7 @@
 
 .titel-cpd{
     position: relative;
-    font= sans-serif;
+    font: sans-serif;
     font-size: 0.7em;
     color: #1a6207;
 }
