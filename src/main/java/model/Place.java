@@ -1,8 +1,12 @@
 package model;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
+import utils.CoordinateHandlerUtil;
+import utils.Utils;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,40 +17,50 @@ import java.util.Set;
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String sthlmAPIid;
 
     private String name;
 
-    private String description;
-
+    @Type(type = "text")
     private String shortDescription;
 
+    private String category;
 
-    private String imageUrl;
+    private String geoArea, cityAddress, zip, streetAddress;
+
+    private String imageId;
 
     private String timeCreated;
     private String timeUpdated;
 
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
-
-
 
     private int geoX;
     private int geoY;
 
-    public Place(String sthlmAPIid, String name, String description, String imageUrl, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
+    public Place(String sthlmAPIid, String name, String description, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
         this.sthlmAPIid = sthlmAPIid;
         this.name = name;
-        this.description = description;
-        this.imageUrl = imageUrl;
+        this.imageId = imageId;
         this.timeCreated = timeCreated;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
         this.comments = new HashSet<>();
         this.shortDescription = shortDescription;
+    }
+
+    @Transient
+    public double[] getGeoLonLat() {
+        return new CoordinateHandlerUtil().gridToGeodetic(geoX, geoY);
+    }
+
+    @Transient
+    public String getGeoLonLatStr() {
+        return Arrays.toString(getGeoLonLat());
     }
 
     public boolean addComment(Comment comment) {
@@ -59,6 +73,10 @@ import java.util.Set;
 
     public Place() {
         shortDescription = "";
+    }
+
+    public boolean isInitialized() {
+        return shortDescription != null && !shortDescription.isEmpty();
     }
 
 
@@ -94,7 +112,7 @@ import java.util.Set;
                 "id=" + id +
                 ", sthlmAPIid='" + sthlmAPIid + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                //", description='" + description + '\'' +
                 ", timeCreated='" + timeCreated + '\'' +
                 ", timeUpdated='" + timeUpdated + '\'' +
                 ", comments=" + comments +

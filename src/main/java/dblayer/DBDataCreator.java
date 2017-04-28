@@ -12,11 +12,8 @@ public class DBDataCreator {
      *  todo    Flytta till egen klass och skapa devdata för hela modellen
      * */
     public static void initDEVData() {
-        /*
         User user = new User("abc", "Hej Hejsan", "a@b.com", "password", "123", "..", Gender.FEMALE);
         user = User.createUserHelper(user, "password");
-        Child child = new Child(18, Gender.FEMALE, user);
-        user.addChild(child);
         User user2 = new User("abc", "Nils Svensson", "hej@b.com", "password", "1231", "..", Gender.MALE);
         user2 = User.createUserHelper(user2, "password2");
         Place place = new Place("abc-123", "Testlekplats", "Testlekplats ligger i aula nod på DSV", "images/testlekplats.png", "123", "123", 10, 10, "");
@@ -28,19 +25,18 @@ public class DBDataCreator {
         place.addComment(comment2);
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.save(user);
-            session.save(invite);
-            session.save(user2);
-            session.save(child);
-            session.save(place);
-            session.save(comment);
-            session.save(comment2);
-            session.save(playdate);
+            session.saveOrUpdate(user);
+            session.saveOrUpdate(invite);
+            session.saveOrUpdate(user2);
+            session.saveOrUpdate(place);
+            session.saveOrUpdate(comment);
+            session.saveOrUpdate(comment2);
+            session.saveOrUpdate(playdate);
             tx.commit();
         } catch (Exception e) {
             log.error("hibernate error", e);
         }
-        */
+
     }
 
 }

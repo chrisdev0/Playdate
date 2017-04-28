@@ -17,6 +17,7 @@ public class Paths {
     public static final String DELETEPLAYDATE = "/deleteplaydate";
     public static final String DELETECOMMENT = "/deletecomment";
     public static final String DOREG = "/doreg";
+    public static final String APIIMAGE = "/apiimage/";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
