@@ -4,8 +4,6 @@ import apilayer.Constants;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.hibernate.Hibernate;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import spark.ModelAndView;

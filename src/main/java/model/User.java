@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Data;
 import org.hibernate.annotations.*;
 import utils.PasswordHandler;
 
@@ -11,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
 public class User {
 
     @Id
@@ -26,6 +28,7 @@ public class User {
     private String password;
     private String salt;
 
+    @Type(type = "text")
     private String description;
 
     private String phoneNumber;
@@ -37,8 +40,8 @@ public class User {
 
     private Gender gender;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Child> children = new HashSet<>();
+    //@OneToMany(fetch = FetchType.EAGER)
+    //private Set<Child> children = new HashSet<>();
 
     public User() {
 
@@ -53,13 +56,13 @@ public class User {
         return invitesToPlaydates.remove(invite);
     }
 
-    public boolean addChild(Child child) {
+    /*public boolean addChild(Child child) {
         return children.add(child);
     }
 
     public boolean removeChild(Child child) {
         return children.remove(child);
-    }
+    }*/
 
     public User(String sthlmAPIID, String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
         this.name = name;
@@ -70,85 +73,7 @@ public class User {
         this.gender = gender;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Set<Child> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Set<Child> children) {
-        this.children = children;
-    }
-
-    public String getDescription(){
-        return description;
-    }
-
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public Set<Invite> getInvitesToPlaydates() {
-        return invitesToPlaydates;
-    }
-
-    public void setInvitesToPlaydates(Set<Invite> invitesToPlaydates) {
-        this.invitesToPlaydates = invitesToPlaydates;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -169,7 +94,8 @@ public class User {
         if (invitesToPlaydates != null ? !invitesToPlaydates.equals(user.invitesToPlaydates) : user.invitesToPlaydates != null)
             return false;
         if (gender != user.gender) return false;
-        return children != null ? children.equals(user.children) : user.children == null;
+        else return true;
+//        return children != null ? children.equals(user.children) : user.children == null;
     }
 
 
@@ -183,7 +109,7 @@ public class User {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (profilePictureUrl != null ? profilePictureUrl.hashCode() : 0);;
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (children != null ? children.hashCode() : 0);
+  //      result = 31 * result + (children != null ? children.hashCode() : 0);
         return result;
     }
 
@@ -198,7 +124,7 @@ public class User {
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
                 ", invitesToPlaydates=" + invitesToPlaydates +
                 ", gender=" + gender +
-                ", children=" + children +
+                //", children=" + children +
                 '}';
     }
 

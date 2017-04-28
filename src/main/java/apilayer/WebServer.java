@@ -1,14 +1,22 @@
 package apilayer;
 
 import apilayer.handlers.*;
+import cache.Cache;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import secrets.Secrets;
 import spark.route.RouteOverview;
 import spark.template.velocity.VelocityTemplateEngine;
+import stockholmapi.APILoaderOnStartup;
 
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static dblayer.DBDataCreator.initDEVData;
 import static spark.Spark.*;
@@ -17,13 +25,23 @@ import static spark.Spark.*;
 public class WebServer {
 
     private HibernateUtil hibernateUtil;
+    private String apiKey;
+    private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
         port(Constants.PORT);
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
         initHibernate();
-        initDEVData();
+        Optional<String> stockholmAPIKEYopt = Secrets.getInstance().getValue("stockholmAPIKEY");
+        if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
+            try {
+                new APILoaderOnStartup().doLoad(stockholmAPIKEYopt.get());
+                initDEVData();
+            } catch (Exception e) {
+                log.error("error loading places ", e);
+            }
+        }
         initRoutes();
     }
 
@@ -71,6 +89,28 @@ public class WebServer {
 
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);
+
+        get(Paths.APIIMAGE + "/:id", (request, response) -> {
+            String key = request.params("id");
+            if (key == null || key.isEmpty() || key.equals("-1")) {
+                response.redirect("/images/testlekplats.png");
+                return "";
+            }
+            log.info("api image key = " + key);
+            Cache cache = Cache.getInstance();
+            try {
+                DBAPIImage dbImage = cache.getDbImage(key);
+                HttpServletResponse raw = response.raw();
+                ServletOutputStream outputStream = raw.getOutputStream();
+                outputStream.write(dbImage.getImageAsByte());
+                outputStream.flush();
+                outputStream.close();
+                return response.raw();
+            } catch (ExecutionException e) {
+                log.error("unable to load image");
+            }
+            return "error";
+        });
     }
 
     /** Initierar de routes som kräver att användaren är inloggad

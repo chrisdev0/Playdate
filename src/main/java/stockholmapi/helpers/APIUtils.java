@@ -18,7 +18,6 @@ public class APIUtils {
     public static final String API_SHORT_DESC = "ShortDescription";
     public static final String API_STREET_ADDRESS = "StreetAddress";
 
-
     public static class URLS {
 
         private static final String ID_PLACEHOLDER = "{#type_id#}";

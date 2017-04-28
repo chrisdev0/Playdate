@@ -2,9 +2,9 @@ package model;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 public class Child {
-
+/*
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -45,4 +45,5 @@ public class Child {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+    */
 }
