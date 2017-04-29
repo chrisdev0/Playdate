@@ -1,0 +1,23 @@
+#* @vtlvariable name="user" type="model.User" *#
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>landingpage</title>
+</head>
+<body>
+<h1>Välkommen</h1>
+<div>
+    <h3>info</h3>
+    <p>$user.getName()</p>
+    <p>$user.gender</p>
+    <p>$user.getEmail()</p>
+    <p>$user.getPhoneNumber()</p>
+    <h4>fb</h4>
+    <p>$id</p>
+    <p>$access_token</p>
+    <p>$third_party_id</p>
+</div>
+</body>
+</html>
