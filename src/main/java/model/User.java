@@ -1,5 +1,7 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.*;
@@ -22,11 +24,11 @@ public class User {
 
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-
     private String password;
+
     private String salt;
 
     @Type(type = "text")
@@ -38,13 +40,12 @@ public class User {
 
     private String profilePictureUrl;
 
+    private boolean isAFacebookProfile;
+
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     private Gender gender;
-
-    //@OneToMany(fetch = FetchType.EAGER)
-    //private Set<Child> children = new HashSet<>();
 
     public User() {
 
@@ -52,7 +53,7 @@ public class User {
 
     public User(String name, String email) {
         this.name = name;
-        this.email = email;
+        this.email = email.toUpperCase();
     }
 
     public User(String email) {
@@ -67,17 +68,10 @@ public class User {
         return invitesToPlaydates.remove(invite);
     }
 
-    /*public boolean addChild(Child child) {
-        return children.add(child);
-    }
-
-    public boolean removeChild(Child child) {
-        return children.remove(child);
-    }*/
 
     public User(String sthlmAPIID, String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
         this.name = name;
-        this.email = email;
+        this.email = email.toUpperCase();
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.profilePictureUrl = profilePictureUrl;
@@ -109,7 +103,9 @@ public class User {
 //        return children != null ? children.equals(user.children) : user.children == null;
     }
 
-
+    public void setEmail(String email) {
+        this.email = email != null ? email.toUpperCase() : email;
+    }
 
     @Override
     public int hashCode() {

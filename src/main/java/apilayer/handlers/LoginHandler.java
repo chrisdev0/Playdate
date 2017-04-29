@@ -79,31 +79,24 @@ public class LoginHandler {
      *  Kör upper(email) i HQL-frågan samt toUpperCase() email. detta så att exempelvis
      *  a@b.com matchar A@b.com och a@b.Com
      * */
-    public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException{
+    public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException {
         if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
             try (Session session = HibernateUtil.getInstance().openSession()) {
                 String hql = "FROM User WHERE upper(email) = :email";
-                Query query = session.createQuery(hql);
+                Query<User> query = session.createQuery(hql,User.class);
                 query.setParameter("email", email.toUpperCase());
-                List result = query.list();
-                if (result.size() != 1) {
-                    return Optional.empty();
-                } else {
-                    User user = (User) result.get(0);
-                    if (PasswordHandler.validateUserPwd(user, password)) {
-                        return Optional.of(user);
-                    }
-                    return Optional.empty();
-                }
+                return query.uniqueResultOptional();
             }
         } else {
             throw new IllegalArgumentException();
         }
     }
 
+    /** Hanterar utloggning av användaren
+     * */
     public static Object logOut(Request request, Response response) {
         request.session().invalidate();
-        response.redirect("/index.html");
+        response.redirect(Paths.StaticFilePaths.INDEX_HTML);
         return "";
     }
 
