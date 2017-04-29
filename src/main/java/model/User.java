@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.*;
 import utils.PasswordHandler;
 
@@ -47,6 +48,9 @@ public class User {
 
     }
 
+    public User(String email) {
+        this.email = email;
+    }
 
     public boolean addInvite(Invite invite) {
         return invitesToPlaydates.add(invite);
