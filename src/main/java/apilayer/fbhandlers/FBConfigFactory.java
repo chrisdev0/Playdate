@@ -18,10 +18,10 @@ import java.util.HashMap;
 @Slf4j
 public class FBConfigFactory implements ConfigFactory {
 
-    public final String SALT;
-    public final String APPID;
-    public final String ABSOLUTE_CALLBACK;
-    public final String SECRET;
+    private final String SALT;
+    private final String APPID;
+    private final String ABSOLUTE_CALLBACK;
+    private final String SECRET;
 
     public FBConfigFactory(String salt, String appid, String absolute_callback, String secret) {
         SALT = salt;
@@ -33,7 +33,7 @@ public class FBConfigFactory implements ConfigFactory {
     @Override
     public Config build() {
         FacebookClient facebookClient = new FacebookClient(APPID, SECRET);
-        facebookClient.setScope("public_profile,email");
+        facebookClient.setScope(Constants.FACEBOOK_SCOPE);
         Clients clients = new Clients(ABSOLUTE_CALLBACK, facebookClient);
         Config config = new Config(clients);
         config.setHttpActionAdapter(new CustomHttpActionAdapter());
@@ -44,7 +44,6 @@ public class FBConfigFactory implements ConfigFactory {
 
         @Override
         public Object adapt(int code, SparkWebContext context) {
-            log.info("inside httpActionAdapter code = " + code);
             if (code != 401 && code != 403) {
                 log.info("context " + context.getPath());
                 return super.adapt(code, context);

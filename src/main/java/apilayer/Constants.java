@@ -10,6 +10,8 @@ public class Constants {
     public static final Object ON_LOGIN_SUCCESS_RETURN = "login_success";
     public static final Object ON_LOGIN_FAIL_RETURN = "login_failed";
 
+    public static final String FACEBOOK_SCOPE = "public_profile,email";
+
     public static final String USER_SESSION_KEY = "user";
     public static final int LENGTH_OF_SALT = 20;
     public static final String MAGIC_MISSING_IMAGE = "-1";
