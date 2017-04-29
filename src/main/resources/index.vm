@@ -41,7 +41,9 @@
             </form>
         </div>
         <div>
-            <input type="button" id="fblogin-btn" class="large-button centered-text" value="Logga in med Facebook">
+            <form action="/loginfb">
+                <input type="submit" id="fblogin-btn" class="large-button centered-text" value="Logga in med Facebook">
+            </form>
         </div>
         <div id="login-links" class="centered-text">
             <a href="registerform.html">Skapa konto</a>
