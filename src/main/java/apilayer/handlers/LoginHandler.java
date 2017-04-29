@@ -75,13 +75,16 @@ public class LoginHandler {
 
     /** Returnerar en användare (om den finns) som har email och lösenord som skickas som argument
      *  Om email eller password är null eller tomt så skickas ett IllegalArgumentException
+     *
+     *  Kör upper(email) i HQL-frågan samt toUpperCase() email. detta så att exempelvis
+     *  a@b.com matchar A@b.com och a@b.Com
      * */
     public Optional<User> checkEmailAndPasswordExist(String email, String password) throws IllegalArgumentException{
         if (Utils.isNotNullAndNotEmpty(email) && Utils.isNotNullAndNotEmpty(password)) {
             try (Session session = HibernateUtil.getInstance().openSession()) {
                 String hql = "FROM User WHERE upper(email) = :email";
                 Query query = session.createQuery(hql);
-                query.setParameter("email", email);
+                query.setParameter("email", email.toUpperCase());
                 List result = query.list();
                 if (result.size() != 1) {
                     return Optional.empty();
