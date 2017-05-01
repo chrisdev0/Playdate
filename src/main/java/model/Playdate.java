@@ -19,16 +19,27 @@ import java.util.Set;
     private long startTime;
     private long endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
 
-    @ManyToMany(mappedBy = "invitesToPlaydates", cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants = new HashSet<>();
 
-    @ManyToOne
+    @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Invite> invites = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Place place;
 
     private PlaydateVisibilityType playdateVisibilityType;
+
+    public boolean addParticipant(User participant) {
+        return participants.add(participant);
+    }
+
+    public boolean removeParticipant(User participant) {
+        return participants.remove(participant);
+    }
 
     public Playdate() {
     }

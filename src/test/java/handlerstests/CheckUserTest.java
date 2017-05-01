@@ -22,10 +22,10 @@ public class CheckUserTest extends HibernateTests {
     @BeforeClass
     public static void setUp(){
         HibernateTests.setUp();
-        User user0 = new User("123", "Erik", "erik@mail.com", null, "123", "a", Gender.MALE);
-        User user2 = new User("124", "Lina", "lina@mail.com", null, "123", "a", Gender.FEMALE);
-        User user3 = new User("125", "Henrik", "henrik@mail.com", null, "2", "a", Gender.OTHER);
-        User user4 = new User("125", "Henrik", "你好@mail.com", null, "13", "a", Gender.FEMALE);
+        User user0 = new User("Erik", "erik@mail.com", null, "123", "a", Gender.MALE);
+        User user2 = new User("Lina", "lina@mail.com", null, "123", "a", Gender.FEMALE);
+        User user3 = new User("Henrik", "henrik@mail.com", null, "2", "a", Gender.OTHER);
+        User user4 = new User("Henrik", "你好@mail.com", null, "13", "a", Gender.FEMALE);
         user0 = User.createUserHelper(user0, "test");
         user2 = User.createUserHelper(user2, "าส่ฟกหวสาๆบไยำงวสาว");
         user3 = User.createUserHelper(user3, "你好123123123");
