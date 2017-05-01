@@ -84,7 +84,7 @@ public class PlaydateHandler {
      *  templatefilen som anges i GetOnePlaydateHandler-konstruktorn
      * */
     public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
-        String id = request.queryParams("playdateId");
+        String id = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
         try {
             long lId = Long.parseLong(id);
             log.info("fetching playdate with id = " + lId);
