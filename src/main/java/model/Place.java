@@ -112,7 +112,6 @@ import java.util.Set;
                 "id=" + id +
                 ", sthlmAPIid='" + sthlmAPIid + '\'' +
                 ", name='" + name + '\'' +
-                //", description='" + description + '\'' +
                 ", timeCreated='" + timeCreated + '\'' +
                 ", timeUpdated='" + timeUpdated + '\'' +
                 ", comments=" + comments +
