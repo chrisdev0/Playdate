@@ -1,12 +1,14 @@
 package model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@NoArgsConstructor
 @Data public class Comment {
 
     @Id
@@ -28,22 +30,10 @@ import java.util.Date;
     @Temporal(TemporalType.TIMESTAMP)
     private Date commentDate = new Date();
 
-    public Comment() {
-
-    }
 
     public Comment(String comment, User commenter, boolean hidden) {
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
     }
-
-    /*
-    public Comment(String comment, User commenter, boolean hidden, Place place) {
-        this.comment = comment;
-        this.commenter = commenter;
-        this.hidden = hidden;
-        this.place = place;
-    }*/
-
 }

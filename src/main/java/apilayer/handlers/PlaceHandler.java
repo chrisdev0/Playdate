@@ -11,7 +11,7 @@ import static spark.Spark.halt;
 public class PlaceHandler {
 
     public static ModelAndView handleGetOnePlace(Request request, Response response) {
-        String id = request.queryParams("placeId");
+        String id = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
         try {
             long lId = Long.parseLong(id);
             log.info("fetching place with id = " + lId);
