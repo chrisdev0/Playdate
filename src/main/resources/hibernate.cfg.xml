@@ -30,7 +30,7 @@
         </property>
 
         <property name="hibernate.hbm2ddl.auto">
-            update
+            validate
             <!-- what kind of behaviour Hibernate will have when starting up the server
                 validate just check that the database is correct
                 create-drop will drop the database and recreate it

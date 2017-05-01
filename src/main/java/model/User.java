@@ -45,10 +45,21 @@ public class User {
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
+    private Set<Playdate> attendingPlaydates = new HashSet<>();
+
     private Gender gender;
 
     public User() {
 
+    }
+
+    public boolean attendPlaydate(Playdate playdate) {
+        return attendingPlaydates.add(playdate);
+    }
+
+    public boolean removeAttendingPlaydate(Playdate playdate) {
+        return attendingPlaydates.remove(playdate);
     }
 
     public User(String name, String email) {
@@ -69,7 +80,7 @@ public class User {
     }
 
 
-    public User(String sthlmAPIID, String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
+    public User(String name, String email, String password, String phoneNumber, String profilePictureUrl, Gender gender) {
         this.name = name;
         this.email = email.toUpperCase();
         this.password = password;
@@ -78,7 +89,13 @@ public class User {
         this.gender = gender;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {
