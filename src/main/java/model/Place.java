@@ -41,7 +41,7 @@ import java.util.Set;
     private int geoX;
     private int geoY;
 
-    public Place(String sthlmAPIid, String name, String description, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
+    public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
         this.sthlmAPIid = sthlmAPIid;
         this.name = name;
         this.imageId = imageId;

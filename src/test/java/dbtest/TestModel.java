@@ -25,7 +25,7 @@ public class TestModel {
     public static void setUp() {
         hibernateUtil = HibernateUtil.getInstance();
         ownerUser = User.createUserHelper(new User("test", "test@gmail.com", null, "123", "..", Gender.FEMALE), "password");
-        Place place = new Place("123abcdef-1-1", "testplatsen", "testtest", "test", "123", "123", 1, 1, "shortcd");
+        Place place = new Place("123abcdef-1-1", "testplatsen", "test", "123", "123", 1, 1, "shortcd");
         Playdate playdate = new Playdate("titel", "desc", 1234123, 123124123, ownerUser, place, PlaydateVisibilityType.PUBLIC);
         attendingUser = User.createUserHelper(new User("test", "test@2.com"), "password");
         playdate.addParticipant(attendingUser);
