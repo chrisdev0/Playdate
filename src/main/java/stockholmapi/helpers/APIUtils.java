@@ -27,9 +27,14 @@ public class APIUtils {
         public static final String DETAILED_INFO_PLACEHOLDER = "/ServiceGuideService/DetailedServiceUnits/" + ID_PLACEHOLDER + "/json?apikey=";
         public static final String LEKPLATSER = "9da341e4-bdc6-4b51-9563-e65ddc2f7434";
         public static final String IMAGE_PLACEHOLDER = "/ServiceGuideService/ImageFiles/" + ID_PLACEHOLDER + "/Data?apikey=";
+        public static final String GEOGRAPHICAL_AREAS = "/ServiceGuideService/GeographicalAreas/json?apikey=";
 
         public static URL urlHelper(String whatInfo, String id, String apiKey) throws Exception{
             return new URL((BASE_URL + whatInfo + apiKey).replace(ID_PLACEHOLDER, id));
+        }
+
+        public static URL urlHelper(String whatInfo, String apiKey) throws Exception {
+            return new URL(BASE_URL + whatInfo + apiKey);
         }
     }
 

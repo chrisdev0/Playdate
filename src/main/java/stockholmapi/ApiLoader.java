@@ -26,9 +26,7 @@ public class ApiLoader {
     public static void main(String[] args) throws Exception{
         final String API_KEY = Secrets.getInstance().loadSecretsFile("secrets.txt").getValue("stockholmAPIKEY").get();
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
-        System.out.println("Starting");
         long startTime = System.currentTimeMillis();
-        String jsonURL = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/134597ad-0ed7-47fc-b324-31686537d1b6/json?apikey=a42963ca81a64e55869481b281ad36c0";
 
         String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(URLS.urlHelper(URLS.BASIC_INFO_PLACEHOLDER, URLS.LEKPLATSER, API_KEY)));
 

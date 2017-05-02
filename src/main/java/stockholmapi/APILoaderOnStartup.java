@@ -30,26 +30,23 @@ public class APILoaderOnStartup {
     public void doLoad(String apiKey) throws Exception{
         long start = System.currentTimeMillis();
         log.info("started loading api data");
-
-        String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(APIUtils.URLS.urlHelper(APIUtils.URLS.BASIC_INFO_PLACEHOLDER, APIUtils.URLS.LEKPLATSER, apiKey)));
-        ObjectMapper objectMapper = new ObjectMapper();
-        ServiceUnitTypes[] sut = objectMapper.readValue(json, ServiceUnitTypes[].class);
-        List<Place> places = new ArrayList<>();
-        Arrays.asList(sut).forEach(serviceUnitTypes -> places.add(new Place(serviceUnitTypes)));
+        List<Object> toAddToDB = new ArrayList<>();
+        toAddToDB.addAll(Arrays.asList(new GeographicalAreaLoader(apiKey).load()));
+        Arrays.asList(new ServiceGuideServiceLoader(apiKey).load()).forEach(serviceUnitTypes -> toAddToDB.add(new Place(serviceUnitTypes)));
         Transaction tx = null;
         Session session = null;
         try {
             session = hibernateUtil.openSession();
             tx = session.beginTransaction();
-            for (Place place : places) {
-                session.saveOrUpdate(place);
+            for (Object object : toAddToDB) {
+                session.saveOrUpdate(object);
             }
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
-            log.error("error committing place data", e);
+            log.error("error committing startup data", e);
         } finally {
             if (session != null) {
                 session.close();
