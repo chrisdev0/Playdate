@@ -49,7 +49,6 @@ public class APIDataLoader {
         String apiId = place.getSthlmAPIid();
         ObjectMapper objectMapper = new ObjectMapper();
         URL url = APIUtils.URLS.urlHelper(APIUtils.URLS.DETAILED_INFO_PLACEHOLDER, apiId, getApiKey());
-        System.out.println(url.toString());
         String placeJson;
         try {
             placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(url));

@@ -2,6 +2,7 @@ package model;
 
 import lombok.Data;
 import org.hibernate.annotations.Type;
+import stockholmapi.temporaryobjects.PlaceHolder;
 import utils.CoordinateHandlerUtil;
 import utils.Utils;
 
@@ -33,6 +34,14 @@ import java.util.Set;
 
     private String timeCreated;
     private String timeUpdated;
+
+    private boolean isInitialized = false;
+
+    public Place setInfo(PlaceHolder placeHolder) {
+        //todo placeholderinfo -> place
+        isInitialized = true;
+        return this;
+    }
 
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

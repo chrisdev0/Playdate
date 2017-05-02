@@ -30,6 +30,7 @@ public class CreateUserHandler {
      *
      *
      * */
+    /*
     public static Object handleCreateUser(Request request, Response response){
         String email = request.queryParams("email");
         String password = request.queryParams("rawPassword");
@@ -56,4 +57,5 @@ public class CreateUserHandler {
         response.redirect("/");
         return "";
     }
+    */
 }

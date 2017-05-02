@@ -28,10 +28,10 @@ public class OpenRoutes {
      * */
     public static void initOpenRoutes() {
         //Hanterar inloggningsförsök
-        post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
+        //post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
 
         //hanterar registrering av användare
-        post(Paths.DOREG, CreateUserHandler::handleCreateUser);
+        //post(Paths.DOREG, CreateUserHandler::handleCreateUser);
 
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);
