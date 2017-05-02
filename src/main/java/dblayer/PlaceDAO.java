@@ -34,7 +34,7 @@ public class PlaceDAO {
         }
     }
 
-    public List<Place> getPlaceByMultisthlmId(Set<String> ids) {
+    public List<Place> getPlaceByMultiSthlmId(Set<String> ids) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Place WHERE sthlmAPIid in (:ids)", Place.class)
                     .setParameter("ids", ids)

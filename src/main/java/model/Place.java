@@ -1,7 +1,15 @@
 package model;
 
+import com.sun.corba.se.spi.activation._InitialNameServiceImplBase;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
+import stockholmapi.helpers.APIUtils;
+import stockholmapi.jsontojava.DetailedServiceUnit;
+import stockholmapi.jsontojava.ServiceUnitType;
+import stockholmapi.jsontojava.ServiceUnitTypes;
 import stockholmapi.temporaryobjects.PlaceHolder;
 import utils.CoordinateHandlerUtil;
 import utils.Utils;
@@ -11,7 +19,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static stockholmapi.helpers.APIUtils.API_ZIP;
+
 @Entity
+@ToString
+@NoArgsConstructor
 @Data public class Place {
 
     @Id
@@ -60,6 +72,7 @@ import java.util.Set;
         this.geoY = geoY;
         this.comments = new HashSet<>();
         this.shortDescription = shortDescription;
+        isInitialized = true;
     }
 
     @Transient
@@ -80,12 +93,29 @@ import java.util.Set;
         return comments.remove(comment);
     }
 
-    public Place() {
-        shortDescription = "";
-    }
 
     public boolean isInitialized() {
-        return shortDescription != null && !shortDescription.isEmpty();
+        return isInitialized;
+    }
+
+    public Place injectInfo(DetailedServiceUnit detailedServiceUnit) {
+        setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
+        setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
+        setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
+        setShortDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
+        setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
+        setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+        isInitialized = true;
+        return this;
+    }
+
+    public Place(ServiceUnitTypes serviceUnitTypes) {
+        name = serviceUnitTypes.getName();
+        sthlmAPIid = serviceUnitTypes.getId();
+        geoX = serviceUnitTypes.getGeographicalPosition().getX();
+        geoY = serviceUnitTypes.getGeographicalPosition().getY();
+        timeCreated = serviceUnitTypes.getTimeCreated();
+        timeUpdated = serviceUnitTypes.getTimeUpdated();
     }
 
 
@@ -113,19 +143,5 @@ import java.util.Set;
         result = 31 * result + geoX;
         result = 31 * result + geoY;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Place{" +
-                "id=" + id +
-                ", sthlmAPIid='" + sthlmAPIid + '\'' +
-                ", name='" + name + '\'' +
-                ", timeCreated='" + timeCreated + '\'' +
-                ", timeUpdated='" + timeUpdated + '\'' +
-                ", comments=" + comments +
-                ", geoX=" + geoX +
-                ", geoY=" + geoY +
-                '}';
     }
 }

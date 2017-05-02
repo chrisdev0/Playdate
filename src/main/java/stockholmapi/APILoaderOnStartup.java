@@ -11,7 +11,9 @@ import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.ServiceUnitTypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static stockholmapi.helpers.APIUtils.getUrl;
 import static stockholmapi.helpers.APIUtils.stupidStockholmAPIJSONToNotStupidJSON;
@@ -33,18 +35,11 @@ public class APILoaderOnStartup {
         ObjectMapper objectMapper = new ObjectMapper();
         ServiceUnitTypes[] sut = objectMapper.readValue(json, ServiceUnitTypes[].class);
         List<Place> places = new ArrayList<>();
-        for (ServiceUnitTypes serviceUnitTypes : sut) {
-            Place place = new Place();
-            place.setName(serviceUnitTypes.getName());
-            place.setSthlmAPIid(serviceUnitTypes.getId());
-            place.setGeoX(serviceUnitTypes.getGeographicalPosition().getX());
-            place.setGeoY(serviceUnitTypes.getGeographicalPosition().getY());
-            place.setTimeCreated(serviceUnitTypes.getTimeCreated());
-            place.setTimeUpdated(serviceUnitTypes.getTimeUpdated());
-            places.add(place);
-        }
+        Arrays.asList(sut).forEach(serviceUnitTypes -> places.add(new Place(serviceUnitTypes)));
         Transaction tx = null;
-        try (Session session = hibernateUtil.openSession()) {
+        Session session = null;
+        try {
+            session = hibernateUtil.openSession();
             tx = session.beginTransaction();
             for (Place place : places) {
                 session.saveOrUpdate(place);
@@ -55,6 +50,10 @@ public class APILoaderOnStartup {
                 tx.rollback();
             }
             log.error("error committing place data", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
         log.info("finished loading api data after " + (System.currentTimeMillis() - start) + "ms");
     }

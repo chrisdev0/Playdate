@@ -59,14 +59,13 @@ public class APIUtils {
         try {
             is = url.openStream ();
             return IOUtils.toByteArray(is);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.printf ("Failed while reading bytes from %s: %s", url.toExternalForm(), e.getMessage());
             e.printStackTrace ();
-            // Perform any other exception handling that's appropriate.
-        }
-        finally {
-            if (is != null) { is.close(); }
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
         throw new Exception();
     }
