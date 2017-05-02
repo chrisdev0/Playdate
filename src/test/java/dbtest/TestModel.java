@@ -1,7 +1,7 @@
 package dbtest;
 
 import dblayer.HibernateUtil;
-import dblayer.PlaydateDao;
+import dblayer.PlaydateDAO;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -49,7 +49,7 @@ public class TestModel {
     @Test
     public void testGetAttending() {
         boolean loopRun = false;
-        Set<Playdate> playdateWhoUserIsAttending = PlaydateDao.getInstance().getPlaydateWhoUserIsAttending(attendingUser);
+        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getPlaydateWhoUserIsAttending(attendingUser);
         for (Playdate playdate : playdateWhoUserIsAttending) {
             loopRun = true;
             assertEquals("titel", playdate.getHeader());
@@ -60,7 +60,7 @@ public class TestModel {
     @Test
     public void testGetAttendingAsOwner() {
         boolean loopRun = false;
-        Set<Playdate> playdateWhoUserIsAttending = PlaydateDao.getInstance().getPlaydateWhoUserIsAttending(ownerUser);
+        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getPlaydateWhoUserIsAttending(ownerUser);
         for (Playdate playdate : playdateWhoUserIsAttending) {
             loopRun = true;
             assertEquals("titel", playdate.getHeader());
@@ -70,7 +70,7 @@ public class TestModel {
 
     @Test
     public void testGetAttendingOwner() {
-        List<Playdate> playdates = PlaydateDao.getInstance().getPlaydateByOwnerId(ownerUser.getId());
+        List<Playdate> playdates = PlaydateDAO.getInstance().getPlaydateByOwnerId(ownerUser.getId());
         assertEquals("titel", playdates.get(0).getHeader());
     }
 

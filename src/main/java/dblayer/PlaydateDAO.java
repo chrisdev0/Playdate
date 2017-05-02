@@ -4,25 +4,24 @@ import lombok.extern.slf4j.Slf4j;
 import model.Playdate;
 import model.User;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
-public class PlaydateDao {
+public class PlaydateDAO {
 
 
-    private static PlaydateDao instance;
+    private static PlaydateDAO instance;
 
-    private PlaydateDao() {
+    private PlaydateDAO() {
 
     }
 
-    public static PlaydateDao getInstance() {
+    public static PlaydateDAO getInstance() {
         if (instance == null) {
-            instance = new PlaydateDao();
+            instance = new PlaydateDAO();
         }
         return instance;
     }
