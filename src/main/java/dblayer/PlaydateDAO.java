@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import org.hibernate.Transaction;
 import spark.Request;
+import spark.Response;
 
 import static spark.Spark.halt;
 
@@ -54,14 +55,26 @@ public class PlaydateDAO {
         return playdates;
     }
 
-    public void removePlaydateAttendens(Request request, Playdate playdate){
+    public static Object removePlaydateAttendance(Request request, Response response){
 
         Session session = null;
         Transaction tx = null;
+        String playdateId = request.queryParams("playdateId");
+        long lId;
+
+        try {
+            lId = Long.parseLong(playdateId);
+            log.info("Trying to change attendence for playdate with id = " + lId);
+        } catch (NullPointerException | NumberFormatException e) {
+            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateId + "error = " + e.getMessage());
+            throw halt(400);
+        }
+
         try{
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             User user = request.session().attribute(Constants.USER_SESSION_KEY);
+            Playdate playdate = session.get(Playdate.class, lId);
 
             if(playdate == null){
                 log.error("playdate is null");
@@ -99,5 +112,6 @@ public class PlaydateDAO {
                 session.close();
             }
         }
+        return halt(400);
     }
 }

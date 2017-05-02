@@ -18,6 +18,7 @@ public class Paths {
     public static final String DELETECOMMENT = "/deletecomment";
     public static final String DOREG = "/doreg";
     public static final String FBCALLBACK = "/callback";
+    public static final String SHOWPLAYDATE = "/showplaydate";
 
     public static final String APIIMAGE = "/apiimage";
 

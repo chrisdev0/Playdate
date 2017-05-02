@@ -2,6 +2,7 @@ package apilayer.route;
 
 import apilayer.Constants;
 import apilayer.handlers.*;
+import dblayer.PlaydateDAO;
 import model.User;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
@@ -78,7 +79,7 @@ public class ProtectedRoutes {
             //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
-
+            put(Paths.SHOWPLAYDATE, PlaydateDAO::removePlaydateAttendance);
 
             get("/landingpage", (request, response) -> {
                 User user = request.session().attribute(Constants.USER_SESSION_KEY);
