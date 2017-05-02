@@ -25,6 +25,7 @@ import spark.Response;
 import spark.route.RouteOverview;
 import spark.template.velocity.VelocityTemplateEngine;
 import stockholmapi.APILoaderOnStartup;
+import stockholmapi.helpers.APIUtils;
 
 
 import javax.servlet.ServletOutputStream;
@@ -40,7 +41,7 @@ import static spark.Spark.*;
 @Slf4j
 public class WebServer {
 
-    private static final boolean SHOULD_LOAD_PLACES = false;
+    private static final boolean SHOULD_LOAD_PLACES = true;
 
     public WebServer() {
         port(Constants.PORT);
@@ -50,7 +51,7 @@ public class WebServer {
         Optional<String> stockholmAPIKEYopt = Secrets.getInstance().getValue("stockholmAPIKEY");
         if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
             try {
-                new APILoaderOnStartup().doLoad(stockholmAPIKEYopt.get());
+                new APILoaderOnStartup().doLoad(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
                 initDEVData();
             } catch (Exception e) {
                 log.error("error loading places ", e);

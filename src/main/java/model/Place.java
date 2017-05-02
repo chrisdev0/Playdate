@@ -1,5 +1,6 @@
 package model;
 
+import apilayer.Constants;
 import com.sun.corba.se.spi.activation._InitialNameServiceImplBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 import stockholmapi.jsontojava.ServiceUnitType;
 import stockholmapi.jsontojava.ServiceUnitTypes;
+import stockholmapi.jsontojava.Value2;
 import stockholmapi.temporaryobjects.PlaceHolder;
 import utils.CoordinateHandlerUtil;
 import utils.Utils;
@@ -19,6 +21,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static stockholmapi.helpers.APIUtils.API_DESCRIPTION;
+import static stockholmapi.helpers.APIUtils.API_HUVUDBILD;
 import static stockholmapi.helpers.APIUtils.API_ZIP;
 
 @Entity
@@ -37,6 +41,9 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     @Type(type = "text")
     private String shortDescription;
+
+    @Type(type = "text")
+    private String longDescription;
 
     private String category;
 
@@ -99,14 +106,35 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     }
 
     public Place injectInfo(DetailedServiceUnit detailedServiceUnit) {
+        setName(detailedServiceUnit.getName());
+        setSthlmAPIid(detailedServiceUnit.getId());
         setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
         setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
         setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
         setShortDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
         setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
         setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+        setGeoX(detailedServiceUnit.getGeographicalPosition().getX());
+        setGeoY(detailedServiceUnit.getGeographicalPosition().getY());
+        setLongDescription((String)detailedServiceUnit.getAttributesIdToValue().get(API_DESCRIPTION));
         isInitialized = true;
         return this;
+    }
+
+    /** todo kolla så att den hittar en bild om det är så att
+     *  platsen har mer än 1 bild
+     * */
+    public static Place constructFromDetailedServiceUnit(DetailedServiceUnit detailedServiceUnit) {
+        detailedServiceUnit.createMapOfAttributes();
+        Place place = new Place().injectInfo(detailedServiceUnit);
+        Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
+        if (object != null && object instanceof Value2) {
+            Value2 value2 = (Value2) object;
+            place.setImageId(value2.getId());
+        } else {
+            place.setImageId(Constants.MAGIC_MISSING_IMAGE);
+        }
+        return place;
     }
 
     public Place(ServiceUnitTypes serviceUnitTypes) {

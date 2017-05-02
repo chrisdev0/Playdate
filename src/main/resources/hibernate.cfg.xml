@@ -30,7 +30,7 @@
         </property>
 
         <property name="hibernate.hbm2ddl.auto">
-            update
+            create
             <!-- what kind of behaviour Hibernate will have when starting up the server
                 validate just check that the database is correct
                 create-drop will drop the database and recreate it
@@ -46,6 +46,7 @@
         <mapping class="model.Friendship" />
         <mapping class="model.FriendshipRequest" />
         <mapping class="stockholmapi.temporaryobjects.PlaceHolder" />
+        <mapping class="model.GeographicalArea" />
 
     </session-factory>
 </hibernate-configuration>

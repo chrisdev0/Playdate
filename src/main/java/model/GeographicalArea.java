@@ -18,7 +18,7 @@ public class GeographicalArea {
     private Boolean isCityArea;
     private String name;
 
-    public GeographicalArea createFromPOJOGeoArea(stockholmapi.jsontojava.GeographicalArea geographicalArea) {
+    public static GeographicalArea createFromPOJOGeoArea(stockholmapi.jsontojava.GeographicalArea geographicalArea) {
         return new GeographicalArea(geographicalArea.getId(), geographicalArea.getFriendlyId(), geographicalArea.getIsCityArea(), geographicalArea.getName());
     }
 
