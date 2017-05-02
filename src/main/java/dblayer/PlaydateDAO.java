@@ -1,5 +1,6 @@
 package dblayer;
 
+import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
 import model.Playdate;
 import model.User;
@@ -8,6 +9,10 @@ import org.hibernate.Session;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.hibernate.Transaction;
+import spark.Request;
+
+import static spark.Spark.halt;
 
 @Slf4j
 public class PlaydateDAO {
@@ -49,4 +54,50 @@ public class PlaydateDAO {
         return playdates;
     }
 
+    public void removePlaydateAttendens(Request request, Playdate playdate){
+
+        Session session = null;
+        Transaction tx = null;
+        try{
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            User user = request.session().attribute(Constants.USER_SESSION_KEY);
+
+            if(playdate == null){
+                log.error("playdate is null");
+                throw halt(400);
+            }
+            if(user == null){
+                log.error("user is null");
+                throw halt(400);
+            }
+
+            if(playdate.getOwner().equals(user)){
+                log.error("user is owner of playdate, can't be removed");
+                throw halt(400);
+            }
+
+            for(User u :playdate.getParticipants()) {
+                if (!user.equals(u)) {
+                    log.error("user is not a participant");
+                    throw halt(400);
+                }
+                user.removeAttendingPlaydate(playdate);
+                playdate.removeParticipant(user);
+            }
+
+            session.update(playdate);
+            session.update(user);
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if(session != null){
+                session.close();
+            }
+        }
+    }
 }

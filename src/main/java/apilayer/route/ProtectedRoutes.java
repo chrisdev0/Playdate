@@ -78,6 +78,8 @@ public class ProtectedRoutes {
             //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
+
+
             get("/landingpage", (request, response) -> {
                 User user = request.session().attribute(Constants.USER_SESSION_KEY);
                 Map<String, Object> map = new HashMap<>();
