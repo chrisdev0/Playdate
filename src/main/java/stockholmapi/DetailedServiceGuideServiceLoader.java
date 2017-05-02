@@ -1,6 +1,8 @@
 package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 import stockholmapi.jsontojava.ServiceUnitTypes;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import static stockholmapi.helpers.APIUtils.getUrl;
 import static stockholmapi.helpers.APIUtils.stupidStockholmAPIJSONToNotStupidJSON;
 
+@Slf4j
 public class DetailedServiceGuideServiceLoader {
 
     private String apiKey;
@@ -20,42 +23,36 @@ public class DetailedServiceGuideServiceLoader {
         this.apiKey = apiKey;
     }
 
-    public static void main(String[] args) throws Exception{
-        new DetailedServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0")
-                .load(new ServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0").load());
+    public static void main(String[] args) throws Exception {
+        new DetailedServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0").load(
+                new ServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0").load()
+                , APIUtils.URLS.LEKPLATSER
+        ).forEach(s -> System.out.println(s.getName()));
+
     }
 
-    public void load(ServiceUnitTypes[] serviceUnitTypes) throws Exception {
+    public List<DetailedServiceUnit> load(ServiceUnitTypes[] serviceUnitTypes, String serviceUnitTypeId) throws Exception {
         final int idsPerUrl = 20;
-        final String baseUrl = "http://api.stockholm.se/ServiceGuideService/DetailedServiceUnits/json?ids={#ids#}&serviceunittypeid=9da341e4-bdc6-4b51-9563-e65ddc2f7434&apikey=a42963ca81a64e55869481b281ad36c0";
-        List<DetailedServiceUnit> list = new ArrayList<>();
-        System.out.println("Amount of sut = " + serviceUnitTypes.length);
+        final String baseUrl = APIUtils.URLS.urlHelper(APIUtils.URLS.MULTI_SERVICE_GUIDE_SERVICE_DETAILED_WITH_ID_PLACEHOLDER, serviceUnitTypeId, apiKey).toExternalForm();
+        List<DetailedServiceUnit> detailedServiceUnits = new ArrayList<>();
         List<String> urls = new ArrayList<>();
-        int count = 0;
         for(int i = 0; i < serviceUnitTypes.length; i += idsPerUrl) {
             StringBuilder stringBuilder = new StringBuilder();
             for(int j = 0; j < idsPerUrl && i+j < serviceUnitTypes.length; j++) {
                 stringBuilder.append(serviceUnitTypes[i + j].getId());
-                count++;
                 if (j < idsPerUrl - 1 && i + j != serviceUnitTypes.length - 1) {
                     stringBuilder.append(",");
                 }
             }
-            String replacement = stringBuilder.toString();
-            String replace = baseUrl.replace("{#ids#}", replacement);
-            urls.add(replace);
+            urls.add(baseUrl.replace("{#ids#}", stringBuilder.toString()));
         }
-        System.out.println("urls added to list = " + count);
-        System.out.println("amount of urls in list = " + urls.size());
-        System.out.println("Starting loading detailed service info");
+        log.info("Starting loading detailed service info");
         long start = System.currentTimeMillis();
         for (String urlStr : urls) {
             String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(new URL(urlStr)));
-            DetailedServiceUnit[] dsu = new ObjectMapper().readValue(json, DetailedServiceUnit[].class);
-            list.addAll(Arrays.asList(dsu));
+            detailedServiceUnits.addAll(Arrays.asList(new ObjectMapper().readValue(json, DetailedServiceUnit[].class)));
         }
-
-        System.out.println("loading and mapping info took: " + (System.currentTimeMillis() - start) + "ms");
-        System.out.println("Created " + list.size() + " DetailedServiceUnits from response");
+        log.info("loading and mapping info took: " + (System.currentTimeMillis() - start) + "ms");
+        return detailedServiceUnits;
     }
 }

@@ -29,6 +29,9 @@ public class APIUtils {
         public static final String IMAGE_PLACEHOLDER = "/ServiceGuideService/ImageFiles/" + ID_PLACEHOLDER + "/Data?apikey=";
         public static final String GEOGRAPHICAL_AREAS = "/ServiceGuideService/GeographicalAreas/json?apikey=";
 
+        public static final String MULTI_SERVICE_GUIDE_SERVICE_DETAILED_WITH_ID_PLACEHOLDER = "/ServiceGuideService/DetailedServiceUnits/json?ids={#ids#}&serviceunittypeid=" +
+                ID_PLACEHOLDER + "&apikey=";
+
         public static URL urlHelper(String whatInfo, String id, String apiKey) throws Exception{
             return new URL((BASE_URL + whatInfo + apiKey).replace(ID_PLACEHOLDER, id));
         }
