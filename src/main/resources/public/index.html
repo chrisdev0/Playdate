@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <title>Logga in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bubbles.css" />
+    <link rel="stylesheet" href="css/new-main.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" /><link rel="stylesheet" href="style-egen.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<script>
+    $(document).ready(function(){
+        $('#fb-login').one('click',function(e){
+            $('#form').submit();
+        })
+
+    })
+</script>
+<body>
+
+<div data-role="page" id="startsida" data-theme="d">
+    <ul class="bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div data-role="main" class="ui-content">
+        <img src="/images/pd-logga.png" id="login-logo">
+
+        <div id="desc-login">
+            <p>Hitta vänner till dig och dina barn!</p>
+        </div>
+        <form action="/loginfb" id="form">
+            <button class="ui-btn" id="fb-login">Logga in med Facebook</button>
+        </form>
+        <form action="/loginfb">
+            <input type="submit" value="logga in">
+        </form>
+    </div>
+    <div data-role="footer" data-position="fixed" style="background-color: transparent; border:none;">
+        <img src="/images/barnen.png" id="kidpicture">
+    </div>
+</div>
+
+</body>
+</html>
