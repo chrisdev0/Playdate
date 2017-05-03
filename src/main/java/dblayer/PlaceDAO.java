@@ -46,7 +46,7 @@ public class PlaceDAO {
 
     public Optional<List<Place>> getPlacesByName(String name) {
         Session session = HibernateUtil.getInstance().openSession();
-        return Optional.ofNullable(session.createQuery("FROM Place where name like :name", Place.class)
+        return Optional.ofNullable(session.createQuery("FROM Place where Place.name like %:name%", Place.class)
                 .setParameter("name", name).list());
     }
 
