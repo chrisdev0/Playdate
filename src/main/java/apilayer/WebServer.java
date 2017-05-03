@@ -1,39 +1,17 @@
 package apilayer;
 
-import apilayer.fbhandlers.FBConfigFactory;
-import apilayer.handlers.*;
 import apilayer.route.OpenRoutes;
 import apilayer.route.ProtectedRoutes;
 import apilayer.route.StaticFileRoutes;
-import cache.Cache;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
-import model.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.pac4j.core.config.Config;
-import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.oauth.profile.facebook.FacebookProfile;
-import org.pac4j.sparkjava.CallbackRoute;
-import org.pac4j.sparkjava.SecurityFilter;
-import org.pac4j.sparkjava.SparkWebContext;
 import secrets.Secrets;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
 import spark.route.RouteOverview;
-import spark.template.velocity.VelocityTemplateEngine;
-import stockholmapi.APILoaderOnStartup;
+import stockholmapi.APILoader;
 import stockholmapi.helpers.APIUtils;
 
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import static dblayer.DBDataCreator.initDEVData;
 import static spark.Spark.*;
@@ -51,7 +29,7 @@ public class WebServer {
         Optional<String> stockholmAPIKEYopt = Secrets.getInstance().getValue("stockholmAPIKEY");
         if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
             try {
-                new APILoaderOnStartup().doLoad(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
                 initDEVData();
             } catch (Exception e) {
                 log.error("error loading places ", e);

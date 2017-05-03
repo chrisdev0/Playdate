@@ -23,23 +23,23 @@ import static stockholmapi.helpers.APIUtils.getUrl;
 import static stockholmapi.helpers.APIUtils.stupidStockholmAPIJSONToNotStupidJSON;
 
 @Slf4j
-public class APILoaderOnStartup {
+public class APILoader {
 
     private HibernateUtil hibernateUtil;
+    private List<Object> toAddToDB;
 
-    public APILoaderOnStartup() {
+    public APILoader() {
         hibernateUtil = HibernateUtil.getInstance();
+        toAddToDB = new ArrayList<>();
     }
 
-    public void doLoad(String apiKey, String serviceGuideServiceTypeId) throws Exception{
+    public void doLoadOnStartup(String apiKey, String serviceGuideServiceTypeId) throws Exception{
         long start = System.currentTimeMillis();
         log.info("started loading api data");
-        List<Object> toAddToDB = new ArrayList<>();
-        List<GeographicalArea> collect = Arrays.stream(new GeographicalAreaLoader(apiKey).load())
+        List<GeographicalArea> geographicalAreas = Arrays.stream(new GeographicalAreaLoader(apiKey).load())
                 .map(GeographicalArea::createFromPOJOGeoArea).collect(Collectors.toList());
-        toAddToDB.addAll(collect);
-        new DetailedServiceGuideServiceLoader(apiKey).load(new ServiceGuideServiceLoader(apiKey).load(), serviceGuideServiceTypeId)
-                .forEach(detailedServiceUnit -> toAddToDB.add(Place.constructFromDetailedServiceUnit(detailedServiceUnit)));
+        toAddToDB.addAll(geographicalAreas);
+        doLoadDuringRun(apiKey, serviceGuideServiceTypeId);
         Transaction tx = null;
         Session session = null;
         try {
@@ -60,6 +60,11 @@ public class APILoaderOnStartup {
             }
         }
         log.info("finished loading api data after " + (System.currentTimeMillis() - start) + "ms");
+    }
+
+    public void doLoadDuringRun(String apiKey, String serviceGuideServiceTypeId) throws Exception{
+        new DetailedServiceGuideServiceLoader(apiKey).load(new ServiceGuideServiceLoader(apiKey).load(), serviceGuideServiceTypeId)
+                .forEach(detailedServiceUnit -> toAddToDB.add(Place.constructFromDetailedServiceUnit(detailedServiceUnit)));
     }
 
 
