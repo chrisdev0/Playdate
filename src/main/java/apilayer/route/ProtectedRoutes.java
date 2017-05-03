@@ -79,6 +79,7 @@ public class ProtectedRoutes {
             //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
+            //ska pathen vara showplaydate?
             put(Paths.SHOWPLAYDATE, PlaydateDAO::removePlaydateAttendance);
 
             get("/landingpage", (request, response) -> {
@@ -89,7 +90,6 @@ public class ProtectedRoutes {
             }, new VelocityTemplateEngine());
 
             get(Paths.APIIMAGE + "/:id", ImageHandler::handle);
-
 
         });
     }
