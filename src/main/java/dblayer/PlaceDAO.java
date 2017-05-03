@@ -1,9 +1,11 @@
 package dblayer;
 
+import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +44,45 @@ public class PlaceDAO {
         }
     }
 
+    public Optional<List<Place>> getPlacesByName(String name) {
+        Session session = HibernateUtil.getInstance().openSession();
+        return Optional.ofNullable(session.createQuery("FROM Place where name like :name", Place.class)
+                .setParameter("name", name).list());
+    }
+
+
+    /** Returnerar alla platser som ligger inom området
+     *        _______
+     *       |       |
+     *       |   x   |
+     *       |_______|
+     *
+     * där x är grid koordinaten med
+     * @param locX
+     * och
+     * @param locY
+     *
+     * och avståndet från x till en vägg är definerad i Constants.GRID_SEARCH_AREA_SIZE
+     *
+     * */
+    public List<Place> getPlaceByLocation(int locX, int locY) {
+        Session session = HibernateUtil.getInstance().openSession();
+        return session.createQuery("FROM Place WHERE geoX <= :xMax AND geoX >= :xMin AND geoY <= :yMax AND geoY >= :yMin", Place.class)
+                .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
+                .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
+                .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
+                .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
+                .list();
+    }
+
+    /** ###     ###     ######         ##
+     *  ###     ###     ##             ##
+     *  ###     ###     ##             ##
+     *  ###########     ####           ##
+     *  ###     ###     ##             ##
+     *  ###     ###     ##       ##   ##
+     *  ###     ###     ######     ###
+     * */
     public Optional<Place> getPlaceById(Long placeId) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(Place.class).loadOptional(placeId);

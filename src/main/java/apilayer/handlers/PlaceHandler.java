@@ -1,8 +1,10 @@
 package apilayer.handlers;
 
+import apilayer.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import dblayer.HibernateUtil;
+import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import org.hibernate.Session;
@@ -37,23 +39,12 @@ public class PlaceHandler {
         String locXStr = request.queryParams("locX");
         String locYStr = request.queryParams("locY");
         if (Utils.isNotNullAndNotEmpty(locXStr) && Utils.isNotNullAndNotEmpty(locYStr)) {
-            final int searchArea = 2000;
             CoordinateHandlerUtil coordinateHandlerUtil = new CoordinateHandlerUtil();
             try {
                 double locX = Double.parseDouble(locXStr);
                 double locY = Double.parseDouble(locYStr);
                 double[] grid = coordinateHandlerUtil.geodeticToGrid(locX, locY);
-                log.info("Grid X=" + locXStr + ", Y=" + locYStr + " converted to " + "lat=" + grid[0] + ", lon=" + grid[1]);
-                int x = (int) grid[0];
-                int y = (int) grid[1];
-                Session session = HibernateUtil.getInstance().openSession();
-                String hql = "FROM Place WHERE geoX <= " + (x + searchArea) + " ";
-                hql += "AND geoX >= " + (x - searchArea) + " ";
-                hql += "AND geoY <= " + (y + searchArea) + " ";
-                hql += "and geoY >= " + (y - searchArea) + " ";
-                Query<Place> hqlQuery = session.createQuery(hql, Place.class);
-                List<Place> result = hqlQuery.list();
-                return new Gson().toJson(result);
+                return new Gson().toJson(PlaceDAO.getInstance().getPlaceByLocation((int)grid[0], (int)grid[1]));
             } catch (NumberFormatException e) {
                 log.error("Error parsing loc", e);
             }
@@ -61,4 +52,11 @@ public class PlaceHandler {
         return "error";
     }
 
+    public static Object handleGetPlaceByName(Request request, Response response) {
+        String name = request.queryParams("name");
+        if (Utils.isNotNullAndNotEmpty(name)) {
+            return PlaceDAO.getInstance().getPlacesByName(name);
+        }
+        return "error";
+    }
 }

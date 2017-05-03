@@ -12,6 +12,8 @@ public class Constants {
 
     public static final String FACEBOOK_SCOPE = "public_profile,email";
 
+    public static final int GRID_SEARCH_AREA_SIZE = 2000;
+
     public static final String USER_SESSION_KEY = "user";
     public static final int LENGTH_OF_SALT = 20;
     public static final String MAGIC_MISSING_IMAGE = "-1";
