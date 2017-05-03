@@ -50,7 +50,7 @@ public class CoordinateHandlerUtil {
         return 0.5 * Math.log((1.0 + value) / (1.0 - value));
     }
 
-    public double[] geodeticToGrid(int lat, int lon) {
+    public double[] geodeticToGrid(double lat, double lon) {
         double[] x_y = new double[2];
         if(centralMeridian == null) {
             return x_y;

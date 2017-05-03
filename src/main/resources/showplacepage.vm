@@ -43,6 +43,7 @@
             position: uluru,
             map: map
         });
+
     }
 </script>
 <script async defer

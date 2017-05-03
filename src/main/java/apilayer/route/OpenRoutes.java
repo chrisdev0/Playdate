@@ -2,10 +2,7 @@ package apilayer.route;
 
 import apilayer.fbhandlers.FBConfigFactory;
 import apilayer.fbhandlers.FBRouteHandler;
-import apilayer.handlers.CreateUserHandler;
-import apilayer.handlers.ImageHandler;
-import apilayer.handlers.LoginHandler;
-import apilayer.handlers.Paths;
+import apilayer.handlers.*;
 import cache.Cache;
 import lombok.extern.slf4j.Slf4j;
 import model.DBAPIImage;
@@ -37,7 +34,7 @@ public class OpenRoutes {
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);
 
-
+        get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
 
         initializeFacebookLogin();
     }

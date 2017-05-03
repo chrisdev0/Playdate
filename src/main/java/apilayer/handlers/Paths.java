@@ -23,6 +23,7 @@ public class Paths {
     public static final String APIIMAGE = "/apiimage";
 
     public static final String PLAYDATE_IMAGE = "/playdateimage";
+    public static final String GETPLACEBYLOCATION = "/getplacebylocation";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
