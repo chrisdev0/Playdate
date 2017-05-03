@@ -1,59 +1,64 @@
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Skapa Playdate!</title>
-    <script src="js/jquery-3.2.1.js"></script>
-    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logga in</title>
+
+    <link rel="stylesheet" href="css/themes/style.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/new-main.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript"
-            src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
-    <script src="js/onInit.js"></script>
-    <script src="js/onLogin.js"></script>
     <script>
         $(function () {
-            $("#datepicker").datepicker();
+            $("#datepicker").datepicker({dateFormat:"dd-mm-yy", changeYear: true});
         });
+
+        var time = $('#timePicker1').val();
+        $('#timePicker1').val("09:30");
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel=stylesheet href="css/normalize.css" type="text/css">
-    <link rel=stylesheet href="css/jquery.mobile-1.4.5.css" type="text/css">
-    <link rel=stylesheet href="css/main.css" type="text/css">
-    <link rel=stylesheet href="css/createplaydate-dsn.css" type="text/css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
 </head>
 <body>
-<form>
-    <div class="header" id="header-content-big-logo">
-        <img src="/images/pdbiglogo.png" id="biglogo">
+<div data-role="page" id="skapa-pd" data-theme="d">
+    <div data-role="header" data-position="fixed "id="login-header">
+        <div id="head-logo"><img src="/images/playdate_logga_1.png"></div>
     </div>
-    <div class="centered-text" id="page-desc">
-        <h2>Skapa Playdate</h2>
-    </div>
-    <div id="login-signup-panel">
-        <div id="create-playdate-panel">
-            <div class="container-playdate">
-                <div id="text-form-input-fields">
-                    <div id=pd-description-field>
-                        <input type="text" id="titel" class="text-input-field centered-text" placeholder="Titel">
-                        <input type="text" id="datepicker" class="text-input-field centered-text" placeholder="Datum">
-                        <input type="text" id="time" class="text-input-field centered-text" placeholder="Tid">
-                        <input type="text" id="filter-for-listview" class="text-input-field centered-text"
-                               placeholder="Sök plats...">
+    <div data-role="main" class="ui-content">
+        <label for="text-input">Titel</label>
+        <input type="text" name="text-field" id="text-field" value="">
+        <div class="ui-grid-a">
+            <div class="ui-block-a" id="date"><label for="text-input">Datum</label>
+                <input type="text" data-role="date" id="datepicker"></div>
+            <div class="ui-block-b" id="time"><label for="text-input">Tid</label>
+                <input type="time" name="timePicker1" id="timePicker1" value="12:00"></div>
+        </div><!-- /grid-a -->
+        <label for="text-input">Plats</label>
+        <input type="search" name="password" id="search" value="" placeholder="Sök plats..." href="#search-place"><br>
+        <div id="dropbox-cd">
+            <select name="select-native-s" id="select-native-s">
+                <option value="small">Privat</option>
+                <option value="small">För vänner</option>
+                <option value="medium">Offentlig</option>
+            </select><br>
+        </div>
+        <label for="text-input">Beskrivning</label>
+        <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
 
-                        <select name="select-native-s" id="select-native-s">
-                            <option value="small">Privat</option>
-                            <option value="medium">Offentlig</option>
-                        </select>
-                        <br>
-                        <div id=pd-description-field>
-                            <label for="textinput-s" class="titel-cpd">Beskrivning</label><br>
-                            <textarea name="descarea" id="pd-description" class="describe-text-fields"></textarea><br>
-                            <input type="button" id="create-btn" class="large-button" value="Skapa Playdate!">
-                        </div>
-                    </div>
-</form>
+        <button class="ui-btn">Skapa Playdate!</button>
+    </div>
+    <div data-role="footer" data-position="fixed" id="footer">
+        <div class="ui-nodisc-icon" id="back-btn">
+        </div>
+        <h3>FooterMenu</h3>
+    </div>
+</div>
+<div data-role="page" id="search-place" data-theme="d">
+</div>
 </body>
 </html>
