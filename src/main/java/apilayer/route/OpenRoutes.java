@@ -3,6 +3,7 @@ package apilayer.route;
 import apilayer.fbhandlers.FBConfigFactory;
 import apilayer.fbhandlers.FBRouteHandler;
 import apilayer.handlers.CreateUserHandler;
+import apilayer.handlers.ImageHandler;
 import apilayer.handlers.LoginHandler;
 import apilayer.handlers.Paths;
 import cache.Cache;
@@ -28,35 +29,16 @@ public class OpenRoutes {
      * */
     public static void initOpenRoutes() {
         //Hanterar inloggningsförsök
-        post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
+        //post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
 
         //hanterar registrering av användare
-        post(Paths.DOREG, CreateUserHandler::handleCreateUser);
+        //post(Paths.DOREG, CreateUserHandler::handleCreateUser);
 
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);
 
-        get(Paths.APIIMAGE + "/:id", (request, response) -> {
-            String key = request.params("id");
-            if (key == null || key.isEmpty() || key.equals("-1")) {
-                response.redirect("/images/testlekplats.png");
-                return "";
-            }
-            log.info("api image key = " + key);
-            Cache cache = Cache.getInstance();
-            try {
-                DBAPIImage dbImage = cache.getDbImage(key);
-                HttpServletResponse raw = response.raw();
-                ServletOutputStream outputStream = raw.getOutputStream();
-                outputStream.write(dbImage.getImageAsByte());
-                outputStream.flush();
-                outputStream.close();
-                return response.raw();
-            } catch (ExecutionException e) {
-                log.error("unable to load image");
-            }
-            return "error";
-        });
+
+
         initializeFacebookLogin();
     }
 

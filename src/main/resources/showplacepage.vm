@@ -22,7 +22,7 @@
 
 <h1>Showing place</h1>
 <h3>$!{place.getName()}</h3>
-<img src="/apiimage/${place.getImageId()}" alt="bild på lekplats">
+<img src="/protected/apiimage/${place.getImageId()}" alt="bild på lekplats">
 <h4>Beskrivning:</h4>
 <p>$!{place.getShortDescription()}</p>
 <h4>Plats</h4>

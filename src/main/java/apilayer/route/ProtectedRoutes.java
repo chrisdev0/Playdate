@@ -88,6 +88,9 @@ public class ProtectedRoutes {
                 return new ModelAndView(map, "landingpage.vm");
             }, new VelocityTemplateEngine());
 
+            get(Paths.APIIMAGE + "/:id", ImageHandler::handle);
+
+
         });
     }
 

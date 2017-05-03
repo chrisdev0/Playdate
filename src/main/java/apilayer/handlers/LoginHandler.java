@@ -1,7 +1,6 @@
 package apilayer.handlers;
 
 import apilayer.Constants;
-import apilayer.RequestHandler;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
@@ -9,10 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import spark.Request;
 import spark.Response;
-import utils.PasswordHandler;
 import utils.Utils;
 
-import java.util.List;
 import java.util.Optional;
 
 import static spark.Spark.halt;

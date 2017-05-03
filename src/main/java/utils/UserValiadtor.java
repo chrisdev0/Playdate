@@ -9,7 +9,7 @@ import java.security.SecureRandom;
 import java.security.MessageDigest;
 
 
-public class PasswordHandler {
+public class UserValiadtor {
 
     public static String generateUserSalt(){
         return RandomStringUtils.randomAlphanumeric(Constants.LENGTH_OF_SALT);
@@ -20,10 +20,12 @@ public class PasswordHandler {
         return Hashing.sha256().hashString(input, StandardCharsets.UTF_8).toString();
     }
 
+    /*
     public static boolean validateUserPwd(User u, String rawPassword) {
         String salt = u.getSalt();
         String hashedRawPwd = hashUserPwd(rawPassword, salt);
         return hashedRawPwd.equals(u.getPassword());
     }
+    */
 
 }

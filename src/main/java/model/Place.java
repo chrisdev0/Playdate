@@ -1,7 +1,18 @@
 package model;
 
+import apilayer.Constants;
+import com.sun.corba.se.spi.activation._InitialNameServiceImplBase;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
+import stockholmapi.helpers.APIUtils;
+import stockholmapi.jsontojava.DetailedServiceUnit;
+import stockholmapi.jsontojava.ServiceUnitType;
+import stockholmapi.jsontojava.ServiceUnitTypes;
+import stockholmapi.jsontojava.Value2;
+import stockholmapi.temporaryobjects.PlaceHolder;
 import utils.CoordinateHandlerUtil;
 import utils.Utils;
 
@@ -10,7 +21,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static stockholmapi.helpers.APIUtils.API_DESCRIPTION;
+import static stockholmapi.helpers.APIUtils.API_HUVUDBILD;
+import static stockholmapi.helpers.APIUtils.API_ZIP;
+
 @Entity
+@ToString
+@NoArgsConstructor
 @Data public class Place {
 
     @Id
@@ -25,6 +42,9 @@ import java.util.Set;
     @Type(type = "text")
     private String shortDescription;
 
+    @Type(type = "text")
+    private String longDescription;
+
     private String category;
 
     private String geoArea, cityAddress, zip, streetAddress;
@@ -33,6 +53,14 @@ import java.util.Set;
 
     private String timeCreated;
     private String timeUpdated;
+
+    private boolean isInitialized = false;
+
+    public Place setInfo(PlaceHolder placeHolder) {
+        //todo placeholderinfo -> place
+        isInitialized = true;
+        return this;
+    }
 
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
@@ -51,6 +79,7 @@ import java.util.Set;
         this.geoY = geoY;
         this.comments = new HashSet<>();
         this.shortDescription = shortDescription;
+        isInitialized = true;
     }
 
     @Transient
@@ -71,12 +100,50 @@ import java.util.Set;
         return comments.remove(comment);
     }
 
-    public Place() {
-        shortDescription = "";
-    }
 
     public boolean isInitialized() {
-        return shortDescription != null && !shortDescription.isEmpty();
+        return isInitialized;
+    }
+
+    public Place injectInfo(DetailedServiceUnit detailedServiceUnit) {
+        setName(detailedServiceUnit.getName());
+        setSthlmAPIid(detailedServiceUnit.getId());
+        setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
+        setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
+        setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
+        setShortDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
+        setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
+        setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+        setGeoX(detailedServiceUnit.getGeographicalPosition().getX());
+        setGeoY(detailedServiceUnit.getGeographicalPosition().getY());
+        setLongDescription((String)detailedServiceUnit.getAttributesIdToValue().get(API_DESCRIPTION));
+        isInitialized = true;
+        return this;
+    }
+
+    /** todo kolla så att den hittar en bild om det är så att
+     *  platsen har mer än 1 bild
+     * */
+    public static Place constructFromDetailedServiceUnit(DetailedServiceUnit detailedServiceUnit) {
+        detailedServiceUnit.createMapOfAttributes();
+        Place place = new Place().injectInfo(detailedServiceUnit);
+        Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
+        if (object != null && object instanceof Value2) {
+            Value2 value2 = (Value2) object;
+            place.setImageId(value2.getId());
+        } else {
+            place.setImageId(Constants.MAGIC_MISSING_IMAGE);
+        }
+        return place;
+    }
+
+    public Place(ServiceUnitTypes serviceUnitTypes) {
+        name = serviceUnitTypes.getName();
+        sthlmAPIid = serviceUnitTypes.getId();
+        geoX = serviceUnitTypes.getGeographicalPosition().getX();
+        geoY = serviceUnitTypes.getGeographicalPosition().getY();
+        timeCreated = serviceUnitTypes.getTimeCreated();
+        timeUpdated = serviceUnitTypes.getTimeUpdated();
     }
 
 
@@ -104,19 +171,5 @@ import java.util.Set;
         result = 31 * result + geoX;
         result = 31 * result + geoY;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Place{" +
-                "id=" + id +
-                ", sthlmAPIid='" + sthlmAPIid + '\'' +
-                ", name='" + name + '\'' +
-                ", timeCreated='" + timeCreated + '\'' +
-                ", timeUpdated='" + timeUpdated + '\'' +
-                ", comments=" + comments +
-                ", geoX=" + geoX +
-                ", geoY=" + geoY +
-                '}';
     }
 }

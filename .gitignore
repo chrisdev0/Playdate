@@ -1,6 +1,7 @@
-# Detta är bara ett exempel. Du väljer själv vilka filer du vill ignorera
-# Ignorera följande kataloger
-# Ignorera följande filer
+# Detta ï¿½r bara ett exempel. Du vï¿½ljer sjï¿½lv vilka filer du vill ignorera
+# Ignorera fï¿½ljande kataloger
+# Ignorera fï¿½ljande filer
+hidden/
 .idea/
 secrets.txt
 w/

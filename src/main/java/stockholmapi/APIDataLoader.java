@@ -49,7 +49,6 @@ public class APIDataLoader {
         String apiId = place.getSthlmAPIid();
         ObjectMapper objectMapper = new ObjectMapper();
         URL url = APIUtils.URLS.urlHelper(APIUtils.URLS.DETAILED_INFO_PLACEHOLDER, apiId, getApiKey());
-        System.out.println(url.toString());
         String placeJson;
         try {
             placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(url));
@@ -59,12 +58,7 @@ public class APIDataLoader {
         }
         DetailedServiceUnit detailedServiceUnit = objectMapper.readValue(placeJson, DetailedServiceUnit.class);
         detailedServiceUnit.createMapOfAttributes();
-        place.setCategory(detailedServiceUnit.getServiceUnitTypes().get(0).getPluralName());
-        place.setCityAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_POST_ADDRESS));
-        place.setGeoArea(detailedServiceUnit.getGeographicalAreas().get(0).getFriendlyId());
-        place.setShortDescription((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_SHORT_DESC));
-        place.setZip((String) detailedServiceUnit.getAttributesIdToValue().get(API_ZIP));
-        place.setStreetAddress((String) detailedServiceUnit.getAttributesIdToValue().get(APIUtils.API_STREET_ADDRESS));
+        place.injectInfo(detailedServiceUnit);
         Object object = detailedServiceUnit.getAttributesIdToValue().get(API_HUVUDBILD);
         if (object != null && object instanceof Value2) {
             Value2 value2 = (Value2) object;
