@@ -33,24 +33,10 @@
 <div class="container" id="login-signup-content">
     <img src="/images/pd-logga.png" id="imglogo"/>
     <div id="login-signup-panel">
-        <div id="text-form-input-fields">
-            <form id="loginform" method="POST">
-                <input type="text" id="username" class="text-input-field centered-text" placeholder="E-postadress">
-                <input type="password" id="password" class="text-input-field centered-text" placeholder="Lösenord">
-                <input type="submit" id="login-btn" class="large-button centered-text" value="Logga in">
-            </form>
-        </div>
         <div>
             <form action="/loginfb">
                 <input type="submit" id="fblogin-btn" class="large-button centered-text" value="Logga in med Facebook">
             </form>
-        </div>
-        <div id="login-links" class="centered-text">
-            <a href="registerform.html">Skapa konto</a>
-            <a href="/glomtlosenord.html">Glömt lösenord?</a>
-            <a href="createplaydate.html">createplaydate</a>
-
-
         </div>
     </div>
 </div>
