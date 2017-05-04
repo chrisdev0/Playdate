@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class TestModel {
@@ -70,8 +71,9 @@ public class TestModel {
 
     @Test
     public void testGetAttendingOwner() {
-        List<Playdate> playdates = PlaydateDAO.getInstance().getPlaydateByOwnerId(ownerUser.getId());
-        assertEquals("titel", playdates.get(0).getHeader());
+        Optional<List<Playdate>> playdates = PlaydateDAO.getInstance().getPlaydateByOwnerId(ownerUser.getId());
+        assertTrue(playdates.isPresent());
+        assertEquals("titel", playdates.get().get(0).getHeader());
     }
 
 

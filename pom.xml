@@ -99,11 +99,13 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
         <!-- https://mvnrepository.com/artifact/org.facebook4j/facebook4j-core -->
+        <!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
         <dependency>
-            <groupId>org.facebook4j</groupId>
-            <artifactId>facebook4j-core</artifactId>
-            <version>2.4.9</version>
+            <groupId>com.restfb</groupId>
+            <artifactId>restfb</artifactId>
+            <version>2.0.0-rc.2</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

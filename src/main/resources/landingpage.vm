@@ -10,14 +10,15 @@
 <h1>Välkommen</h1>
 <div>
     <h3>info</h3>
+    <img src="$user.profilePictureUrl">
     <p>$user.getName()</p>
     <p>$user.gender</p>
     <p>$user.getEmail()</p>
     <p>$user.getPhoneNumber()</p>
     <h4>fb</h4>
-    <p>$id</p>
-    <p>$access_token</p>
-    <p>$third_party_id</p>
+    <p>$user.id</p>
+    <p>$user.fbToken</p>
+    <p>$user.facebookThirdPartyID</p>
 </div>
 </body>
 </html>

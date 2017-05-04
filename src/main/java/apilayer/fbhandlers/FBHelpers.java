@@ -2,6 +2,7 @@ package apilayer.fbhandlers;
 
 import apilayer.route.OpenRoutes;
 import lombok.extern.slf4j.Slf4j;
+import model.Gender;
 import model.User;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
@@ -21,14 +22,19 @@ public class FBHelpers {
         String email = facebookProfile.getEmail();
         String name = facebookProfile.getDisplayName();
         String fbToken = facebookProfile.getAccessToken();
-        String id = facebookProfile.getId();
         String thirdPartyId = facebookProfile.getThirdPartyId();
+        Gender gender = Gender.genderFromFacebookGender(facebookProfile.getGender());
+        User user = new User(name, email);
+        user.setFacebookThirdPartyID(thirdPartyId);
+        user.setFbToken(fbToken);
+        user.setGender(gender);
+        user.setProfilePictureUrl(FacebookProfileHandler.getProfilePictureOfAccessToken(facebookProfile));
         log.info("logging facebook info");
         facebookProfile.getAttributes().forEach((s, o) -> {
             log.info("[key=" + s + "]-[value=" + o + "]");
         });
         log.info("end facebook info");
-        return null;
+        return user;
     }
 
     /** Försöker skapa en FacebookProfile ur request och response för facebook-login-route

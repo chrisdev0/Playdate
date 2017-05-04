@@ -22,4 +22,15 @@ public enum Gender {
         }
         throw new IllegalArgumentException("illegal gender id");
     }
+
+    public static Gender genderFromFacebookGender(org.pac4j.core.profile.Gender gender) {
+        switch (gender) {
+            case MALE:
+                return MALE;
+            case FEMALE:
+                return FEMALE;
+            default:
+                return OTHER;
+        }
+    }
 }

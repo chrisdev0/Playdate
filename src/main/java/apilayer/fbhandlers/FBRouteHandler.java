@@ -1,6 +1,8 @@
 package apilayer.fbhandlers;
 
+import apilayer.Constants;
 import dblayer.HibernateUtil;
+import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.hibernate.Session;
@@ -31,20 +33,11 @@ public class FBRouteHandler {
             return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm")));
         }
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            Query<User> query = session.createQuery("FROM User WHERE upper(email) = :email", User.class);
-            query.setParameter("email", facebookProfileOptional.get().getEmail().toUpperCase());
-            Optional<User> userOptional = query.uniqueResultOptional();
-            userOptional.ifPresent(user -> log.info("found user " + user));
-            FacebookProfile facebookProfile = facebookProfileOptional.get();
-            FBHelpers.buildUserFromFacebookProfile(facebookProfile);
-            Secrets secrets = Secrets.getInstance();
-            Optional<String> fbAppIdOpt = secrets.getValue("fbAppId");
-            Optional<String> fbSaltOpt = secrets.getValue("fbSalt");
-            Optional<String> fbSecretOpt = secrets.getValue("fbSecret");
-            FacebookProfileHandler facebookProfileHandler = new FacebookProfileHandler(fbAppIdOpt.get(), fbSecretOpt.get(), facebookProfile);
-
-
-            request.session(true).attribute("user", userOptional.orElse(new User(facebookProfile.getEmail(),facebookProfile.getDisplayName())));
+                        FacebookProfile facebookProfile = facebookProfileOptional.get();
+            User user = FBHelpers.buildUserFromFacebookProfile(facebookProfile);
+            boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+            log.info("Save user on login = " + b);
+            request.session(true).attribute(Constants.USER_SESSION_KEY, user);
         } catch (Exception e) {
             log.error("error session ", e);
         }

@@ -29,6 +29,9 @@ public class User {
 
     private String fbToken;
 
+    @Column(unique = true)
+    private String facebookThirdPartyID;
+
     private String profilePictureUrl;
 
     @OneToMany(mappedBy = "friend")

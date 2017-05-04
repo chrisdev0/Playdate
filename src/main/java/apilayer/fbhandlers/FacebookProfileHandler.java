@@ -1,9 +1,11 @@
 package apilayer.fbhandlers;
 
-import apilayer.Constants;
-import facebook4j.Facebook;
-import facebook4j.FacebookFactory;
-import facebook4j.conf.ConfigurationBuilder;
+
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.Version;
+import com.restfb.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 
@@ -11,16 +13,31 @@ import org.pac4j.oauth.profile.facebook.FacebookProfile;
 public class FacebookProfileHandler {
 
     public FacebookProfileHandler(String appId, String appSecret, FacebookProfile facebookProfile) throws Exception {
-        ConfigurationBuilder conf = new ConfigurationBuilder()
-                .setDebugEnabled(true)
-                .setOAuthAppSecret(appSecret)
-                .setOAuthAppId(appId)
-                .setOAuthAccessToken(facebookProfile.getAccessToken())
-                .setOAuthPermissions(Constants.FACEBOOK_SCOPE);
-        Facebook facebook = new FacebookFactory(conf.build()).getInstance();
-        log.info("facebook picture url= " + facebook.getPictureURL().toString());
-        log.info("facebook id = " + facebook.getId());
-        log.info("facebook third party id" + facebook.getMe());
+        FacebookClient client = new DefaultFacebookClient(facebookProfile.getAccessToken(), Version.LATEST);
+        JsonObject json = null;
+        try {
+            json = client.fetchObject("me/picture", JsonObject.class, Parameter.with("redirect", "false"));
+            log.info("image url = " + json.toString());
+        } catch (Exception e) {
+            log.error("error fetchobject ",e);
+        }
+    }
+
+    public static String getProfilePictureOfAccessToken(FacebookProfile facebookProfile) {
+        FacebookClient client = new DefaultFacebookClient(facebookProfile.getAccessToken(), Version.LATEST);
+        JsonObject json = null;
+        try {
+            json = client.fetchObject("me/picture", JsonObject.class, Parameter.with("redirect", "false"));
+            log.info("image url = " + json.toString());
+            json.iterator().forEachRemaining(member -> log.info(member.toString()));
+            log.info("data = " + json.get("data"));
+            log.info("url = " + json.get("url"));
+            log.info("picture = " + json.get("picture"));
+            return json.get("data").asObject().get("url").asString();
+        } catch (Exception e) {
+            log.error("error fetchobject ",e);
+        }
+        return null;
     }
 
     public void init() {
