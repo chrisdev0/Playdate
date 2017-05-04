@@ -25,6 +25,8 @@ public class Paths {
     public static final String PLAYDATE_IMAGE = "/playdateimage";
     public static final String GETPLACEBYLOCATION = "/getplacebylocation";
     public static final String GETPLACEBYNAME = "/getplacebyname";
+    public static final String GETPLACEBYGEONAME = "/getplacebygeoarea";
+
 
 
     public static class StaticFilePaths {

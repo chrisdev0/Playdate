@@ -54,8 +54,28 @@ public class PlaceHandler {
 
     public static Object handleGetPlaceByName(Request request, Response response) {
         String name = request.queryParams("name");
-        if (Utils.isNotNullAndNotEmpty(name)) {
-            return PlaceDAO.getInstance().getPlacesByName(name);
+        String offsetStr = request.queryParams("offset");
+        try {
+            int offset = Integer.parseInt(offsetStr);
+            if (Utils.isNotNullAndNotEmpty(name)) {
+                return new Gson().toJson(PlaceDAO.getInstance().getPlacesByName(name, offset, 10));
+            }
+        } catch (NumberFormatException e) {
+            return "error";
+        }
+        return "error";
+    }
+
+    public static Object handleGetPlaceByGeoArea(Request request, Response response) {
+        String geoAreaName = request.queryParams("name");
+        String offsetStr = request.queryParams("offset");
+        try {
+            int offset = Integer.parseInt(offsetStr);
+            if (Utils.isNotNullAndNotEmpty(geoAreaName)) {
+                return new Gson().toJson(PlaceDAO.getInstance().getPlacesByGeoArea(geoAreaName, offset, 10));
+            }
+        } catch (NumberFormatException e) {
+            return "error";
         }
         return "error";
     }

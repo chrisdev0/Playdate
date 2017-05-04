@@ -6,6 +6,7 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
+import secrets.Secrets;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -36,6 +37,13 @@ public class FBRouteHandler {
             userOptional.ifPresent(user -> log.info("found user " + user));
             FacebookProfile facebookProfile = facebookProfileOptional.get();
             FBHelpers.buildUserFromFacebookProfile(facebookProfile);
+            Secrets secrets = Secrets.getInstance();
+            Optional<String> fbAppIdOpt = secrets.getValue("fbAppId");
+            Optional<String> fbSaltOpt = secrets.getValue("fbSalt");
+            Optional<String> fbSecretOpt = secrets.getValue("fbSecret");
+            FacebookProfileHandler facebookProfileHandler = new FacebookProfileHandler(fbAppIdOpt.get(), fbSecretOpt.get(), facebookProfile);
+
+
             request.session(true).attribute("user", userOptional.orElse(new User(facebookProfile.getEmail(),facebookProfile.getDisplayName())));
         } catch (Exception e) {
             log.error("error session ", e);

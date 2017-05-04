@@ -38,6 +38,8 @@ public class OpenRoutes {
 
         get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
 
+        get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
+
         initializeFacebookLogin();
     }
 

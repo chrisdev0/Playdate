@@ -6,7 +6,11 @@ import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import secrets.Secrets;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +32,9 @@ public class PlaceDAO {
     }
 
 
+    /** Returnerar en plats (om den finns) med stockholm-api ID:t som
+     *  skickas in som parameter
+     * */
     public Optional<Place> getPlaceBySthlmId(String sthlmId) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Place WHERE sthlmAPIid = :sthlmAPIid", Place.class)
@@ -36,6 +43,9 @@ public class PlaceDAO {
         }
     }
 
+    /** Returnerar en lista med alla platser för alla de ids som skickas in
+     *  som parameter
+     * */
     public List<Place> getPlaceByMultiSthlmId(Set<String> ids) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Place WHERE sthlmAPIid in (:ids)", Place.class)
@@ -44,11 +54,38 @@ public class PlaceDAO {
         }
     }
 
-    public Optional<List<Place>> getPlacesByName(String name) {
+    /** Returnerar results antal platser som har GeographicalArea
+     *  som skickas in som parameter
+     *  med start som offset
+     *  Listan wrappas i en PaginationWrapper så att front-end
+     *  vet vilket offset resultatet har
+     * */
+    public Optional<PaginationWrapper<Place>> getPlacesByGeoArea(String geoArea, int start, int results) {
         Session session = HibernateUtil.getInstance().openSession();
-        return Optional.ofNullable(session.createQuery("FROM Place where Place.name like %:name%", Place.class)
-                .setParameter("name", name).list());
+        Query<Place> placeQuery = session.
+                createQuery("FROM Place WHERE geoArea LIKE :geoarea", Place.class);
+        placeQuery.setParameter("geoarea", "%" + geoArea + "%")
+                .setMaxResults(results).setFirstResult(start);
+        List<Place> resultList = placeQuery.getResultList();
+        return Optional.of(resultList.size() != 0 ? new PaginationWrapper<>(resultList, start) : new PaginationWrapper.PaginationWrapperForNull<Place>());
     }
+
+    /** Returnerar alla platser vars namn innehåller
+     *  @param name
+     *  @param results  antal platser att returnera (max)
+     *  @param start    vilket offset för resultatet
+     * */
+    public Optional<PaginationWrapper<Place>> getPlacesByName(String name, int start, int results) {
+        Session session = HibernateUtil.getInstance().openSession();
+
+        Query<Place> placeQuery = session.
+                createQuery("FROM Place WHERE name LIKE :name", Place.class);
+        placeQuery.setParameter("name", "%" + name + "%")
+                .setMaxResults(results).setFirstResult(start);
+        List<Place> resultList = placeQuery.getResultList();
+        return Optional.of(resultList.size() != 0 ? new PaginationWrapper<>(resultList, start) : new PaginationWrapper.PaginationWrapperForNull<Place>());
+    }
+
 
 
     /** Returnerar alla platser som ligger inom området

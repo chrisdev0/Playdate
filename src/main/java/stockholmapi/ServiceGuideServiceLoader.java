@@ -15,6 +15,11 @@ public class ServiceGuideServiceLoader {
         this.apiKey = apiKey;
     }
 
+    /** Skapar en URL med hjälp av urlHelper() och en mängd konstanter som finns i APIUtils.URLS
+     *  Hämtar informationen på den URL-en med getUrl()
+     *  Konverterar resultatet som innehåller fel som gör att JSON-resultatet inte kan konverteras till POJO
+     *  med hjälp av stupidStockholmAPIJSONToNotStupidJSON() (som replacear namnet på de attribut som är okompatibla)
+     * */
     public ServiceUnitTypes[] load() throws Exception {
         String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(APIUtils.URLS.urlHelper(APIUtils.URLS.BASIC_INFO_PLACEHOLDER, APIUtils.URLS.LEKPLATSER, apiKey)));
         return new ObjectMapper().readValue(json, ServiceUnitTypes[].class);
