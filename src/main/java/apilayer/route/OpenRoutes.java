@@ -34,11 +34,7 @@ public class OpenRoutes {
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);
 
-        get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
 
-        get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
-
-        get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
 
         initializeFacebookLogin();
     }

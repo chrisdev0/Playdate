@@ -2,6 +2,7 @@ package apilayer.handlers;
 
 import apilayer.Constants;
 import dblayer.HibernateUtil;
+import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
@@ -26,16 +27,13 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String placeIdStr = request.queryParams("placeId");
         String startTimeStr = request.queryParams("startTime");
-        String endTimeStr = request.queryParams("endTime");
         String visiblityId = request.queryParams("visibilityId");
         String header = request.queryParams("header");
         String description = request.queryParams("description");
         Long placeId = ParserHelpers.parseToLong(placeIdStr);
         Long startTime = ParserHelpers.parseToLong(startTimeStr);
-        Long endTime = ParserHelpers.parseToLong(endTimeStr);
         Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
-
         Long id = null;
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
@@ -45,10 +43,10 @@ public class PlaydateHandler {
         }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         if (user == null) {
-            log.error("User is null");
+            log.error("User null when trying to create playdate");
             throw halt(400, "user is null");
         }
-        Playdate playdate = new Playdate(header, description, startTime, endTime, user, null, playdateVisibilityType);
+        Playdate playdate = new Playdate(header, description, startTime, user, null, playdateVisibilityType);
         Transaction tx = null;
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Place place = session.get(Place.class, placeId);
@@ -60,19 +58,19 @@ public class PlaydateHandler {
             id = (Long)session.save(playdate);
             session.merge(user);
             tx.commit();
+            response.status(200);
+            if (id != null) {
+                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "? " + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + id);
+            }
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
             log.error("error during sql", e);
             response.status(500);
-            return "";
-        }
-        response.status(200);
-        if (id != null) {
-            response.redirect("/protected" + Paths.GETONEPLAYDATE + "?playdateId=" + id);
         }
         return "";
+
     }
 
     /** Hanterar att hämta och visa en Playdate
@@ -161,7 +159,6 @@ public class PlaydateHandler {
         Long playdateId;
         Long placeId = ParserHelpers.parseToLong(placeIdStr);
         Long startTime = ParserHelpers.parseToLong(startTimeStr);
-        Long endTime = ParserHelpers.parseToLong(endTimeStr);
         Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
         PlaydateVisibilityType playdateVisibilityType;
 
@@ -185,39 +182,90 @@ public class PlaydateHandler {
             Playdate playdate = session.get(Playdate.class, playdateId);
             User user = request.session().attribute(Constants.USER_SESSION_KEY);
 
-           if(playdate == null){
-               log.error("playdate is null");
-               throw halt(400);
-           }
-           if(user == null){
-               log.error("user is null");
-               throw halt(400);
-           }
-           if(!playdate.getOwner().equals(user)){
-               log.error("user is not owner of playdate");
-               throw halt(400);
-           }
-
+            if(playdate == null || user == null || !playdate.getOwner().equals(user)){
+                log.error("Unable to update playdate: no playdate with id, user not logged in or user is not owner of playdate");
+                response.status(400);
+                return "";
+            }
             playdate.setHeader(header);
-            playdate.setEndTime(endTime);
             playdate.setStartTime(startTime);
             playdate.setDescription(description);
             playdate.setPlaydateVisibilityType(playdateVisibilityType);
-
-            if(playdate.getPlace().getId()!= placeId){
+            if (!playdate.getPlace().getId().equals(placeId)) {
                 Place placeTemp = session.get(Place.class, placeId);
                 playdate.setPlace(placeTemp);
             }
-
             tx = session.beginTransaction();
             session.update(playdate);
             session.merge(user);
             tx.commit();
 
         }catch(Exception e){
-            tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
         }
 
-       return halt(200);
+        return halt(200);
+    }
+
+    public static Object removePlaydateAttendance(Request request, Response response){
+
+        Session session = null;
+        Transaction tx = null;
+        String playdateId = request.queryParams("playdateId");
+        long lId;
+
+        try {
+            lId = Long.parseLong(playdateId);
+            log.info("Trying to change attendence for playdate with id = " + lId);
+        } catch (NullPointerException | NumberFormatException e) {
+            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateId + "error = " + e.getMessage());
+            throw halt(400);
+        }
+
+        try{
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            User user = request.session().attribute(Constants.USER_SESSION_KEY);
+            Playdate playdate = session.get(Playdate.class, lId);
+
+            if(playdate == null){
+                log.error("playdate is null");
+                throw halt(400);
+            }
+            if(user == null){
+                log.error("user is null");
+                throw halt(400);
+            }
+
+            if(playdate.getOwner().equals(user)){
+                log.error("user is owner of playdate, can't be removed");
+                throw halt(400);
+            }
+
+            for(User u :playdate.getParticipants()) {
+                if (!user.equals(u)) {
+                    log.error("user is not a participant");
+                    throw halt(400);
+                }
+                user.removeAttendingPlaydate(playdate);
+                playdate.removeParticipant(user);
+            }
+
+            session.update(playdate);
+            session.update(user);
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if(session != null){
+                session.close();
+            }
+        }
+        return halt(400);
     }
 }

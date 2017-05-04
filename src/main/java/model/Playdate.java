@@ -17,7 +17,6 @@ import java.util.Set;
     private String description;
 
     private long startTime;
-    private long endTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
@@ -44,11 +43,10 @@ import java.util.Set;
     public Playdate() {
     }
 
-    public Playdate(String header, String description, long startTime, long endTime, User owner, Place place, PlaydateVisibilityType playdateVisibilityType) {
+    public Playdate(String header, String description, long startTime, User owner, Place place, PlaydateVisibilityType playdateVisibilityType) {
         this.header = header;
         this.description = description;
         this.startTime = startTime;
-        this.endTime = endTime;
         this.owner = owner;
         this.place = place;
         this.playdateVisibilityType = playdateVisibilityType;
@@ -63,7 +61,6 @@ import java.util.Set;
         Playdate playdate = (Playdate) o;
 
         if (startTime != playdate.startTime) return false;
-        if (endTime != playdate.endTime) return false;
         if (!header.equals(playdate.header)) return false;
         if (!description.equals(playdate.description)) return false;
         if (!owner.equals(playdate.owner)) return false;
@@ -78,7 +75,6 @@ import java.util.Set;
         result = 31 * result + header.hashCode();
         result = 31 * result + description.hashCode();
         result = 31 * result + (int) (startTime ^ (startTime >>> 32));
-        result = 31 * result + (int) (endTime ^ (endTime >>> 32));
         result = 31 * result + owner.hashCode();
         result = 31 * result + participants.hashCode();
         result = 31 * result + place.hashCode();

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.hibernate.Transaction;
 import spark.Request;
@@ -33,85 +34,81 @@ public class PlaydateDAO {
     }
 
 
-    public List<Playdate> getPlaydateByOwnerId(Long id) {
+    /** Returnerar alla Playdates som en användare (med ett visst id) är ägare till
+     *  @param id       id för användaren som är ägare till playdate
+     *  @return         en Optional som innehåller alla playdates som användaren med id är ägare till
+     * */
+    public Optional<List<Playdate>> getPlaydateByOwnerId(Long id) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             try {
-                return session.createQuery("FROM Playdate WHERE owner.id = :owner_id", Playdate.class)
-                        .setParameter("owner_id", id).list();
+                return Optional.of(session.createQuery("FROM Playdate WHERE owner.id = :owner_id", Playdate.class)
+                        .setParameter("owner_id", id).list());
             } catch (Exception e) {
                 log.error("error ", e);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
+    /** Returnerar en lista med alla playdates som en användare attendar
+     *  Lägger även till de playdates som användaren står som ägare (eftersom användaren inte kommer vara med
+     *  i participants-mängden.
+     *  @param user         användaren vars playdates som användaren ska attenda som ska returneras
+     *  @return             Listan med playdates
+     * */
     public Set<Playdate> getPlaydateWhoUserIsAttending(User user) {
         Set<Playdate> playdates = new HashSet<>();
         try (Session session = HibernateUtil.getInstance().openSession()) {
             String hql = "SELECT p FROM Playdate p JOIN p.participants u WHERE u.id = :id";
             playdates.addAll(session.createQuery(hql, Playdate.class).setParameter("id", user.getId()).list());
         }
-        playdates.addAll(getPlaydateByOwnerId(user.getId()));
+        getPlaydateByOwnerId(user.getId()).ifPresent(playdates::addAll);
         return playdates;
     }
 
-    public static Object removePlaydateAttendance(Request request, Response response){
-
+    /** Sparar en playdate i databasen
+     *  @param playdate     playdate som ska sparas i databasen
+     *
+     *  @return om playdaten kunde sparas i databasen eller inte
+     * */
+    public boolean updatePlaydate(Playdate playdate) {
         Session session = null;
         Transaction tx = null;
-        String playdateId = request.queryParams("playdateId");
-        long lId;
-
         try {
-            lId = Long.parseLong(playdateId);
-            log.info("Trying to change attendence for playdate with id = " + lId);
-        } catch (NullPointerException | NumberFormatException e) {
-            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateId + "error = " + e.getMessage());
-            throw halt(400);
-        }
-
-        try{
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            User user = request.session().attribute(Constants.USER_SESSION_KEY);
-            Playdate playdate = session.get(Playdate.class, lId);
-
-            if(playdate == null){
-                log.error("playdate is null");
-                throw halt(400);
-            }
-            if(user == null){
-                log.error("user is null");
-                throw halt(400);
-            }
-
-            if(playdate.getOwner().equals(user)){
-                log.error("user is owner of playdate, can't be removed");
-                throw halt(400);
-            }
-
-            for(User u :playdate.getParticipants()) {
-                if (!user.equals(u)) {
-                    log.error("user is not a participant");
-                    throw halt(400);
-                }
-                user.removeAttendingPlaydate(playdate);
-                playdate.removeParticipant(user);
-            }
-
             session.update(playdate);
-            session.update(user);
             tx.commit();
-
-        }catch(Exception e){
+            return true;
+        } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
-        } finally {
-            if(session != null){
-                session.close();
-            }
         }
-        return halt(400);
+        return false;
     }
+
+    /** Sparar en ny playdate i databasen
+     *  @param playdate     Playdate som ska sparas i databasen
+     *  @param user         ägare för playdate
+     * */
+    public Optional<Playdate> saveNewPlaydate(Playdate playdate, User user) {
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            Long id = (Long) session.save(playdate);
+            session.save(user);
+            tx.commit();
+            playdate.setId(id);
+            return Optional.of(playdate);
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return Optional.empty();
+        }
+    }
+
 }

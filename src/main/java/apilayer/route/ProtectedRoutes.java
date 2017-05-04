@@ -2,7 +2,6 @@ package apilayer.route;
 
 import apilayer.Constants;
 import apilayer.handlers.*;
-import dblayer.PlaydateDAO;
 import model.User;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
@@ -80,7 +79,7 @@ public class ProtectedRoutes {
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
             //ska pathen vara showplaydate?
-            put(Paths.SHOWPLAYDATE, PlaydateDAO::removePlaydateAttendance);
+            put(Paths.SHOWPLAYDATE, PlaydateHandler::removePlaydateAttendance);
 
             get("/landingpage", (request, response) -> {
                 User user = request.session().attribute(Constants.USER_SESSION_KEY);
@@ -90,6 +89,12 @@ public class ProtectedRoutes {
             }, new VelocityTemplateEngine());
 
             get(Paths.APIIMAGE + "/:id", ImageHandler::handle);
+
+            get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
+
+            get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
+
+            get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
 
         });
     }

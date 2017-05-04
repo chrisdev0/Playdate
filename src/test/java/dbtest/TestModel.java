@@ -26,7 +26,7 @@ public class TestModel {
         hibernateUtil = HibernateUtil.getInstance();
         ownerUser = new User("test", "test@gmail.com");
         Place place = new Place("123abcdef-1-1", "testplatsen", "test", "123", "123", 1, 1, "shortcd");
-        Playdate playdate = new Playdate("titel", "desc", 1234123, 123124123, ownerUser, place, PlaydateVisibilityType.PUBLIC);
+        Playdate playdate = new Playdate("titel", "desc", 1234123, ownerUser, place, PlaydateVisibilityType.PUBLIC);
         attendingUser = new User("test", "test@2.com");
         playdate.addParticipant(attendingUser);
         attendingUser.attendPlaydate(playdate);
