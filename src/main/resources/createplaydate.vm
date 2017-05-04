@@ -26,7 +26,27 @@
 </head>
 <body>
 <div data-role="page" id="skapa-pd" data-theme="d">
+    <div data-role="panel" id="side-panel" data-display="overlay" data-position-fixed="true">
+        <h2>Meny</h2>
+
+        <div class="close-btn-pos">
+            <a href="#" class="ui-btn ui-icon-delete ui-btn-icon-notext
+			ui-corner-all" data-rel="close"></a>
+        </div>
+
+        <a href="#show-profile" class="ui-btn ui-corner-all" >Min Profil</a>
+        <a href="#show-playdates" class="ui-btn ui-corner-all" >Mina Playdates</a>
+        <a href="#" class="ui-btn ui-corner-all" >Inställningar</a>
+        <div class="logout-btn">
+            <a href="#NamnpåpageID" class="ui-btn ui-corner-all ui-icon-logout" >Logga Ut</a>
+        </div>
+
+
+
+    </div>
     <div data-role="header" data-position="fixed "id="login-header">
+        <a href="#side-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">Öppna panelen</a>
+        <a href="#home-page" class="ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all ">Hemknapp</a>
         <div id="head-logo"><img src="/images/playdate_logga_1.png"></div>
     </div>
     <div data-role="main" class="ui-content">
@@ -51,7 +71,6 @@
         <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
 
         <button class="ui-btn">Skapa Playdate!</button>
-        <a href="#startsida">Skapa playdate</a>
     </div>
     <div data-role="footer" data-position="fixed" id="footer">
         <div class="ui-nodisc-icon" id="back-btn">
