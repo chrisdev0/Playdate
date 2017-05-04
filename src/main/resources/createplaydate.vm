@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Logga in</title>
 
-    <link rel="stylesheet" href="css/themes/style.css" />
-    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="css/new-main.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="http:/resources/demos/style.css">
     <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -51,6 +51,7 @@
         <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
 
         <button class="ui-btn">Skapa Playdate!</button>
+        <a href="#startsida">Skapa playdate</a>
     </div>
     <div data-role="footer" data-position="fixed" id="footer">
         <div class="ui-nodisc-icon" id="back-btn">
