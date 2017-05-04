@@ -212,7 +212,7 @@ html .ui-alt-icon .ui-radio-off:after {
 }
 /* Loader */
 .ui-icon-loading {
-	background: url("images/icons-png/ajax-loader.gif");
+	background: url("../images/icons-png/ajax-loader.gif");
 	background-size: 2.875em 2.875em;
 }
 /* Swatches */
@@ -746,8 +746,7 @@ html .ui-panel-page-container-d {
 	text-shadow: 0 /*{d-body-shadow-x}*/ 0px /*{d-body-shadow-y}*/ 0 /*{d-body-shadow-radius}*/ # /*{d-body-shadow-color}*/;
 }
 .ui-body-d {
-	border-width: 1px;
-	border-style: solid;
+	border: 1px solid;
 }
 /* Links */
 .ui-page-theme-d a,

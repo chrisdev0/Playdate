@@ -1,7 +1,6 @@
 package apilayer.route;
 
 import apilayer.StaticFileTemplateHandlerImpl;
-import apilayer.handlers.Paths;
 import spark.template.velocity.VelocityTemplateEngine;
 
 import static spark.Spark.get;
@@ -13,7 +12,7 @@ public class StaticFileRoutes {
                 new StaticFileTemplateHandlerImpl("createplaydate.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
         get("/glomtlosenord.html",
-                new StaticFileTemplateHandlerImpl("forgotpassword.vm", 500)::handleTemplateFileRequest,
+                new StaticFileTemplateHandlerImpl("TODELETE/forgotpassword.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
         get("/showplaydatepage.html",
                 new StaticFileTemplateHandlerImpl("showplaydatepage.vm", 500)::handleTemplateFileRequest,
