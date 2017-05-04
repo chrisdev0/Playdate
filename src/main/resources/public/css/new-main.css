@@ -1,33 +1,44 @@
+.close-btn-pos{
+	position: absolute;
+	top: 33px;
+	right:13px;
+
+}
+.logout-btn{
+	position:relative;
+	padding-top:50px;
+}
+
 #head-logo{
-    text-align: center;
+	text-align: center;
 }
 #date{
-    width: 48%;
-    margin-right: 4%
+	width: 48%;
+	margin-right: 4%
 }
 #time{
-    width:48%
+	width:48%
 }
 #login-logo{
-    width: 9em;
-    padding: 3em 0 3em;
-    margin-top: 10%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    z-index: 1001;
-    position: relative;
+	width: 9em;
+	padding: 3em 0 3em;
+	margin-top: 10%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	z-index: 1001;
+	position: relative;
 }
 #fb-login{
-    background: #4661d9;
+	background: #4661d9;
 }
 #desc-login{
-    text-align: center;
-    font-family: Avenir;
-    font-size: 18px;
-    margin-bottom: 6%;
+	text-align: center;
+	font-family: Avenir;
+	font-size: 18px;
+	margin-bottom: 6%;
 }
 #kidpicture{
-    width: 55%;
-    margin-left: 5%;
+	width: 55%;
+	margin-left: 5%;
 }
