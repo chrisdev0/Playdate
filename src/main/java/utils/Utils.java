@@ -30,4 +30,16 @@ public class Utils {
         }
     }
 
+    public static boolean isNotNullAndNotEmpty(String... strings) {
+        if (strings == null) {
+            return false;
+        }
+        for (String string : strings) {
+            if (string == null || string.trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

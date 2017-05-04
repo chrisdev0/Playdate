@@ -1,7 +1,9 @@
 package apilayer.handlers;
 
 import apilayer.Constants;
+import com.google.gson.Gson;
 import dblayer.HibernateUtil;
+import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -11,6 +13,8 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
+import utils.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -24,53 +28,42 @@ import static spark.Spark.halt;
 @Slf4j
 public class PlaydateHandler {
 
+    /** Skapar en Playdate med hjälp av den data som skickas in
+     *  kollar att header och description inte är tomma
+     *
+     *  Om en playdate kan skapas så redirectas användaren till sidan för den playdaten
+     *  vid olika fel så returneras statuskoden 400
+     * */
     public static Object handleMakePlaydate(Request request, Response response) {
-        String placeIdStr = request.queryParams("placeId");
-        String startTimeStr = request.queryParams("startTime");
-        String visiblityId = request.queryParams("visibilityId");
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        Long placeId = ParserHelpers.parseToLong(placeIdStr);
-        Long startTime = ParserHelpers.parseToLong(startTimeStr);
-        Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
+        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
+        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
+        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
-        Long id = null;
+        if (!Utils.isNotNullAndNotEmpty(header, description)) {
+            response.status(400);
+            return "missing_info";
+        }
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
-            log.error("Illegal visibilityType", e);
-            throw halt(400, e.getMessage());
+            throw halt(400, "illegal visbilitytype");
         }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (user == null) {
-            log.error("User null when trying to create playdate");
-            throw halt(400, "user is null");
+        Optional<Place> placeOptional = PlaceDAO.getInstance().getPlaceById(placeId);
+        if (!placeOptional.isPresent() || user == null) {
+            response.status(400);
+            return "";
         }
-        Playdate playdate = new Playdate(header, description, startTime, user, null, playdateVisibilityType);
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getInstance().openSession()) {
-            Place place = session.get(Place.class, placeId);
-            if (place == null) {
-                throw halt(400, "no place with this id");
-            }
-            playdate.setPlace(place);
-            tx = session.beginTransaction();
-            id = (Long)session.save(playdate);
-            session.merge(user);
-            tx.commit();
-            response.status(200);
-            if (id != null) {
-                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "? " + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + id);
-            }
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            log.error("error during sql", e);
-            response.status(500);
+        Playdate playdate = new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        if (playdateOptional.isPresent()) {
+            response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + placeOptional.get().getId());
+        } else {
+            response.status(400);
         }
         return "";
-
     }
 
     /** Hanterar att hämta och visa en Playdate
@@ -148,27 +141,13 @@ public class PlaydateHandler {
     }
 
     public static Object handleUpdatePlaydate(Request request, Response response){ //put
-        // hämta alla värden från request headern.
-        String placeIdStr = request.queryParams("placeId");
-        String startTimeStr = request.queryParams("startTime");
-        String endTimeStr = request.queryParams("endTime");
-        String visiblityId = request.queryParams("visibilityId");
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        String playdateIdString = request.queryParams("playdateId");
-        Long playdateId;
-        Long placeId = ParserHelpers.parseToLong(placeIdStr);
-        Long startTime = ParserHelpers.parseToLong(startTimeStr);
-        Integer visibilityId = ParserHelpers.parseToInt(visiblityId);
+        Long playdateId = ParserHelpers.parseToLong(request.queryParams("playdateId"));
+        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
+        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
+        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
-
-        try {
-            playdateId = Long.parseLong(playdateIdString);
-            log.info("Trying to find with id = " + playdateId);
-        } catch (NullPointerException | NumberFormatException e) {
-            log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateIdString + "error = " + e.getMessage());
-            throw halt(400);
-        }
 
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
@@ -177,36 +156,38 @@ public class PlaydateHandler {
             throw halt(400, e.getMessage());
         }
 
-        Transaction tx = null;
-        try(Session session = HibernateUtil.getInstance().openSession()){
-            Playdate playdate = session.get(Playdate.class, playdateId);
-            User user = request.session().attribute(Constants.USER_SESSION_KEY);
-
-            if(playdate == null || user == null || !playdate.getOwner().equals(user)){
-                log.error("Unable to update playdate: no playdate with id, user not logged in or user is not owner of playdate");
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(playdateId);
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        if (user == null) {
+            response.status(401);
+            return "";
+        }
+        if (playdateOptional.isPresent() && !placeId.equals(playdateOptional.get().getPlace().getId())) {
+            Optional<Place> placeOpt = PlaceDAO.getInstance().getPlaceById(placeId);
+            if (placeOpt.isPresent()) {
+                playdateOptional.get().setPlace(placeOpt.get());
+            } else {
                 response.status(400);
                 return "";
             }
-            playdate.setHeader(header);
-            playdate.setStartTime(startTime);
-            playdate.setDescription(description);
-            playdate.setPlaydateVisibilityType(playdateVisibilityType);
-            if (!playdate.getPlace().getId().equals(placeId)) {
-                Place placeTemp = session.get(Place.class, placeId);
-                playdate.setPlace(placeTemp);
-            }
-            tx = session.beginTransaction();
-            session.update(playdate);
-            session.merge(user);
-            tx.commit();
-
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
+        } else if (!playdateOptional.isPresent()) {
+            response.status(400);
+            return "";
         }
 
-        return halt(200);
+        Playdate playdate = playdateOptional.get();
+        if (!playdate.getOwner().equals(user)) {
+            response.status(401);
+            return "";
+        }
+        playdate.setDescription(description);
+        playdate.setHeader(header);
+        playdate.setPlaydateVisibilityType(playdateVisibilityType);
+        playdate.setStartTime(startTime);
+        if (!PlaydateDAO.getInstance().updatePlaydate(playdate)) {
+            response.status(400);
+        }
+        return "";
     }
 
     public static Object removePlaydateAttendance(Request request, Response response){
@@ -224,27 +205,27 @@ public class PlaydateHandler {
             throw halt(400);
         }
 
-        try{
+        try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             User user = request.session().attribute(Constants.USER_SESSION_KEY);
             Playdate playdate = session.get(Playdate.class, lId);
 
-            if(playdate == null){
+            if (playdate == null) {
                 log.error("playdate is null");
                 throw halt(400);
             }
-            if(user == null){
+            if (user == null) {
                 log.error("user is null");
                 throw halt(400);
             }
 
-            if(playdate.getOwner().equals(user)){
+            if (playdate.getOwner().equals(user)) {
                 log.error("user is owner of playdate, can't be removed");
                 throw halt(400);
             }
 
-            for(User u :playdate.getParticipants()) {
+            for (User u : playdate.getParticipants()) {
                 if (!user.equals(u)) {
                     log.error("user is not a participant");
                     throw halt(400);
@@ -256,13 +237,12 @@ public class PlaydateHandler {
             session.update(playdate);
             session.update(user);
             tx.commit();
-
-        }catch(Exception e){
+        } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
         } finally {
-            if(session != null){
+            if (session != null) {
                 session.close();
             }
         }

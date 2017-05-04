@@ -19,10 +19,8 @@ public class FriendshipHandler {
     public static Object addFriend(Request request, Response response) {
         String friendIdParam = request.queryParams("id");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
-
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-
-        if (user == null || user.getId() != friendId) {
+        if (user == null || user.getId().equals(friendId)) {
             log.error("User is null or same user id sent");
             throw halt(400, "user is null or same friend id as current user sent");
         }

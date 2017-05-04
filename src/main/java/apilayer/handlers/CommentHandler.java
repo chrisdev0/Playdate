@@ -1,6 +1,9 @@
 package apilayer.handlers;
 
+import apilayer.Constants;
+import com.google.gson.Gson;
 import dblayer.HibernateUtil;
+import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
@@ -8,6 +11,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import spark.Request;
 import spark.Response;
+
+import java.util.Optional;
+import java.util.Set;
 
 import static spark.Spark.halt;
 
@@ -25,42 +31,37 @@ public class CommentHandler {
      *  Kommentaren fås fram genom 'comment' och user kan hämtas
      *  ur session hos request-objektet.
      *
-     *  todo just nu returnerar den halt(400), bör ändras så att den
-     *  todo returnerar alla kommentarer för platsen vilket sedan kan
-     *  todo ritas upp med hjälp av javascript
-     *
      * @param request request för post av kommentaren
      * @param response response for post av kommentaren
+     *
+     * @return      returnerar JSON med alla kommentarer
+     * // TODO: 2017-05-04
+     * todo tvätta bort värden som inte ska skickas ut till frontend, exempelvis fb access token
      * */
     public static Object handlePostComment(Request request, Response response) {
-        String placeIdStr = request.queryParams("placeId");
         try {
-            Long placeId = Long.parseLong(placeIdStr);
+            Long placeId = Long.parseLong(request.queryParams("placeId"));
             String commentStr = request.queryParams("comment");
-            Comment comment = new Comment(commentStr, request.session().attribute("user"), false);
-            Transaction tx = null;
-            try (Session session = HibernateUtil.getInstance().openSession()) {
-                tx = session.beginTransaction();
-                Place place = session.get(Place.class, placeId);
-                if (place == null) {
-                    return halt(400);
+            Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
+            Optional<Place> placeOptional = PlaceDAO.getInstance().getPlaceById(placeId);
+            if (placeOptional.isPresent()) {
+                placeOptional.get().addComment(comment);
+                Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
+                if (comments.isPresent()) {
+                    return new Gson().toJson(comments.get());
+                } else {
+                    response.status(400);
+                    return "";
                 }
-                //comment.setPlace(place);
-                place.addComment(comment);
-                session.update(place);
-                session.save(comment);
-                tx.commit();
-            } catch (Exception e) {
-                log.error("error saving comment", e);
-                if (tx != null) {
-                    tx.rollback();
-                }
+            } else {
+                log.error("couldn't find place to post comment in");
+                response.status(400);
+                return "";
             }
         } catch (NumberFormatException e) {
-            log.error("couldn't parse place id of post comment value = " + placeIdStr);
-            throw halt(400);
+            response.status(400);
+            return "";
         }
-        throw halt(400);
     }
 
     /*

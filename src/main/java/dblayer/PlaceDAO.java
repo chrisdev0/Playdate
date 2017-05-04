@@ -2,7 +2,9 @@ package dblayer;
 
 import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
+import model.Comment;
 import model.Place;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -103,13 +105,14 @@ public class PlaceDAO {
      *
      * */
     public List<Place> getPlaceByLocation(int locX, int locY) {
-        Session session = HibernateUtil.getInstance().openSession();
-        return session.createQuery("FROM Place WHERE geoX <= :xMax AND geoX >= :xMin AND geoY <= :yMax AND geoY >= :yMin", Place.class)
-                .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
-                .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
-                .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
-                .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
-                .list();
+        try(Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM Place WHERE geoX <= :xMax AND geoX >= :xMin AND geoY <= :yMax AND geoY >= :yMin", Place.class)
+                    .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
+                    .list();
+        }
     }
 
     /** Returnerar platsen med
@@ -178,5 +181,39 @@ public class PlaceDAO {
             }
         }
         return ret;
+    }
+
+    /** Sparar en kommentar i databasen
+     *  uppdaterar Place som kommentaren gäller
+     * */
+    public Optional<Set<Comment>> saveComment(Comment comment, Place place) {
+        Set<Comment> ret = null;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.save(comment);
+            session.update(place);
+            Hibernate.initialize(place.getComments());
+            tx.commit();
+            ret = place.getComments();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return Optional.ofNullable(ret);
+    }
+
+    public Optional<Set<Comment>> getCommentsForPlace(Place place) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(place.getComments());
+            return Optional.ofNullable(place.getComments());
+        }
     }
 }

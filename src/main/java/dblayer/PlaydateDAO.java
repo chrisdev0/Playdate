@@ -2,6 +2,7 @@ package dblayer;
 
 import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
+import model.Place;
 import model.Playdate;
 import model.User;
 import org.hibernate.Session;
@@ -31,6 +32,10 @@ public class PlaydateDAO {
             instance = new PlaydateDAO();
         }
         return instance;
+    }
+
+    public Optional<Playdate> getPlaydateById(Long id) {
+        try(Session session = HibernateUtil.getInstance().openSession()){ return session.byId(Playdate.class).loadOptional(id);}
     }
 
 
@@ -72,6 +77,7 @@ public class PlaydateDAO {
      *  @return om playdaten kunde sparas i databasen eller inte
      * */
     public boolean updatePlaydate(Playdate playdate) {
+        boolean ret = false;
         Session session = null;
         Transaction tx = null;
         try {
@@ -79,13 +85,17 @@ public class PlaydateDAO {
             tx = session.beginTransaction();
             session.update(playdate);
             tx.commit();
-            return true;
+            ret = true;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-        return false;
+        return ret;
     }
 
     /** Sparar en ny playdate i databasen
@@ -93,6 +103,7 @@ public class PlaydateDAO {
      *  @param user         ägare för playdate
      * */
     public Optional<Playdate> saveNewPlaydate(Playdate playdate, User user) {
+        Optional<Playdate> playdateOptional = Optional.empty();
         Session session = null;
         Transaction tx = null;
         try {
@@ -102,13 +113,19 @@ public class PlaydateDAO {
             session.save(user);
             tx.commit();
             playdate.setId(id);
-            return Optional.of(playdate);
+            playdateOptional = Optional.of(playdate);
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
-            return Optional.empty();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
+        return playdateOptional;
     }
+
+
 
 }

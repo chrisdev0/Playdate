@@ -5,9 +5,7 @@ import org.hibernate.Session;
 
 import java.util.Optional;
 
-/**
- * Created by martinsenden on 2017-05-04.
- */
+
 public class UserDAO {
     private static UserDAO instance;
 
