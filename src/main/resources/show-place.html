@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <title>show-place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="htmltemplates/themes/style.css" />
+    <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" /><link rel="stylesheet" href="style-egen.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
+
+</head>
+<body>
+<div data-role="page" id="forgot-password" data-theme="d">
+    <div data-role="header" id="login-header">
+        <img src="images/pd-logga.png" width="20%">
+    </div>
+    <br>
+    <div id="platsBild">
+        <img id="plats" img src="../${playdate.getPlace().getImageUrl()}" alt="bild på lekplats" >
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <h4>Beskrivning</h4>
+        <p><a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}"></a></p>
+    </div>
+    <br>
+    <label for="text-input">Kommentarer:</label>
+    <input id="kommentar-input" value="text">
+    <div id="Lägg till kommentar">
+        <button class="ui-btn">Lägg till kommentar</button>
+        <br>
+    </div>
+
+    <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h4>Karta</h4>
+            <p><a href="karta"></a></p>
+        </div>
+
+
+        <button class="ui-btn">Tillbaka</button>
+    </div>
+</body>
+</html>
