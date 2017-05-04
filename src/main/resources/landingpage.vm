@@ -19,6 +19,11 @@
     <p>$user.id</p>
     <p>$user.fbToken</p>
     <p>$user.facebookThirdPartyID</p>
+    <h1>Image</h1>
+    <form method='post' enctype='multipart/form-data' action="/protected/postnewprofilepicture">
+        <input type='file' name='profile_picture_file'>
+        <button>Upload picture</button>"
+    </form>
 </div>
 </body>
 </html>

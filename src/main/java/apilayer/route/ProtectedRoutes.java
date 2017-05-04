@@ -88,13 +88,17 @@ public class ProtectedRoutes {
                 return new ModelAndView(map, "landingpage.vm");
             }, new VelocityTemplateEngine());
 
-            get(Paths.APIIMAGE + "/:id", ImageHandler::handle);
+            get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
 
             get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
 
             get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
 
             get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
+
+            post(Paths.POSTNEWPROFILEPICTURE, UploadHandler::handleUploadProfilePicture);
+
+            get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
 
         });
     }

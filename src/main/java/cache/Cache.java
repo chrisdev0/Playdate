@@ -29,8 +29,8 @@ public class Cache {
         apiImageLoader = new APIImageLoader();
 
         imageCache = CacheBuilder.newBuilder()
-                .maximumSize(100)
-                .expireAfterAccess(30, TimeUnit.MINUTES)
+                .maximumSize(200)
+                .expireAfterAccess(30, TimeUnit.HOURS)
                 .build(apiImageLoader);
 
     }

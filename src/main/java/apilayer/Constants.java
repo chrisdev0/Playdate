@@ -18,6 +18,9 @@ public class Constants {
     public static final int LENGTH_OF_SALT = 20;
     public static final String MAGIC_MISSING_IMAGE = "-1";
     public static final String ABSOLUTE_URL;
+
+    public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
+
     static {
         if (DEV) {
             ABSOLUTE_URL = "http://localhost:" + PORT;

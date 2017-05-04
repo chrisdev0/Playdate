@@ -45,7 +45,7 @@
         <mapping class="model.Invite" />
         <mapping class="model.Friendship" />
         <mapping class="model.FriendshipRequest" />
-        <mapping class="stockholmapi.temporaryobjects.PlaceHolder" />
+        <mapping class="model.ProfilePicture" />
         <mapping class="model.GeographicalArea" />
 
     </session-factory>
