@@ -31,10 +31,14 @@ public class User {
 
     private String profilePictureUrl;
 
+    @OneToMany(mappedBy = "friend")
+    private Set<Friendship> friends = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiver")
+    private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
+
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
-
-
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private Set<Playdate> attendingPlaydates = new HashSet<>();
