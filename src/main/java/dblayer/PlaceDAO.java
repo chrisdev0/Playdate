@@ -112,13 +112,9 @@ public class PlaceDAO {
                 .list();
     }
 
-    /** ###     ###     ######         ##
-     *  ###     ###     ##             ##
-     *  ###     ###     ##             ##
-     *  ###########     ####           ##
-     *  ###     ###     ##             ##
-     *  ###     ###     ##       ##   ##
-     *  ###     ###     ######     ###
+    /** Returnerar platsen med
+     * @param placeId som skickas in
+     *  (om den finns)
      * */
     public Optional<Place> getPlaceById(Long placeId) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
@@ -126,6 +122,12 @@ public class PlaceDAO {
         }
     }
 
+    /** Försöker ta bort en plats med
+     *  @param placeId
+     *  om den finns och kunde tas bort så returneras true
+     *  annars false
+     *
+     * */
     public boolean deletePlaceById(Long placeId) {
         Session session = null;
         Transaction tx = null;
@@ -152,6 +154,10 @@ public class PlaceDAO {
         return ret;
     }
 
+    /** Sparar eller uppdaterar en plats i databasen
+     *  Returnerar true om den kunde uppdateras/sparas
+     *  false om det inte gick
+     * */
     public boolean storeOrUpdatePlace(Place place) {
         Session session = null;
         Transaction tx = null;
