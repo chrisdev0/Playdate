@@ -15,10 +15,12 @@
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
 
 </head>
+
 <body>
+
 <div data-role="page" id="forgot-password" data-theme="d">
     <div data-role="header" id="login-header">
-        <img src="images/pd-logga.png" width="20%">
+        <img src="public/images/pd-logga.png" width="20%">
     </div>
     <br>
     <div id="platsBild">
@@ -28,10 +30,25 @@
     <br>
     <br>
     <br>
+
+
     <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
         <h4>Beskrivning</h4>
-        <p><a href="/protected/getoneplace?placeId=$!{playdate.getPlace().getId()}"></a></p>
+        <p>Mer om oss
+
+            Verksamheten är öppen året runt, med undantag av kyrkliga dagar. Barnen och djuren är det viktigaste i Bandängens verksamhet. I parkleken finns tillgång till lekmaterial, toaletter och kafé.
+
+            Här finns en lekpark med lantgård i stadsmiljö. I lekparken finns gungor, klätterställning och små lekstugor. Du kan låna cyklar, månbilar, bollar, hopprep samt olika sällskapsspel – allt för att du ska trivas. Om Du saknar något så tala med personalen, så hjälper de till.
+
+            Vi har cykelfritt på onsdagar.
+
+            Inne i parkhuset kan Du spela pingis, biljard, läsa, fika samt en massa annat. På sommaren kan du bada i vår fina plaskdamm med renat och klorerat vatten och vintertid kan du roa dig med skridsko- och pulkaåkning samt svänga runt på slängkälken.
+
+            </p>
+   <!--  $ !{playdate.getPlace().getId()}"></a></p> -->
     </div>
+
+
     <br>
     <label for="text-input">Kommentarer:</label>
     <input id="kommentar-input" value="text">
@@ -40,13 +57,31 @@
         <br>
     </div>
 
-    <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-            <h4>Karta</h4>
-            <p><a href="karta"></a></p>
-        </div>
 
 
-        <button class="ui-btn">Tillbaka</button>
-    </div>
+
+
+    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+
+    <script>
+        function myMap() {
+            var mapOptions = {
+                center: new google.maps.LatLng(51.5, -0.12),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            }
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        }
+
+    </script>
+
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvNNq0cy2mq9EiNwAYU9Tj1cSz74v9ckw&callback=myMap"></script>
+
+
+    <button class="ui-btn">Tillbaka</button>
+</div>
 </body>
 </html>
