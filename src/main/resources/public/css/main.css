@@ -161,7 +161,65 @@ body{
     margin-bottom: 6%;
 }
 #kidpicture{
-    width: 55%;
-    margin: 0 auto;
-    z-index: 2000;
+    width: 90%;
+
+}
+
+.image-center {
+    padding: 2em 23%;
+}
+
+.footer-black-btn {
+    color: black !important;
+}
+
+.center-text-in-div {
+    text-align: center;
+}
+
+#footer-image-btn {
+    padding-top: 0.4em;
+    padding-left: 0.4em;
+}
+
+#footer-pd-img {
+    width: 100%;
+    position: relative;
+    float: left;
+
+    top: -25px;
+    padding-left: 0.4em;
+    border: 0;
+}
+
+.div-overflow-visible {
+    overflow: visible;
+}
+
+#div-footer {
+    height: 4.2em;
+}
+
+#footer-logo {
+    float: left;
+    left: -5px;
+    top: -35px;
+    position: relative;
+}
+
+#playdate-overlay-plus {
+    color: black;
+    font-size: 2em;
+    position: relative;
+    left: 10px;
+    z-index: 100;
+}
+
+.footer-btn-div {
+    margin-top: 0.6em;
+}
+
+.footer-btn-div div p {
+    color: black;
+    font-size: 0.7em;
 }
