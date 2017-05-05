@@ -28,6 +28,7 @@ public class Paths {
     public static final String GETPLACEBYGEONAME = "/getplacebygeoarea";
     public static final String POSTNEWPROFILEPICTURE = "/postnewprofilepicture";
     public static final String GETPROFILEPICTURE = "/getprofilepicture";
+    public static final String GETFEED = "/getfeed";
 
 
     public static class StaticFilePaths {
