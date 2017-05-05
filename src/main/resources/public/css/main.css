@@ -127,8 +127,12 @@ body{
 }
 
 
-#head-logo{
+#head-logo {
     text-align: center;
+}
+
+#head-logo img {
+    height: 3em;
 }
 
 #date{
