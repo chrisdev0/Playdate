@@ -15,6 +15,7 @@ import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.SecurityFilter;
 import presentable.FeedObject;
 import secrets.Secrets;
+import utils.ParserHelpers;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -41,8 +42,11 @@ public class OpenRoutes {
         get(Paths.LOGOUT, LoginHandler::logOut);
 
         get(Paths.GETFEED, (request, response) -> {
-            Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", 0, 10);
-            return new Gson().toJson(norrmalm.<Object>map(placePaginationWrapper -> placePaginationWrapper.stream().map(FeedObject::createFromPlace).collect(Collectors.toList())).orElse(""));
+            Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
+            PaginationWrapper<FeedObject> paginationWrapper = new PaginationWrapper<>(
+                    norrmalm.get().getCollection().stream().map(FeedObject::createFromPlace).collect(Collectors.toList()),
+                    norrmalm.get().getPaginationOffset());
+            return new Gson().toJson(paginationWrapper);
         });
 
         initializeFacebookLogin();
