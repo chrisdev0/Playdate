@@ -18,6 +18,7 @@ public class PaginationWrapper<T> {
         this.paginationOffset = paginationOffset;
     }
 
+
     public Stream<T> stream() {
         return collection.stream();
     }
