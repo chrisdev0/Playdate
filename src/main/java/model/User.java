@@ -41,7 +41,7 @@ public class User {
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
-    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
@@ -130,9 +130,8 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                ", invitesToPlaydates=" + invitesToPlaydates +
+                ", invitesToPlaydates size =" + invitesToPlaydates.size() +
                 ", gender=" + gender +
-                //", children=" + children +
                 '}';
     }
 }

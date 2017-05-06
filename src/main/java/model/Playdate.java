@@ -36,6 +36,14 @@ import java.util.Set;
 
     private PlaydateVisibilityType playdateVisibilityType;
 
+    public boolean addInvite(Invite invite) {
+        return invites.add(invite);
+    }
+
+    public boolean removeInvite(Invite invite) {
+        return invites.remove(invite);
+    }
+
     public boolean addParticipant(User participant) {
         return participants.add(participant);
     }

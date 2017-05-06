@@ -1,7 +1,6 @@
 package apilayer.handlers;
 
 import apilayer.Constants;
-import com.google.gson.Gson;
 import dblayer.HibernateUtil;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
@@ -15,12 +14,7 @@ import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static spark.Spark.delete;
 import static spark.Spark.halt;
@@ -57,7 +51,7 @@ public class PlaydateHandler {
             return "";
         }
         Playdate playdate = new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType);
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         if (playdateOptional.isPresent()) {
             response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + placeOptional.get().getId());
         } else {

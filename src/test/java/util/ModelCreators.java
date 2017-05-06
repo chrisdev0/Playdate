@@ -6,6 +6,7 @@ import dblayer.UserDAO;
 import model.*;
 import testhelpers.HibernateTests;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
@@ -61,6 +62,11 @@ public class ModelCreators {
         assertTrue(b);
     }
 
+    public static void remove(Invite invite) {
+        boolean b = PlaydateDAO.getInstance().removeInvite(invite, invite.getPlaydate(), invite.getInvited());
+        assertTrue(b);
+    }
+
     public static void remove(Place place) {
         boolean b = PlaceDAO.getInstance().deletePlaceById(place.getId());
         assertTrue(b);
@@ -70,4 +76,26 @@ public class ModelCreators {
         boolean b = PlaydateDAO.getInstance().deletePlaydate(playdate);
         assertTrue(b);
     }
+
+    public static void save(User user) {
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        assertTrue(b);
+    }
+
+    public static void save(Place place) {
+        boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b);
+    }
+
+    public static void save(Playdate playdate) {
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
+        assertTrue(playdateOptional.isPresent());
+    }
+
+    public static void save(Invite invite, User user, Playdate playdate) {
+        boolean b = PlaydateDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+        assertTrue(b);
+    }
+
+
 }

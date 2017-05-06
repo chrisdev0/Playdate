@@ -1,8 +1,7 @@
 package dblayer;
 
-import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
-import model.Place;
+import model.Invite;
 import model.Playdate;
 import model.User;
 import org.hibernate.Session;
@@ -12,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.hibernate.Transaction;
-import spark.Request;
-import spark.Response;
 
 import static spark.Spark.halt;
 
@@ -71,6 +68,7 @@ public class PlaydateDAO {
         return playdates;
     }
 
+
     /** Sparar en playdate i databasen
      *  @param playdate     playdate som ska sparas i databasen
      *
@@ -100,10 +98,8 @@ public class PlaydateDAO {
     }
 
     /** Sparar en ny playdate i databasen
-     *  @param playdate     Playdate som ska sparas i databasen
-     *  @param user         ägare för playdate
-     * */
-    public Optional<Playdate> saveNewPlaydate(Playdate playdate, User user) {
+     *  @param playdate     Playdate som ska sparas i databasen */
+    public Optional<Playdate> saveNewPlaydate(Playdate playdate) {
         Optional<Playdate> playdateOptional = Optional.empty();
         Session session = null;
         Transaction tx = null;
@@ -111,7 +107,7 @@ public class PlaydateDAO {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             Long id = (Long) session.save(playdate);
-            session.update(user);
+            session.update(playdate.getOwner());
             tx.commit();
             playdate.setId(id);
             playdateOptional = Optional.of(playdate);
@@ -140,6 +136,7 @@ public class PlaydateDAO {
             tx.commit();
             ret = true;
         } catch (Exception e) {
+            log.error("error deleting playdate", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -152,6 +149,90 @@ public class PlaydateDAO {
         return ret;
     }
 
+    public boolean addAttendance(User user, Playdate playdate) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.update(playdate);
+            session.update(user);
+            playdate.addParticipant(user);
+            user.attendPlaydate(playdate);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
 
+    public boolean addInviteToUserAndPlaydate(User user, Invite invite, Playdate playdate) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.update(playdate);
+            session.update(user);
+            session.save(invite);
+
+            playdate.addInvite(invite);
+            user.addInvite(invite);
+
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error adding invite", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
+    public boolean removeInvite(Invite invite, Playdate playdate, User user) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.update(user);
+            session.update(playdate);
+
+            user.removeInvite(invite);
+            playdate.removeInvite(invite);
+
+            session.remove(invite);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error removing invite", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
 
 }

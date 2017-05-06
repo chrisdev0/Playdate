@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
+import static util.ModelCreators.remove;
 
 @Slf4j
 public class PlaceDAOTest extends HibernateTests {
@@ -253,6 +254,53 @@ public class PlaceDAOTest extends HibernateTests {
 
 
         places.forEach(p -> PlaceDAO.getInstance().deletePlaceById(p.getId()));
+    }
+
+    @Test
+    public void testGetPlaceByCoord() {
+        Place place = ModelCreators.createPlace();
+        place.setGeoX(1000);
+        place.setGeoY(1000);
+        boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b);
+        assertNotNull(place.getId());
+
+        List<Place> placeByLocation = PlaceDAO.getInstance().getPlaceByLocation(1000, 1000);
+        assertNotNull(placeByLocation);
+        assertEquals(1, placeByLocation.size());
+        assertEquals(place.getId(), placeByLocation.get(0).getId());
+
+        remove(place);
+    }
+
+    @Test
+    public void testGetPlaceByCoord2() {
+        Place place = ModelCreators.createPlace();
+        place.setGeoX(1000);
+        place.setGeoY(1000);
+        boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b);
+        assertNotNull(place.getId());
+
+        Place outsideArea = ModelCreators.createPlace();
+        outsideArea.setGeoY(3001);
+        outsideArea.setGeoX(3001);
+        boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(outsideArea);
+        assertTrue(b1);
+        assertNotNull(outsideArea.getId());
+
+        List<Place> placeByLocation = PlaceDAO.getInstance().getPlaceByLocation(1000, 1000);
+        assertNotNull(placeByLocation);
+        assertEquals(1, placeByLocation.size());
+        assertEquals(place.getId(), placeByLocation.get(0).getId());
+
+        List<Place> placeByLocationAll = PlaceDAO.getInstance().getPlaceByLocation(2000, 2000);
+        assertNotNull(placeByLocationAll);
+        assertEquals(2, placeByLocationAll.size());
+
+
+        remove(place);
+        remove(outsideArea);
     }
 
 

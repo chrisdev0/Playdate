@@ -3,6 +3,8 @@ package dbtest;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
+import lombok.extern.slf4j.Slf4j;
+import model.Invite;
 import model.Place;
 import model.Playdate;
 import model.User;
@@ -10,11 +12,13 @@ import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.remove;
+import static util.ModelCreators.*;
 
+@Slf4j
 public class PlaydateDAOTest extends HibernateTests {
 
 
@@ -29,7 +33,7 @@ public class PlaydateDAOTest extends HibernateTests {
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b1);
 
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         assertTrue(playdateOptional.isPresent());
         assertNotNull(playdate.getId());
 
@@ -52,7 +56,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
 
 
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         assertFalse(playdateOptional.isPresent());
 
         boolean b2 = PlaydateDAO.getInstance().deletePlaydate(playdate);
@@ -72,7 +76,7 @@ public class PlaydateDAOTest extends HibernateTests {
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b1);
 
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         assertTrue(playdateOptional.isPresent());
         assertNotNull(playdate.getId());
 
@@ -96,7 +100,7 @@ public class PlaydateDAOTest extends HibernateTests {
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b1);
 
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate, user);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         assertTrue(playdateOptional.isPresent());
         assertNotNull(playdate.getId());
 
@@ -114,6 +118,107 @@ public class PlaydateDAOTest extends HibernateTests {
         remove(place);
         remove(playdateById.get());
     }
+
+    @Test
+    public void testGetPlaydateByOwner() {
+        Place place = createPlace();
+        User user = createUser();
+        Playdate playdate = createPlaydate(user, place);
+
+        boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b);
+        assertNotNull(place.getId());
+
+
+        boolean b1 = UserDAO.getInstance().saveUserOnLogin(user);
+        assertTrue(b1);
+        assertNotNull(user.getId());
+
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
+        assertTrue(playdateOptional.isPresent());
+        assertNotNull(playdate.getId());
+
+        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
+        assertTrue(playdateByOwnerId.isPresent());
+        assertEquals(1, playdateByOwnerId.get().size());
+        assertEquals(playdate.getId(), playdateByOwnerId.get().get(0).getId());
+
+        remove(user);
+        remove(place);
+        remove(playdate);
+    }
+
+
+    @Test
+    public void testgetPlaydateWhoUserIsAttending() {
+        User user = createUser();
+        User owner = createUser();
+
+        Place place = createPlace();
+        Playdate playdate = createPlaydate(owner, place);
+
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        assertTrue(b);
+        assertNotNull(user.getId());
+
+        boolean b1 = UserDAO.getInstance().saveUserOnLogin(owner);
+        assertTrue(b1);
+        assertNotNull(owner.getId());
+
+        boolean b2 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b2);
+        assertNotNull(place.getId());
+
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
+        assertTrue(playdateOptional.isPresent());
+        assertNotNull(playdate.getId());
+
+        user.attendPlaydate(playdate);
+        boolean b4 = playdate.addParticipant(user);
+        assertTrue(b4);
+
+        boolean b3 = PlaydateDAO.getInstance().addAttendance(user, playdate);
+        assertTrue(b3);
+
+        assertTrue(user.getAttendingPlaydates().size() > 0);
+
+        remove(playdate);
+        remove(place);
+        remove(user);
+        remove(owner);
+    }
+
+
+    @Test
+    public void addInviteToUser() {
+        User user = createUser();
+        User owner = createUser();
+
+        Place place = createPlace();
+
+        Playdate playdate = createPlaydate(owner, place);
+
+        save(user);
+        save(owner);
+        save(place);
+        save(playdate);
+        assertNotNull(playdate.getId());
+        assertNotNull(user.getId());
+
+        Invite invite = new Invite("invite", false, playdate, user);
+
+        save(invite, user, playdate);
+        assertNotNull(invite.getId());
+
+        remove(invite);
+        remove(playdate);
+
+        remove(place);
+        remove(user);
+        remove(owner);
+    }
+
+
 
 
 
