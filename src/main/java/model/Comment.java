@@ -15,9 +15,10 @@ import java.util.Date;
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private User commenter;
 
     /*

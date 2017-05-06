@@ -5,6 +5,7 @@ import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.DBAPIImage;
 import model.ProfilePicture;
+import org.apache.commons.lang.ArrayUtils;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
@@ -51,7 +52,7 @@ public class ImageHandler {
             if (profilePictureOfUser.isPresent()) {
                 HttpServletResponse raw = response.raw();
                 ServletOutputStream outputStream = raw.getOutputStream();
-                outputStream.write(profilePictureOfUser.get().getImage());
+                outputStream.write(ArrayUtils.toPrimitive(profilePictureOfUser.get().getImage()));
                 outputStream.flush();
                 outputStream.close();
                 return response.raw();

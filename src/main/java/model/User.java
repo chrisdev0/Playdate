@@ -17,6 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(unique = true, nullable = false)
@@ -34,10 +35,10 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "friend")
+    @OneToMany(mappedBy = "friend", cascade = CascadeType.REMOVE)
     private Set<Friendship> friends = new HashSet<>();
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

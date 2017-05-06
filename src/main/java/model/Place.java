@@ -37,6 +37,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     @Column(unique = true)
     private String sthlmAPIid;
 
+    @Column(nullable = false)
     private String name;
 
     @Type(type = "text")
@@ -56,11 +57,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     private boolean isInitialized = false;
 
-    public Place setInfo(PlaceHolder placeHolder) {
-        //todo placeholderinfo -> place
-        isInitialized = true;
-        return this;
-    }
+
 
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

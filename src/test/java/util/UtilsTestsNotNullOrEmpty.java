@@ -15,8 +15,7 @@ public class UtilsTestsNotNullOrEmpty {
 
     @Test
     public void testIsNull() {
-        String isNull = null;
-        assertFalse(Utils.isNotNullAndNotEmpty(isNull));
+        assertFalse(Utils.isNotNullAndNotEmpty((String) null));
     }
 
     @Test

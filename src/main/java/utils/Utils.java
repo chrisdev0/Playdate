@@ -24,11 +24,6 @@ public class Utils {
         return string.replaceAll("\\D+", "");
     }
 
-    public static class ValidationHelpers {
-        public static boolean passwordContainsIllegalChar(String password) {
-            return password != null && !password.isEmpty() && password.contains(" ");
-        }
-    }
 
     public static boolean isNotNullAndNotEmpty(String... strings) {
         if (strings == null) {

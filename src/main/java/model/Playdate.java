@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,18 +14,21 @@ import java.util.Set;
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String header;
+
+    @Type(type = "text")
     private String description;
 
     private long startTime;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private User owner;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Set<User> participants = new HashSet<>();
 
-    @OneToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
     private Set<Invite> invites = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

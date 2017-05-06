@@ -87,6 +87,7 @@ public class PlaydateDAO {
             tx.commit();
             ret = true;
         } catch (Exception e) {
+            log.error("error updating playdate", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -110,11 +111,12 @@ public class PlaydateDAO {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             Long id = (Long) session.save(playdate);
-            session.save(user);
+            session.update(user);
             tx.commit();
             playdate.setId(id);
             playdateOptional = Optional.of(playdate);
         } catch (Exception e) {
+            log.error("error saving playdate", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -124,6 +126,30 @@ public class PlaydateDAO {
             }
         }
         return playdateOptional;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public boolean deletePlaydate(Playdate playdate) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.remove(playdate);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
     }
 
 

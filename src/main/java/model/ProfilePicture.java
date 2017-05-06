@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Data;
+import org.apache.commons.lang.ArrayUtils;
 
 import javax.persistence.*;
 
@@ -13,8 +14,17 @@ public class ProfilePicture {
     private Long id;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] image;
+    @Column(columnDefinition = "LONGBLOB", nullable = false)
+    private Byte[] image;
+
+
+    public void setImage(Byte[] image) {
+        this.image = image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = ArrayUtils.toObject(image);
+    }
 
 
 }

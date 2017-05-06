@@ -46,77 +46,99 @@
         </plugins>
     </build>
 
+    <!-- Bibliotek för webbservern-->
     <dependencies>
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
             <version>2.5.5</version>
         </dependency>
+
+        <!-- Bibliotek för att hantera velocity-template -->
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-template-velocity</artifactId>
             <version>2.5.5</version>
         </dependency>
+
+        <!-- Bibliotek med hjälpmetoder-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.0</version>
         </dependency>
+
+        <!-- Bibliotek med en stor mängd hjälpmetoder m.m. -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>21.0</version>
         </dependency>
+
+        <!-- Bibliotek för att hämta och hantera webbsidor -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
+
+        <!-- ORM-bibliotek-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.2.10.Final</version>
         </dependency>
+
+        <!-- Bibliotek för kopplingen till MySQL-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>6.0.6</version>
         </dependency>
+
+        <!-- Logger -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.21</version>
         </dependency>
+
+        <!-- Bibliotek för att utföra unit-tester-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
+        <!-- Bibliotek för att konvertera POJO till JSON-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.6.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
-        <!-- https://mvnrepository.com/artifact/org.facebook4j/facebook4j-core -->
-        <!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
+
+        <!-- Bibliotek för att hämta data från facebook-->
         <dependency>
             <groupId>com.restfb</groupId>
             <artifactId>restfb</artifactId>
             <version>2.0.0-rc.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <!-- Bibliotek som städar upp koden genom att autogenerera en stor mängd boilerplate code -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
         </dependency>
+
+        <!-- Bibliotek som hjälper till att validera indata-->
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.4.1</version>
         </dependency>
+
+        <!-- Bibliotek som hanterar konvertering från JSON till POJO -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -132,17 +154,30 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.8.5</version>
         </dependency>
+
+        <!-- Bibliotek som hanterar OAuth för spark-->
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spark-pac4j</artifactId>
             <version>2.0.0-RC2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.pac4j/pac4j-oauth -->
+
+        <!-- Bibliotek som hanterar OAuth facebook login-->
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oauth</artifactId>
             <version>2.0.0-RC2</version>
         </dependency>
+
+
+        <!-- Bibliotek som hjälper till att generera data till unit tests-->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.13</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

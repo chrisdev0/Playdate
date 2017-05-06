@@ -48,11 +48,11 @@ public class PlaceDAO {
     /** Returnerar en lista med alla platser för alla de ids som skickas in
      *  som parameter
      * */
-    public List<Place> getPlaceByMultiSthlmId(Set<String> ids) {
+    public Optional<List<Place>> getPlaceByMultiSthlmId(Set<String> ids) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            return session.createQuery("FROM Place WHERE sthlmAPIid in (:ids)", Place.class)
+            return Optional.of(session.createQuery("FROM Place WHERE sthlmAPIid in (:ids)", Place.class)
                     .setParameter("ids", ids)
-                    .list();
+                    .list());
         }
     }
 
@@ -199,6 +199,7 @@ public class PlaceDAO {
             tx.commit();
             ret = place.getComments();
         } catch (Exception e) {
+            log.error("error save comment", e);
             if (tx != null) {
                 tx.rollback();
             }

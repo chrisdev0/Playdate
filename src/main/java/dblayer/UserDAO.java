@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.pac4j.oauth.profile.facebook.FacebookProfile;
-import utils.Utils;
 
 import java.util.Optional;
 
@@ -24,36 +22,28 @@ public class UserDAO {
         }
         return instance;
     }
-    public Optional<User> getUserById(Long friendId){
+
+
+    public Optional<User> getUserById(Long userId){
         try(Session session = HibernateUtil.getInstance().openSession()){
-            return session.byId(User.class).loadOptional(friendId);
+            return session.byId(User.class).loadOptional(userId);
         }
     }
 
-    public Optional<User> saveOrUpdateUserOnLogin(FacebookProfile facebookProfile) {
-        if (Utils.isNotNullAndNotEmpty(facebookProfile.getDisplayName(), facebookProfile.getEmail(),
-                facebookProfile.getThirdPartyId(), facebookProfile.getId())) {
-            User user = new User(facebookProfile.getDisplayName(), facebookProfile.getEmail());
-            user.setGender(Gender.genderFromFacebookGender(facebookProfile.getGender()));
-            user.setFbToken(facebookProfile.getAccessToken());
-            user.setFacebookThirdPartyID(facebookProfile.getThirdPartyId());
-            return Optional.of(user);
-        }
-        return Optional.empty();
-    }
 
-    public Optional<User> getUserByEmail(String thirdPartyAPIID) {
+    public Optional<User> getUserByThirdPartyAPIID(String thirdPartyAPIID) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM User WHERE facebookThirdPartyID = :thirdparty", User.class)
                     .setParameter("thirdparty", thirdPartyAPIID).uniqueResultOptional();
         }
     }
 
+
     public boolean saveUserOnLogin(User user) {
         boolean ret = false;
         Session session = null;
         Transaction tx = null;
-        Optional<User> userOptional = getUserByEmail(user.getEmail());
+        Optional<User> userOptional = getUserByThirdPartyAPIID(user.getFacebookThirdPartyID());
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
@@ -78,6 +68,7 @@ public class UserDAO {
         return ret;
     }
 
+
     public Optional<Long> saveImageToDB(ProfilePicture profilePicture) {
         Optional<Long> ret = Optional.empty();
         Session session = null;
@@ -96,6 +87,47 @@ public class UserDAO {
         } finally {
             if (session != null) {
                 session.close();
+            }
+        }
+        return ret;
+    }
+
+
+    @SuppressWarnings("Duplicates")
+    public boolean deleteProfilePicture(ProfilePicture profilePicture) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.remove(profilePicture);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error in delete profile picture", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
+        return ret;
+    }
+
+
+    @SuppressWarnings("Duplicates")
+    public boolean deleteUser(User user) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.remove(user);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
             }
         }
         return ret;
