@@ -130,7 +130,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                ", invitesToPlaydates size =" + invitesToPlaydates.size() +
                 ", gender=" + gender +
                 '}';
     }

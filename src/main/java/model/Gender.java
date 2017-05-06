@@ -2,12 +2,22 @@ package model;
 
 public enum Gender {
 
-    MALE(0), FEMALE(1), OTHER(2);
+    MALE(0, "Man"), FEMALE(1, "Kvinna"), OTHER(2, "Annat");
 
     private int id;
+    private String fronname;
 
-    Gender(int id) {
+    Gender(int id, String frontname) {
         this.id = id;
+        this.fronname = frontname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFronname() {
+        return fronname;
     }
 
     @SuppressWarnings("Duplicates")

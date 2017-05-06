@@ -1,0 +1,96 @@
+#* @vtlvariable name="user" type="model.User" *#
+#* @vtlvariable name="gender" type="model.Gender" *#
+
+<html>
+<head>
+    <title>Min profil</title>
+    #include("head-links.vm")
+
+</head>
+<body>
+<div data-role="page" id="min_profil" data-theme="d">
+    #include("panel-menu.vm")
+    #include("header.vm")
+
+    <div data-role="main" class="ui-content">
+        <h1>Min profil</h1>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <p>$!{user.name}</p>
+                <p>$!{user.description}</p>
+            </div>
+            <div class="ui-block-b">
+                <img src="$!{user.profilePictureUrl}" width="50%" align="right">
+            </div>
+        </div>
+        <h3>Privat information</h3>
+        <table>
+            <tr>
+                <td>Email:</td>
+                <td>$!{user.email.toLowerCase()}</td>
+            </tr>
+            <tr>
+                <td>Telefon:</td>
+                <td>$!{user.phoneNumber}</td>
+            </tr>
+            <tr>
+                <td>Kön:</td>
+                <td>$!{gender.fronname}</td>
+            </tr>
+        </table>
+
+
+        <a href="#redigera_profil" class="ui-btn" data-ajax="false">Redigera</a>
+
+    </div>
+    #include("footer.vm")
+</div>
+
+
+
+<div data-role="page" id="redigera_profil" data-theme="d">
+    #include("panel-menu.vm")
+    #include("header.vm")
+
+
+    <div data-role="main" class="ui-content">
+
+        <h2>Min profil</h2>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <p>$!{user.name}</p>
+                <textarea cols="40" rows="8" name="textarea" id="textarea">
+                    $!{user.getDescription()}
+                </textarea>
+            </div>
+
+            <div class="ui-block-b">
+                <img src="$!{user.profilePictureUrl}" width="50%" align="right">
+            </div>
+        </div>
+        <h3>Privat information</h3>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" value="$!{user.email.toLowerCase()}">
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" value="$!{user.phoneNumber}">
+        <label for="kon">Kön:</label>
+
+        <select name="select-native-s" id="kon">
+            <option value="small">Kvinna</option>
+            <option value="medium">Man</option>
+            <option value="medium">Annat</option>
+        </select>
+
+
+        <a href="#min_profil" class="ui-btn">Spara ändringar</a>
+
+    </div>
+
+    #include("footer.vm")
+
+</div>
+
+
+</body>
+</html>

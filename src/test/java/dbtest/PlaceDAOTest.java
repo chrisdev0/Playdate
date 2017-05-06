@@ -60,7 +60,7 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b);
         assertNotNull(place.getId());
 
-        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b2);
         assertNotNull(user.getId());
 
@@ -87,7 +87,7 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b);
         assertNotNull(place.getId());
 
-        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b2);
         assertNotNull(user.getId());
 
@@ -122,7 +122,7 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b);
         assertNotNull(place.getId());
 
-        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b2 = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b2);
         assertNotNull(user.getId());
 

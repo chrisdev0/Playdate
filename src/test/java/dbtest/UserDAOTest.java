@@ -19,7 +19,7 @@ public class UserDAOTest extends HibernateTests {
     @Test
     public void testSaveUser() {
         User user = ModelCreators.createUser();
-        boolean saveok = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean saveok = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertNotNull(user.getId());
         boolean deleteUser = UserDAO.getInstance().deleteUser(user);
         assertTrue(deleteUser);
@@ -29,7 +29,7 @@ public class UserDAOTest extends HibernateTests {
     public void testSaveIllegalUser() {
         User user = ModelCreators.createUser();
         user.setEmail(null);
-        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertFalse(saveOk);
 
         boolean b = UserDAO.getInstance().deleteUser(user);
@@ -40,7 +40,7 @@ public class UserDAOTest extends HibernateTests {
     public void testSaveIllegalUser2() {
         User user = ModelCreators.createUser();
         user.setName(null);
-        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertFalse(saveOk);
 
         boolean b = UserDAO.getInstance().deleteUser(user);
@@ -50,10 +50,10 @@ public class UserDAOTest extends HibernateTests {
     @Test
     public void testOnUpdateSaveUser() {
         User user = ModelCreators.createUser();
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
         user.setFbToken(faker.internet().password(19, 20, true, true));
-        boolean save2 = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean save2 = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(save2);
 
         boolean b1 = UserDAO.getInstance().deleteUser(user);
@@ -64,7 +64,7 @@ public class UserDAOTest extends HibernateTests {
     @Test
     public void testDeleteUserTwice() {
         User user = ModelCreators.createUser();
-        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean saveOk = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(saveOk);
         assertNotNull(user.getId());
         boolean deleteUser = UserDAO.getInstance().deleteUser(user);
@@ -76,7 +76,7 @@ public class UserDAOTest extends HibernateTests {
     @Test
     public void testGetUser() {
         User user = ModelCreators.createUser();
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
         assertNotNull(user.getId());
 
@@ -144,7 +144,7 @@ public class UserDAOTest extends HibernateTests {
         User user = ModelCreators.createUser();
         String thirdPartyAPIID = user.getFacebookThirdPartyID();
         log.info(user.getEmail());
-        boolean saveUserOnLogin = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean saveUserOnLogin = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(saveUserOnLogin);
         Optional<User> userByEmail = UserDAO.getInstance().getUserByThirdPartyAPIID(thirdPartyAPIID);
         assertTrue(userByEmail.isPresent());

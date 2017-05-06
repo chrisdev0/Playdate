@@ -25,6 +25,8 @@ public class StaticFileRoutes {
         get("/makeProfile.html",
                 new StaticFileTemplateHandlerImpl("makeProfile.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
+
+
     }
 
 }

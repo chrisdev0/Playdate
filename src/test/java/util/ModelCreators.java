@@ -78,7 +78,7 @@ public class ModelCreators {
     }
 
     public static void save(User user) {
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
     }
 

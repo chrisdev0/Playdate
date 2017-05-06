@@ -29,6 +29,7 @@ public class Paths {
     public static final String POSTNEWPROFILEPICTURE = "/postnewprofilepicture";
     public static final String GETPROFILEPICTURE = "/getprofilepicture";
     public static final String GETFEED = "/getfeed";
+    public static final String LANDING = "/landing";
 
 
     public static class StaticFilePaths {

@@ -39,8 +39,8 @@ public class UserDAO {
     }
 
 
-    public boolean saveUserOnLogin(User user) {
-        boolean ret = false;
+    public Optional<User> saveUserOnLogin(User user) {
+        Optional<User> ret = Optional.empty();
         Session session = null;
         Transaction tx = null;
         Optional<User> userOptional = getUserByThirdPartyAPIID(user.getFacebookThirdPartyID());
@@ -51,15 +51,17 @@ public class UserDAO {
                 User user1 = userOptional.get();
                 user1.setFbToken(user.getFbToken());
                 session.update(user1);
+                ret = Optional.of(user1);
             } else {
                 session.save(user);
+                Optional.of(user);
             }
             tx.commit();
-            ret = true;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
             }
+            ret = Optional.empty();
         } finally {
             if (session != null) {
                 session.close();

@@ -1,13 +1,23 @@
 package apilayer.route;
 
 import apilayer.Constants;
+import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
+import com.google.gson.Gson;
+import dblayer.PaginationWrapper;
+import dblayer.PlaceDAO;
+import model.Place;
 import model.User;
+import presentable.FeedObject;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
+import utils.ParserHelpers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 import static spark.Spark.delete;
@@ -69,11 +79,7 @@ public class ProtectedRoutes {
 
             get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
 
-            get(Paths.SHOWPROFILE,
-                    new ShowProfileHandler("showProfile.vm",500)::handleTemplateFileRequest,
-                    new VelocityTemplateEngine());
 
-            put(Paths.CREATEPROFILE, new ProfileHandler("showProfile.vm",400)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
             //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
@@ -100,7 +106,34 @@ public class ProtectedRoutes {
 
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
 
+            get(Paths.GETFEED, (request, response) -> {
+                Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
+                PaginationWrapper<FeedObject> paginationWrapper = new PaginationWrapper<>(
+                        norrmalm.get().getCollection().stream().map(FeedObject::createFromPlace).collect(Collectors.toList()),
+                        norrmalm.get().getPaginationOffset());
+                return new Gson().toJson(paginationWrapper);
+            });
+
+            initProtectedStaticRoutes();
+
         });
+    }
+
+    private static void initProtectedStaticRoutes() {
+
+        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("landingpage.vm", 400)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("show-profile.vm", 400){
+            @Override
+            public Optional<Map<String, Object>> createModelMap(Request request) {
+                Map<String, Object> map = new HashMap<>();
+                User user = request.session().attribute(Constants.USER_SESSION_KEY);
+                user.setEmail(user.getEmail().toLowerCase());
+                map.put("gender", user.getGender());
+                map.put("user", user);
+                return Optional.of(map);
+            }
+        }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
     }
 
 }

@@ -1,6 +1,7 @@
 package apilayer.fbhandlers;
 
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import dblayer.HibernateUtil;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +36,17 @@ public class FBRouteHandler {
         try (Session session = HibernateUtil.getInstance().openSession()) {
                         FacebookProfile facebookProfile = facebookProfileOptional.get();
             User user = FBHelpers.buildUserFromFacebookProfile(facebookProfile);
-            boolean b = UserDAO.getInstance().saveUserOnLogin(user);
-            log.info("Save user on login = " + b);
+            Optional<User> userOptional = UserDAO.getInstance().saveUserOnLogin(user);
+
+            if (userOptional.isPresent()) {
+                user = userOptional.get();
+            }
+            log.info("Save user on login = " + userOptional.isPresent());
             request.session(true).attribute(Constants.USER_SESSION_KEY, user);
         } catch (Exception e) {
             log.error("error session ", e);
         }
-        response.redirect("/protected/landingpage");
+        response.redirect(Paths.PROTECTED + Paths.LANDING);
         return "";
     }
 }

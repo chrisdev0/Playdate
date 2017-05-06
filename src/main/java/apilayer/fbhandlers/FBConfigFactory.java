@@ -45,7 +45,7 @@ public class FBConfigFactory implements ConfigFactory {
         @Override
         public Object adapt(int code, SparkWebContext context) {
             if (code != 401 && code != 403) {
-                log.info("context " + context.getPath());
+                log.info("context " + context.getPath() + " code = " + code);
                 return super.adapt(code, context);
             }
             HashMap<String, Object> map = new HashMap<>();

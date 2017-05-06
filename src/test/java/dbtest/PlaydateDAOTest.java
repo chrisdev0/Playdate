@@ -27,7 +27,7 @@ public class PlaydateDAOTest extends HibernateTests {
         User user = ModelCreators.createUser();
         Place place = ModelCreators.createPlace();
         Playdate playdate = ModelCreators.createPlaydate(user, place);
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
 
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -48,7 +48,7 @@ public class PlaydateDAOTest extends HibernateTests {
         Place place = ModelCreators.createPlace();
         Playdate playdate = ModelCreators.createPlaydate(user, place);
         playdate.setHeader(null);
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
 
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -70,7 +70,7 @@ public class PlaydateDAOTest extends HibernateTests {
         User user = ModelCreators.createUser();
         Place place = ModelCreators.createPlace();
         Playdate playdate = ModelCreators.createPlaydate(user, place);
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
 
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -94,7 +94,7 @@ public class PlaydateDAOTest extends HibernateTests {
         User user = ModelCreators.createUser();
         Place place = ModelCreators.createPlace();
         Playdate playdate = ModelCreators.createPlaydate(user, place);
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
 
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -130,7 +130,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertNotNull(place.getId());
 
 
-        boolean b1 = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b1 = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b1);
         assertNotNull(user.getId());
 
@@ -157,11 +157,11 @@ public class PlaydateDAOTest extends HibernateTests {
         Place place = createPlace();
         Playdate playdate = createPlaydate(owner, place);
 
-        boolean b = UserDAO.getInstance().saveUserOnLogin(user);
+        boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
         assertNotNull(user.getId());
 
-        boolean b1 = UserDAO.getInstance().saveUserOnLogin(owner);
+        boolean b1 = UserDAO.getInstance().saveUserOnLogin(owner).isPresent();
         assertTrue(b1);
         assertNotNull(owner.getId());
 
