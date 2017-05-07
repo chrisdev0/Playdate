@@ -127,11 +127,11 @@ body{
 }
 
 
-#head-logo {
+.head-logo {
     text-align: center;
 }
 
-#head-logo img {
+.head-logo img {
     height: 3em;
 }
 
@@ -226,4 +226,25 @@ body{
 .footer-btn-div div p {
     color: black;
     font-size: 0.7em;
+}
+
+#edit-profile-picture {
+    position: relative;
+    overflow: visible;
+}
+
+
+#edit-profile-picture-overlay {
+    position: absolute;
+    right: -1em;
+    top: -2.2em;
+    overflow: visible;
+    z-index: 1000;
+}
+
+#edit-profile-picture img {
+    width: 160px;
+    position: relative;
+    height: 160px;
+    top: -1em
 }
