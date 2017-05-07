@@ -19,11 +19,11 @@ public class StaticFileRoutes {
                 new VelocityTemplateEngine());
 
         get("/changeProfile.html",
-                new StaticFileTemplateHandlerImpl("changeProfile.vm", 500)::handleTemplateFileRequest,
+                new StaticFileTemplateHandlerImpl("TODELETE/changeProfile.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
 
         get("/makeProfile.html",
-                new StaticFileTemplateHandlerImpl("makeProfile.vm", 500)::handleTemplateFileRequest,
+                new StaticFileTemplateHandlerImpl("TODELETE/makeProfile.vm", 500)::handleTemplateFileRequest,
                 new VelocityTemplateEngine());
 
 
