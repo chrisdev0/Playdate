@@ -6,6 +6,7 @@ import apilayer.handlers.*;
 import apilayer.handlers.asynchandlers.SearchHandlers;
 import apilayer.handlers.templateHandlers.GetOnePlaceHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaydateHandler;
+import apilayer.handlers.templateHandlers.GetUserPlaydateHandler;
 import com.google.gson.Gson;
 import dblayer.PaginationWrapper;
 import dblayer.PlaceDAO;
@@ -40,31 +41,7 @@ public class ProtectedRoutes {
                 }
             });
 
-            /*  Hanterar retur av alla playdates
-            *       todo bör förmodligen endast returnera en del med ett offset som returnerar fler
-            *       todo asykront när användaren scrollar
-            * */
-            get(Paths.GETALLPLAYDATES, (request, response) -> {
-                //todo
-                throw halt(400);
-            });
 
-            /*  Hanterar retur av alla Place
-            *       todo bör förmodligen endast returnera en del med ett offset som returnerar fler
-            *       todo asykront när användaren scrollar
-            * */
-            get(Paths.GETALLPLACE, ((request, response) -> {
-                //todo
-                throw halt(400);
-            }));
-
-            /*  Hanterar retur av en Place
-            *   id för place specificeras i ?placeId=<ID:t>
-            *       todo returnerar nu halt(400) ifall ingen plats med det ID:t hittas, borde nog ändras
-            *       todo någon typ av error-sida visas (som eventuellt är gemensam med andra
-            *       todo template-routes som kan returnera error)
-            * */
-            //get(Paths.GETONEPLACE, PlaceHandler::handleGetOnePlace, new VelocityTemplateEngine());
 
             /*  Hanterar add av kommentarer till ett place
             *   place bestäms av "placeId", kommentaren av "comment"
@@ -75,9 +52,9 @@ public class ProtectedRoutes {
             * */
             post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
 
-            post(Paths.CREATEPLAYDATEPAGE, PlaydateHandler::handleMakePlaydate);
+            post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 
-            //get(Paths.GETONEPLAYDATE, PlaydateHandler::handleGetOnePlaydate, new VelocityTemplateEngine());
+            get(Paths.GETONEPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
 
 
@@ -85,7 +62,7 @@ public class ProtectedRoutes {
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
 
             //ska pathen vara showplaydate?
-            put(Paths.SHOWPLAYDATE, PlaydateHandler::removePlaydateAttendance);
+            put(Paths.SHOWPLAYDATES, PlaydateHandler::removePlaydateAttendance);
 
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
 
@@ -118,10 +95,10 @@ public class ProtectedRoutes {
 
         get(Paths.EDITPROFILE, new StaticFileTemplateHandlerImpl("editprofile.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
-        get(Paths.SHOWPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.SHOWPLAYDATES, new GetUserPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
 
-        get(Paths.CREATEPLAYDATEPAGE,
+        get(Paths.CREATEPLAYDATE,
                 new StaticFileTemplateHandlerImpl("createplaydate.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
         get(Paths.SHOWPLACE, new GetOnePlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());

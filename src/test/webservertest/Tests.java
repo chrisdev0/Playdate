@@ -43,7 +43,7 @@ public class Tests {
 
     @Test
     public void testCreatePlaydate() throws Exception {
-        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATEPAGE)
+        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATE)
                 .cookie("JSESSIONID", sessionCookie)
                 .data(createPlaydateMap())
                 .method(Connection.Method.POST)
@@ -79,7 +79,7 @@ public class Tests {
 
     @Test
     public void testRemovePlaydate() throws Exception {
-        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATEPAGE)
+        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATE)
                 .cookie("JSESSIONID", sessionCookie)
                 .data(createPlaydateMap())
                 .method(Connection.Method.POST)
