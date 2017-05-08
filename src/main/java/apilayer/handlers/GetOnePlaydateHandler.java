@@ -2,14 +2,11 @@ package apilayer.handlers;
 
 import apilayer.StaticFileTemplateHandler;
 import dblayer.HibernateUtil;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import model.Playdate;
 import org.hibernate.Session;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +17,7 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandler {
     private Long playdateId;
 
     public GetOnePlaydateHandler(String templateName, long playdateId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
-        super(templateName,onErrorHTTPStatusCode);
+        super(templateName,onErrorHTTPStatusCode, true);
         this.playdateId = playdateId;
     }
 

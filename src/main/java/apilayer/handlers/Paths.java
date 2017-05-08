@@ -14,6 +14,7 @@ public class Paths {
     public static final String GETONEPLAYDATE = "/getoneplaydate";
     public static final String CREATEPROFILE = "/createprofile";
     public static final String SHOWPROFILE = "/showprofile";
+    public static final String EDITPROFILE = "/editmyprofile";
     public static final String DELETEPLAYDATE = "/deleteplaydate";
     public static final String DELETECOMMENT = "/deletecomment";
     public static final String DOREG = "/doreg";
@@ -29,7 +30,7 @@ public class Paths {
     public static final String POSTNEWPROFILEPICTURE = "/postnewprofilepicture";
     public static final String GETPROFILEPICTURE = "/getprofilepicture";
     public static final String GETFEED = "/getfeed";
-    public static final String LANDING = "/landing";
+    public static final String LANDING = "/feed";
 
 
     public static class StaticFilePaths {

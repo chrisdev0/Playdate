@@ -121,7 +121,12 @@ public class ProtectedRoutes {
 
     private static void initProtectedStaticRoutes() {
 
-        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("TODELETE/landingpage.vm", 400)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("feed.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.EDITPROFILE, new StaticFileTemplateHandlerImpl("editprofile.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
+        /*
         get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
@@ -133,7 +138,9 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
-
+        */
     }
+
+
 
 }

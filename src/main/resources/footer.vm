@@ -1,0 +1,14 @@
+<div data-role="footer" data-position="fixed" data-theme="a" id="footer" data-tap-toggle="false" data-hide-during-focus="">
+    <div class="ui-grid-d center">
+        <div class="ui-block-a center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-back ui-btn-inline ui-btn-icon-top">Tillbaka</a>
+        </div>
+        <div class="ui-block-b center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
+        </div>
+        <div class="ui-block-c center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-top ui-btn-inline">Feed</a>
+        </div>
+        <div class="ui-block-d center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-calendar ui-btn-icon-top ui-btn-inline">Event</a>
+        </div>
+        <div class="ui-block-e center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-mail ui-btn-icon-top ui-btn-inline">Mail</a>
+        </div>
+    </div>
+</div>

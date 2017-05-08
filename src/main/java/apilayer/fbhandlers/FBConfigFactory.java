@@ -49,7 +49,7 @@ public class FBConfigFactory implements ConfigFactory {
             HashMap<String, Object> map = new HashMap<>();
             map.put("code", "" + code);
             map.put("error_msg", code == 401 ? "unathorized" : (code == 403 ? "forbidden" : "other reason"));
-            return new VelocityTemplateEngine().render(new ModelAndView(map, "TODELETE/error.vm"));
+            return new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm"));
         }
     }
 
