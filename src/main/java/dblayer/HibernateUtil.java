@@ -1,6 +1,7 @@
 package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -70,4 +71,11 @@ public class HibernateUtil {
     public Session openSession() {
         return sessionFactory.openSession();
     }
+
+    public void initializeField(Object o) {
+        try (Session session = openSession()){
+            Hibernate.initialize(o);
+        }
+    }
+
 }

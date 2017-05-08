@@ -21,10 +21,6 @@ import java.util.Date;
     @ManyToOne
     private User commenter;
 
-    /*
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Place place;
-*/
     private boolean hidden;
 
     @Column(columnDefinition="DATETIME", nullable = false)
