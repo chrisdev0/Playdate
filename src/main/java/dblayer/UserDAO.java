@@ -25,9 +25,12 @@ public class UserDAO {
 
 
     public Optional<User> getUserById(Long userId){
-        try(Session session = HibernateUtil.getInstance().openSession()){
+        try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(User.class).loadOptional(userId);
+        } catch (Exception e) {
+            log.error("error getting user: ", e);
         }
+        return Optional.empty();
     }
 
 
@@ -38,12 +41,12 @@ public class UserDAO {
         }
     }
 
-
     public Optional<User> saveUserOnLogin(User user) {
         Optional<User> ret = Optional.empty();
         Session session = null;
         Transaction tx = null;
         Optional<User> userOptional = getUserByThirdPartyAPIID(user.getFacebookThirdPartyID());
+        log.info("found user: " + userOptional.isPresent());
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
@@ -54,10 +57,11 @@ public class UserDAO {
                 ret = Optional.of(user1);
             } else {
                 session.save(user);
-                Optional.of(user);
+                ret = Optional.of(user);
             }
             tx.commit();
         } catch (Exception e) {
+            log.error("error saving user on login", e);
             if (tx != null) {
                 tx.rollback();
             }

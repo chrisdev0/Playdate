@@ -74,7 +74,7 @@ public class UserDAOTest extends HibernateTests {
     }
 
     @Test
-    public void testGetUser() {
+    public void testGetUserById() {
         User user = ModelCreators.createUser();
         boolean b = UserDAO.getInstance().saveUserOnLogin(user).isPresent();
         assertTrue(b);
