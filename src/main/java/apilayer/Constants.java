@@ -20,6 +20,7 @@ public class Constants {
     public static final String ABSOLUTE_URL;
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
+    public static final int QUICK_PLACE_SEARCH_LIMIT = 5;
 
     static {
         if (DEV) {
