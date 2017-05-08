@@ -61,7 +61,7 @@ public class FriendshipHandler {
          */
     }
 
-    public void addFriend(){
+    public void acceptFriendRequest(){
         /*
         Överföra från friendRequest-listan till Friends-listan för båda användare.
         (och ta bort den från friendRequest-listan)
