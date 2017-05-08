@@ -192,3 +192,25 @@
 .two-btn-row {
     width: 8.6em;
 }
+
+#fb-login {
+
+    background: #4661d9;
+}
+
+#index-logo {
+    width: 79.9%;
+
+}
+
+#logo-container {
+    text-align: center;
+
+}
+
+#kids {
+    width: 66.4%;
+    z-index: 2000000000;
+    margin-top: 5.8em;
+    margin-left: 17.1%;
+}

@@ -54,7 +54,10 @@
         });
 
         $(document).ready(function () {
-            $('#genderselect').val(${user.gender.id});
+            var genderId = ${user.gender.id};
+            console.log(genderId);
+
+            $('#genderselect').val(genderId);
         });
 
     </script>
