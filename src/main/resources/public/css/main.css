@@ -1,250 +1,194 @@
-body{
-    margin-left: auto;
-    margin-right: auto;
-    background: #daf7a6;
-    background: -moz-linear-gradient(top, #daf7a6 0%, #daf7a6 43%, #daf7a6 100%);
-    background: -webkit-linear-gradient(top, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
-    background: linear-gradient(to bottom, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
-    z-index: 1;
+.center {
+    text-align: center !important;
 }
 
-#imglogo {
-    width: 8em;
-    padding: 3em 0 3em;
-    margin-left: auto;
-    margin-right: auto;
+.header-shadow {
+    -webkit-box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
+}
+
+#footer div div a {
+    margin-top: 0.2em;
+    margin-bottom: 0.1em;
+}
+
+.close-btn-pos h2 {
+    display: inline;
+    padding: 0.5em 0.8em;
+}
+
+.close-btn-pos {
     display: block;
-    z-index: 1001;
-    position: relative;
-}
-
-
-.centered-text {
-    text-align: center;
-    vertical-align: middle;
-}
-
-
-#text-form-input-fields input[type=text], #text-form-input-fields input[type=password], #text-form-input-fields input[type=email] #text-form-input-fields input[type=textarea]{
-    box-shadow: inset 0 0 7px #222222;
-    font-size: 1.2em;
-    height: 1.3em;
-    width: 100%;
-    padding: 10px 0;
-    margin-bottom: 10px;
-}
-
-#text-form-input-fields input::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-#text-form-input-fields input::-moz-placeholder{
-    color: rgba(255, 255, 255, 0.5);
-}
-
-#text-form-input-fields input:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-#text-form-input-fields input:-moz-placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-#login-links a {
-    text-decoration:none;
-    color: #fff5ef;
-    font-family: sans-serif;
-    font-size: 1.2em;
-    display: block;
-    margin-bottom: 0.2em;
-}
-
-#login-links a:hover{
-    color: #1a6207;
-}
-
-
-.large-button {
+    background: #2c3e50;
     color: white;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    font-size: 1.2em;
-    border-radius: 6px;
-    height: 1.6em;
-    width: 100%;
-    box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2),
-    0 1px 1px rgba(255, 255, 255, 0.2);
-    margin-bottom: 0.4em;
+    height: 2.7em;
 }
 
-#login-btn {
-    background-color: #daf7b9;
+.close-btn-pos a {
+    display: inline;
+    float: right;
+    padding: 0;
+    margin: 0;
 }
 
-#fblogin-btn{
-    background: #4661d9;
+.panel-buttons {
+    margin-top: 2em;
 }
 
-#login-signup-content {
-    text-align: center;
-    margin: 0 1em;
+.panel-buttons a:first-child {
+    margin-top: 6em;
 }
 
-#greenbtn{
-    background: #daf7b9;
+.panel-buttons a:last-child {
+    margin-top: 4em;
 }
 
-
-#kid-div {
-    padding-top: 10%;
-    padding-left: 29%;
-    z-index: 10000;
+#side-panel .ui-panel-inner {
+    padding: 0;
 }
 
-#login-user-agreement-link {
-    color: deepskyblue;
-    text-decoration: none;
-    
+#inner-panel {
+    padding: 1em;
 }
 
-#text-small {
-    font-size: 1em;
+.small-profile {
+    margin-top: 1em;
+    min-height: 6em;
+    max-height: 6em;
+    overflow: hidden;
 }
 
-.text-center {
-    text-align: center;
-}
-
-.close-btn-pos{
-    position: absolute;
-    top: 33px;
-    right:13px;
-
-}
-
-.logout-btn{
-    position:relative;
-    padding-top:50px;
-}
-
-
-.head-logo {
-    text-align: center;
-}
-
-.head-logo img {
-    height: 3em;
-}
-
-#date{
-    width: 48%;
-    margin-right: 4%
-}
-
-#time{
-    width:48%
-}
-
-#login-logo{
-    width: 9em;
-    padding: 3em 0 3em;
-    margin-top: 10%;
-    margin-left: auto;
-    margin-right: auto;
+.small-profile div {
     display: block;
-    z-index: 1001;
-    position: relative;
-}
-#fb-login{
-    background: #4661d9;
-    color: white;
-}
-#desc-login{
-    text-align: center;
-    font-family: Avenir;
-    font-size: 18px;
-    margin-bottom: 6%;
-}
-#kidpicture{
-    width: 90%;
-
+    width: 15em;
 }
 
-.image-center {
-    padding: 2em 23%;
+.composite-row {}
+
+.big-profile div input {
+    height: 2em;
 }
 
-.footer-black-btn {
-    color: black !important;
+.small-profile div span {
+    vertical-align: top;
+    font-size: 0.8em;
 }
 
-.center-text-in-div {
-    text-align: center;
-}
-
-#footer-image-btn {
-    padding-top: 0.4em;
-    padding-left: 0.4em;
-}
-
-#footer-pd-img {
-    width: 100%;
-    position: relative;
+.small-profile img {
+    width: 5em;
+    max-height: 5em;
+    margin-right: 0.4em;
+    display: inline;
     float: left;
-
-    top: -25px;
-    padding-left: 0.4em;
-    border: 0;
 }
 
-.div-overflow-visible {
+.big-profile img {
+    width: 7em;
+    max-height: 8em;
+    margin-right: 0.8em;
+    display: inline;
+    float: left;
+}
+
+.on-bottom-button {
+    position: relative;
+    margin-top: 8em;
+}
+
+#descriptiontextarea {
+    height: 10em;
+    max-height: 10em;
+}
+
+.profile-page label {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#composite-picture {
+    position: relative;
     overflow: visible;
-}
-
-#div-footer {
-    height: 4.2em;
-}
-
-#footer-logo {
-    float: left;
-    left: -5px;
-    top: -35px;
-    position: relative;
-}
-
-#playdate-overlay-plus {
-    color: black;
-    font-size: 2em;
-    position: relative;
-    left: 10px;
-    z-index: 100;
-}
-
-.footer-btn-div {
-    margin-top: 0.6em;
-}
-
-.footer-btn-div div p {
-    color: black;
-    font-size: 0.7em;
 }
 
 #edit-profile-picture {
-    position: relative;
-    overflow: visible;
-}
-
-
-#edit-profile-picture-overlay {
     position: absolute;
-    right: -1em;
-    top: -2.2em;
-    overflow: visible;
     z-index: 1000;
+    right: 1.0em;
+    top: -1.3em;
+    font-size: 1.5em;
+    border: 0;
+    padding: 0;
 }
 
-#edit-profile-picture img {
-    width: 160px;
-    position: relative;
-    height: 160px;
-    top: -1em
+.profile-page {
+    overflow: visible;
+}
+
+#croppie {
+    width: 300px;
+    height: 300px;
+}
+
+#dialog-changable-content {
+    height: 400px;
+    width: 100%;
+}
+
+.profile-description {
+    margin-top: 1.7em;
+    clear: both;
+}
+
+.profile-right-block p {
+    padding-left: 0.5em;
+}
+
+.other-user-reportable {
+    margin-bottom: 0.4em;
+}
+
+.other-user-reportable h2 {
+    display: inline;
+}
+
+.profile-description-text {
+    margin: 1em 0.4em;
+}
+
+.date-column {
+    display: inline;
+    width: 50%;
+}
+
+.last-button-on-page {
+    margin-top: 3em;
+}
+
+.hidden {
+    display: none;
+}
+
+.medium-image {
+    max-width: 19.6em;
+}
+
+.place-description {
+    word-break: keep-all;
+}
+
+.place-info-table {
+    width: 100%;
+}
+
+.place-info-table td {
+    text-align: center
+}
+
+.small-font-btn {
+    font-size: 0.85em;
+}
+
+.two-btn-row {
+    width: 8.6em;
 }

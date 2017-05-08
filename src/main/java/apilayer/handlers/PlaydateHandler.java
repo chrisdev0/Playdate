@@ -73,7 +73,7 @@ public class PlaydateHandler {
         try {
             long lId = Long.parseLong(id);
             log.info("fetching playdate with id = " + lId);
-            return new GetOnePlaydateHandler("showplaydatepage.vm", lId, 400)
+            return new GetOnePlaydateHandler("TODELETE/showplaydatepage.vm", lId, 400)
                     .handleTemplateFileRequest(request, response);
         } catch (NullPointerException | NumberFormatException e) {
             log.error("client: " + request.ip() + " sent illegal playdate id = " + id + " e = " + e.getMessage());

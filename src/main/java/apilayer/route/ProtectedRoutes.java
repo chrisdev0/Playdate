@@ -91,7 +91,7 @@ public class ProtectedRoutes {
                 User user = request.session().attribute(Constants.USER_SESSION_KEY);
                 Map<String, Object> map = new HashMap<>();
                 map.put("user", user);
-                return new ModelAndView(map, "landingpage.vm");
+                return new ModelAndView(map, "TODELETE/landingpage.vm");
             }, new VelocityTemplateEngine());
 
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
@@ -121,8 +121,8 @@ public class ProtectedRoutes {
 
     private static void initProtectedStaticRoutes() {
 
-        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("landingpage.vm", 400)::handleTemplateFileRequest, new VelocityTemplateEngine());
-        get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("show-profile.vm", 400){
+        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("TODELETE/landingpage.vm", 400)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
                 Map<String, Object> map = new HashMap<>();

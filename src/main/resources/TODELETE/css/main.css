@@ -1,0 +1,250 @@
+body{
+    margin-left: auto;
+    margin-right: auto;
+    background: #daf7a6;
+    background: -moz-linear-gradient(top, #daf7a6 0%, #daf7a6 43%, #daf7a6 100%);
+    background: -webkit-linear-gradient(top, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
+    background: linear-gradient(to bottom, #daf7a6 0%, #daf7a6 43%,#daf7a6 100%);
+    z-index: 1;
+}
+
+#imglogo {
+    width: 8em;
+    padding: 3em 0 3em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    z-index: 1001;
+    position: relative;
+}
+
+
+.centered-text {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#text-form-input-fields input[type=text], #text-form-input-fields input[type=password], #text-form-input-fields input[type=email] #text-form-input-fields input[type=textarea]{
+    box-shadow: inset 0 0 7px #222222;
+    font-size: 1.2em;
+    height: 1.3em;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+#text-form-input-fields input::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#text-form-input-fields input::-moz-placeholder{
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#text-form-input-fields input:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#text-form-input-fields input:-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#login-links a {
+    text-decoration:none;
+    color: #fff5ef;
+    font-family: sans-serif;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 0.2em;
+}
+
+#login-links a:hover{
+    color: #1a6207;
+}
+
+
+.large-button {
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 1.2em;
+    border-radius: 6px;
+    height: 1.6em;
+    width: 100%;
+    box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2),
+    0 1px 1px rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.4em;
+}
+
+#login-btn {
+    background-color: #daf7b9;
+}
+
+#fblogin-btn{
+    background: #4661d9;
+}
+
+#login-signup-content {
+    text-align: center;
+    margin: 0 1em;
+}
+
+#greenbtn{
+    background: #daf7b9;
+}
+
+
+#kid-div {
+    padding-top: 10%;
+    padding-left: 29%;
+    z-index: 10000;
+}
+
+#login-user-agreement-link {
+    color: deepskyblue;
+    text-decoration: none;
+    
+}
+
+#text-small {
+    font-size: 1em;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.close-btn-pos{
+    position: absolute;
+    top: 33px;
+    right:13px;
+
+}
+
+.logout-btn{
+    position:relative;
+    padding-top:50px;
+}
+
+
+.head-logo {
+    text-align: center;
+}
+
+.head-logo img {
+    height: 3em;
+}
+
+#date{
+    width: 48%;
+    margin-right: 4%
+}
+
+#time{
+    width:48%
+}
+
+#login-logo{
+    width: 9em;
+    padding: 3em 0 3em;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    z-index: 1001;
+    position: relative;
+}
+#fb-login{
+    background: #4661d9;
+    color: white;
+}
+#desc-login{
+    text-align: center;
+    font-family: Avenir;
+    font-size: 18px;
+    margin-bottom: 6%;
+}
+#kidpicture{
+    width: 90%;
+
+}
+
+.image-center {
+    padding: 2em 23%;
+}
+
+.footer-black-btn {
+    color: black !important;
+}
+
+.center-text-in-div {
+    text-align: center;
+}
+
+#footer-image-btn {
+    padding-top: 0.4em;
+    padding-left: 0.4em;
+}
+
+#footer-pd-img {
+    width: 100%;
+    position: relative;
+    float: left;
+
+    top: -25px;
+    padding-left: 0.4em;
+    border: 0;
+}
+
+.div-overflow-visible {
+    overflow: visible;
+}
+
+#div-footer {
+    height: 4.2em;
+}
+
+#footer-logo {
+    float: left;
+    left: -5px;
+    top: -35px;
+    position: relative;
+}
+
+#playdate-overlay-plus {
+    color: black;
+    font-size: 2em;
+    position: relative;
+    left: 10px;
+    z-index: 100;
+}
+
+.footer-btn-div {
+    margin-top: 0.6em;
+}
+
+.footer-btn-div div p {
+    color: black;
+    font-size: 0.7em;
+}
+
+#edit-profile-picture {
+    position: relative;
+    overflow: visible;
+}
+
+
+#edit-profile-picture-overlay {
+    position: absolute;
+    right: -1em;
+    top: -2.2em;
+    overflow: visible;
+    z-index: 1000;
+}
+
+#edit-profile-picture img {
+    width: 160px;
+    position: relative;
+    height: 160px;
+    top: -1em
+}

@@ -1,21 +1,13 @@
 package apilayer.handlers;
 
-import apilayer.Constants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import dblayer.HibernateUtil;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Place;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.CoordinateHandlerUtil;
 import utils.Utils;
-
-import java.util.List;
 
 import static spark.Spark.halt;
 
@@ -27,7 +19,7 @@ public class PlaceHandler {
         try {
             long lId = Long.parseLong(id);
             log.info("fetching place with id = " + lId);
-            return new GetOnePlaceHandler("showplacepage.vm", lId, 400)
+            return new GetOnePlaceHandler("TODELETE/showplacepage.vm", lId, 400)
                     .handleTemplateFileRequest(request, response);
         } catch (NullPointerException | NumberFormatException e) {
             log.info("client: " + request.ip() + " sent illegal place id = " + id + " e = " + e.getMessage());

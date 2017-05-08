@@ -7,9 +7,7 @@ import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
-import secrets.Secrets;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -31,7 +29,7 @@ public class FBRouteHandler {
             Map<String, Object> map = new HashMap<>();
             map.put("code", "" + 400);
             map.put("error_msg", "no facebook profile");
-            return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm")));
+            return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "TODELETE/error.vm")));
         }
         try (Session session = HibernateUtil.getInstance().openSession()) {
                         FacebookProfile facebookProfile = facebookProfileOptional.get();

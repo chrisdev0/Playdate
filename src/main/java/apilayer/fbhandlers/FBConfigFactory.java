@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.config.ConfigFactory;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.http.HttpActionAdapter;
 import org.pac4j.oauth.client.FacebookClient;
 import org.pac4j.sparkjava.DefaultHttpActionAdapter;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -51,7 +49,7 @@ public class FBConfigFactory implements ConfigFactory {
             HashMap<String, Object> map = new HashMap<>();
             map.put("code", "" + code);
             map.put("error_msg", code == 401 ? "unathorized" : (code == 403 ? "forbidden" : "other reason"));
-            return new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm"));
+            return new VelocityTemplateEngine().render(new ModelAndView(map, "TODELETE/error.vm"));
         }
     }
 
