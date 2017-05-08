@@ -29,7 +29,7 @@ public class FBRouteHandler {
             Map<String, Object> map = new HashMap<>();
             map.put("code", "" + 400);
             map.put("error_msg", "no facebook profile");
-            return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "TODELETE/error.vm")));
+            return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm")));
         }
         try (Session session = HibernateUtil.getInstance().openSession()) {
                         FacebookProfile facebookProfile = facebookProfileOptional.get();

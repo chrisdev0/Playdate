@@ -1,24 +1,20 @@
 package apilayer.handlers;
 
 import apilayer.StaticFileTemplateHandler;
-import cache.Cache;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.LoggerFactory;
 import secrets.Secrets;
 import spark.Request;
 import stockholmapi.APIDataLoader;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class GetOnePlaceHandler extends StaticFileTemplateHandler {
@@ -26,7 +22,7 @@ public class GetOnePlaceHandler extends StaticFileTemplateHandler {
     private Long placeId;
 
     public GetOnePlaceHandler(String templateName, long placeId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
-        super(templateName,onErrorHTTPStatusCode);
+        super(templateName,onErrorHTTPStatusCode, true);
         this.placeId = placeId;
     }
 

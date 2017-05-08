@@ -1,0 +1,29 @@
+#* @vtlvariable name="user" type="model.User" *#
+
+<div data-role="panel" data-theme="a" id="side-panel" data-display="overlay" data-position-fixed="true">
+    <div class="close-btn-pos header-shadow">
+        <h2>Meny</h2>
+        <a href="#" class="ui-btn ui-icon-delete ui-btn-icon-notext
+			ui-corner-all" data-rel="close"></a>
+    </div>
+    <div id="inner-panel">
+        <div class="small-profile">
+            <span>$!{user.name}</span>
+            <div class="composite-row">
+                <img src="$!{user.profilePictureUrl}">
+                <span>$!{user.description}
+                </span>
+            </div>
+        </div>
+
+        <div class="panel-buttons">
+            <a href="/protected/editmyprofile" class="ui-btn ui-corner-all" >Min Profil</a>
+            <a href="#show-playdates" class="ui-btn ui-corner-all" >Mina Playdates</a>
+            <a href="#" class="ui-btn ui-corner-all" >Mina Vänner</a>
+            <a href="#" class="ui-btn ui-corner-all" >Hitta Platser</a>
+            <a href="#NamnpåpageID" class="ui-btn ui-corner-all ui-icon-logout" >Logga Ut</a>
+
+        </div>
+    </div>
+
+</div>

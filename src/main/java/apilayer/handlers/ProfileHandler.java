@@ -25,7 +25,7 @@ import static spark.Spark.halt;
 public class ProfileHandler extends StaticFileTemplateHandler{
 
     public ProfileHandler(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {
-        super(templateName, onErrorHTTPStatusCode);
+        super(templateName, onErrorHTTPStatusCode, true);
     }
 
     @Override
