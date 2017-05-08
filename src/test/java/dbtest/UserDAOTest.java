@@ -1,5 +1,7 @@
 package dbtest;
 
+import apilayer.handlers.FriendshipHandler;
+import com.sun.tools.internal.xjc.model.Model;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -8,9 +10,12 @@ import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
 
+import javax.jws.WebParam;
+
 import static org.junit.Assert.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class UserDAOTest extends HibernateTests {
@@ -176,6 +181,36 @@ public class UserDAOTest extends HibernateTests {
         session.remove(user1);
         session.getTransaction().commit();
         assertTrue(fail);
+    }
+
+    @Test
+    public void testSendFriendrequest(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+        assertTrue(UserDAO.getInstance().createFriendshipRequest(user, friend));
+    }
+
+    @Test
+    public void testFriendRequestAlreadySent(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        log.info(user.getName() + " " + user.getEmail());
+        ModelCreators.save(friend);
+
+        FriendshipRequest fr = new FriendshipRequest(user, friend);
+        Set<FriendshipRequest> friendshipRequestSet = friend.getFriendshipRequest();
+        ModelCreators.save(fr, user, friend);
+        friendshipRequestSet.add(fr);
+
+
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.getId());
+        assertTrue(friendshipRequest.isPresent());
+
     }
 
 }

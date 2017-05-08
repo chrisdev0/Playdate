@@ -62,7 +62,7 @@ public class UserDAO {
         Session session = null;
         Transaction tx = null;
         Optional<User> userOptional = getUserByThirdPartyAPIID(user.getFacebookThirdPartyID());
-        log.info("found user: " + userOptional.isPresent());
+        log.info("found user via thirdparty: " + userOptional.isPresent());
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
@@ -206,6 +206,51 @@ public class UserDAO {
 
         }
     }
+
+    public Optional<FriendshipRequest> checkIfFriendRequestSent(Long userId, Long friendId){
+        /*
+        Kolla i tabellerna om vänner
+
+        Returnera sann om får tillbaka?
+         */
+
+        try(Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM FriendshipRequest WHERE (sender.id = :user1 AND receiver.id = :user2) OR (sender.id = :user2 AND receiver.id = :user1)", FriendshipRequest.class)
+                    .setParameter("user1", userId)
+                    .setParameter("user2", friendId).uniqueResultOptional();
+
+        }
+    }
+
+    public boolean declineFriendRequest(FriendshipRequest friendshipRequest){
+        /*
+        Om tackar nej, ta bort från friendRequest-listan och databasen
+         */
+
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.remove(friendshipRequest);
+            tx.commit();
+            ret = true;
+        }
+        catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        }
+        finally{
+            if (session != null){
+                session.close();
+            }
+        }
+        return ret;
+    }
+
 
 
 }

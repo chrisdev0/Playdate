@@ -26,6 +26,7 @@ public class ModelCreators {
         return user;
     }
 
+
     public static Place createPlace() {
         Place place = new Place();
         place.setLongDescription(HibernateTests.faker.lorem().characters(300));
@@ -94,6 +95,12 @@ public class ModelCreators {
 
     public static void save(Invite invite, User user, Playdate playdate) {
         boolean b = PlaydateDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+        assertTrue(b);
+    }
+
+    public static void save(FriendshipRequest friendshipRequest, User user, User friend){
+        boolean b = UserDAO.getInstance().createFriendshipRequest(user, friend);
+
         assertTrue(b);
     }
 

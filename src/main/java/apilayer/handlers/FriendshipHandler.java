@@ -11,6 +11,7 @@ import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 
+import javax.swing.text.html.parser.Parser;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,11 +46,28 @@ public class FriendshipHandler {
 
         Optional<User> friend = UserDAO.getUserById(friendId);
 
+        if (friend.isPresent()){
+            if (UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.get().getId())){
+                log.info("Users are already friends");
+                return "";
+            }
+
+            if (UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.get().getId()).isPresent()){
+                log.info("A friend request has already been sent");
+                return "";
+            }
+
+        }
+
+
+
         if (friend.isPresent()) {
             if (UserDAO.getInstance().createFriendshipRequest(user, friend.get())) {
+                log.info("Friend request has been sent");
                 return "";
             }
         }
+
         throw halt(400);
     }
 
@@ -59,6 +77,24 @@ public class FriendshipHandler {
         /*
         Ta bort vän från Friends-listan
          */
+    }
+
+    public void declineReceivedFriendshipRequest(Request request, Response response){
+        /*
+        Göra alla tester för att se till att användaren är receiver,
+        Sedan kalla på declineFriendRequest i UserDAO
+        */
+
+        String friendIdParam = request.queryParams("friendId");
+        Long friendId = ParserHelpers.parseToLong(friendIdParam);
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        if (user == null || user.getId() != friendId){
+            log.error("User is null");
+            throw halt(400, "user is null");
+        }
+
+        Optional<User> friend = UserDAO.getUserById(friendId);
+
     }
 
     public void acceptFriendRequest(){
