@@ -19,7 +19,7 @@ public class Paths {
     public static final String DELETECOMMENT = "/deletecomment";
     public static final String DOREG = "/doreg";
     public static final String FBCALLBACK = "/callback";
-    public static final String SHOWPLAYDATE = "/showplaydate";
+    public static final String SHOWPLAYDATE = "/showplaydates";
 
     public static final String APIIMAGE = "/apiimage";
 
@@ -31,6 +31,7 @@ public class Paths {
     public static final String GETPROFILEPICTURE = "/getprofilepicture";
     public static final String GETFEED = "/getfeed";
     public static final String LANDING = "/feed";
+    public static final String SHOWPLACE = "/showplace";
 
 
     public static class StaticFilePaths {

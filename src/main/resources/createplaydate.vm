@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+    <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
+    <script src="/js/jtsage-datebox.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#place-search-type').change(function(e) {
+                var searchtype = $('#place-search-type').val();
+                $('.place-searcher-div').each(function(index, div) {
+                    var id = $(this).data('search-type-id');
+                    if (id == searchtype) {
+                        $(this).removeClass('hidden')
+                    } else {
+                        if (!$(this).hasClass('hidden')) {
+
+                            $(this).addClass('hidden');
+                        }
+                    }
+                })
+            })
+        });
+
+    </script>
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+
+
+    <div data-role="main" class="ui-content">
+        <form>
+            <label for="header-field">
+                Rubrik:
+            </label>
+            <input type="text" name="header-field" id="header-field">
+            <div data-role="ui-field-contain">
+                <label for="description-field">
+                    Beskrivning:
+                </label>
+                <textarea name="description-field" id="description-field" cols="40" rows="8"></textarea>
+            </div>
+            <div class="ui-field-contain">
+                <label for="visibility-type">Öppenhetsnivå:</label>
+                <select name="visibility-type" id="visibility-type">
+                    <option value="0">Privat</option>
+                    <option value="1">Öppen för vänner</option>
+                    <option value="2">Offentlig</option>
+                </select>
+            </div>
+            <label>Datum och tid</label>
+            <div class="date-row">
+                <div class="date-column">
+                    <input type="text" data-role="datebox" data-options='{"mode":"flipbox", "afterToday": true}'>
+                </div>
+                <div class="date-column">
+                    <input type="text" data-role="datebox" data-options='{"mode":"timebox"}'>
+                </div>
+            </div>
+            <div>
+
+                <label for="place-input-field">Sök plats:</label>
+                <input type="search" name="place-input-field" id="place-input-field">
+
+                <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära mig</a>
+            </div>
+            <input type="hidden" name="place" value="-1">
+            <hr>
+            <div id="show-place-placeholder">
+                <h2>Ingen plats vald</h2>
+            </div>
+            <hr>
+            <div>
+                <a class="ui-btn last-button-on-page">Skapa Playdate</a>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+<div data-role="page" id="choose-place">
+
+    <div data-role="main" class="ui-content">
+        <h2>Sök Plats</h2>
+        <div>
+
+            <div class="ui-field-contain">
+                <label for="place-search-type">Sökmetod</label>
+                <select name="place-search-type" id="place-search-type">
+                    <option value="0">Sök nära mig</option>
+                    <option value="1">Sök på karta</option>
+                    <option value="2">Sök på namn</option>
+                    <option value="3">Sök på område</option>
+                </select>
+            </div>
+        </div>
+        <div id="place-searcher">
+            <div id="place-searchby-close" class="place-searcher-div" data-search-type-id="0">
+                <a href="#" class="ui-btn">Hämta min plats</a>
+                <p id="place-by-loc-error"></p>
+            </div>
+            <div class="hidden place-searcher-div" id="place-searchby-map" data-search-type-id="1">
+                <a href="#" class="ui-btn">Öppna Karta</a>
+                <p id="place-by-map-error"></p>
+            </div>
+            <div class="hidden place-searcher-div" id="place-searchby-name" data-search-type-id="2">
+                <form>
+                    <label for="place-by-name-field">Sök på namn:</label>
+                    <input type="text" name="place-by-name-field" id="place-by-name-field">
+                    <a href="#" class="ui-btn" id="submit-search-by-name">Sök</a>
+                </form>
+            </div>
+            <div class="hidden place-searcher-div" id="place-searchby-area" data-search-type-id="3">
+                <form>
+                    <label for="place-by-name-field">Sök på områdesnamn:</label>
+                    <div class="ui-field-contain">
+                        <label for="area-name-select">Område:</label>
+                        <select name="area-name-select" id="area-name-select">
+                            <option value="0">Norrmalm</option>
+                            <option value="1">Test2</option>
+                            <option value="2">Test3</option>
+                        </select>
+                    </div>
+                    <a href="#" class="ui-btn" id="submit-search-by-area-name">Sök</a>
+                </form>
+            </div>
+            <div id="place-results"></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

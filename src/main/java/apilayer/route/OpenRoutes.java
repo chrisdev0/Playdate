@@ -1,5 +1,6 @@
 package apilayer.route;
 
+import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.fbhandlers.FBConfigFactory;
 import apilayer.fbhandlers.FBRouteHandler;
 import apilayer.handlers.*;
@@ -15,6 +16,7 @@ import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.SecurityFilter;
 import presentable.FeedObject;
 import secrets.Secrets;
+import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
 
 import javax.servlet.ServletOutputStream;
@@ -32,11 +34,10 @@ public class OpenRoutes {
      *  så att index.html (och "/") leder till att index.vm blir renderat
      * */
     public static void initOpenRoutes() {
-        //Hanterar inloggningsförsök
-        //post(Paths.TRYLOGIN, new LoginHandler()::handleLoginTry);
 
-        //hanterar registrering av användare
-        //post(Paths.DOREG, CreateUserHandler::handleCreateUser);
+        get("/", new StaticFileTemplateHandlerImpl("index.vm", 400, false)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get("/index.html", new StaticFileTemplateHandlerImpl("index.vm", 400, false)::handleTemplateFileRequest, new VelocityTemplateEngine());
+
 
         //hanterar logout
         get(Paths.LOGOUT, LoginHandler::logOut);

@@ -148,23 +148,50 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        Place that = (Place) o;
+        Place place = (Place) o;
 
-        if (geoX != that.geoX) return false;
-        if (geoY != that.geoY) return false;
-        if (!sthlmAPIid.equals(that.sthlmAPIid)) return false;
-        if (!name.equals(that.name)) return false;
-        if (!timeCreated.equals(that.timeCreated)) return false;
-        return timeUpdated.equals(that.timeUpdated);
+        if (isInitialized != place.isInitialized) return false;
+        if (geoX != place.geoX) return false;
+        if (geoY != place.geoY) return false;
+        if (id != null ? !id.equals(place.id) : place.id != null) return false;
+        if (sthlmAPIid != null ? !sthlmAPIid.equals(place.sthlmAPIid) : place.sthlmAPIid != null) return false;
+        if (name != null ? !name.equals(place.name) : place.name != null) return false;
+        if (shortDescription != null ? !shortDescription.equals(place.shortDescription) : place.shortDescription != null)
+            return false;
+        if (longDescription != null ? !longDescription.equals(place.longDescription) : place.longDescription != null)
+            return false;
+        if (category != null ? !category.equals(place.category) : place.category != null) return false;
+        if (geoArea != null ? !geoArea.equals(place.geoArea) : place.geoArea != null) return false;
+        if (cityAddress != null ? !cityAddress.equals(place.cityAddress) : place.cityAddress != null) return false;
+        if (zip != null ? !zip.equals(place.zip) : place.zip != null) return false;
+        if (streetAddress != null ? !streetAddress.equals(place.streetAddress) : place.streetAddress != null)
+            return false;
+        if (imageId != null ? !imageId.equals(place.imageId) : place.imageId != null) return false;
+        if (timeCreated != null ? !timeCreated.equals(place.timeCreated) : place.timeCreated != null) return false;
+        if (timeUpdated != null ? !timeUpdated.equals(place.timeUpdated) : place.timeUpdated != null) return false;
+        return comments != null ? comments.equals(place.comments) : place.comments == null;
     }
 
     @Override
     public int hashCode() {
-        int result = sthlmAPIid.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + timeCreated.hashCode();
-        result = 31 * result + timeUpdated.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (sthlmAPIid != null ? sthlmAPIid.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
+        result = 31 * result + (longDescription != null ? longDescription.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (geoArea != null ? geoArea.hashCode() : 0);
+        result = 31 * result + (cityAddress != null ? cityAddress.hashCode() : 0);
+        result = 31 * result + (zip != null ? zip.hashCode() : 0);
+        result = 31 * result + (streetAddress != null ? streetAddress.hashCode() : 0);
+        result = 31 * result + (imageId != null ? imageId.hashCode() : 0);
+        result = 31 * result + (timeCreated != null ? timeCreated.hashCode() : 0);
+        result = 31 * result + (timeUpdated != null ? timeUpdated.hashCode() : 0);
+        result = 31 * result + (isInitialized ? 1 : 0);
+        result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + geoX;
         result = 31 * result + geoY;
         return result;

@@ -1,0 +1,64 @@
+#* @vtlvariable name="p" type="model.Playdate" *#
+#* @vtlvariable name="p2" type="model.Playdate" *#
+#* @vtlvariable name="playdatesAttending" type="java.util.Collection" *#
+#* @vtlvariable name="playdatesOwner" type="java.util.Collection" *#
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+
+
+    <div data-role="main" class="ui-content">
+        <a href="/protected/createplaydate" data-ajax="false" class="ui-btn ui-icon-plus ui-btn-icon-right">Skapa ny Playdate</a>
+        <hr>
+        <h2>Mina:</h2>
+        #foreach($p in $playdatesOwner)
+            <div data-role="collapsible" data-theme="b" data-content-theme="b">
+                <h4>$!{p.header}</h4>
+                <p>
+                    $!{p.description}
+                    <a class="ui-btn" href="/protected/showplaydate/$!{p.id}">Visa</a>
+                    <a class="ui-btn" href="/protected/showplaydate/$!{p.id}">Redigera</a>
+                    <a class="ui-btn" href="/protected/showplaydate/$!{p.id}">Ta bort</a>
+                </p>
+
+            </div>
+        #end
+        <hr>
+        <h2>Andras:</h2>
+        #foreach($p2 in $playdatesAttending)
+            <div data-role="collapsible" data-theme="a" data-content-theme="b">
+                <h4>$!{p2.header}</h4>
+                <p>
+                    $!{p2.description}
+                    <a class="ui-btn" href="/protected/showplaydate/$!{p2.id}">Visa</a>
+                    <a class="ui-btn" href="/protected/showplaydate/$!{p2.id}">Lämna</a>
+                </p>
+
+            </div>
+        #end
+    </div>
+
+
+</div>
+
+</body>
+</html>

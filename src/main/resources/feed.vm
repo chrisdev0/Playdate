@@ -24,7 +24,7 @@
 
                 $.getJSON('/protected/getfeed?offset=' + window.offset).done(function (data) {
                     console.log(data.collection);
-                    offset = parseInt(data.paginationOffset) + 10 ;
+                    window.offset = parseInt(data.paginationOffset) + 10 ;
                     pendingAjax = false;
                     $.each(data.collection, function (index, feed) {
                         console.log(feed);
