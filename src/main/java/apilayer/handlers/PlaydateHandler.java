@@ -65,15 +65,15 @@ public class PlaydateHandler {
      *  @param request queryParam = playdateId
      *
      *  kontrollerar att detta id är en long och använder sig sen av
-     *  GetOnePlaydateHandler för att hämta och mata ut Playdate-objektet till
-     *  templatefilen som anges i GetOnePlaydateHandler-konstruktorn
+     *  GetOnePlaydateHandlerOLD för att hämta och mata ut Playdate-objektet till
+     *  templatefilen som anges i GetOnePlaydateHandlerOLD-konstruktorn
      * */
     public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
         String id = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
         try {
             long lId = Long.parseLong(id);
             log.info("fetching playdate with id = " + lId);
-            return new GetOnePlaydateHandler("TODELETE/showplaydatepage.vm", lId, 400)
+            return new GetOnePlaydateHandlerOLD("TODELETE/showplaydatepage.vm", lId, 400)
                     .handleTemplateFileRequest(request, response);
         } catch (NullPointerException | NumberFormatException e) {
             log.error("client: " + request.ip() + " sent illegal playdate id = " + id + " e = " + e.getMessage());
@@ -242,4 +242,5 @@ public class PlaydateHandler {
         }
         return halt(400);
     }
+
 }

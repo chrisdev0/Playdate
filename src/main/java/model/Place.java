@@ -60,7 +60,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
 
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
 
     private int geoX;

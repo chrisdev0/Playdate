@@ -10,7 +10,7 @@ public class Paths {
     public static final String POSTCOMMENT = "/postcomment";
     public static final String LOGOUT = "/logout";
     public static final String TRYLOGIN = "/trylogin";
-    public static final String CREATEPLAYDATE = "/createplaydate";
+    public static final String CREATEPLAYDATEPAGE = "/createplaydate";
     public static final String GETONEPLAYDATE = "/getoneplaydate";
     public static final String CREATEPROFILE = "/createprofile";
     public static final String SHOWPROFILE = "/showprofile";
@@ -32,6 +32,7 @@ public class Paths {
     public static final String GETFEED = "/getfeed";
     public static final String LANDING = "/feed";
     public static final String SHOWPLACE = "/showplace";
+    public static final String SEARCH_PLACE_BY_TERM = "/searchplacebyterm";
 
 
     public static class StaticFilePaths {

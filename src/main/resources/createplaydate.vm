@@ -39,6 +39,48 @@
 
     #parse("footer.vm")
 
+    <script>
+
+        $(document).ready(function () {
+
+            var searchField = $('#place-input-field');
+
+            var searchSuggestionts = $('#search-suggestions');
+
+            searchField.on('input',function(e) {
+                var text = $(this).val();
+                if(text.length > 3) {
+                    $.getJSON('/protected/searchplacebyterm?searchTerm=' + text, {}, function(data) {
+                        var suggestion = "";
+                        console.log(data)
+                        $.each(data,function(index,place){
+                           suggestion += "<li class='place-list-object' data-place-name="+ place.name + " data-place-id="+ place.id + ">" + place.name+ "</li>"
+                        });
+                        searchSuggestionts.html(suggestion);
+                        searchSuggestionts.listview("refresh");
+
+                    })
+                }
+            })
+
+            searchSuggestionts.on('click',".place-list-object",function(e) {
+                var placeId = $(this).data('placeId');
+                var placeName = $(this).data('placeName');
+                $('#show-place-placeholder').html(
+                    "<p class='name-with-button'>" + placeName + "</p>" +
+                            "<a href='#'>Visa</a>"
+                );
+                searchSuggestionts.html('');
+                searchSuggestionts.listview("refresh");
+                searchField.val("");
+            })
+
+
+        });
+
+    </script>
+
+
 <div data-role="page" id="pageone">
 
 
@@ -77,7 +119,9 @@
 
                 <label for="place-input-field">Sök plats:</label>
                 <input type="search" name="place-input-field" id="place-input-field">
-
+                <ul id="search-suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#place-input-field">
+                    <li>Test</li>
+                </ul>
                 <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära mig</a>
             </div>
             <input type="hidden" name="place" value="-1">

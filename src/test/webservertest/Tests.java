@@ -2,7 +2,6 @@ package webservertest;
 
 
 import apilayer.handlers.Paths;
-import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.Connection;
@@ -44,7 +43,7 @@ public class Tests {
 
     @Test
     public void testCreatePlaydate() throws Exception {
-        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATE)
+        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATEPAGE)
                 .cookie("JSESSIONID", sessionCookie)
                 .data(createPlaydateMap())
                 .method(Connection.Method.POST)
@@ -80,7 +79,7 @@ public class Tests {
 
     @Test
     public void testRemovePlaydate() throws Exception {
-        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATE)
+        Connection.Response res = Jsoup.connect("http://localhost:9000/protected" + Paths.CREATEPLAYDATEPAGE)
                 .cookie("JSESSIONID", sessionCookie)
                 .data(createPlaydateMap())
                 .method(Connection.Method.POST)
