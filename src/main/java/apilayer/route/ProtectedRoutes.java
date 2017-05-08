@@ -6,7 +6,10 @@ import apilayer.handlers.*;
 import com.google.gson.Gson;
 import dblayer.PaginationWrapper;
 import dblayer.PlaceDAO;
+import dblayer.PlaydateDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.Place;
+import model.Playdate;
 import model.User;
 import presentable.FeedObject;
 import spark.ModelAndView;
@@ -14,15 +17,14 @@ import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 
+@Slf4j
 public class ProtectedRoutes {
 
 
@@ -125,7 +127,26 @@ public class ProtectedRoutes {
 
         get(Paths.EDITPROFILE, new StaticFileTemplateHandlerImpl("editprofile.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
+        get(Paths.SHOWPLAYDATE, new StaticFileTemplateHandlerImpl("my-playdates.vm", 400, true) {
+            @Override
+            public Optional<Map<String, Object>> createModelMap(Request request) {
+                Map<String, Object> map = new HashMap<>();
+                User user = request.session().attribute(Constants.USER_SESSION_KEY);
 
+                Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user);
+                Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
+
+                if (!playdateByOwnerId.isPresent() || !playdatesAttending.isPresent()) {
+                    return Optional.of(map);
+                }
+
+                log.info("attending size= " + playdatesAttending.get().size());
+
+                map.put("playdatesAttending", playdatesAttending.get());
+                map.put("playdatesOwner", playdateByOwnerId.get());
+                return Optional.of(map);
+            }
+        }::handleTemplateFileRequest, new VelocityTemplateEngine());
         /*
         get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){
             @Override

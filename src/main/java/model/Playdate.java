@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -73,26 +74,28 @@ import java.util.Set;
         Playdate playdate = (Playdate) o;
 
         if (startTime != playdate.startTime) return false;
-        if (!header.equals(playdate.header)) return false;
-        if (!description.equals(playdate.description)) return false;
-        if (!owner.equals(playdate.owner)) return false;
-        if (!participants.equals(playdate.participants)) return false;
-        if (!place.equals(playdate.place)) return false;
+        if (id != null ? !id.equals(playdate.id) : playdate.id != null) return false;
+        if (header != null ? !header.equals(playdate.header) : playdate.header != null) return false;
+        if (description != null ? !description.equals(playdate.description) : playdate.description != null)
+            return false;
+        if (owner != null ? !owner.equals(playdate.owner) : playdate.owner != null) return false;
+        if (participants != null ? !participants.equals(playdate.participants) : playdate.participants != null)
+            return false;
+        if (invites != null ? !invites.equals(playdate.invites) : playdate.invites != null) return false;
+        if (place != null ? !place.equals(playdate.place) : playdate.place != null) return false;
         return playdateVisibilityType == playdate.playdateVisibilityType;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + header.hashCode();
-        result = 31 * result + description.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (header != null ? header.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (int) (startTime ^ (startTime >>> 32));
-        result = 31 * result + owner.hashCode();
-        result = 31 * result + participants.hashCode();
-        result = 31 * result + place.hashCode();
-        result = 31 * result + playdateVisibilityType.hashCode();
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (place != null ? place.hashCode() : 0);
+        result = 31 * result + (playdateVisibilityType != null ? playdateVisibilityType.hashCode() : 0);
         return result;
     }
-
-
 }

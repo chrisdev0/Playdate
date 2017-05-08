@@ -8,6 +8,8 @@ import model.Invite;
 import model.Place;
 import model.Playdate;
 import model.User;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
@@ -219,6 +221,41 @@ public class PlaydateDAOTest extends HibernateTests {
     }
 
 
+    @Test
+    public void testGetAttending() {
+        User user = createUser();
+        User user1 = createUser();
+
+        Place place = createPlace();
+        Playdate playdate = createPlaydate(user, place);
+        Playdate playdate1 = createPlaydate(user1, place);
+        save(user);
+        save(user1);
+        save(place);
+        save(playdate);
+        save(playdate1);
+
+        boolean b = PlaydateDAO.getInstance().addAttendance(user, playdate1);
+        assertTrue(b);
+
+        Hibernate.initialize(playdate1.getParticipants());
+
+        assertEquals(playdate1.getParticipants().size(), 1);
+
+        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user);
+        assertTrue(playdatesAttending.isPresent());
+        assertEquals(1, playdatesAttending.get().size());
+
+        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
+        assertTrue(playdateByOwnerId.isPresent());
+        assertEquals(1, playdateByOwnerId.get().size());
+
+        remove(playdate);
+        remove(playdate1);
+        remove(user);
+        remove(user1);
+        remove(place);
+    }
 
 
 
