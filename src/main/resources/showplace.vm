@@ -1,0 +1,72 @@
+#* @vtlvariable name="place" type="model.Place" *#
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+
+    <div data-role="main" class="ui-content">
+        <h2>$!{place.name}</h2>
+        <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
+        <p class="place-description">
+            #if($place.longDescription)
+                $!{place.longDescription}
+            #elseif($place.shortDescription)
+                $!{place.shortDescription}
+            #else
+                Beskrivning saknas.
+            #end
+        </p>
+        <table class="place-info-table">
+            <tr>
+                <th>Kategori:</th>
+                <th>Område:</th>
+                <th>Gatuadress:</th>
+            </tr>
+            <tr>
+                <td>$!{place.category}</td>
+                <td>$!{place.geoArea}</td>
+                <td>$!{place.streetAddress}</td>
+            </tr>
+        </table>
+        <div class="show-place-buttons">
+            <a href="#" class="ui-btn">Skapa Playdate Här</a>
+
+
+            <a href="#" class="ui-btn ui-mini ui-btn-inline">Playdates här</a>
+
+
+            <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="playdates-here">
+    <h2>Kommande playdates här</h2>
+</div>
+
+
+
+</div>
+
+</body>
+</html>

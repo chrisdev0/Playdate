@@ -31,6 +31,7 @@ public class Paths {
     public static final String GETPROFILEPICTURE = "/getprofilepicture";
     public static final String GETFEED = "/getfeed";
     public static final String LANDING = "/feed";
+    public static final String SHOWPLACE = "/showplace";
 
 
     public static class StaticFilePaths {

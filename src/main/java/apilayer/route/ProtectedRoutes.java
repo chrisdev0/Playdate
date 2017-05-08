@@ -147,6 +147,32 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
+        get(Paths.CREATEPLAYDATE,
+                new StaticFileTemplateHandlerImpl("createplaydate.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.SHOWPLACE,
+                new StaticFileTemplateHandlerImpl("showplace.vm", 400, true){
+                    @Override
+                    public Optional<Map<String, Object>> createModelMap(Request request) {
+                        Map<String, Object> map = new HashMap<>();
+
+                        String s = request.queryParams("placeId");
+                        try {
+                            Long placeId = Long.parseLong(s);
+                            Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(placeId);
+                            placeById.ifPresent(place -> map.put("place", place));
+                        } catch (NumberFormatException e) {
+                            log.info("error reading placeid");
+                            return Optional.empty();
+                        }
+                        return Optional.of(map);
+                    }
+
+                }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
         /*
         get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){
             @Override
