@@ -8,12 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import spark.HaltException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 import static spark.Spark.delete;
@@ -31,30 +34,46 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
-        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
-        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
+        Integer visibilityId = null;
+        Long placeId = null;
+        Long startTime = null;
+        //request.queryMap().toMap().forEach((s, strings) -> log.info("key=" + s + " value= " + Arrays.toString(strings)));
+        log.info("placeid = " + request.queryParams("placeId"));
+        log.info("visibilityId = " + request.queryParams("visibilityId"));
+        log.info("header = " + request.queryParams("header"));
+        log.info("startTime= " + request.queryParams("startTime"));
+        log.info("description= " + request.queryParams("description"));
+        placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
+        startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
+        visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
         if (!Utils.isNotNullAndNotEmpty(header, description)) {
+            log.error("header or description is empty");
             response.status(400);
             return "missing_info";
         }
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
+            log.error("visibility type was illegal: " + visibilityId);
             throw halt(400, "illegal visbilitytype");
         }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Optional<Place> placeOptional = PlaceDAO.getInstance().getPlaceById(placeId);
         if (!placeOptional.isPresent() || user == null) {
+            log.error("user is null or couldnt find place with id = " + placeId);
             response.status(400);
             return "";
         }
         Playdate playdate = new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType);
         Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         if (playdateOptional.isPresent()) {
-            response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + placeOptional.get().getId());
+            response.status(200);
+            String redirect = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+            log.info("created playdate successfully, redirecting to " + redirect);
+            response.redirect(redirect);
         } else {
+            log.error("couldn't create playdate");
             response.status(400);
         }
         return "";

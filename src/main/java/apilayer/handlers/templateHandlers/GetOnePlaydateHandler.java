@@ -1,41 +1,36 @@
 package apilayer.handlers.templateHandlers;
 
-import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
+import apilayer.handlers.Paths;
 import dblayer.PlaydateDAO;
-import lombok.extern.slf4j.Slf4j;
 import model.Playdate;
-import model.User;
 import spark.Request;
+import utils.ParserHelpers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
+import static spark.Spark.halt;
+
 public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
 
-    public GetOnePlaydateHandler() throws IllegalArgumentException {
-        super("my-playdates.vm", 400, true);
+    public GetOnePlaydateHandler() {
+        super("showplaydate.vm", 400, true);
     }
+
 
     @Override
     public Optional<Map<String, Object>> createModelMap(Request request) {
+        String placeIdStr = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
+        Long playdateId = ParserHelpers.parseToLong(placeIdStr);
+        Optional<Playdate> playdateById = PlaydateDAO.getInstance().getPlaydateById(playdateId);
         Map<String, Object> map = new HashMap<>();
-        User user = request.session().attribute(Constants.USER_SESSION_KEY);
-
-        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user);
-        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
-
-        if (!playdateByOwnerId.isPresent() || !playdatesAttending.isPresent()) {
-            return Optional.of(map);
+        if (playdateById.isPresent()) {
+            map.put("playdate", playdateById.get());
+        } else {
+            throw halt(400);
         }
-
-        log.info("attending size= " + playdatesAttending.get().size());
-
-        map.put("playdatesAttending", playdatesAttending.get());
-        map.put("playdatesOwner", playdateByOwnerId.get());
         return Optional.of(map);
     }
 }
