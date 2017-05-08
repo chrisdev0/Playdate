@@ -2,10 +2,15 @@ package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
 import model.*;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.pac4j.oauth.profile.facebook.FacebookProfile;
+import utils.Utils;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class UserDAO {
@@ -24,7 +29,7 @@ public class UserDAO {
     }
 
 
-    public Optional<User> getUserById(Long userId){
+    public static Optional<User> getUserById(Long userId){
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(User.class).loadOptional(userId);
         } catch (Exception e) {
@@ -33,6 +38,17 @@ public class UserDAO {
         return Optional.empty();
     }
 
+    public Optional<User> saveOrUpdateUserOnLogin(FacebookProfile facebookProfile) {
+        if (Utils.isNotNullAndNotEmpty(facebookProfile.getDisplayName(), facebookProfile.getEmail(),
+                facebookProfile.getThirdPartyId(), facebookProfile.getId())) {
+            User user = new User(facebookProfile.getDisplayName(), facebookProfile.getEmail());
+            user.setGender(Gender.genderFromFacebookGender(facebookProfile.getGender()));
+            user.setFbToken(facebookProfile.getAccessToken());
+            user.setFacebookThirdPartyID(facebookProfile.getThirdPartyId());
+            return Optional.of(user);
+        }
+        return Optional.empty();
+    }
 
     public Optional<User> getUserByThirdPartyAPIID(String thirdPartyAPIID) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
@@ -145,5 +161,51 @@ public class UserDAO {
             return session.byId(ProfilePicture.class).loadOptional(id);
         }
     }
+
+    public boolean createFriendshipRequest(User sender, User friend){
+        Set<FriendshipRequest> friendRequestList = friend.getFriendshipRequest();
+        FriendshipRequest fr = new FriendshipRequest(sender, friend);
+        friendRequestList.add(fr);
+        boolean ret = false;
+
+        Transaction tx = null;
+        Session session = null;
+
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.save(fr);
+            session.update(friend);
+            tx.commit();
+            ret = true;
+
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
+
+    public boolean checkIfFriendWithUser(Long userId, Long friendId){
+        /*
+        Kolla i tabellerna om vänner
+
+        Returnera sann om får tillbaka?
+         */
+
+        try(Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM Friendship WHERE friend.id = :user1 AND requester.id = :user2", Friendship.class)
+                    .setParameter("user1", userId)
+                    .setParameter("user2", friendId).uniqueResultOptional().isPresent();
+
+        }
+    }
+
 
 }
