@@ -23,7 +23,7 @@ public class Constants {
 
     static {
         if (DEV) {
-            ABSOLUTE_URL = "http://192.168.1.67:" + PORT;
+            ABSOLUTE_URL = "http://localhost:" + PORT;
         } else {
             ABSOLUTE_URL = null;
         }
