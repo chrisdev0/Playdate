@@ -141,9 +141,9 @@ public class PlaceDAO {
             Optional<Place> placeOptional = session.byId(Place.class).loadOptional(placeId);
             if (placeOptional.isPresent()) {
                 session.remove(placeOptional.get());
-                ret = true;
             }
             tx.commit();
+            ret = true;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
