@@ -60,6 +60,7 @@ public class PlaydateHandler {
         return "";
     }
 
+
     /** Hanterar att hämta och visa en Playdate
      *  Försöker hitta playdate med id
      *  @param request queryParam = playdateId
@@ -68,7 +69,7 @@ public class PlaydateHandler {
      *  GetOnePlaydateHandlerOLD för att hämta och mata ut Playdate-objektet till
      *  templatefilen som anges i GetOnePlaydateHandlerOLD-konstruktorn
      * */
-    public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
+    /*public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
         String id = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
         try {
             long lId = Long.parseLong(id);
@@ -79,7 +80,7 @@ public class PlaydateHandler {
             log.error("client: " + request.ip() + " sent illegal playdate id = " + id + " e = " + e.getMessage());
             throw halt(400);
         }
-    }
+    }*/
 
 
     /** Hanterar att ta bort en Playdate

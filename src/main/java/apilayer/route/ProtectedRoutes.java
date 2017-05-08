@@ -35,7 +35,7 @@ public class ProtectedRoutes {
         path(Paths.PROTECTED, () -> {
             //Kollar att användaren är inloggad innan varje request hanteras
             before("/*", (request, response) -> {
-                if (!AuthChecker.isLoggedIn(request, response)) {
+                if (!AuthChecker.isLoggedIn(request)) {
                     throw halt(401, Constants.MSG.USER_NOT_LOGGED_IN);
                 }
             });

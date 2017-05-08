@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.deprecated;
 
 import apilayer.StaticFileTemplateHandler;
 import dblayer.HibernateUtil;
