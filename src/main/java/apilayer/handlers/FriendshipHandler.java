@@ -34,7 +34,7 @@ public class FriendshipHandler {
         if (user == null || user.getId().equals(friendId)) {
             log.error("User is null or same user id sent");
             throw halt(400, "user is null or same friend id as current user sent");
-        }
+    }
 
         /*
         Kolla om det finns en vänförfrågan sedan tidigare
@@ -44,7 +44,7 @@ public class FriendshipHandler {
         Göra kontroll om person A är vän med person B eller vice versa
          */
 
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
 
         if (friend.isPresent()){
             if (UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.get().getId())){
@@ -88,12 +88,24 @@ public class FriendshipHandler {
         String friendIdParam = request.queryParams("friendId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (user == null || user.getId() != friendId){
+        if (user == null || user.getId() == friendId){
             log.error("User is null");
             throw halt(400, "user is null");
         }
 
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friendId);
+
+        if (!friendshipRequest.isPresent()){
+            log.error("No friend request has been sent");
+            throw halt(400, "No valid friend request found");
+        }
+
+        if(friend.isPresent()){
+            UserDAO.getInstance().declineFriendRequest(friendshipRequest.get());
+            Set<FriendshipRequest> frList = friend.get().getFriendshipRequest();
+            frList.remove(user);
+        }
 
     }
 
