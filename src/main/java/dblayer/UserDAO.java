@@ -31,7 +31,7 @@ public class UserDAO {
     }
 
 
-    public static Optional<User> getUserById(Long userId){
+    public Optional<User> getUserById(Long userId){
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(User.class).loadOptional(userId);
         } catch (Exception e) {
