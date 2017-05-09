@@ -2,7 +2,6 @@ package webservertest;
 
 
 import apilayer.handlers.Paths;
-import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.Connection;

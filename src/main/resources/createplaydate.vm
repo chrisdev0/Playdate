@@ -29,6 +29,58 @@
         });
 
     </script>
+    <script>
+
+        $(document).ready(function () {
+
+            var searchField = $('#place-input-field');
+
+            var searchSuggestionts = $('#search-suggestions');
+
+            searchField.on('input',function(e) {
+                var text = $(this).val();
+                if(text.length > 3) {
+                    $.getJSON('/protected/searchplacebyterm?searchTerm=' + text, {}, function(data) {
+                        var suggestion = "";
+                        console.log(data)
+                        $.each(data,function(index,place){
+                            suggestion += "<li class='place-list-object' data-place-name="+ place.name + " data-place-id="+ place.id + ">" + place.name+ "</li>"
+                        });
+                        searchSuggestionts.html(suggestion);
+                        searchSuggestionts.listview("refresh");
+
+                    })
+                }
+            })
+
+            searchSuggestionts.on('click',".place-list-object",function(e) {
+                var placeId = $(this).data('placeId');
+                var placeName = $(this).data('placeName');
+                $('#show-place-placeholder').html(
+                        "<p class='name-with-button'>" + placeName + "</p>" +
+                        "<a href='#'>Visa</a>"
+                );
+                $('#placeId').val(placeId);
+                searchSuggestionts.html('');
+                searchSuggestionts.listview("refresh");
+                searchField.val("");
+            });
+
+            $('#create-playdate-form').on('submit',function(e) {
+                var starttime = $('#startTime');
+                var date = $('#datepicker-field').datebox('getTheDate');
+                var time = $('#timepicker-field').datebox('getTheDate');
+                date.setHours(time.getHours());
+                date.setMinutes(time.getMinutes());
+                console.log("setting start time to " + date.getTime());
+                starttime.val(date.getTime());
+                console.log("starttimevalue = " + starttime.val());
+            });
+
+        });
+
+    </script>
+
 </head>
 <body>
 
@@ -39,55 +91,61 @@
 
     #parse("footer.vm")
 
+
+
+
 <div data-role="page" id="pageone">
 
 
 
 
     <div data-role="main" class="ui-content">
-        <form>
+        <form id="create-playdate-form" method="POST" action="/protected/createplaydate" data-ajax="false">
             <label for="header-field">
                 Rubrik:
             </label>
-            <input type="text" name="header-field" id="header-field">
+            <input type="text" name="header" id="header-field">
             <div data-role="ui-field-contain">
                 <label for="description-field">
                     Beskrivning:
                 </label>
-                <textarea name="description-field" id="description-field" cols="40" rows="8"></textarea>
+                <textarea name="description" id="description-field" cols="40" rows="8"></textarea>
             </div>
             <div class="ui-field-contain">
                 <label for="visibility-type">Öppenhetsnivå:</label>
-                <select name="visibility-type" id="visibility-type">
+                <select name="visibilityId" id="visibility-type">
                     <option value="0">Privat</option>
                     <option value="1">Öppen för vänner</option>
                     <option value="2">Offentlig</option>
                 </select>
             </div>
             <label>Datum och tid</label>
+            <input type="hidden" name="startTime" id="startTime" value="0">
             <div class="date-row">
                 <div class="date-column">
-                    <input type="text" data-role="datebox" data-options='{"mode":"flipbox", "afterToday": true}'>
+                    <input type="text" id="datepicker-field" data-role="datebox" data-options='{"mode":"flipbox", "afterToday": true}'>
                 </div>
                 <div class="date-column">
-                    <input type="text" data-role="datebox" data-options='{"mode":"timebox"}'>
+                    <input type="text" id="timepicker-field" data-role="datebox" data-options='{"mode":"timebox"}'>
                 </div>
             </div>
             <div>
 
                 <label for="place-input-field">Sök plats:</label>
                 <input type="search" name="place-input-field" id="place-input-field">
-
+                <ul id="search-suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#place-input-field">
+                    <li>Test</li>
+                </ul>
                 <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära mig</a>
             </div>
-            <input type="hidden" name="place" value="-1">
+            <input type="hidden" name="placeId" id="placeId" value="-1">
             <hr>
             <div id="show-place-placeholder">
                 <h2>Ingen plats vald</h2>
             </div>
             <hr>
             <div>
-                <a class="ui-btn last-button-on-page">Skapa Playdate</a>
+                <input type="submit" class="ui-btn last-button-on-page" data-ajax="false" id="create-playdate-btn" value="Skapa Playdate">
             </div>
         </form>
     </div>

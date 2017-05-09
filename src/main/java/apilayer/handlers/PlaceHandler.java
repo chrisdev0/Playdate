@@ -14,18 +14,18 @@ import static spark.Spark.halt;
 @Slf4j
 public class PlaceHandler {
 
-    public static ModelAndView handleGetOnePlace(Request request, Response response) {
+    /*public static ModelAndView handleGetOnePlace(Request request, Response response) {
         String id = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
         try {
             long lId = Long.parseLong(id);
             log.info("fetching place with id = " + lId);
-            return new GetOnePlaceHandler("TODELETE/showplacepage.vm", lId, 400)
+            return new GetOnePlaceHandlerOLD("TODELETE/showplacepage.vm", lId, 400)
                     .handleTemplateFileRequest(request, response);
         } catch (NullPointerException | NumberFormatException e) {
             log.info("client: " + request.ip() + " sent illegal place id = " + id + " e = " + e.getMessage());
             throw halt(400);
         }
-    }
+    }*/
 
     public static Object handleGetPlaceByLoc(Request request, Response response) {
         String locXStr = request.queryParams("locX");

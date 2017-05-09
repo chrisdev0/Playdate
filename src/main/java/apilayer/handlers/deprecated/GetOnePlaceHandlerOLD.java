@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.deprecated;
 
 import apilayer.StaticFileTemplateHandler;
 import dblayer.HibernateUtil;
@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-public class GetOnePlaceHandler extends StaticFileTemplateHandler {
+public class GetOnePlaceHandlerOLD extends StaticFileTemplateHandler {
 
     private Long placeId;
 
-    public GetOnePlaceHandler(String templateName, long placeId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
+    public GetOnePlaceHandlerOLD(String templateName, long placeId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
         super(templateName,onErrorHTTPStatusCode, true);
         this.placeId = placeId;
     }
@@ -30,7 +30,7 @@ public class GetOnePlaceHandler extends StaticFileTemplateHandler {
     public Optional<Map<String, Object>> createModelMap(Request request) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Place place = session.get(Place.class, placeId);
-            LoggerFactory.getLogger(GetOnePlaceHandler.class).info("Found place with id " + placeId +" = " + (place != null));
+            LoggerFactory.getLogger(GetOnePlaceHandlerOLD.class).info("Found place with id " + placeId +" = " + (place != null));
             Hibernate.initialize(place.getComments());
             if (!place.isInitialized()) {
                 Transaction transaction = null;

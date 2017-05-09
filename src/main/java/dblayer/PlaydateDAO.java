@@ -118,10 +118,9 @@ public class PlaydateDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            Long id = (Long) session.save(playdate);
+            session.save(playdate);
             session.update(playdate.getOwner());
             tx.commit();
-            playdate.setId(id);
             playdateOptional = Optional.of(playdate);
         } catch (Exception e) {
             log.error("error saving playdate", e);

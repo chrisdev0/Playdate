@@ -214,3 +214,9 @@
     margin-top: 5.8em;
     margin-left: 17.1%;
 }
+
+.name-with-button {
+    margin-right: 0.5em;
+    font-weight: bold;
+    font-size: 1.5em;
+}

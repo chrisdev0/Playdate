@@ -22,11 +22,9 @@ public class Cache {
 
     private LoadingCache<String, DBAPIImage> imageCache;
 
-    private APIImageLoader apiImageLoader;
-
 
     private Cache() {
-        apiImageLoader = new APIImageLoader();
+        APIImageLoader apiImageLoader = new APIImageLoader();
 
         imageCache = CacheBuilder.newBuilder()
                 .maximumSize(200)

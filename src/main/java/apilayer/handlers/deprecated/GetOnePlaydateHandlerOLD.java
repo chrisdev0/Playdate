@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.deprecated;
 
 import apilayer.StaticFileTemplateHandler;
 import dblayer.HibernateUtil;
@@ -13,10 +13,10 @@ import java.util.Optional;
 
 
 @Slf4j
-public class GetOnePlaydateHandler extends StaticFileTemplateHandler {
+public class GetOnePlaydateHandlerOLD extends StaticFileTemplateHandler {
     private Long playdateId;
 
-    public GetOnePlaydateHandler(String templateName, long playdateId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
+    public GetOnePlaydateHandlerOLD(String templateName, long playdateId, int onErrorHTTPStatusCode) throws IllegalArgumentException {
         super(templateName,onErrorHTTPStatusCode, true);
         this.playdateId = playdateId;
     }
