@@ -35,10 +35,10 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "friend", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "friend")
     private Set<Friendship> friends = new HashSet<>();
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "receiver")
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
@@ -55,6 +55,14 @@ public class User {
 
     public boolean attendPlaydate(Playdate playdate) {
         return attendingPlaydates.add(playdate);
+    }
+
+    public boolean addFriendshipRequeset(FriendshipRequest friendshipRequest){
+        return this.friendshipRequest.add(friendshipRequest);
+    }
+
+    public boolean removeFriendshipRequest(FriendshipRequest friendshipRequest){
+        return this.friendshipRequest.remove(friendshipRequest);
     }
 
     public boolean removeAttendingPlaydate(Playdate playdate) {

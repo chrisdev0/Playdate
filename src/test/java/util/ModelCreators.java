@@ -78,8 +78,9 @@ public class ModelCreators {
         assertTrue(b);
     }
 
-    public static void remove(FriendshipRequest friendshipRequest){
-        boolean b = UserDAO.getInstance().declineFriendRequest(friendshipRequest);
+    public static void remove(User user, User friend){
+        boolean b = UserDAO.getInstance().declineFriendRequest(user, friend);
+        assertTrue(b);
     }
 
     public static void save(User user) {
@@ -103,7 +104,7 @@ public class ModelCreators {
     }
 
     public static void save(FriendshipRequest friendshipRequest, User user, User friend){
-        boolean b = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        boolean b = UserDAO.getInstance().createFriendshipRequest(user, friend).isPresent();
 
         assertTrue(b);
     }
