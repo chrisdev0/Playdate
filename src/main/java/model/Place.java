@@ -91,11 +91,14 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     }
 
     public boolean addComment(Comment comment) {
+        if (comments == null) {
+            comments = new HashSet<>();
+        }
         return comments.add(comment);
     }
 
     public boolean removeComment(Comment comment) {
-        return comments.remove(comment);
+        return comments != null && comments.remove(comment);
     }
 
 
