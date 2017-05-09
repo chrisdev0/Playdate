@@ -17,16 +17,26 @@
 
     #parse("footer.vm")
 
+
+
 <div data-role="page" id="pageone">
-
-
 
     <div data-role="main" class="ui-content">
         <div class="view-place-head">
         <h2 style="display: inline;">$!{place.name}</h2>
-        <a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a>
         </div>
+        <div class="ui-grid-a place-image-btns">
+            <div class="ui-block-a">
         <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
+            </div>
+                <div class="ui-block-b">
+                    <ul id="btns-list" style="float:right;">
+                        <li><a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a></li>
+                        <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                        <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
+                    </ul>
+                </div>
+        </div>
         <p class="place-description">
             #if($place.longDescription)
                 $!{place.longDescription}
@@ -38,16 +48,16 @@
         </p>
 
         <div data-role="popup" id="popupBasic">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
-                <h1>Lägg till kommentar</h1>
+                <h1>Kommentera plats</h1>
             </div>
             <div data-role="main" class="ui-content">
             <form id="comment-form">
-                <label for="comment">Kommentar:</label>
-                <input type="text" name="name-comment" id="comment-title">
+                <textarea name="name-comment" id="comment-title" data-autogrow="false"></textarea>
             </form>
             </div>
-            <div data-role="footer">
+            <div data-role="footer" style="text-align: center;">
                 <a href="#" class="ui-btn" id="post-comment">Skicka kommentar</a>
             </div>
         </div>
@@ -69,7 +79,7 @@
             <a href="#" class="ui-btn">Skapa Playdate Här</a>
 
 
-            <a href="#" class="ui-btn ui-mini ui-btn-inline">Playdates här</a>
+            <a href="#" class="ui-btn ui-mini ui-btn-inline" style="margin-left:6%;">Playdates här</a>
 
 
             <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
