@@ -232,3 +232,9 @@
     font-size: 0.8em;
 }
 
+
+
+#listview-borders li{
+    border:1px solid white
+
+}
