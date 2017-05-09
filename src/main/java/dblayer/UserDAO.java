@@ -256,7 +256,6 @@ public class UserDAO {
     }
 
 
-    //Hur ska man ta bort kopplingen mellan user utan att ta bort en user?
     public boolean deleteFriendship(User user, User friend) {
         Session session = null;
         Transaction tx = null;
@@ -269,13 +268,17 @@ public class UserDAO {
             Set<Friendship> friendsOfFriend = friend.getFriends();
 
             if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()){
-                log.error("friendship does not exists");
+                log.error("friendship does not exist");
+                throw halt(400);
+            }
+
+            if(!(friendsOfUser.contains(friend) && friendsOfFriend.contains(user))){
+                log.error("friendship does not exist");
                 throw halt(400);
             }
 
             Friendship friendFriendWithUser = checkIfFriendWithUser(user.getId(), friend.getId()).get();
             Friendship userFriendWithFriend = checkIfFriendWithUser(friend.getId(), user.getId()).get();
-            //gör kontroll att friend och user verkligen finns i listorna som de ska tas bort från
 
             friendsOfUser.remove(friend);
             friendsOfFriend.remove(user);

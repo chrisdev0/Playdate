@@ -71,7 +71,6 @@ public class FriendshipHandler {
     }
 
 
-    //Behövs denna metod?? Finns en metod som tar bort friends i UserDAO
     public void removeFriend(Request request, Response response){
 
         String friendIdParam = request.queryParams("friendId");
@@ -79,7 +78,7 @@ public class FriendshipHandler {
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Optional<User> friend = UserDAO.getUserById(friendId);
 
-        if (user == null) {
+        if (user == null || user.getId() == friendId) {
             log.error("User is null");
             throw halt(400, "user is null");
         }
@@ -90,16 +89,7 @@ public class FriendshipHandler {
                 log.info("Friend has been deleted");
                 //return ""; ?????
             }
-
         }
-
-         /*if (user.equals(friend)) {
-                //log.error("User is null");
-                throw halt(400, "user is null");
-            }*/
-
-        //behövs det göras kontroll att long är en long med en try catch?
-
     }
 
     public void declineReceivedFriendshipRequest(Request request, Response response){
