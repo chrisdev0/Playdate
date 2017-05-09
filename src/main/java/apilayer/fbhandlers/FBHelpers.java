@@ -1,6 +1,10 @@
 package apilayer.fbhandlers;
 
-import apilayer.route.OpenRoutes;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.Version;
+import com.restfb.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import model.Gender;
 import model.User;
@@ -15,25 +19,14 @@ import java.util.Optional;
 @Slf4j
 public class FBHelpers {
 
-    /** todo
-     *  Bygger en User från informationen värdena i FacebookProfile-objektet
+    /** Bygger en User från informationen värdena i FacebookProfile-objektet
      * */
     public static User buildUserFromFacebookProfile(FacebookProfile facebookProfile) {
-        String email = facebookProfile.getEmail();
-        String name = facebookProfile.getDisplayName();
-        String fbToken = facebookProfile.getAccessToken();
-        String thirdPartyId = facebookProfile.getThirdPartyId();
-        Gender gender = Gender.genderFromFacebookGender(facebookProfile.getGender());
-        User user = new User(name, email);
-        user.setFacebookThirdPartyID(thirdPartyId);
-        user.setFbToken(fbToken);
-        user.setGender(gender);
-        user.setProfilePictureUrl(FacebookProfileHandler.getProfilePictureOfAccessToken(facebookProfile));
-        log.info("logging facebook info");
-        facebookProfile.getAttributes().forEach((s, o) -> {
-            log.info("[key=" + s + "]-[value=" + o + "]");
-        });
-        log.info("end facebook info");
+        User user = new User(facebookProfile.getDisplayName(), facebookProfile.getEmail());
+        user.setFacebookThirdPartyID(facebookProfile.getThirdPartyId());
+        user.setFbToken(facebookProfile.getAccessToken());
+        user.setGender(Gender.genderFromFacebookGender(facebookProfile.getGender()));
+        user.setProfilePictureUrl(getProfilePictureOfAccessToken(facebookProfile));
         return user;
     }
 
@@ -44,5 +37,16 @@ public class FBHelpers {
         SparkWebContext sparkWebContext = new SparkWebContext(request, response);
         ProfileManager<FacebookProfile> profileManager = new ProfileManager<>(sparkWebContext);
         return profileManager.get(true);
+    }
+
+    private static String getProfilePictureOfAccessToken(FacebookProfile facebookProfile) {
+        FacebookClient client = new DefaultFacebookClient(facebookProfile.getAccessToken(), Version.LATEST);
+        try {
+            JsonObject json = client.fetchObject("me/picture", JsonObject.class, Parameter.with("redirect", "false"));
+            return json.get("data").asObject().get("url").asString();
+        } catch (Exception e) {
+            log.error("error fetchobject ",e);
+        }
+        return null;
     }
 }

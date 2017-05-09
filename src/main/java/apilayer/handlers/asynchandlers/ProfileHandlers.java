@@ -13,10 +13,16 @@ import utils.Utils;
 public class ProfileHandlers {
 
 
+    /** Hanterar ändra profilinformation
+     *  Tar in
+     *  description, gender och telefonnummer
+     *  redirectar till samma sida så att den uppdaterade profilinformationen visas
+     *  todo validera input
+     * */
     public static Object handleEditProfile(Request request, Response response) {
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         String description = request.queryParams("description");
-        String genderSelectValue = request.queryParams("gender-select");
+        String genderSelectValue = request.queryParams("genderselect");
         String phoneStr = request.queryParams("phoneinput");
         int genderInt = ParserHelpers.parseToInt(genderSelectValue);
         Gender gender = Gender.genderIdToGender(genderInt);

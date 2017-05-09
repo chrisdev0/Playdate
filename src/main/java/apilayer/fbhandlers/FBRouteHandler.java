@@ -32,7 +32,7 @@ public class FBRouteHandler {
             return halt(400, new VelocityTemplateEngine().render(new ModelAndView(map, "error.vm")));
         }
         try (Session session = HibernateUtil.getInstance().openSession()) {
-                        FacebookProfile facebookProfile = facebookProfileOptional.get();
+            FacebookProfile facebookProfile = facebookProfileOptional.get();
             User user = FBHelpers.buildUserFromFacebookProfile(facebookProfile);
             Optional<User> userOptional = UserDAO.getInstance().saveUserOnLogin(user);
 
@@ -44,7 +44,13 @@ public class FBRouteHandler {
         } catch (Exception e) {
             log.error("error session ", e);
         }
-        response.redirect(Paths.PROTECTED + Paths.LANDING);
+        String attribute = request.session().attribute(Constants.ONLOGINREDIRECT);
+        if (attribute != null) {
+            request.session().attribute(Constants.ONLOGINREDIRECT, null);
+            response.redirect(attribute);
+        } else {
+            response.redirect(Paths.PROTECTED + Paths.LANDING);
+        }
         return "";
     }
 }

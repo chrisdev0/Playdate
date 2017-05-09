@@ -20,6 +20,15 @@ import java.util.Optional;
 @Slf4j
 public class UploadHandler {
 
+    /** Hanterar uppladdning av profilbild
+     *  profilbilden kommer som en blob och sparas till en byte[]
+     *  byte[] sparas i databasen och id för bilden returneras
+     *  Användarens profilbild sätts till
+     *  Path till profil-bild-API ENDPOINT + id för bilden
+     *  och denna Path returneras till front-end
+     *
+     *  Returnerar response code 400 om något går fel
+     * */
     public static Object handleUploadProfilePicture(Request request, Response response) {
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         User user = request.session().attribute(Constants.USER_SESSION_KEY);

@@ -70,7 +70,7 @@
                 })
             }
 
-            $('#update-profile-btn').one(function(e) {
+            $('#update-profile-btn').one('click',function(e) {
                 e.preventDefault();
                 $('#update-profile-form').submit();
             })
