@@ -1,0 +1,60 @@
+#* @vtlvariable name="playdates" type="java.util.Collection" *#
+#* @vtlvariable name="p" type="model.Playdate" *#
+#* @vtlvariable name="other-user" type="model.User" *#
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+    <div data-role="main" class="ui-content">
+        <div class="other-user-reportable">
+            <h2>$!{other-user.name}</h2>
+            <a href="#" style="float: right; top: -5px; right: -20px" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
+        </div>
+        <div class="ui-grid-a profile-page">
+            <div class="ui-block-a">
+                <div id="composite-picture">
+                    <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
+                </div>
+                <h3>Beskrivning:</h3>
+                <p class="profile-description-text">
+                    $!{other-user.description}
+                </p>
+            </div>
+            <div class="ui-block-b profile-right-block">
+                <p>
+                    $!{other-user.phoneNumber}
+                </p>
+                <p>Kön: $!{other-user.gender.frontname}</p>
+                <a href="#" class="ui-btn" data-mini="true">Lägg till vän</a>
+                <h3>Öppna Playdates:</h3>
+                #foreach($p in $playdates)
+                    <div data-role="collapsible" data-mini="true">
+                        <h4>$p.header</h4>
+                        <p>$p.description</p>
+                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

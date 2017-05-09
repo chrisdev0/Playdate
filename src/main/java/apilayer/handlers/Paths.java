@@ -36,6 +36,7 @@ public class Paths {
     public static final String LANDING = "/feed";
     public static final String SHOWPLACE = "/showplace";
     public static final String SEARCH_PLACE_BY_TERM = "/searchplacebyterm";
+    public static final String SHOWUSER = "/showuser";
 
 
     public static class StaticFilePaths {
@@ -45,5 +46,6 @@ public class Paths {
     public static class QueryParams {
         public static final String GET_ONE_PLAYDATE_BY_ID = "playdateId";
         public static final String GET_ONE_PLACE_BY_ID = "placeId";
+        public static final String USER_ID = "userId";
     }
 }

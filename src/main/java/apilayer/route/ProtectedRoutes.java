@@ -6,6 +6,7 @@ import apilayer.handlers.*;
 import apilayer.handlers.asynchandlers.SearchHandlers;
 import apilayer.handlers.templateHandlers.GetOnePlaceHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaydateHandler;
+import apilayer.handlers.templateHandlers.GetOneUserHandler;
 import apilayer.handlers.templateHandlers.GetUserPlaydateHandler;
 import com.google.gson.Gson;
 import dblayer.PaginationWrapper;
@@ -84,6 +85,8 @@ public class ProtectedRoutes {
                 return new Gson().toJson(paginationWrapper);
             });
 
+            get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
+
             initProtectedStaticRoutes();
 
         });
@@ -103,7 +106,8 @@ public class ProtectedRoutes {
 
         get(Paths.SHOWPLACE, new GetOnePlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
-        get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
+
+        get(Paths.SHOWUSER, new GetOneUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
         /*
         get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){

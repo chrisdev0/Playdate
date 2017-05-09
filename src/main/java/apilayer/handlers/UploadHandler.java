@@ -32,6 +32,7 @@ public class UploadHandler {
                 Optional<Long> aLong = UserDAO.getInstance().saveImageToDB(profilePicture);
                 if (aLong.isPresent()) {
                     user.setProfilePictureUrl(Paths.PROTECTED + Paths.GETPROFILEPICTURE + "/" + aLong.get());
+                    return user.getProfilePictureUrl();
                 } else {
                     response.status(400);
                     return "";
@@ -40,7 +41,6 @@ public class UploadHandler {
         } catch (Exception e) {
             log.error("Couldn't upload image from " + user.getId(), e);
         }
-        response.redirect("/protected/landingpage");
         return "";
     }
 

@@ -10,7 +10,7 @@
         <div class="small-profile">
             <span>$!{user.name}</span>
             <div class="composite-row">
-                <img src="$!{user.profilePictureUrl}">
+                <img src="$!{user.profilePictureUrl}" class="profile-picture-upload">
                 <span>$!{user.description}
                 </span>
             </div>

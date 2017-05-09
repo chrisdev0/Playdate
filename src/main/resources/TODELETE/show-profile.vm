@@ -35,7 +35,7 @@
             </tr>
             <tr>
                 <td>Kön:</td>
-                <td>$!{gender.fronname}</td>
+                <td>$!{gender.frontname}</td>
             </tr>
         </table>
 
