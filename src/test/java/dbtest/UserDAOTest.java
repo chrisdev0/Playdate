@@ -1,6 +1,7 @@
 package dbtest;
 
 import apilayer.handlers.FriendshipHandler;
+import com.sun.tools.internal.xjc.model.Model;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -209,7 +210,46 @@ public class UserDAOTest extends HibernateTests {
 
         Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.getId());
         assertTrue(friendshipRequest.isPresent());
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+        ModelCreators.remove(fr);
 
+
+    }
+
+    @Test
+    public void testRemoveFriendRequest(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        FriendshipRequest fr = new FriendshipRequest(user, friend);
+        ModelCreators.save(fr, user, friend);
+
+        assertTrue(UserDAO.getInstance().declineFriendRequest(fr));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+        ModelCreators.remove(fr);
+
+    }
+
+    @Test
+    public void testRemoveNonexistingFriendship(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        FriendshipRequest fr = new FriendshipRequest();
+        assertFalse(UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.getId()));
+
+        assertFalse(UserDAO.getInstance().declineFriendRequest(fr));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+        ModelCreators.remove(fr);
     }
 
 }
