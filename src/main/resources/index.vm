@@ -59,6 +59,44 @@
         </div>
 
 
+
+
+        <a href="#popupInfo" data-rel="popup" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info ui-btn-icon-notext" data-transition="slideup"> Information</a>
+
+
+        <div data-role="popup" id="popupInfo">
+            <div data-role="main" class="ui-content">
+                <form id="text">
+                    <label for="text"><h1>Välkommen till Playdate!</h1></label>
+                    <br>
+                    <a href="#" data-rel="back" style= "margin-right:2em; margin-top:2em;" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                    <div id="text-popup"
+                    <p> Playdate är en social plattform som gör det enkelt för dig som förälder att träffa nya familjevänner tillsammans med dina barn. </p>
+                    <p>Playdate gör det möjligt för dig som förälder att skapa eller delta i evenemang, Playdates.
+                        Playdates kan skapas som offentliga, privata eller offentliga för alla dina vänner.
+                        Offentliga Playdates är ett bra tillfälle att finna nya vänner för både dig och dina barn medans privata Playdates kan arrangeras med personer från din vänlista som du vill knyta tätare vänskapsband med.</p>
+                    <p>För att komma igång och delta i din första Playdate kan du logga in och se över din profil för att sedan sätta igång och leta upp en Playdate som du tror skulle vara perfekt för dig och din familj!</p>
+                    <p>Lycka till!</p>
+                </div>
+                </form>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 </div>
 </body>
