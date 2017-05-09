@@ -112,14 +112,34 @@ public class FriendshipHandler {
 
     }
 
-    public void acceptFriendRequest(){
+    public void acceptFriendRequest(Request request, Response response){
         /*
         Överföra från friendRequest-listan till Friends-listan för båda användare.
         (och ta bort den från friendRequest-listan)
          */
+        String friendIdParam = request.queryParams("friendId");
+        Long friendId = ParserHelpers.parseToLong(friendIdParam);
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        if (user == null || user.getId() == friendId){
+            log.error("User is null");
+            throw halt(400, "user is null");
+        }
+
+        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.get().getId());
+
+        if(!friendshipRequest.isPresent()) {
+            log.error("Friendship request has not been sent");
+            throw halt(400, "No valid friendship request found");
+        }
+
+        if(friend.isPresent()) {
+            if (UserDAO.getInstance().createFriendship(user, friend.get())) {
+                log.info("Friendship has been approved");
+
+            }
+        }
+
     }
-
-
-
 
 }

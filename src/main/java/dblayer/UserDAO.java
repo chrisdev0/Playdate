@@ -2,19 +2,17 @@ package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-//import org.hibernate.Hibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
 
-//import java.util.HashSet;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import static spark.Spark.halt;
-
-//import static spark.Spark.halt;
 
 @Slf4j
 public class UserDAO {
@@ -255,6 +253,51 @@ public class UserDAO {
         return ret;
     }
 
+
+    public boolean createFriendship(User user, User friend) {
+        Friendship friendshipOfUser = new Friendship(friend, user);
+        Friendship friendshipOfFriend = new Friendship(user, friend);
+        Set<Friendship> friendsOfUser = user.getFriends();
+        Set<Friendship> friendsOfFriend = friend.getFriends();
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+
+            if(!friend.getFriendshipRequest().contains(user)) {
+               log.error("No friendship request exists");
+               throw halt(400);
+            }
+
+            if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()) {
+                log.error("Friendship does not exist");
+                throw halt(400);
+            }
+
+            friend.getFriendshipRequest().remove(user);
+            friendsOfUser.add(friendshipOfUser);
+            friendsOfFriend.add(friendshipOfFriend);
+
+            session.save(friendshipOfUser);
+            session.save(friendshipOfFriend);
+            session.update(user);
+            session.update(friend);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
 
     public boolean deleteFriendship(User user, User friend) {
         Session session = null;
