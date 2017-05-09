@@ -1,4 +1,5 @@
 package dbtest;
+import apilayer.handlers.FriendshipHandler;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -207,8 +208,6 @@ public class UserDAOTest extends HibernateTests {
         ModelCreators.remove(user, friend);
         ModelCreators.remove(friend);
         ModelCreators.remove(user);
-
-
     }
 
     @Test

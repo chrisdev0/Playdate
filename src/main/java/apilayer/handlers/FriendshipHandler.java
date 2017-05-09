@@ -115,8 +115,6 @@ public class FriendshipHandler {
             frList.remove(user);
         }
 
-
-
     }
 
     public void acceptFriendRequest(Request request, Response response){
