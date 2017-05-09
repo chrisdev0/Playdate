@@ -234,3 +234,9 @@
 #btns-list{
     list-style: none;
 }
+
+
+#listview-borders li{
+    border:1px solid white
+
+}
