@@ -170,7 +170,7 @@
 }
 
 .medium-image {
-    max-width: 19.6em;
+    max-width: 18.8em;
 }
 
 .place-description {
@@ -231,4 +231,6 @@
 .place-description{
     font-size: 0.8em;
 }
-
+#btns-list{
+    list-style: none;
+}
