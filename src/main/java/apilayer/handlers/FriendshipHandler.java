@@ -44,7 +44,7 @@ public class FriendshipHandler {
         Göra kontroll om person A är vän med person B eller vice versa
          */
 
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
 
         if (friend.isPresent()){
             if (UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.get().getId())){
@@ -93,7 +93,7 @@ public class FriendshipHandler {
             throw halt(400, "user is null");
         }
 
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
 
     }
 

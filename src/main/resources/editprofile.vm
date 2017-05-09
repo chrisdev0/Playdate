@@ -4,7 +4,8 @@
 <head>
     <title>Redigera profil</title>
     #parse("head-links.vm")
-
+    <link rel="stylesheet" type="text/css" href="/css/croppie.css">
+    <script src="/js/croppie.js"></script>
     <script>
         $(document).ready(function() {
             $('#edit-profile-picture').click(function() {
@@ -20,10 +21,8 @@
                     reader.onload = (function(image) {
                         return function(e) {
                             var i = e.target.result;
-
-                            console.log(i)
                             console.log('init croppie')
-                            $('#croppie').croppie({
+                            window.croppie = $('#croppie').croppie({
                                 viewport: {
                                     width: 260,
                                     height: 260
@@ -47,17 +46,38 @@
 
 
             $('#upload-picture').click(function() {
-                var picture = $('#croppie').croppie('result', 'blob', 'viewport', 'png');
-                //todo kontrollera att bilden inte är för stor
-                //todo skicka bilden till backend
-            })
+                var picture = window.croppie.croppie('result',
+                        {type: 'blob',format: 'png', size: 'viewport'})
+                        .then(function(res) {
+                            console.log(res)
+                            sendImage(res)
+                        });
+            });
+
+            var sendImage = function(image){
+                var form = new FormData();
+                form.append('profile_picture_file', image)
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postnewprofilepicture',
+                    data: form,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                    console.log(data)
+                    $('.profile-picture-upload').attr('src', data);
+                    $('#popup').popup('close');
+                })
+
+            }
         });
 
         $(document).ready(function () {
             var genderId = ${user.gender.id};
             console.log(genderId);
 
-            $('#genderselect').val(genderId);
+            $('#genderselect').val(genderId).change();
         });
 
     </script>
@@ -82,7 +102,7 @@
             <div class="ui-block-a">
                 <div id="composite-picture">
                     <a href="#" data-rel="popup" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext ui-overlay-shadow" id="edit-profile-picture" data-ajax="false">Edit Icon</a>
-                    <img src="$!{user.profilePictureUrl}" class="profile-picture" style="width: 9em">
+                    <img src="$!{user.profilePictureUrl}" class="profile-picture profile-picture-upload" style="width: 9em">
                 </div>
             </div>
             <div class="ui-block-b">

@@ -5,19 +5,19 @@ public enum Gender {
     MALE(0, "Man"), FEMALE(1, "Kvinna"), OTHER(2, "Annat");
 
     private int id;
-    private String fronname;
+    private String frontname;
 
     Gender(int id, String frontname) {
         this.id = id;
-        this.fronname = frontname;
+        this.frontname = frontname;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getFronname() {
-        return fronname;
+    public String getFrontname() {
+        return frontname;
     }
 
     @SuppressWarnings("Duplicates")

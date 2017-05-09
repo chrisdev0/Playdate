@@ -61,7 +61,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
 
     @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     private int geoX;
     private int geoY;
@@ -77,6 +77,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         this.comments = new HashSet<>();
         this.shortDescription = shortDescription;
         isInitialized = true;
+        comments = new HashSet<>();
     }
 
     @Transient
@@ -115,6 +116,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         setGeoY(detailedServiceUnit.getGeographicalPosition().getY());
         setLongDescription((String)detailedServiceUnit.getAttributesIdToValue().get(API_DESCRIPTION));
         isInitialized = true;
+        comments = new HashSet<>();
         return this;
     }
 
@@ -141,6 +143,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         geoY = serviceUnitTypes.getGeographicalPosition().getY();
         timeCreated = serviceUnitTypes.getTimeCreated();
         timeUpdated = serviceUnitTypes.getTimeUpdated();
+        comments = new HashSet<>();
     }
 
 
