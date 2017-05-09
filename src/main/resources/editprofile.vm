@@ -11,11 +11,11 @@
             $('#edit-profile-picture').click(function() {
                 $('#popup').popup("open");
             })
+
+            $('#genderselect').val(${user.gender.id}).change();
+
             $('#picturefile').change(function(e) {
-                var files = e.target.files;
-
-                var file = files[0];
-
+                var file = e.target.files[0];
                 if (file.type.match('image.*')) {
                     var reader = new FileReader();
                     reader.onload = (function(image) {
@@ -49,7 +49,6 @@
                 var picture = window.croppie.croppie('result',
                         {type: 'blob',format: 'png', size: 'viewport'})
                         .then(function(res) {
-                            console.log(res)
                             sendImage(res)
                         });
             });
@@ -69,16 +68,14 @@
                     $('.profile-picture-upload').attr('src', data);
                     $('#popup').popup('close');
                 })
-
             }
+
+            $('#update-profile-btn').one(function(e) {
+                e.preventDefault();
+                $('#update-profile-form').submit();
+            })
         });
 
-        $(document).ready(function () {
-            var genderId = ${user.gender.id};
-            console.log(genderId);
-
-            $('#genderselect').val(genderId).change();
-        });
 
     </script>
 </head>
@@ -105,23 +102,25 @@
                     <img src="$!{user.profilePictureUrl}" class="profile-picture profile-picture-upload" style="width: 9em">
                 </div>
             </div>
-            <div class="ui-block-b">
+            <form action="/protected/editmyprofile" method="POST" id="update-profile-form">
+                <div class="ui-block-b">
 
-                <label for="phoneinput">Telefonnummer:</label>
-                <input type="text" name="phoneinput" id="phoneinput" value="$!{user.phoneNumber}">
+                    <label for="phoneinput">Telefonnummer:</label>
+                    <input type="text" name="phoneinput" id="phoneinput" value="$!{user.phoneNumber}">
 
-                <label for="genderselect" class="select" style="display: inline; margin-right: 1em">Kön:</label>
-                <select name="genderselect" id="genderselect" data-inline="true">
-                                    <option value="0">Man</option>
-                                    <option value="1">Kvinna</option>
-                                    <option value="2">Annat</option>
-                </select>
-            </div>
-            <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}
+                    <label for="genderselect" class="select" style="display: inline; margin-right: 1em">Kön:</label>
+                    <select name="genderselect" id="genderselect" data-inline="true">
+                                        <option value="0">Man</option>
+                                        <option value="1">Kvinna</option>
+                                        <option value="2">Annat</option>
+                    </select>
+                </div>
+                <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}
             </textarea>
+            </form>
         </div>
         <div class="on-bottom-button">
-            <a class="ui-btn">Uppdatera Profil</a>
+            <a class="ui-btn" id="update-profile-btn" data-ajax="false">Uppdatera Profil</a>
         </div>
     </div>
     <div data-role="popup" id="popup" data-dismissible="false">

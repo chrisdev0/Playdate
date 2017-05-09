@@ -3,7 +3,9 @@ package apilayer.route;
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
+import apilayer.handlers.asynchandlers.ProfileHandlers;
 import apilayer.handlers.asynchandlers.SearchHandlers;
+import apilayer.handlers.asynchandlers.UploadHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaceHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaydateHandler;
 import apilayer.handlers.templateHandlers.GetOneUserHandler;
@@ -86,6 +88,8 @@ public class ProtectedRoutes {
             });
 
             get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
+
+            post(Paths.EDITPROFILE, ProfileHandlers::handleEditProfile);
 
             initProtectedStaticRoutes();
 

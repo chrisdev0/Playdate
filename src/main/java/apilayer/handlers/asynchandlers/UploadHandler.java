@@ -1,6 +1,7 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.ProfilePicture;
