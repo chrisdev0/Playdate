@@ -233,6 +233,10 @@
 }
 
 
+#text-popup{
+    font-size: 200%;
+}
+
 
 #listview-borders li{
     border:1px solid white
