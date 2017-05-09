@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static spark.Spark.halt;
+
 @Slf4j
 public class UserDAO {
     private static UserDAO instance;
@@ -192,7 +194,7 @@ public class UserDAO {
     }
 
 
-    public boolean checkIfFriendWithUser(Long userId, Long friendId){
+    public Optional<Friendship> checkIfFriendWithUser(Long userId, Long friendId){
         /*
         Kolla i tabellerna om vänner
 
@@ -202,7 +204,7 @@ public class UserDAO {
         try(Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Friendship WHERE friend.id = :user1 AND requester.id = :user2", Friendship.class)
                     .setParameter("user1", userId)
-                    .setParameter("user2", friendId).uniqueResultOptional().isPresent();
+                    .setParameter("user2", friendId).uniqueResultOptional();
 
         }
     }
@@ -251,6 +253,51 @@ public class UserDAO {
         return ret;
     }
 
+
+    public boolean createFriendship(User user, User friend) {
+        Friendship friendshipOfUser = new Friendship(friend, user);
+        Friendship friendshipOfFriend = new Friendship(user, friend);
+        Set<Friendship> friendsOfUser = user.getFriends();
+        Set<Friendship> friendsOfFriend = friend.getFriends();
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+
+            if(!friend.getFriendshipRequest().contains(user)) {
+               log.error("No friendship request exists");
+               throw halt(400);
+            }
+
+            if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()) {
+                log.error("Friendship does not exist");
+                throw halt(400);
+            }
+
+            friend.getFriendshipRequest().remove(user);
+            friendsOfUser.add(friendshipOfUser);
+            friendsOfFriend.add(friendshipOfFriend);
+
+            session.save(friendshipOfUser);
+            session.save(friendshipOfFriend);
+            session.update(user);
+            session.update(friend);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
 
 
 }
