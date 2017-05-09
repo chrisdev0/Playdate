@@ -47,7 +47,7 @@ public class FriendshipHandler {
         Optional<User> friend = UserDAO.getUserById(friendId);
 
         if (friend.isPresent()){
-            if (UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.get().getId())){
+            if (UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.get().getId()).isPresent()){
                 log.info("Users are already friends");
                 return "";
             }
@@ -58,7 +58,6 @@ public class FriendshipHandler {
             }
 
         }
-
 
 
         if (friend.isPresent()) {
@@ -72,11 +71,35 @@ public class FriendshipHandler {
     }
 
 
+    //Behövs denna metod?? Finns en metod som tar bort friends i UserDAO
+    public void removeFriend(Request request, Response response){
 
-    public void removeFriend(){
-        /*
-        Ta bort vän från Friends-listan
-         */
+        String friendIdParam = request.queryParams("friendId");
+        Long friendId = ParserHelpers.parseToLong(friendIdParam);
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        Optional<User> friend = UserDAO.getUserById(friendId);
+
+        if (user == null) {
+            log.error("User is null");
+            throw halt(400, "user is null");
+        }
+
+        if (friend.isPresent()) {
+            //gör en koll att friendshipen innehåller dessa vänner.
+            if (UserDAO.getInstance().deleteFriendship(user, friend.get())); {
+                log.info("Friend has been deleted");
+                //return ""; ?????
+            }
+
+        }
+
+         /*if (user.equals(friend)) {
+                //log.error("User is null");
+                throw halt(400, "user is null");
+            }*/
+
+        //behövs det göras kontroll att long är en long med en try catch?
+
     }
 
     public void declineReceivedFriendshipRequest(Request request, Response response){
@@ -94,6 +117,8 @@ public class FriendshipHandler {
         }
 
         Optional<User> friend = UserDAO.getUserById(friendId);
+
+
 
     }
 

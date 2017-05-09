@@ -2,15 +2,19 @@ package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.hibernate.Hibernate;
+//import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
 
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static spark.Spark.halt;
+
+//import static spark.Spark.halt;
 
 @Slf4j
 public class UserDAO {
@@ -192,7 +196,7 @@ public class UserDAO {
     }
 
 
-    public boolean checkIfFriendWithUser(Long userId, Long friendId){
+    public Optional<Friendship> checkIfFriendWithUser(Long userId, Long friendId){
         /*
         Kolla i tabellerna om vänner
 
@@ -202,7 +206,7 @@ public class UserDAO {
         try(Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Friendship WHERE friend.id = :user1 AND requester.id = :user2", Friendship.class)
                     .setParameter("user1", userId)
-                    .setParameter("user2", friendId).uniqueResultOptional().isPresent();
+                    .setParameter("user2", friendId).uniqueResultOptional();
 
         }
     }
@@ -252,5 +256,46 @@ public class UserDAO {
     }
 
 
+    //Hur ska man ta bort kopplingen mellan user utan att ta bort en user?
+    public boolean deleteFriendship(User user, User friend) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+
+            Set<Friendship> friendsOfUser = user.getFriends();
+            Set<Friendship> friendsOfFriend = friend.getFriends();
+
+            if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()){
+                log.error("friendship does not exists");
+                throw halt(400);
+            }
+
+            Friendship friendFriendWithUser = checkIfFriendWithUser(user.getId(), friend.getId()).get();
+            Friendship userFriendWithFriend = checkIfFriendWithUser(friend.getId(), user.getId()).get();
+            //gör kontroll att friend och user verkligen finns i listorna som de ska tas bort från
+
+            friendsOfUser.remove(friend);
+            friendsOfFriend.remove(user);
+
+            session.remove(friendFriendWithUser);
+            session.remove(userFriendWithFriend);
+            session.update(friend);
+            session.update(user);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
 
 }

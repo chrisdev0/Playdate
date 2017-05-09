@@ -125,13 +125,15 @@ public class PlaceDAO {
         }
     }
 
-    /** Försöker ta bort en plats med
-     *  @param placeId
-     *  om den finns och kunde tas bort så returneras true
-     *  annars false
+    /**
+     * Försöker ta bort en plats med
      *
-     * */
+     * @param placeId om den finns och kunde tas bort så returneras true
+     *                annars false
+     */
+
     public boolean deletePlaceById(Long placeId) {
+
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
