@@ -61,7 +61,7 @@ public class FriendshipHandler {
 
 
         if (friend.isPresent()) {
-            if (UserDAO.getInstance().createFriendshipRequest(user, friend.get())) {
+            if (UserDAO.getInstance().createFriendshipRequest(user, friend.get()).isPresent()) {
                 log.info("Friend request has been sent");
                 return "";
             }
@@ -115,7 +115,7 @@ public class FriendshipHandler {
         }
 
         if(friend.isPresent()){
-            UserDAO.getInstance().declineFriendRequest(friendshipRequest.get());
+            UserDAO.getInstance().declineFriendRequest(user, friend.get());
             Set<FriendshipRequest> frList = friend.get().getFriendshipRequest();
             frList.remove(user);
         }
@@ -137,7 +137,7 @@ public class FriendshipHandler {
             throw halt(400, "user is null");
         }
 
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
         Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.get().getId());
 
         if(!friendshipRequest.isPresent()) {

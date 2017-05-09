@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -164,24 +165,23 @@ public class UserDAO {
         }
     }
 
-    public boolean createFriendshipRequest(User sender, User friend){
-        Set<FriendshipRequest> friendRequestList = friend.getFriendshipRequest();
+    public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
-        friendRequestList.add(fr);
-        boolean ret = false;
+        friend.addFriendshipRequeset(fr);
 
         Transaction tx = null;
         Session session = null;
-
+        Optional<FriendshipRequest> ret = Optional.empty();
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             session.save(fr);
             session.update(friend);
             tx.commit();
-            ret = true;
+            ret = Optional.of(fr);
 
         } catch (Exception e) {
+            log.error("Exception i spara friendshipRequest ", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -224,18 +224,26 @@ public class UserDAO {
         }
     }
 
-    public boolean declineFriendRequest(FriendshipRequest friendshipRequest){
+    public boolean declineFriendRequest(User user, User friend){
         /*
         Om tackar nej, ta bort från friendRequest-listan och databasen
          */
 
+        Optional<FriendshipRequest> userFriendshipRequest = checkIfFriendRequestSent(user.getId(), friend.getId());
+        //Optional<FriendshipRequest> friendFriendshipRequest = checkIfFriendRequestSent(friend.getId(), user.getId());
+
+        if (!userFriendshipRequest.isPresent()){
+            log.info("userFriendshipRequest finns ej");
+            return false;
+        }
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            session.remove(friendshipRequest);
+            session.remove(userFriendshipRequest.get());
+            //session.remove(friendFriendshipRequest);
             tx.commit();
             ret = true;
         }
