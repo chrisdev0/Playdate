@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <title>Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+    <script src="https://code.jquery.com/jquery-2.1.4.js" integrity="sha256-siFczlgw4jULnUICcdm9gjQPZkw/YPDqhQ9+nAOScE4=" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/croppie.css">
+    <script src="js/croppie.js"></script>
+    <script>
+        $(function() {
+            $("#side-panel").panel();
+            $("[data-role=header], [data-role=footer]").toolbar().enhanceWithin();
+        });
+    </script>
+</head>
+
+<body>
+
+    <div data-role="panel" data-theme="a" id="side-panel" data-display="overlay" data-position-fixed="true">
+        <div class="close-btn-pos header-shadow">
+            <h2>Meny</h2>
+            <a href="#" class="ui-btn ui-icon-delete ui-btn-icon-notext
+			ui-corner-all" data-rel="close"></a>
+        </div>
+        <div id="inner-panel">
+            <div class="small-profile">
+                <span>Name Namesson</span>
+                <div class="composite-row">
+                    <img src="images/profilbild.png">
+                    <span>Pappa till Bengt-Göran, 2år och Gösta-Lisa, 4år. Gillar brev och bildäck. En perfekt playdate....
+                </span>
+                </div>
+            </div>
+
+            <div class="panel-buttons">
+                <a href="/protected/showprofile" class="ui-btn ui-corner-all">Min Profil</a>
+                <a href="#show-playdates" class="ui-btn ui-corner-all">Mina Playdates</a>
+                <a href="#" class="ui-btn ui-corner-all">Mina Vänner</a>
+                <a href="#" class="ui-btn ui-corner-all">Hitta Platser</a>
+                <a href="#NamnpåpageID" class="ui-btn ui-corner-all ui-icon-logout">Logga Ut</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div data-role="header" data-position="fixed" class="header-shadow" data-theme="a" data-tap-toggle="false" data-hide-during-focus="">
+        <a href="#side-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">Öppna panelen</a>
+        <h1>Playdate</h1>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="a" id="footer" data-tap-toggle="false" data-hide-during-focus="">
+        <div class="ui-grid-d center">
+            <div class="ui-block-a center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-back ui-btn-inline ui-btn-icon-top">Tillbaka</a>
+            </div>
+            <div class="ui-block-b center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
+            </div>
+            <div class="ui-block-c center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-top ui-btn-inline">Feed</a>
+            </div>
+            <div class="ui-block-d center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-calendar ui-btn-icon-top ui-btn-inline">Event</a>
+            </div>
+            <div class="ui-block-e center-content"><a class="ui-shadow ui-btn ui-corner-all ui-icon-mail ui-btn-icon-top ui-btn-inline">Mail</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <!-- CONTENT -->
+    <!-- CONTENT -->
+    <div data-role="page" id="pageone">
+
+        <div data-role="main" class="ui-content">
+
+        </div>
+
+    </div>
+    <!-- END CONTENT-->
+    <!-- END CONTENT-->
+    <!-- END CONTENT-->
+
+</body>
+
+</html>
