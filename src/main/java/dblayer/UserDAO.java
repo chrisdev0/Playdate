@@ -2,14 +2,10 @@ package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
-
-import javax.swing.text.html.Option;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 

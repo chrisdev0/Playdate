@@ -1,7 +1,4 @@
 package dbtest;
-
-import apilayer.handlers.FriendshipHandler;
-
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -9,9 +6,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
-
-import javax.jws.WebParam;
-
 import static org.junit.Assert.*;
 
 import java.util.Optional;
@@ -204,7 +198,7 @@ public class UserDAOTest extends HibernateTests {
 
         FriendshipRequest fr = new FriendshipRequest(user, friend);
         Set<FriendshipRequest> friendshipRequestSet = friend.getFriendshipRequest();
-        ModelCreators.save(fr, user, friend);
+        ModelCreators.save(user, friend);
         friendshipRequestSet.add(fr);
 
 

@@ -1,17 +1,12 @@
 package apilayer.handlers;
 
 import apilayer.Constants;
-import dblayer.HibernateUtil;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
-
-import javax.swing.text.html.parser.Parser;
 import java.util.Optional;
 import java.util.Set;
 
@@ -76,9 +71,9 @@ public class FriendshipHandler {
         String friendIdParam = request.queryParams("friendId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        Optional<User> friend = UserDAO.getUserById(friendId);
+        Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
 
-        if (user == null || user.getId() == friendId) {
+        if (user == null || user.getId().equals(friendId)) {
             log.error("User is null");
             throw halt(400, "user is null");
         }
@@ -101,7 +96,7 @@ public class FriendshipHandler {
         String friendIdParam = request.queryParams("friendId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (user == null || user.getId() == friendId){
+        if (user == null || user.getId().equals(friendId)){
             log.error("User is null");
             throw halt(400, "user is null");
         }
@@ -132,7 +127,7 @@ public class FriendshipHandler {
         String friendIdParam = request.queryParams("friendId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (user == null || user.getId() == friendId){
+        if (user == null || user.getId().equals(friendId)){
             log.error("User is null");
             throw halt(400, "user is null");
         }
