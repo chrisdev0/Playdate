@@ -22,7 +22,10 @@
 
 
     <div data-role="main" class="ui-content">
-        <h2>$!{place.name}</h2>
+        <div class="view-place-head">
+        <h2 style="display: inline;">$!{place.name}</h2>
+        <a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a>
+        </div>
         <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
         <p class="place-description">
             #if($place.longDescription)
@@ -33,15 +36,32 @@
                 Beskrivning saknas.
             #end
         </p>
+
+        <div data-role="popup" id="popupBasic">
+            <div data-role="header">
+                <h1>Lägg till kommentar</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+            <form id="comment-form">
+                <label for="comment">Kommentar:</label>
+                <input type="text" name="name-comment" id="comment-title">
+            </form>
+            </div>
+            <div data-role="footer">
+                <a href="#" class="ui-btn" id="post-comment">Skicka kommentar</a>
+            </div>
+        </div>
+
         <table class="place-info-table">
             <tr>
-                <th>Kategori:</th>
-                <th>Område:</th>
-                <th>Gatuadress:</th>
+                <td>Kategori:</td>
+                <td>$!{place.category}</td>
             </tr>
             <tr>
-                <td>$!{place.category}</td>
+                <td>Område:</td>
                 <td>$!{place.geoArea}</td>
+            </tr>
+                <td>Gatuadress:</td>
                 <td>$!{place.streetAddress}</td>
             </tr>
         </table>
@@ -53,8 +73,6 @@
 
 
             <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
-
-
 
         </div>
     </div>
