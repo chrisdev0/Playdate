@@ -23,7 +23,15 @@
 
     <div data-role="main" class="ui-content">
         <h2>$!{playdate.header}</h2>
+        <div class="ui-block-a">
+            <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
+        </div>
+        <br>
+        <label for="playdate-desc"><h2>Beskrivning:</h2></label>
+        <div id="descriptionfield-showplaydate"
         <p>$!{playdate.description}</p>
+            </div>
+        </div>
     </div>
 
 
