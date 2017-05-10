@@ -1,5 +1,4 @@
 package dbtest;
-
 import apilayer.handlers.FriendshipHandler;
 
 import dblayer.UserDAO;
@@ -9,9 +8,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
-
-import javax.jws.WebParam;
-
 import static org.junit.Assert.*;
 
 import java.util.Optional;
@@ -184,13 +180,13 @@ public class UserDAOTest extends HibernateTests {
     }
 
     @Test
-    public void testSendFriendrequest(){
+    public void testSendFriendRequest(){
         User user = ModelCreators.createUser();
         User friend = ModelCreators.createUser();
 
         ModelCreators.save(user);
         ModelCreators.save(friend);
-        assertTrue(UserDAO.getInstance().createFriendshipRequest(user, friend));
+        assertTrue(UserDAO.getInstance().createFriendshipRequest(user, friend).isPresent());
     }
 
     @Test
@@ -199,18 +195,107 @@ public class UserDAOTest extends HibernateTests {
         User friend = ModelCreators.createUser();
 
         ModelCreators.save(user);
-        log.info(user.getName() + " " + user.getEmail());
         ModelCreators.save(friend);
 
         FriendshipRequest fr = new FriendshipRequest(user, friend);
         Set<FriendshipRequest> friendshipRequestSet = friend.getFriendshipRequest();
-        ModelCreators.save(fr, user, friend);
+        ModelCreators.save(user, friend);
         friendshipRequestSet.add(fr);
 
 
         Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().checkIfFriendRequestSent(user.getId(), friend.getId());
         assertTrue(friendshipRequest.isPresent());
+        ModelCreators.remove(user, friend);
+        ModelCreators.remove(friend);
+        ModelCreators.remove(user);
+    }
+
+    @Test
+    public void testDeclineFriendRequest(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        Optional<FriendshipRequest> fr = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        assertTrue(fr.isPresent());
+        assertTrue(UserDAO.getInstance().declineFriendRequest(user, friend));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
 
     }
 
+    @Test
+    public void testDeclineNonExistingFriendRequest(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        assertFalse(UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.getId()).isPresent());
+
+        assertFalse(UserDAO.getInstance().declineFriendRequest(user, friend));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+
+    }
+
+    @Test
+    public void testAddFriendship(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        assertTrue(friendshipRequest.isPresent());
+        assertTrue(UserDAO.getInstance().createFriendship(friendshipRequest.get()).isPresent());
+
+        UserDAO.getInstance().deleteFriendship(UserDAO.getInstance().checkIfFriendWithUser(user.getId(), friend.getId()).get());
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+    }
+
+    @Test
+    public void testRemoveFriendship(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+
+        Optional<Friendship> friendship = UserDAO.getInstance().createFriendship(friendshipRequest.get());
+        assertTrue(friendship.isPresent());
+
+
+        assertTrue(UserDAO.getInstance().deleteFriendship(friendship.get()));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+
+    }
+
+    @Test
+    public void testAddFriendshipAlreadyFriends(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+
+        Optional<Friendship> friendship = UserDAO.getInstance().createFriendship(friendshipRequest.get());
+        assertTrue(friendship.isPresent());
+
+        assertFalse(UserDAO.getInstance().createFriendship(friendshipRequest.get()).isPresent());
+
+        assertTrue(UserDAO.getInstance().deleteFriendship(friendship.get()));
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+    }
 }

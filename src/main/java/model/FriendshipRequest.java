@@ -3,11 +3,9 @@ package model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.hibernate.mapping.Join;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Optional;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -22,8 +20,7 @@ public class FriendshipRequest {
     @JoinColumn(referencedColumnName = "id")
     private User sender;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-
+    @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private User receiver;
 
