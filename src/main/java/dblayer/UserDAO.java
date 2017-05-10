@@ -264,13 +264,13 @@ public class UserDAO {
     }
 
 
-    public boolean createFriendship(FriendshipRequest friendshipRequest) {
+    public Optional<Friendship> createFriendship(FriendshipRequest friendshipRequest) {
 
         Optional<Friendship> friendship = checkIfFriendWithUser(friendshipRequest.getSender().getId(), friendshipRequest.getReceiver().getId());
-
+        log.info("Vad är i friendship " + friendship.toString());
         if(friendship.isPresent()){
             log.info("Users are already friends");
-            return false;
+            return Optional.empty();
         }
 
         User user = friendshipRequest.getSender();
@@ -280,7 +280,7 @@ public class UserDAO {
         Friendship friendFriendship = new Friendship(friend, user);
         Session session = null;
         Transaction tx = null;
-        boolean ret = false;
+        Optional<Friendship> ret = Optional.empty();
 
         try {
             session = HibernateUtil.getInstance().openSession();
@@ -299,8 +299,8 @@ public class UserDAO {
             session.save(friendFriendship);
             session.update(user);
             session.update(friend);
+            ret = Optional.of(userFriendship);
             tx.commit();
-            ret = true;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
@@ -326,12 +326,13 @@ public class UserDAO {
             tx = session.beginTransaction();
             user.removeFriend(friendship);
             friend.removeFriend(friendship);
-            session.remove(friendship);
             session.update(friend);
             session.update(user);
+            session.remove(friendship);
             tx.commit();
             ret = true;
         } catch (Exception e) {
+            log.error("Error i delete friendship", e);
             if (tx != null) {
                 tx.rollback();
             }

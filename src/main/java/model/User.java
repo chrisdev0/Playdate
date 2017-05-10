@@ -35,7 +35,7 @@ public class User {
 
     private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "friend")
+    @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)
     private Set<Friendship> friends = new HashSet<>();
 
     @OneToMany(mappedBy = "receiver")

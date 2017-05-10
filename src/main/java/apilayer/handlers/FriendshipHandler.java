@@ -148,7 +148,7 @@ public class FriendshipHandler {
             log.error("Friendship request has not been sent");
             throw halt(400, "No valid friendship request found");
         }
-        if (UserDAO.getInstance().createFriendship(friendshipRequest.get())) {
+        if (UserDAO.getInstance().createFriendship(friendshipRequest.get()).isPresent()) {
             log.info("Friendship has been approved");
             response.status(200);
             return "";
@@ -156,5 +156,9 @@ public class FriendshipHandler {
         }
         throw halt(400);
     }
+
+    /*
+    Hämta mina vänskapsförfrågningar, hämta mina kompisar,
+     */
 
 }
