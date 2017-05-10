@@ -24,7 +24,9 @@
     color: white;
     height: 2.7em;
 }
-
+#head-logo{
+    margin-left: 35%;
+}
 .close-btn-pos a {
     display: inline;
     float: right;
@@ -236,11 +238,10 @@
 }
 
 
-#listview-borders li{
+.listview-borders li{
     border:1px solid white
 
 }
-
 #text-popup{
     font-size: 200%;
 }

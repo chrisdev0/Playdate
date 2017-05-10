@@ -1,4 +1,4 @@
 <div data-role="header" data-position="fixed" class="header-shadow" data-theme="a">
     <a href="#side-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">Öppna panelen</a>
-    <h1>Playdate</h1>
+    <img src="/images/playdate_logga_1.png" id="head-logo" style="width:30%">
 </div>
