@@ -14,6 +14,17 @@ import java.util.concurrent.ExecutionException;
 public class SearchHandlers {
 
 
+    /** Hanterar för sök efter platser på namn på
+     *      * platsen
+     *      * området
+     *      * adressen
+     *      m.m.?
+     *
+     * returnerar ett antal Place som JSON
+     * om antalet bokstäver i sökfältet är mindre än 3 så returneras inga resultat
+     *
+     * resultatet av en sökning cacheas
+     * */
     public static Object searchPlaces(Request request, Response response) {
         String term = request.queryParams("searchTerm");
         if (term.length() < 3) {

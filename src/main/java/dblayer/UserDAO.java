@@ -81,7 +81,31 @@ public class UserDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            ret = Optional.empty();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
+
+    @SuppressWarnings("Duplicates")
+    public boolean saveUpdatedUser(User user) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.update(user);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            log.error("Error saving image", e);
         } finally {
             if (session != null) {
                 session.close();
