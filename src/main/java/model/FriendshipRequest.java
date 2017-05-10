@@ -23,6 +23,7 @@ public class FriendshipRequest {
     private User sender;
 
     @ManyToOne(cascade = CascadeType.ALL)
+
     @JoinColumn(referencedColumnName = "id")
     private User receiver;
 
