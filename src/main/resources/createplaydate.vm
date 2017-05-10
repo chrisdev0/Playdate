@@ -135,7 +135,7 @@
             <div class="ui-field-contain">
                 <div class="visibility-btn">
                     <label for="visibility-type">Öppenhetsnivå:
-                        <a href="#popupBasic" data-rel="popup" style="margin-left: 34%;margin-top: -7%;" id="info-btn" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
+                        <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id="info-btn" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
                     </label>
                 </div>
                     <select name="visibilityId" id="visibility-type">
