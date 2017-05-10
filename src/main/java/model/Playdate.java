@@ -65,6 +65,11 @@ import java.util.Set;
         this.playdateVisibilityType = playdateVisibilityType;
     }
 
+
+    public boolean userIsOwner(User user) {
+        return owner.equals(user);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
