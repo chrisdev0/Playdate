@@ -85,24 +85,25 @@
     <div data-role="main"class="ui-content">
         <div class="listview-borders">
 
-<div>
+            <div>
 
-    <label for="myFilter" >Sök efter vänner</label>
-    <form class="ui-filterable">
-        <input id="myFilter" data-type="search">
-    </form>
+                <label for="myFilter" >Sök efter vänner</label>
+                <form class="ui-filterable">
+                    <input id="myFilter" data-type="search">
+                </form>
 
-        <ul data-role="listview"  data-theme="f"  data-filter="true" data-input="#myFilter"  data-inset="true">
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Carl</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">David</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Ellen</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Frida</a></li>
-            <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Gördis</a></li>
-        </ul>
-</div>
-    </div>
+                <ul data-role="listview"  data-theme="f" data-split-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
+                        <a href="#"></a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Carl</a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">David</a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Ellen</a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Frida</a></li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-none">Gördis</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -111,33 +112,36 @@
 
     <div data-role="main"class="ui-content">
 
-        <div data-role="popup" id="popup" data-theme="a" data-tolerance="0,0">
-<div class="listview-borders">
-            <ul data-role="listview" data-theme="f">
-                <li data-icon="user">
-                    <a href="#">Visa Profil</a>
-                </li>
-                <li data-icon="check">
-                    <a href="#">Acceptera</a>
-                </li>
-                <li  data-icon="delete">
-                    <a href="#">Avböj</a>
-                </li>
-            </ul>
-</div>
+        <div data-role="popup" data-overlay-theme="b" id="popup" data-theme="a" data-tolerance="0,0">
+            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" data-theme="a" class="ui-btn-left">Close</a>
+            <div class="listview-borders">
+                <ul data-role="listview" data-theme="f">
+                    <li data-icon="user">
+                        <a href="#">Visa Profil</a>
+                    </li>
+                    <li data-icon="check">
+                        <a href="#">Acceptera</a>
+                    </li>
+                    <li  data-icon="delete">
+                        <a href="#">Avböj</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
 
         <div class="listview-borders">
 
 
-                <ul data-role="listview" data-icon="gear" data-theme="f" data-inset="true">
+            <ul data-role="listview" data-icon="gear" data-split-icon="gear" data-theme="f" data-inset="true">
 
-                    <li><a href="#popup" data-rel="popup" data-transition="slideup" ><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a></li>
+                <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
+                    <a href="#popup" data-rel="popup" data-transition="slideup" > </a></li>
 
-                    <li><a href="#popup"data-rel="popup" data-transition="slideup"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a></li>
+                <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
+                    <a href="#popup" data-rel="popup" data-transition="slideup" > </a></li>
 
-
-                </ul>
+            </ul>
 
         </div>
     </div>
@@ -147,6 +151,20 @@
 <div data-role="page" id="search-friend" >
 
     <div data-role="main"class="ui-content">
+        <div data-role="popup" id="popup1" data-overlay-theme="b" data-theme="a" data-tolerance="0,0">
+            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" data-theme="a" class="ui-btn-left">Close</a>
+            <div class="listview-borders">
+                <ul data-role="listview" data-theme="f">
+                    <li data-icon="user">
+                        <a href="#">Visa Profil</a>
+                    </li>
+                    <li data-icon="check">
+                        <a href="#">Lägg Till</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
         <div class="listview-borders">
 
             <div>
@@ -156,11 +174,11 @@
                     <input id="filter" data-type="search">
                 </form>
 
-                <ul data-role="listview" data-split-icon="delete" data-theme="f" data-icon="plus" data-filter="true" data-input="#filter"  data-inset="true">
+                <ul data-role="listview" data-split-icon="gear" data-theme="f" data-icon="plus" data-filter="true" data-input="#filter"  data-inset="true">
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
-                        <a href="#"> </a></a></li>
+                        <a href="#popup1" data-rel="popup" data-transition="slideup" ></a></li>
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
-                        <a href="#"> </a></a></li>
+                        <a href="#popup1" data-rel="popup" data-transition="slideup" ></a></li>
 
                 </ul>
             </div>
