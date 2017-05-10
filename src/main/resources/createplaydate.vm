@@ -88,10 +88,11 @@
                 $('#header-field').val("${playdate.header}");
                 $('#description-field').val("${playdate.description}");
                 $('#visibility-type').val("${playdate.playdateVisibilityType.nr}").change();
-                $('#placeid').val("${playdate.getPlace().id}");
+                console.log("place id = " + "${playdate.getPlace().getId()}");
+                $('#placeId').val("${playdate.getPlace().getId()}");
                 $('#show-place-placeholder').html(
                         "<p class='name-with-button'>" + "${playdate.getPlace().name}" +"</p>" +
-                        "<a href='/protected/showplace?placeId=" + "${playdate.id}" +"'>Visa</a>"
+                        "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" +"'>Visa</a>"
                 );
                 var startTimeDate = new Date(${playdate.startTime})
                 var year = startTimeDate.getFullYear();
@@ -173,7 +174,13 @@
             </div>
             <hr>
             <div>
-                <input type="submit" class="ui-btn last-button-on-page" data-ajax="false" id="create-playdate-btn" value="Skapa Playdate">
+                <input type="submit" class="ui-btn last-button-on-page" data-ajax="false" id="create-playdate-btn"
+                    #if($playdate)
+                       value="Uppdatera Playdate"
+                    #else
+                       value="Skapa Playdate"
+                    #end
+                >
             </div>
         </form>
     </div>

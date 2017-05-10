@@ -96,6 +96,7 @@ public class ProtectedRoutes {
 
             post(Paths.EDITPROFILE, ProfileHandlers::handleEditProfile);
 
+            post(Paths.UPDATEPLAYDATE, PlaydateHandler::handleUpdatePlaydate);
 
 
             initProtectedStaticRoutes();
