@@ -139,9 +139,34 @@
                 </label>
                 <textarea name="description" id="description-field" cols="40" rows="8"></textarea>
             </div>
+            <div data-role="popup" id="popupBasic">
+                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+
+                <div data-role="main" class="ui-content">
+                    <table class="place-info-table">
+                        <tr>
+                            <td>Privat:</td>
+                            <td>Bjud in dina vänner att delta i Playdaten</td>
+                        </tr>
+                        <tr>
+                            <td>Öppen för vänner:</td>
+                            <td>Playdaten blir synlig för alla dina vänner</td>
+                        </tr>
+                        <td>Offentlig:</td>
+                        <td>Playdaten blir synlig för alla användare</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
             <div class="ui-field-contain">
-                <label for="visibility-type">Öppenhetsnivå:</label>
-                <select name="visibilityId" id="visibility-type">
+                <div class="visibility-btn">
+                    <label for="visibility-type">Öppenhetsnivå:
+                        <a href="#popupBasic" data-rel="popup" style="margin-left: 34%;margin-top: -7%;" id="info-btn" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
+                    </label>
+                </div>
+                    <select name="visibilityId" id="visibility-type">
                     <option value="0">Privat</option>
                     <option value="1">Öppen för vänner</option>
                     <option value="2">Offentlig</option>

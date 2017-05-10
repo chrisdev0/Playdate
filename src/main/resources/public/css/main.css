@@ -244,6 +244,10 @@
 #text-popup{
     font-size: 200%;
 }
+#info-btn{
+    height: 15%;
+    width: 6%;
+}
 
 #popupInfo{
     margin-bottom: 6em;
