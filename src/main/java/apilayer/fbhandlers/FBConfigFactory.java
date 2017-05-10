@@ -13,6 +13,11 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import java.util.HashMap;
 
+
+/** Den här klassen hanterar
+ *  login med facebook och specifiserar bland annat hur
+ *  callback hanteras
+ * */
 @Slf4j
 public class FBConfigFactory implements ConfigFactory {
 

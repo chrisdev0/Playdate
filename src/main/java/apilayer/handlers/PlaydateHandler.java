@@ -103,55 +103,32 @@ public class PlaydateHandler {
 
 
     /** Hanterar att ta bort en Playdate
+     *  Ta även bort alla invites till playdaten
      * */
     public static Object handleDeletePlaydate(Request request, Response response) {
         String playdateId = request.queryParams("playdateId");
-        long lId;
-
-        /*
-        Ta även bort alla invites till playdaten
-         */
-
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
         try {
-            lId = Long.parseLong(playdateId);
-            log.info("Trying to delete with id = " + lId);
+            Long lId = Long.parseLong(playdateId);
+            Optional<Playdate> playdateById = PlaydateDAO.getInstance().getPlaydateById(lId);
+            if (playdateById.isPresent()) {
+                if (playdateById.get().userIsOwner(user)) {
+                    if (PlaydateDAO.getInstance().deletePlaydate(playdateById.get())) {
+                        response.status(200);
+                        return "";
+                    }
+                } else {
+                    response.status(401);
+                    return "user_not_owner";
+                }
+            } else {
+                response.status(400);
+                return "no_playdate_with_id";
+            }
         } catch (NullPointerException | NumberFormatException e) {
             log.error("client: " + request.ip() + " sent illegal playdate id = " + playdateId + "error = " + e.getMessage());
-            throw halt(400);
         }
-
-        Transaction tx = null;
-
-        try (Session session = HibernateUtil.getInstance().openSession()) {
-            Playdate playdate = session.get(Playdate.class, lId);
-            User user = request.session().attribute(Constants.USER_SESSION_KEY);
-            if (user == null){
-                log.error("User is null");
-                throw halt(400);
-            }
-
-            if (playdate == null){
-                log.error("Playdate is null");
-                throw halt(400);
-            }
-
-            if (!playdate.getOwner().equals(user)){
-                log.error("User is not owner of playdate");
-                throw halt(400, "User is not owner of playdate");
-            }
-            tx = session.beginTransaction();
-            session.delete(playdate);
-
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-                throw halt(400);
-            }
-            log.error("Error during Hibernate execution", e);
-            throw halt(400);
-        }
-        return halt(200);
+        throw halt(400);
     }
 
     public static Object handleUpdatePlaydate(Request request, Response response){ //put

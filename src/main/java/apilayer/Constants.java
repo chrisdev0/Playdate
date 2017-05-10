@@ -21,6 +21,7 @@ public class Constants {
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
     public static final int QUICK_PLACE_SEARCH_LIMIT = 5;
+    public static final String ONLOGINREDIRECT = "onloginredirect";
 
     static {
         if (DEV) {

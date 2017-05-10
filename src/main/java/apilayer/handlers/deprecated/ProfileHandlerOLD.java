@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.deprecated;
 
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandler;
@@ -22,9 +22,9 @@ import java.util.Optional;
 import static spark.Spark.halt;
 
 @Slf4j
-public class ProfileHandler extends StaticFileTemplateHandler{
+public class ProfileHandlerOLD extends StaticFileTemplateHandler{
 
-    public ProfileHandler(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {
+    public ProfileHandlerOLD(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {
         super(templateName, onErrorHTTPStatusCode, true);
     }
 

@@ -3,7 +3,9 @@ package apilayer.route;
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
+import apilayer.handlers.asynchandlers.ProfileHandlers;
 import apilayer.handlers.asynchandlers.SearchHandlers;
+import apilayer.handlers.asynchandlers.UploadHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaceHandler;
 import apilayer.handlers.templateHandlers.GetOnePlaydateHandler;
 import apilayer.handlers.templateHandlers.GetOneUserHandler;
@@ -38,7 +40,12 @@ public class ProtectedRoutes {
             //Kollar att användaren är inloggad innan varje request hanteras
             before("/*", (request, response) -> {
                 if (!AuthChecker.isLoggedIn(request)) {
-                    throw halt(401, Constants.MSG.USER_NOT_LOGGED_IN);
+                    if (shouldSaveContextPath(request.pathInfo())) {
+                        log.info("setting onloginredirect route = " + request.pathInfo());
+                        request.session(true).attribute(Constants.ONLOGINREDIRECT, request.pathInfo());
+                    }
+                    response.redirect("/index.html");
+                    throw halt(400);
                 }
             });
 
@@ -87,9 +94,15 @@ public class ProtectedRoutes {
 
             get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
 
+            post(Paths.EDITPROFILE, ProfileHandlers::handleEditProfile);
+
             initProtectedStaticRoutes();
 
         });
+    }
+
+    private static boolean shouldSaveContextPath(String s) {
+        return !s.contains(Paths.APIIMAGE) && !s.contains(Paths.GETPROFILEPICTURE);
     }
 
     private static void initProtectedStaticRoutes() {
@@ -108,20 +121,6 @@ public class ProtectedRoutes {
 
 
         get(Paths.SHOWUSER, new GetOneUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        /*
-        get(Paths.SHOWPROFILE, new StaticFileTemplateHandlerImpl("TODELETE/show-profile.vm", 400){
-            @Override
-            public Optional<Map<String, Object>> createModelMap(Request request) {
-                Map<String, Object> map = new HashMap<>();
-                User user = request.session().attribute(Constants.USER_SESSION_KEY);
-                user.setEmail(user.getEmail().toLowerCase());
-                map.put("gender", user.getGender());
-                map.put("user", user);
-                return Optional.of(map);
-            }
-        }::handleTemplateFileRequest, new VelocityTemplateEngine());
-        */
     }
 
 
