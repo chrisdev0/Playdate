@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
 import java.util.Optional;
-import java.util.Set;
 
 import static spark.Spark.halt;
 
@@ -163,7 +162,12 @@ public class UserDAO {
 
     public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
-        friend.addFriendshipRequeset(fr);
+        friend.addFriendshipRequest(fr);
+
+        if (checkIfFriendRequestSent(friend.getId(), sender.getId()).isPresent()){
+            log.info("Friend request already sent");
+            return Optional.empty();
+        }
 
         Transaction tx = null;
         Session session = null;
@@ -206,6 +210,7 @@ public class UserDAO {
     }
 
     public Optional<FriendshipRequest> checkIfFriendRequestSent(Long userId, Long friendId){
+
         /*
         Kolla i tabellerna om vänner
 
@@ -234,11 +239,12 @@ public class UserDAO {
         }
         Session session = null;
         Transaction tx = null;
-        boolean ret = false;
+        boolean ret;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             session.remove(userFriendshipRequest.get());
+            user.removeFriendshipRequest(userFriendshipRequest.get());
             //session.remove(friendFriendshipRequest);
             tx.commit();
             ret = true;
@@ -258,11 +264,20 @@ public class UserDAO {
     }
 
 
-    public boolean createFriendship(User user, User friend) {
-        Friendship friendshipOfUser = new Friendship(friend, user);
-        Friendship friendshipOfFriend = new Friendship(user, friend);
-        Set<Friendship> friendsOfUser = user.getFriends();
-        Set<Friendship> friendsOfFriend = friend.getFriends();
+    public boolean createFriendship(FriendshipRequest friendshipRequest) {
+
+        Optional<Friendship> friendship = checkIfFriendWithUser(friendshipRequest.getSender().getId(), friendshipRequest.getReceiver().getId());
+
+        if(friendship.isPresent()){
+            log.info("Users are already friends");
+            return false;
+        }
+
+        User user = friendshipRequest.getSender();
+        User friend = friendshipRequest.getReceiver();
+
+        Friendship userFriendship = new Friendship(user, friend);
+        Friendship friendFriendship = new Friendship(friend, user);
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
@@ -271,22 +286,17 @@ public class UserDAO {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
 
-            if(!friend.getFriendshipRequest().contains(user)) {
-               log.error("No friendship request exists");
-               throw halt(400);
-            }
-
-            if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()) {
-                log.error("Friendship does not exist");
+            if(checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()) {
+                log.error("Friendship already exists");
                 throw halt(400);
             }
 
-            friend.getFriendshipRequest().remove(user);
-            friendsOfUser.add(friendshipOfUser);
-            friendsOfFriend.add(friendshipOfFriend);
-
-            session.save(friendshipOfUser);
-            session.save(friendshipOfFriend);
+            friend.getFriendshipRequest().remove(friendshipRequest);
+            user.addFriend(friend);
+            friend.addFriend(user);
+            session.delete(friendshipRequest);
+            session.save(userFriendship);
+            session.save(friendFriendship);
             session.update(user);
             session.update(friend);
             tx.commit();
@@ -303,35 +313,20 @@ public class UserDAO {
         return ret;
     }
 
-    public boolean deleteFriendship(User user, User friend) {
+    public boolean deleteFriendship(Friendship friendship) {
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
+
+        User friend = friendship.getFriend();
+        User user = friendship.getRequester();
+
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-
-            Set<Friendship> friendsOfUser = user.getFriends();
-            Set<Friendship> friendsOfFriend = friend.getFriends();
-
-            if(!checkIfFriendWithUser(user.getId(), friend.getId()).isPresent()){
-                log.error("friendship does not exist");
-                throw halt(400);
-            }
-
-            if(!(friendsOfUser.contains(friend) && friendsOfFriend.contains(user))){
-                log.error("friendship does not exist");
-                throw halt(400);
-            }
-
-            Friendship friendFriendWithUser = checkIfFriendWithUser(user.getId(), friend.getId()).get();
-            Friendship userFriendWithFriend = checkIfFriendWithUser(friend.getId(), user.getId()).get();
-
-            friendsOfUser.remove(friend);
-            friendsOfFriend.remove(user);
-
-            session.remove(friendFriendWithUser);
-            session.remove(userFriendWithFriend);
+            user.removeFriend(friendship);
+            friend.removeFriend(friendship);
+            session.remove(friendship);
             session.update(friend);
             session.update(user);
             tx.commit();

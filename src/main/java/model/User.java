@@ -57,8 +57,16 @@ public class User {
         return attendingPlaydates.add(playdate);
     }
 
-    public boolean addFriendshipRequeset(FriendshipRequest friendshipRequest){
+    public boolean addFriendshipRequest(FriendshipRequest friendshipRequest){
         return this.friendshipRequest.add(friendshipRequest);
+    }
+
+    public boolean addFriend(User friend){
+        return friends.add(new Friendship(this, friend));
+    }
+
+    public boolean removeFriend(Friendship fr){
+        return friends.remove(fr);
     }
 
     public boolean removeFriendshipRequest(FriendshipRequest friendshipRequest){

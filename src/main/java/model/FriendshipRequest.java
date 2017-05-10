@@ -1,14 +1,11 @@
 package model;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.hibernate.mapping.Join;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Optional;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -16,7 +13,6 @@ import java.util.Optional;
 public class FriendshipRequest {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

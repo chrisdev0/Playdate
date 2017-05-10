@@ -242,6 +242,35 @@ public class UserDAOTest extends HibernateTests {
 
     }
 
+    @Test
+    public void testAddFriendship(){
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
 
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        assertTrue(friendshipRequest.isPresent());
+        assertTrue(UserDAO.getInstance().createFriendship(friendshipRequest.get()));
+
+
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend);
+    }
+
+    @Test
+    public void testCreateFriendshipWithoutFriendRequest(){
+        /*
+        Se till att användarna har en friendrequest
+         */
+        User user = ModelCreators.createUser();
+        User friend = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend);
+
+
+    }
 
 }
