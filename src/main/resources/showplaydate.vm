@@ -6,6 +6,18 @@
 
     #parse("head-links.vm")
 
+    <script>
+        $("#post-comment").one(function(e){
+            e.preventDefault();
+            $("#comment-form").submit();
+            $("#popupBasic").popup('close');
+        });
+
+        $(document).ready(function(){
+
+        })
+    </script>
+
 </head>
 <body>
 
@@ -22,12 +34,63 @@
 
 
     <div data-role="main" class="ui-content">
+
+
         <h2>$!{playdate.header}</h2>
+        <p style= "margin-top: -1.5em;em"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+        <div class="ui-grid-a place-image-btns">
+            <div class="ui-block-a">
+                <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
+            </div>
+            <div class="ui-block-b">
+                <ul id="btns-list" style="float:right;">
+                    <li><a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a></li>
+                    <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                    <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <br>
+        <h2>Datum och tid: </h2>
+        <div id="descriptionfield-showplaydate">
+            <p><script>
+                var timeDateFormat = new Date ($!{playdate.getStartTime()});
+                var output = "Den ";
+                output += timeDateFormat.getDate()+"/"+timeDateFormat.getMonth()
+                        +" "+timeDateFormat.getFullYear()+" klockan "+timeDateFormat.getHours()+":";
+                if (timeDateFormat.getMinutes()<10){
+                    output += "0";
+                }
+                output += timeDateFormat.getMinutes();
+                document.write(output);
+            </script>
+            </p>
+        </div>
+        <label for="playdate-desc"><h2>Beskrivning:</h2></label>
+        <div id="descriptionfield-showplaydate"
         <p>$!{playdate.description}</p>
     </div>
+    <div data-role="popup" id="popupBasic">
 
-
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        <div data-role="header">
+            <h1>Kommentera Playdate</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+            <form id="comment-form" action="/protected/postcommentplaydate" method="POST">
+                <textarea name="comment" id="comment-title" data-autogrow="false"></textarea>
+                <input type="hidden" name="playdateId" value="$!{playdate.id}">
+            </form>
+        </div>
+        <div data-role="footer" style="text-align: center;">
+            <a href="#" class="ui-btn" id="post-comment" data-ajax="false">Skicka kommentar</a>
+        </div>
+    </div>
 </div>
+
+
+
 
 </body>
 </html>
