@@ -13,12 +13,6 @@
     <script>
         $(document).ready(function () {
 
-            $('.edit-playdate-link').click(function(e) {
-                e.preventDefault();
-                var playdateid = $(this).data('playdateid');
-                console.log("clicked edit playdate with id = " + playdateid);
-                //todo fixa redigera playdate
-            })
             $('.remove-playdate-link').click(function (e) {
                 e.preventDefault();
                 var playdateid = $(this).data('playdateid');
@@ -67,7 +61,7 @@
                 <p>
                     $!{p.description}
                     <a class="ui-btn" href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
-                    <a data-playdateid="$!{p.id}" class="ui-btn edit-playdate-link" href="#">Redigera</a>
+                    <a class="ui-btn edit-playdate-link" href="/protected/editplaydate?playdateId=${p.id}">Redigera</a>
                     <a data-playdateid="$!{p.id}" class="ui-btn remove-playdate-link" href="#">Ta bort</a>
                 </p>
 

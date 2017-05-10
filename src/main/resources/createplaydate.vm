@@ -1,6 +1,8 @@
+#* @vtlvariable name="playdate" type="model.Playdate" *#
+
+
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
 <head>
     <title>Playdate</title>
 
@@ -9,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
     <script src="/js/jtsage-datebox.js"></script>
 
+    <script>
+        window.playdate = ${playdate}
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -58,7 +63,7 @@
                 var placeName = $(this).data('placeName');
                 $('#show-place-placeholder').html(
                         "<p class='name-with-button'>" + placeName + "</p>" +
-                        "<a href='#'>Visa</a>"
+                        "<a href='/protected/showplace?placeId=" + placeId +"'>Visa</a>"
                 );
                 $('#placeId').val(placeId);
                 searchSuggestionts.html('');
@@ -77,9 +82,42 @@
                 console.log("starttimevalue = " + starttime.val());
             });
 
+
+
+        });
+
+        $(document).ready(function () {
+            window.test = "hej";
+            console.log("playdateinfo");
+            console.log($playdate)
+            console.log("end playdateinfo")
+            #if($playdate)
+
+                console.log("edit playdatemode");
+                $('#create-playdate-form').attr('action', '/protected/updateplaydate')
+                $('#playdateId').val($playdate.id);
+                $('#header-field').val(${playdate.header});
+                $('#description-field').val($playdate.description);
+                $('#visibility-type').val($playdate.playdateVisibilityType).change();
+                $('#placeid').val($playdate.getPlace().id);
+                $('#show-place-placeholder').html(
+                        "<p class='name-with-button'>" + $playdate.getPlace().name +"</p>" +
+                        "<a href='/protected/showplace?placeId=" + $playdate.id +"'>Visa</a>"
+                );
+                var startTimeDate = new Date($playdate.startTime)
+                var year = startTimeDate.getFullYear();
+                var month = startTimeDate.getMonth();
+                var day = startTimeDate.getDate();
+                var time = "" + startTimeDate.getHours() + ":" + startTimeDate.getMinutes();
+                var dateBoxDate = new Date(year, month, day);
+                $('#datepicker-field').datebox('setTheDate', dateBoxDate);
+                $('#timepicker-field').datebox('setTheDate', time);
+            #end
+
         });
 
     </script>
+
 
 </head>
 <body>
@@ -101,6 +139,7 @@
 
     <div data-role="main" class="ui-content">
         <form id="create-playdate-form" method="POST" action="/protected/createplaydate" data-ajax="false">
+            <input type="hidden" value="-1" name="playdateId" id="playdateId">
             <label for="header-field">
                 Rubrik:
             </label>
