@@ -11,9 +11,6 @@
     <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
     <script src="/js/jtsage-datebox.js"></script>
 
-    <script>
-        window.playdate = ${playdate}
-    </script>
 
     <script>
         $(document).ready(function() {
@@ -83,28 +80,20 @@
             });
 
 
-
-        });
-
-        $(document).ready(function () {
-            window.test = "hej";
-            console.log("playdateinfo");
-            console.log($playdate)
-            console.log("end playdateinfo")
             #if($playdate)
 
                 console.log("edit playdatemode");
-                $('#create-playdate-form').attr('action', '/protected/updateplaydate')
-                $('#playdateId').val($playdate.id);
-                $('#header-field').val(${playdate.header});
-                $('#description-field').val($playdate.description);
-                $('#visibility-type').val($playdate.playdateVisibilityType).change();
-                $('#placeid').val($playdate.getPlace().id);
+                $('#create-playdate-form').attr('action', '/protected/updateplaydate');
+                $('#playdateId').val("${playdate.id}");
+                $('#header-field').val("${playdate.header}");
+                $('#description-field').val("${playdate.description}");
+                $('#visibility-type').val("${playdate.playdateVisibilityType.nr}").change();
+                $('#placeid').val("${playdate.getPlace().id}");
                 $('#show-place-placeholder').html(
-                        "<p class='name-with-button'>" + $playdate.getPlace().name +"</p>" +
-                        "<a href='/protected/showplace?placeId=" + $playdate.id +"'>Visa</a>"
+                        "<p class='name-with-button'>" + "${playdate.getPlace().name}" +"</p>" +
+                        "<a href='/protected/showplace?placeId=" + "${playdate.id}" +"'>Visa</a>"
                 );
-                var startTimeDate = new Date($playdate.startTime)
+                var startTimeDate = new Date(${playdate.startTime})
                 var year = startTimeDate.getFullYear();
                 var month = startTimeDate.getMonth();
                 var day = startTimeDate.getDate();

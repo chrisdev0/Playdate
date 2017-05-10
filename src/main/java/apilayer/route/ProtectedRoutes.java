@@ -38,8 +38,11 @@ public class ProtectedRoutes {
             before("/*", (request, response) -> {
                 if (!AuthChecker.isLoggedIn(request)) {
                     if (shouldSaveContextPath(request.pathInfo())) {
+                        log.info("queryparams" + request.queryString());
                         log.info("setting onloginredirect route = " + request.pathInfo());
-                        request.session(true).attribute(Constants.ONLOGINREDIRECT, request.pathInfo());
+                        String fullPath = request.pathInfo() + "?" + (request.queryString() != null && !request.queryString().isEmpty() ? request.queryString() : "");
+                        log.info("full = " + fullPath);
+                        request.session(true).attribute(Constants.ONLOGINREDIRECT, fullPath);
                     }
                     response.redirect("/index.html");
                     throw halt(400);
@@ -93,6 +96,8 @@ public class ProtectedRoutes {
 
             post(Paths.EDITPROFILE, ProfileHandlers::handleEditProfile);
 
+
+
             initProtectedStaticRoutes();
 
         });
@@ -120,6 +125,8 @@ public class ProtectedRoutes {
         get(Paths.SHOWUSER, new GetOneUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
         get(Paths.EDITPLAYDATE, new EditPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
     }
 
 
