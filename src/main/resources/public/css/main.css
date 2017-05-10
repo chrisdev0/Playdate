@@ -248,3 +248,14 @@
     height: 1em;
     width: 1em;
 }
+
+#popupInfo{
+    margin-bottom: 6em;
+    background: beige;
+}
+
+#index-popup-btn{
+    height: 30%;
+    width: 15%;
+    ;
+}
