@@ -139,45 +139,31 @@ public class PlaydateHandler {
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
-
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
             log.error("Illegal visibilityType", e);
             throw halt(400, e.getMessage());
         }
-
         Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(playdateId);
-        User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (user == null) {
-            response.status(401);
-            return "";
-        }
-        if (playdateOptional.isPresent() && !placeId.equals(playdateOptional.get().getPlace().getId())) {
-            Optional<Place> placeOpt = PlaceDAO.getInstance().getPlaceById(placeId);
-            if (placeOpt.isPresent()) {
-                playdateOptional.get().setPlace(placeOpt.get());
-            } else {
-                response.status(400);
+        Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(placeId);
+        if (playdateOptional.isPresent() && placeById.isPresent()) {
+            Playdate playdate = playdateOptional.get();
+            playdate.setHeader(header);
+            playdate.setDescription(description);
+            playdate.setStartTime(startTime);
+            playdate.setPlaydateVisibilityType(playdateVisibilityType);
+            playdate.setPlace(placeById.get());
+            if (PlaydateDAO.getInstance().updatePlaydate(playdate)) {
+                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + playdateId);
                 return "";
+            } else {
+                log.error("error saving updated playdate");
             }
-        } else if (!playdateOptional.isPresent()) {
-            response.status(400);
-            return "";
+        } else {
+            log.error("couldn't find playdate with id = " + playdateId + " or Place with id = " + placeId);
         }
-
-        Playdate playdate = playdateOptional.get();
-        if (!playdate.getOwner().equals(user)) {
-            response.status(401);
-            return "";
-        }
-        playdate.setDescription(description);
-        playdate.setHeader(header);
-        playdate.setPlaydateVisibilityType(playdateVisibilityType);
-        playdate.setStartTime(startTime);
-        if (!PlaydateDAO.getInstance().updatePlaydate(playdate)) {
-            response.status(400);
-        }
+        response.status(400);
         return "";
     }
 

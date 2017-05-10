@@ -26,6 +26,8 @@ public class Paths {
 
     public static final String APIIMAGE = "/apiimage";
 
+    public static final String UPDATEPLAYDATE = "/updateplaydate";
+
     public static final String PLAYDATE_IMAGE = "/playdateimage";
     public static final String GETPLACEBYLOCATION = "/getplacebylocation";
     public static final String GETPLACEBYNAME = "/getplacebyname";
@@ -37,6 +39,8 @@ public class Paths {
     public static final String SHOWPLACE = "/showplace";
     public static final String SEARCH_PLACE_BY_TERM = "/searchplacebyterm";
     public static final String SHOWUSER = "/showuser";
+    public static final String EDITPLAYDATE = "/editplaydate";
+
 
 
     public static class StaticFilePaths {

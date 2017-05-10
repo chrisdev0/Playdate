@@ -12,6 +12,12 @@ public enum PlaydateVisibilityType {
         this.nr = nr;
     }
 
+
+    public int getNr() {
+        return nr;
+    }
+
+    @SuppressWarnings("Duplicates")
     public static PlaydateVisibilityType intToPlaydateVisibilityType(int nr) {
         switch (nr) {
             case 0:
