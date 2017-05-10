@@ -61,7 +61,7 @@
 
 
 
-        <a href="#popupInfo" data-rel="popup" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info ui-btn-icon-notext" data-transition="slideup"> Information</a>
+        <a href="#popupInfo" data-rel="popup" id="info-btn" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info ui-btn-icon-notext" data-transition="slideup"> Information</a>
 
 
         <div data-role="popup" id="popupInfo">
