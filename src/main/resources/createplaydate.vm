@@ -168,9 +168,9 @@
                     </label>
                 </div>
                     <select name="visibilityId" id="visibility-type">
-                    <option value="0">Privat</option>
+                    <option value="0">Offentlig</option>
                     <option value="1">Öppen för vänner</option>
-                    <option value="2">Offentlig</option>
+                    <option value="2">Privat</option>
                 </select>
             </div>
             <label>Datum och tid</label>

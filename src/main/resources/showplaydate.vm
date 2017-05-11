@@ -37,7 +37,26 @@
 
 
         <h2>$!{playdate.header}</h2>
-        <p style= "margin-top: -1.5em;em"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+        <p style= "margin-top: -1.5em;"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+        <p style= "margin-top: -1em;"><script>
+            var playdateVisibilityType = $!{playdate.PlaydateVisibilityType.getNr()};
+            var output;
+                switch (playdateVisibilityType) {
+                    case 0:
+                         output = "Offentlig Playdate";
+                         break;
+                    case 1:
+                         output= "Playdate för vänner";
+                         break;
+                    case 2:
+                         output = "Privat Playdate";
+                         break;
+                }
+            document.write(output);
+        </script>
+        </p>
+        <p style= "margin-top: -1em;"> Skapad av <a data-ajax="false" href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
+
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
@@ -50,14 +69,12 @@
                 </ul>
             </div>
         </div>
-
-        <br>
-        <h2>Datum och tid: </h2>
-        <div id="descriptionfield-showplaydate">
+        <h2>Datum och tid:</h2>
+        <div class="descriptionfield-showplaydate">
             <p><script>
                 var timeDateFormat = new Date ($!{playdate.getStartTime()});
                 var output = "Den ";
-                output += timeDateFormat.getDate()+"/"+timeDateFormat.getMonth()
+                output += timeDateFormat.getDate()+"/"+(timeDateFormat.getMonth() +1)
                         +" "+timeDateFormat.getFullYear()+" klockan "+timeDateFormat.getHours()+":";
                 if (timeDateFormat.getMinutes()<10){
                     output += "0";
@@ -67,12 +84,23 @@
             </script>
             </p>
         </div>
-        <label for="playdate-desc"><h2>Beskrivning:</h2></label>
-        <div id="descriptionfield-showplaydate"
+        <h2>Beskrivning:</h2>
+        <div class="descriptionfield-showplaydate">
         <p>$!{playdate.description}</p>
+        </div>
+        <h2>Deltagare:</h2>
+        <div class="descriptionfield-showplaydate">
+        #foreach($!participant in $!playdate.participants)
+            <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+        #end
+        </div>
     </div>
-    <div data-role="popup" id="popupBasic">
 
+
+
+
+
+    <div data-role="popup" id="popupBasic">
         <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
         <div data-role="header">
             <h1>Kommentera Playdate</h1>
