@@ -19,7 +19,7 @@
         <div class="panel-buttons">
             <a href="/protected/editmyprofile" data-ajax="false" class="ui-btn ui-corner-all">Min Profil</a>
             <a href="/protected/showplaydates" data-ajax="false" class="ui-btn ui-corner-all">Mina Playdates</a>
-            <a href="#" class="ui-btn ui-corner-all"  data-ajax="false">Mina Vänner</a>
+            <a href="/protected/showmyfriends" class="ui-btn ui-corner-all"  data-ajax="false">Mina Vänner</a>
             <a href="#" class="ui-btn ui-corner-all" data-ajax="false">Hitta Platser</a>
             <a href="/logout" data-ajax="false" class="ui-btn ui-corner-all ui-icon-logout" data-ajax="false">Logga Ut</a>
 

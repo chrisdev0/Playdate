@@ -41,7 +41,8 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
-    @OneToMany
+
+    @OneToMany(mappedBy = "sender")
     private Set<FriendshipRequest> sentFriendshipRequest = new HashSet<>();
 
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
@@ -64,8 +65,12 @@ public class User {
         return this.friendshipRequest.add(friendshipRequest);
     }
 
+    public boolean addSentFriendshipRequest(FriendshipRequest friendshipRequest) {
+        return this.sentFriendshipRequest.add(friendshipRequest);
+    }
+
     public boolean addFriend(User friend){
-        return friends.add(new Friendship(this, friend));
+        return friends.add(new Friendship(friend, this));
     }
 
     public boolean removeFriend(Friendship fr){

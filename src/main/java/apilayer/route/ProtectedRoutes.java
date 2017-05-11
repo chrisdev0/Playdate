@@ -3,11 +3,13 @@ package apilayer.route;
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
+import apilayer.handlers.asynchandlers.FriendsHandler;
 import apilayer.handlers.asynchandlers.ProfileHandlers;
 import apilayer.handlers.asynchandlers.SearchHandlers;
 import apilayer.handlers.asynchandlers.UploadHandler;
 import apilayer.handlers.templateHandlers.*;
 import com.google.gson.Gson;
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import dblayer.PaginationWrapper;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +102,12 @@ public class ProtectedRoutes {
 
 
 
+            //todo ändra till post med ajax
+            post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
+
+            post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
+
+
 
             initProtectedStaticRoutes();
 
@@ -111,6 +119,7 @@ public class ProtectedRoutes {
     }
 
     private static void initProtectedStaticRoutes() {
+
 
         get(Paths.LANDING, new StaticFileTemplateHandlerImpl("feed.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
 
@@ -129,6 +138,7 @@ public class ProtectedRoutes {
 
         get(Paths.EDITPLAYDATE, new EditPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
+        get(Paths.GETMYFRIENDS, new GetMyFriendsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
     }
 

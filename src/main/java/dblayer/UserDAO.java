@@ -5,10 +5,12 @@ import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.engine.HibernateIterator;
 import org.hibernate.query.Query;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -163,13 +165,49 @@ public class UserDAO {
         return ret;
     }
 
+    /*** Hämtar alla vänner man har ***/
     public Optional<Set<User>> getFriendsOfUser(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            Hibernate.initialize(user.getFriends());
+            session.refresh(user);
+            Hibernate.initialize(user.getFriends().size());
             return Optional.of(user.getFriends()
                     .stream()
-                    .map(Friendship::getFriend)
+                    .map(Friendship::getRequester)
                     .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** Hämtar alla friendrequest man har ***/
+    public Optional<Set<User>> getFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getFriendshipRequest());
+            return Optional.of(user.getFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getSender)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** Hämtar alla användare man har skickat friendrequests till ***/
+    public Optional<Set<User>> getSentFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getSentFriendshipRequest());
+            return Optional.of(user.getSentFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getReceiver)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    @Deprecated
+    public Optional<Set<User>> getFriendshipRequestOfUserTEMP(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()){
+            session.refresh(user);
+            Set<User> collect = user.getFriendshipRequest().stream().map(FriendshipRequest::getSender).collect(Collectors.toSet());
+            return Optional.of(collect);
+        } catch (Exception e) {
+            log.error("error getting friendshiprequests of user",e);
+            return Optional.empty();
         }
     }
 
@@ -203,6 +241,7 @@ public class UserDAO {
     public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
         friend.addFriendshipRequest(fr);
+        sender.addSentFriendshipRequest(fr);
 
         if (checkIfFriendRequestSent(friend.getId(), sender.getId()).isPresent()){
             log.info("Friend request already sent");
@@ -285,6 +324,7 @@ public class UserDAO {
             tx = session.beginTransaction();
             session.remove(userFriendshipRequest.get());
             user.removeFriendshipRequest(userFriendshipRequest.get());
+            session.update(user);
             //session.remove(friendFriendshipRequest);
             tx.commit();
             ret = true;
