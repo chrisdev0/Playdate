@@ -99,6 +99,8 @@ public class ProtectedRoutes {
             post(Paths.UPDATEPLAYDATE, PlaydateHandler::handleUpdatePlaydate);
 
 
+
+
             initProtectedStaticRoutes();
 
         });

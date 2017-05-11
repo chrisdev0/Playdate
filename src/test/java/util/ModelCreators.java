@@ -1,5 +1,6 @@
 package util;
 
+import com.github.javafaker.Faker;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
@@ -14,35 +15,37 @@ import static org.junit.Assert.assertTrue;
 public class ModelCreators {
 
 
+    private static Faker faker = new Faker();
+
     public static User createUser() {
         User user = new User();
-        user.setName(HibernateTests.faker.name().name());
-        user.setEmail(HibernateTests.faker.internet().emailAddress());
-        user.setFbToken(HibernateTests.faker.internet().password(19, 20, true, true));
+        user.setName(faker.name().name());
+        user.setEmail(faker.internet().emailAddress());
+        user.setFbToken(faker.internet().password(19, 20, true, true));
         user.setGender(Gender.OTHER);
         user.setDescription("Testanvändare");
-        user.setFacebookThirdPartyID(HibernateTests.faker.internet().password(19, 20, true, true));
-        user.setProfilePictureUrl(HibernateTests.faker.internet().image());
+        user.setFacebookThirdPartyID(faker.internet().password(19, 20, true, true));
+        user.setProfilePictureUrl(faker.internet().image());
         return user;
     }
 
 
     public static Place createPlace() {
         Place place = new Place();
-        place.setLongDescription(HibernateTests.faker.lorem().characters(300));
-        place.setShortDescription(HibernateTests.faker.lorem().characters(120, 300));
-        place.setTimeUpdated(HibernateTests.faker.date().past(200, TimeUnit.DAYS).toString());
-        place.setTimeCreated(HibernateTests.faker.date().past(300, TimeUnit.DAYS).toString());
-        place.setName(HibernateTests.faker.address().streetName() + " " + HibernateTests.faker.address().citySuffix());
-        place.setGeoY(6000 + HibernateTests.faker.random().nextInt(16000));
-        place.setGeoX(6000 + HibernateTests.faker.random().nextInt(16000));
+        place.setLongDescription(faker.lorem().characters(300));
+        place.setShortDescription(faker.lorem().characters(120, 300));
+        place.setTimeUpdated(faker.date().past(200, TimeUnit.DAYS).toString());
+        place.setTimeCreated(faker.date().past(300, TimeUnit.DAYS).toString());
+        place.setName(faker.address().streetName() + " " + faker.address().citySuffix());
+        place.setGeoY(6000 + faker.random().nextInt(16000));
+        place.setGeoX(6000 + faker.random().nextInt(16000));
         place.setGeoArea("TestArea");
-        place.setSthlmAPIid(HibernateTests.faker.internet().password(19, 20, true, true));
-        place.setImageId(HibernateTests.faker.internet().password(19, 20, true, true));
-        place.setCityAddress(HibernateTests.faker.address().cityName());
-        place.setZip(HibernateTests.faker.address().zipCode());
+        place.setSthlmAPIid(faker.internet().password(19, 20, true, true));
+        place.setImageId(faker.internet().password(19, 20, true, true));
+        place.setCityAddress(faker.address().cityName());
+        place.setZip(faker.address().zipCode());
         place.setCategory("TestPlats");
-        place.setStreetAddress(HibernateTests.faker.address().streetAddress());
+        place.setStreetAddress(faker.address().streetAddress());
         place.setTimeUpdated("123");
         return place;
     }
@@ -51,9 +54,9 @@ public class ModelCreators {
         Playdate playdate = new Playdate();
         playdate.setPlace(place);
         playdate.setOwner(user);
-        playdate.setStartTime(HibernateTests.faker.date().future(200, TimeUnit.HOURS).getTime());
+        playdate.setStartTime(faker.date().future(200, TimeUnit.HOURS).getTime());
         playdate.setHeader("TestPlaydate");
-        playdate.setDescription(HibernateTests.faker.lorem().characters(300));
+        playdate.setDescription(faker.lorem().characters(300));
         playdate.setPlaydateVisibilityType(PlaydateVisibilityType.PUBLIC);
         return playdate;
     }

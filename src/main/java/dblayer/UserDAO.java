@@ -2,11 +2,17 @@ package dblayer;
 
 import lombok.extern.slf4j.Slf4j;
 import model.*;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static spark.Spark.halt;
 
@@ -155,6 +161,16 @@ public class UserDAO {
             }
         }
         return ret;
+    }
+
+    public Optional<Set<User>> getFriendsOfUser(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getFriends());
+            return Optional.of(user.getFriends()
+                    .stream()
+                    .map(Friendship::getFriend)
+                    .collect(Collectors.toSet()));
+        }
     }
 
 
