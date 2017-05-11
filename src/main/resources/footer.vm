@@ -3,7 +3,7 @@
         <!-- todo kontrollera ajax -->
         <div class="ui-block-a center-content"><a data-ajax="false" href="javascript:history.back()"  class="ui-shadow ui-btn ui-corner-all ui-icon-back ui-btn-inline ui-btn-icon-top">Tillbaka</a>
         </div>
-        <div class="ui-block-b center-content"><a data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
+        <div class="ui-block-b center-content"><a data-ajax="false" href="/protected/showmyfriends" class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
         </div>
         <div class="ui-block-c center-content"><a data-ajax="false"  href="/protected/feed" class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-top ui-btn-inline">Feed</a>
         </div>

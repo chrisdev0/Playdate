@@ -129,7 +129,7 @@ public class FriendshipHandler {
         Överföra från friendRequest-listan till Friends-listan för båda användare.
         (och ta bort den från friendRequest-listan)
          */
-        String friendIdParam = request.queryParams("friendId");
+        String friendIdParam = request.queryParams("userId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         if (user == null || user.getId().equals(friendId)) {
