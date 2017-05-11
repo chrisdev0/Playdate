@@ -86,6 +86,7 @@ public class PlaydateDAO {
      *
      *  @return om playdaten kunde sparas i databasen eller inte
      * */
+    @SuppressWarnings("Duplicates")
     public boolean updatePlaydate(Playdate playdate) {
         boolean ret = false;
         Session session = null;
@@ -186,54 +187,26 @@ public class PlaydateDAO {
         return ret;
     }
 
-    public boolean addInviteToUserAndPlaydate(User user, Invite invite, Playdate playdate) {
+    public boolean acceptAndAddAttendance(Invite invite) {
         Session session = null;
         Transaction tx = null;
+        User user = invite.getInvited();
+        Playdate playdate = invite.getPlaydate();
         boolean ret = false;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+
+            playdate.addParticipant(user);
+            user.attendPlaydate(playdate);
+
             session.update(playdate);
             session.update(user);
-            session.save(invite);
-
-            playdate.addInvite(invite);
-            user.addInvite(invite);
-
-            tx.commit();
-            ret = true;
-        } catch (Exception e) {
-            log.error("error adding invite", e);
-            if (tx != null) {
-                tx.rollback();
-            }
-            ret = false;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return ret;
-    }
-
-    public boolean removeInvite(Invite invite, Playdate playdate, User user) {
-        Session session = null;
-        Transaction tx = null;
-        boolean ret = false;
-        try {
-            session = HibernateUtil.getInstance().openSession();
-            tx = session.beginTransaction();
-            session.update(user);
-            session.update(playdate);
-
-            user.removeInvite(invite);
-            playdate.removeInvite(invite);
-
             session.remove(invite);
+
             tx.commit();
             ret = true;
         } catch (Exception e) {
-            log.error("error removing invite", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -245,5 +218,9 @@ public class PlaydateDAO {
         }
         return ret;
     }
+
+
+
+
 
 }

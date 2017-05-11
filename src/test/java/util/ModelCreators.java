@@ -1,6 +1,7 @@
 package util;
 
 import com.github.javafaker.Faker;
+import dblayer.InviteDao;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
@@ -67,7 +68,7 @@ public class ModelCreators {
     }
 
     public static void remove(Invite invite) {
-        boolean b = PlaydateDAO.getInstance().removeInvite(invite, invite.getPlaydate(), invite.getInvited());
+        boolean b = InviteDao.getInstance().removeInvite(invite, invite.getPlaydate(), invite.getInvited());
         assertTrue(b);
     }
 
@@ -102,7 +103,7 @@ public class ModelCreators {
     }
 
     public static void save(Invite invite, User user, Playdate playdate) {
-        boolean b = PlaydateDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+        boolean b = InviteDao.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
         assertTrue(b);
     }
 
