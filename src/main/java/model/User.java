@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import org.hibernate.annotations.*;
 
@@ -15,15 +16,18 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(nullable = false)
+    @Expose
     private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
 
     @Type(type = "text")
+    @Expose
     private String description;
 
     private String phoneNumber;
@@ -33,6 +37,7 @@ public class User {
     @Column(unique = true)
     private String facebookThirdPartyID;
 
+    @Expose
     private String profilePictureUrl;
 
     @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)
@@ -47,6 +52,7 @@ public class User {
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private Set<Playdate> attendingPlaydates = new HashSet<>();
 
+    @Expose
     private Gender gender;
 
     public User() {

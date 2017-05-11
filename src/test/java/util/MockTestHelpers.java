@@ -30,13 +30,13 @@ public class MockTestHelpers {
     }
 
 
-    public void injectKeyValues(Request request, KeyValue... keyValues) {
+    public void injectKeyValue(Request request, KeyValue... keyValues) {
         for (KeyValue e : keyValues) {
             when(request.queryParams(e.key)).thenReturn(e.value);
         }
     }
 
-    public void injectSingleKeyValue(Request request, String key, String value) {
+    public void injectKeyValue(Request request, String key, String value) {
         when(request.queryParams(key)).thenReturn(value);
     }
 
