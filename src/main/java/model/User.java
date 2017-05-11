@@ -41,6 +41,7 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
+
     @OneToMany(mappedBy = "sender")
     private Set<FriendshipRequest> sentFriendshipRequest = new HashSet<>();
 
