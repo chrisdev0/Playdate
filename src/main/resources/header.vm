@@ -1,4 +1,15 @@
+#* @vtlvariable name="navbarfriends" type="boolean" *#
+
 <div data-role="header" data-position="fixed" class="header-shadow" data-theme="a">
     <a href="#side-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">Öppna panelen</a>
     <img src="/images/playdate_logga_1.png" id="head-logo" style="width:30%">
+    #if($navbarfriends)
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#show-friends">Mina Vänner</a></li>
+                <li><a href="#show-friend-request">Vänförfrågning</a></li>
+                <li><a href="#search-friend">Lägg Till Vänner</a></li>
+            </ul>
+        </div>
+    #end
 </div>

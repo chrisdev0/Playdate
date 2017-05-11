@@ -85,6 +85,11 @@
     float: left;
 }
 
+.img-size {
+    max-width: 3em;
+    max-height: 3em;
+}
+
 .big-profile img {
     width: 7em;
     max-height: 8em;

@@ -40,8 +40,9 @@ public class Paths {
     public static final String SEARCH_PLACE_BY_TERM = "/searchplacebyterm";
     public static final String SHOWUSER = "/showuser";
     public static final String EDITPLAYDATE = "/editplaydate";
-
-
+    public static final String GETMYFRIENDS = "/showmyfriends";
+    public static final String ACCEPTFRIENDSHIPREQUEST = "/acceptfriendshiprequest";
+    public static final String DECLINEFRIENDSHIPREQUEST = "/declinefriendshiprequest";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";

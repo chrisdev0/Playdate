@@ -12,6 +12,9 @@
             <!-- What driver will be used to "talk" with the database -->
             com.mysql.cj.jdbc.Driver
         </property>
+        <property name="hibernate.enable_lazy_load_no_trans">
+            true
+        </property>
         <property name="hibernate.connection.url">
             <!-- URL to the database (and parameters that will be used in the connection (unicode ON, SSL OFF, different than default timezone configuration -->
 
