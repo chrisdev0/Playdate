@@ -5,17 +5,11 @@ import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.engine.HibernateIterator;
-import org.hibernate.query.Query;
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
 import utils.Utils;
-
-import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import static spark.Spark.halt;
 
 @Slf4j
@@ -175,7 +169,7 @@ public class UserDAO {
                     .collect(Collectors.toSet()));
         }
     }
-
+    /*** ska tas bort, finns en redan***/
     @Deprecated
     public Optional<Set<User>> getFriendshipRequestOfUserTEMP(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()){
@@ -187,7 +181,6 @@ public class UserDAO {
             return Optional.empty();
         }
     }
-
 
     @SuppressWarnings("Duplicates")
     public boolean deleteUser(User user) {
@@ -208,13 +201,13 @@ public class UserDAO {
         return ret;
     }
 
-
     public Optional<ProfilePicture> getProfilePictureOfUser(Long id) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(ProfilePicture.class).loadOptional(id);
         }
     }
 
+    /*** tar in två användare och skapar en vänskapsförfrågan***/
     public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
         friend.addFriendshipRequest(fr);
@@ -248,45 +241,27 @@ public class UserDAO {
         return ret;
     }
 
-
+    /*** tar in två användarID och kontrollerar om det finns en vänskap mellan dem ***/
     public Optional<Friendship> checkIfFriendWithUser(Long userId, Long friendId){
-        /*
-        Kolla i tabellerna om vänner
-
-        Returnera sann om får tillbaka?
-         */
-
         try(Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM Friendship WHERE friend.id = :user1 AND requester.id = :user2", Friendship.class)
                     .setParameter("user1", userId)
                     .setParameter("user2", friendId).uniqueResultOptional();
-
         }
     }
 
+    /*** tar in två användarID och kontrollerar om det finns en obesvarad vänförfrågan mellan dem ***/
     public Optional<FriendshipRequest> checkIfFriendRequestSent(Long userId, Long friendId){
-
-        /*
-        Kolla i tabellerna om vänner
-
-        Returnera sann om får tillbaka?
-         */
-
         try(Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM FriendshipRequest WHERE (sender.id = :user1 AND receiver.id = :user2) OR (sender.id = :user2 AND receiver.id = :user1)", FriendshipRequest.class)
                     .setParameter("user1", userId)
                     .setParameter("user2", friendId).uniqueResultOptional();
-
         }
     }
 
+    /*** tar in två användare, kontrollerar att det finns en vänförfrågan mellan dem och tar bort den ***/
     public boolean declineFriendRequest(User user, User friend){
-        /*
-        Om tackar nej, ta bort från friendRequest-listan och databasen
-         */
-
         Optional<FriendshipRequest> userFriendshipRequest = checkIfFriendRequestSent(user.getId(), friend.getId());
-        //Optional<FriendshipRequest> friendFriendshipRequest = checkIfFriendRequestSent(friend.getId(), user.getId());
 
         if (!userFriendshipRequest.isPresent()){
             log.info("userFriendshipRequest finns ej");
@@ -301,7 +276,6 @@ public class UserDAO {
             session.remove(userFriendshipRequest.get());
             user.removeFriendshipRequest(userFriendshipRequest.get());
             session.update(user);
-            //session.remove(friendFriendshipRequest);
             tx.commit();
             ret = true;
         }
@@ -319,9 +293,8 @@ public class UserDAO {
         return ret;
     }
 
-
+    /*** tar emot en vänskapsförfrågan, skapar en vänskap och tar bort förfrågan ***/
     public Optional<Friendship> createFriendship(FriendshipRequest friendshipRequest) {
-
         Optional<Friendship> friendship = checkIfFriendWithUser(friendshipRequest.getSender().getId(), friendshipRequest.getReceiver().getId());
         log.info("Vad är i friendship " + friendship.toString());
         if(friendship.isPresent()){
@@ -368,7 +341,7 @@ public class UserDAO {
         }
         return ret;
     }
-
+    /*** tar emot en vänskap och tar bort den  ***/
     public boolean deleteFriendship(Friendship friendship) {
         Session session = null;
         Transaction tx = null;
