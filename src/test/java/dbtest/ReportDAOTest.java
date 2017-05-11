@@ -1,6 +1,5 @@
 package dbtest;
 
-import com.sun.tools.internal.xjc.model.Model;
 import dblayer.ReportDAO;
 import model.Report;
 import model.User;
