@@ -21,6 +21,26 @@
             $('#show-user-friendshiprequest').attr('href', '/protected/showuser?userId=' + userid);
             $('#decline-friendshiprequest').attr('href', '/protected/declinefriendshiprequest?userId=' + userid);
 
+            $('#accept-friendshiprequest').click(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.post($(this).attr('href'),function(res) {
+                    console.log(res.statusCode())
+                })
+
+            });
+
+            $('#decline-friendshiprequest').click(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.post($(this).attr('href'),function(res) {
+                    console.log(res.statusCode())
+                })
+
+            });
+
             $('#popup').popup("open");
 
         });
