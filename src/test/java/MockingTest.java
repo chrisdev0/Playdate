@@ -1,47 +1,27 @@
 import apilayer.Constants;
 import apilayer.handlers.FriendshipHandler;
-import apilayer.handlers.PlaceHandler;
-import apilayer.handlers.asynchandlers.SearchHandlers;
 import model.User;
 import org.junit.Test;
 import spark.Request;
 import spark.Response;
 import spark.Session;
+import util.MockTestHelpers;
 import util.ModelCreators;
 
-import java.util.HashSet;
-
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static util.ModelCreators.remove;
 import static util.ModelCreators.save;
 
-public class MockingTest {
+public class MockingTest extends MockTestHelpers{
 
-
-    private Request initRequestMock(User user) {
-        Request request = mock(Request.class);
-        Session session = mock(Session.class);
-        when(request.session()).thenReturn(session);
-        when(session.attribute(Constants.USER_SESSION_KEY)).thenReturn(user);
-        when(request.session().attributes()).thenReturn(new HashSet<>());
-
-        return request;
-    }
-
-    private Response initResponseMock() {
-        return mock(Response.class);
-    }
 
     @Test
-    public void test() {
-        User user = ModelCreators.createUser();
-        Request request = initRequestMock(user);
+    public void testMockingUtils() {
+        Request request = initRequestMock(ModelCreators.createUser());
         Response response = initResponseMock();
-
-        when(request.queryParams("name")).thenReturn("norr");
-        when(request.queryParams("offset")).thenReturn("0");
-        Object o = PlaceHandler.handleGetPlaceByGeoArea(request, response);
-        System.out.println(o);
+        injectKeyValues(request, new KeyValue("a", "b"));
+        assertEquals("b", request.queryParams("a"));
     }
 
 
