@@ -106,11 +106,15 @@ public class ModelCreators {
         assertTrue(b);
     }
 
-    public static void save(User user, User friend){
-        boolean b = UserDAO.getInstance().createFriendshipRequest(user, friend).isPresent();
-
-        assertTrue(b);
+    public static FriendshipRequest save(User user, User friend){
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        assertTrue(friendshipRequest.isPresent());
+        return friendshipRequest.get();
     }
 
+    public static void save(FriendshipRequest friendshipRequest) {
+        boolean b = UserDAO.getInstance().createFriendship(friendshipRequest).isPresent();
+        assertTrue(b);
+    }
 
 }

@@ -1,6 +1,7 @@
 package dbtest;
 import apilayer.handlers.FriendshipHandler;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -8,6 +9,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import util.ModelCreators;
+
+import javax.swing.text.html.Option;
+
 import static org.junit.Assert.*;
 
 import java.util.Optional;
@@ -121,7 +125,6 @@ public class UserDAOTest extends HibernateTests {
         assertTrue(b);
     }
 
-
     @Test
     public void testDeleteProfilePictureTwice() {
         byte[] image = new byte[10];
@@ -136,9 +139,6 @@ public class UserDAOTest extends HibernateTests {
         assertTrue(imageOpt.isPresent());
         assertNotNull(profilePicture.getId());
     }
-
-
-
 
     @Test
     public void testGetUserByEmail() {
@@ -298,4 +298,85 @@ public class UserDAOTest extends HibernateTests {
         ModelCreators.remove(user);
         ModelCreators.remove(friend);
     }
+
+    @Test
+    public void testGetFriends(){
+        User user = ModelCreators.createUser();
+        User friend1 = ModelCreators.createUser();
+        User friend2 = ModelCreators.createUser();
+        User friend3 = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(friend1);
+        ModelCreators.save(friend2);
+        ModelCreators.save(friend3);
+
+        FriendshipRequest friendshipRequest1 = ModelCreators.save(user, friend1);
+        FriendshipRequest friendshipRequest2 = ModelCreators.save(user, friend2);
+        FriendshipRequest friendshipRequest3 = ModelCreators.save(user, friend3);
+
+        ModelCreators.save(friendshipRequest1);
+        ModelCreators.save(friendshipRequest2);
+        ModelCreators.save(friendshipRequest3);
+
+        assertTrue(UserDAO.getInstance().getFriendsOfUser(user).isPresent());
+
+        ModelCreators.remove(user);
+        ModelCreators.remove(friend1);
+        ModelCreators.remove(friend2);
+        ModelCreators.remove(friend3);
+
+    }
+
+    @Test
+    public void testGetFriendRequest(){
+        User user = ModelCreators.createUser();
+        User requester1 = ModelCreators.createUser();
+        User requester2 = ModelCreators.createUser();
+        User requester3 = ModelCreators.createUser();
+
+        ModelCreators.save(user);
+        ModelCreators.save(requester1);
+        ModelCreators.save(requester2);
+        ModelCreators.save(requester3);
+
+        ModelCreators.save(requester1, user);
+        ModelCreators.save(requester2, user);
+        ModelCreators.save(requester3, user);
+
+        assertTrue(UserDAO.getInstance().getFriendRequest(user).isPresent());
+
+        ModelCreators.remove(user);
+        ModelCreators.remove(requester1);
+        ModelCreators.remove(requester2);
+        ModelCreators.remove(requester3);
+
+    }
+
+    @Test
+    public void testGetSentFriendRequest(){
+        User requester = ModelCreators.createUser();
+        User receiver1 = ModelCreators.createUser();
+        User receiver2 = ModelCreators.createUser();
+        User receiver3 = ModelCreators.createUser();
+
+        ModelCreators.save(requester);
+        ModelCreators.save(receiver1);
+        ModelCreators.save(receiver2);
+        ModelCreators.save(receiver3);
+
+        ModelCreators.save(requester, receiver1);
+        ModelCreators.save(requester, receiver2);
+        ModelCreators.save(requester, receiver3);
+
+        assertTrue(UserDAO.getInstance().getSentFriendRequest(requester).isPresent());
+
+        ModelCreators.remove(requester);
+        ModelCreators.remove(receiver1);
+        ModelCreators.remove(receiver2);
+        ModelCreators.remove(receiver3);
+
+
+    }
+
 }

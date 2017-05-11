@@ -159,6 +159,7 @@ public class UserDAO {
         return ret;
     }
 
+    /*** Hämtar alla vänner man har ***/
     public Optional<Set<User>> getFriendsOfUser(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             session.refresh(user);
@@ -169,7 +170,30 @@ public class UserDAO {
                     .collect(Collectors.toSet()));
         }
     }
-    /*** ska tas bort, finns en redan***/
+
+    /*** Hämtar alla friendrequest man har ***/
+    public Optional<Set<User>> getFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getFriendshipRequest());
+            return Optional.of(user.getFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getSender)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** Hämtar alla användare man har skickat friendrequests till ***/
+    public Optional<Set<User>> getSentFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getSentFriendshipRequest());
+            return Optional.of(user.getSentFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getReceiver)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** denna ska tas bort, finns en reda ***/
     @Deprecated
     public Optional<Set<User>> getFriendshipRequestOfUserTEMP(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()){
@@ -211,6 +235,7 @@ public class UserDAO {
     public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
         friend.addFriendshipRequest(fr);
+        sender.addSentFriendshipRequest(fr);
 
         if (checkIfFriendRequestSent(friend.getId(), sender.getId()).isPresent()){
             log.info("Friend request already sent");
