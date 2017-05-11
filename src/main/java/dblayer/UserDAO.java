@@ -163,12 +163,35 @@ public class UserDAO {
         return ret;
     }
 
+    /*** Hämtar alla vänner man har ***/
     public Optional<Set<User>> getFriendsOfUser(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             Hibernate.initialize(user.getFriends());
             return Optional.of(user.getFriends()
                     .stream()
                     .map(Friendship::getFriend)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** Hämtar alla friendrequest man har ***/
+    public Optional<Set<User>> getFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getFriendshipRequest());
+            return Optional.of(user.getFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getSender)
+                    .collect(Collectors.toSet()));
+        }
+    }
+
+    /*** Hämtar alla användare man har skickat friendrequests till ***/
+    public Optional<Set<User>> getSentFriendRequest(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            Hibernate.initialize(user.getSentFriendshipRequest());
+            return Optional.of(user.getSentFriendshipRequest()
+                    .stream()
+                    .map(FriendshipRequest::getReceiver)
                     .collect(Collectors.toSet()));
         }
     }
@@ -203,6 +226,7 @@ public class UserDAO {
     public Optional<FriendshipRequest> createFriendshipRequest(User sender, User friend){
         FriendshipRequest fr = new FriendshipRequest(sender, friend);
         friend.addFriendshipRequest(fr);
+        sender.addSentFriendshipRequest(fr);
 
         if (checkIfFriendRequestSent(friend.getId(), sender.getId()).isPresent()){
             log.info("Friend request already sent");
