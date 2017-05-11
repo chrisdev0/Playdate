@@ -195,9 +195,10 @@ public class PlaceDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+            Hibernate.initialize(place.getComments());
+            place.addComment(comment);
             session.save(comment);
             session.update(place);
-            Hibernate.initialize(place.getComments());
             tx.commit();
             ret = place.getComments();
         } catch (Exception e) {

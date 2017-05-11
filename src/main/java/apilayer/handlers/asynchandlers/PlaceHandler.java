@@ -1,31 +1,35 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
+import apilayer.handlers.Paths;
 import com.google.gson.Gson;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Place;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.CoordinateHandlerUtil;
+import utils.ParserHelpers;
 import utils.Utils;
+
+import java.util.Optional;
 
 import static spark.Spark.halt;
 
 @Slf4j
 public class PlaceHandler {
 
-    /*public static ModelAndView handleGetOnePlace(Request request, Response response) {
-        String id = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
-        try {
-            long lId = Long.parseLong(id);
-            log.info("fetching place with id = " + lId);
-            return new GetOnePlaceHandlerOLD("TODELETE/showplacepage.vm", lId, 400)
-                    .handleTemplateFileRequest(request, response);
-        } catch (NullPointerException | NumberFormatException e) {
-            log.info("client: " + request.ip() + " sent illegal place id = " + id + " e = " + e.getMessage());
-            throw halt(400);
+    public static Object handleGetOnePlace(Request request, Response response) {
+        String idStr = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
+        Long id = ParserHelpers.parseToLong(idStr);
+        Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(id);
+        if (placeById.isPresent()) {
+            return new Gson().toJson(placeById.get());
+        } else {
+            response.status(400);
+            return "";
         }
-    }*/
+    }
 
     public static Object handleGetPlaceByLoc(Request request, Response response) {
         String locXStr = request.queryParams("locX");

@@ -3,13 +3,9 @@ package apilayer.route;
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
-import apilayer.handlers.asynchandlers.FriendsHandler;
-import apilayer.handlers.asynchandlers.ProfileHandlers;
-import apilayer.handlers.asynchandlers.SearchHandlers;
-import apilayer.handlers.asynchandlers.UploadHandler;
+import apilayer.handlers.asynchandlers.*;
 import apilayer.handlers.templateHandlers.*;
 import com.google.gson.Gson;
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import dblayer.PaginationWrapper;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +56,7 @@ public class ProtectedRoutes {
             *       todo (också att göra då är att ladda kommentarerna asynkront)
             *   returnerar halt(400) vid error
             * */
-            post(Paths.POSTCOMMENT, CommentHandler::handlePostComment);
+            post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
 
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 

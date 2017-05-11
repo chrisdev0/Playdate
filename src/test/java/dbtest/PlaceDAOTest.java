@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
+import static util.ModelCreators.createPlace;
+import static util.ModelCreators.createUser;
 import static util.ModelCreators.remove;
 
 @Slf4j
@@ -32,7 +34,7 @@ public class PlaceDAOTest extends HibernateTests {
         HibernateUtil.getInstance();
         int sizeOfResult = 0;
         do {
-            Optional<PaginationWrapper<Place>> placesByGeoArea = PlaceDAO.getInstance().getPlacesByGeoArea(ModelCreators.createPlace().getGeoArea(), 0, 100);
+            Optional<PaginationWrapper<Place>> placesByGeoArea = PlaceDAO.getInstance().getPlacesByGeoArea(createPlace().getGeoArea(), 0, 100);
             sizeOfResult = placesByGeoArea.get().getCollection().size();
             placesByGeoArea.get().stream().forEach(place -> PlaceDAO.getInstance().deletePlaceById(place.getId()));
         } while (sizeOfResult < 0);
@@ -40,7 +42,7 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testSavePlace() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b);
         assertNotNull(place.getId());
@@ -50,10 +52,10 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testSaveComment() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         Comment comment = new Comment();
         comment.setComment("Comment");
-        User user = ModelCreators.createUser();
+        User user = createUser();
         comment.setCommenter(user);
 
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -64,7 +66,7 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b2);
         assertNotNull(user.getId());
 
-        place.addComment(comment);
+
         PlaceDAO.getInstance().saveComment(comment, place);
 
 
@@ -77,10 +79,10 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void getCommentsOfPlace() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         Comment comment = new Comment();
         comment.setComment("Comment");
-        User user = ModelCreators.createUser();
+        User user = createUser();
         comment.setCommenter(user);
 
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -91,7 +93,6 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b2);
         assertNotNull(user.getId());
 
-        place.addComment(comment);
         PlaceDAO.getInstance().saveComment(comment, place);
 
         Optional<Set<Comment>> commentsForPlace = PlaceDAO.getInstance().getCommentsForPlace(place);
@@ -110,12 +111,15 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b3);
     }
 
+    /** Ska inte fungera eftersom kommentaren är null
+     *
+     * */
     @Test
     public void saveIllegalComment() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         Comment comment = new Comment();
         comment.setComment(null);
-        User user = ModelCreators.createUser();
+        User user = createUser();
         comment.setCommenter(user);
 
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -126,7 +130,7 @@ public class PlaceDAOTest extends HibernateTests {
         assertTrue(b2);
         assertNotNull(user.getId());
 
-        place.addComment(comment);
+
         Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, place);
 
         assertFalse(comments.isPresent());
@@ -141,7 +145,7 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testIllegalPlace() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         place.setName(null);
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertFalse(b);
@@ -149,7 +153,7 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void getPlaceTest() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b);
         assertNotNull(place.getId());
@@ -184,10 +188,10 @@ public class PlaceDAOTest extends HibernateTests {
     @Test
     public void testGetMultiplePlace() {
         Set<Place> places = new HashSet<>();
-        places.add(ModelCreators.createPlace());
-        places.add(ModelCreators.createPlace());
-        places.add(ModelCreators.createPlace());
-        places.add(ModelCreators.createPlace());
+        places.add(createPlace());
+        places.add(createPlace());
+        places.add(createPlace());
+        places.add(createPlace());
         places.forEach(PlaceDAO.getInstance()::storeOrUpdatePlace);
         places.forEach(p -> assertNotNull(p.getId()));
         Set<String> ids = places.stream().map(Place::getSthlmAPIid).collect(Collectors.toSet());
@@ -204,7 +208,7 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testGetPlaceByGeoArea() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b);
         assertNotNull(place.getId());
@@ -226,22 +230,22 @@ public class PlaceDAOTest extends HibernateTests {
     public void testPaginationOfPlace() {
         Set<Place> places = new HashSet<>();
         for(int i = 0; i < 25; i++) {
-            places.add(ModelCreators.createPlace());
+            places.add(createPlace());
         }
         places.forEach(PlaceDAO.getInstance()::storeOrUpdatePlace);
         places.forEach(p -> assertNotNull(p.getId()));
 
-        Optional<PaginationWrapper<Place>> placesByGeoArea = PlaceDAO.getInstance().getPlacesByGeoArea(ModelCreators.createPlace().getGeoArea(), 0, 10);
+        Optional<PaginationWrapper<Place>> placesByGeoArea = PlaceDAO.getInstance().getPlacesByGeoArea(createPlace().getGeoArea(), 0, 10);
         assertTrue(placesByGeoArea.isPresent());
         assertEquals(10, placesByGeoArea.get().getCollection().size());
 
 
 
-        Optional<PaginationWrapper<Place>> placesByGeoArea1 = PlaceDAO.getInstance().getPlacesByGeoArea(ModelCreators.createPlace().getGeoArea(), 10, 10);
+        Optional<PaginationWrapper<Place>> placesByGeoArea1 = PlaceDAO.getInstance().getPlacesByGeoArea(createPlace().getGeoArea(), 10, 10);
         assertTrue(placesByGeoArea1.isPresent());
         assertEquals(10,placesByGeoArea1.get().getCollection().size());
 
-        Optional<PaginationWrapper<Place>> placesByGeoArea2 = PlaceDAO.getInstance().getPlacesByGeoArea(ModelCreators.createPlace().getGeoArea(), 20, 10);
+        Optional<PaginationWrapper<Place>> placesByGeoArea2 = PlaceDAO.getInstance().getPlacesByGeoArea(createPlace().getGeoArea(), 20, 10);
         assertTrue(placesByGeoArea2.isPresent());
         assertEquals(5,placesByGeoArea2.get().getCollection().size());
 
@@ -258,7 +262,7 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testGetPlaceByCoord() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         place.setGeoX(1000);
         place.setGeoY(1000);
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
@@ -275,14 +279,14 @@ public class PlaceDAOTest extends HibernateTests {
 
     @Test
     public void testGetPlaceByCoord2() {
-        Place place = ModelCreators.createPlace();
+        Place place = createPlace();
         place.setGeoX(1000);
         place.setGeoY(1000);
         boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
         assertTrue(b);
         assertNotNull(place.getId());
 
-        Place outsideArea = ModelCreators.createPlace();
+        Place outsideArea = createPlace();
         outsideArea.setGeoY(3001);
         outsideArea.setGeoX(3001);
         boolean b1 = PlaceDAO.getInstance().storeOrUpdatePlace(outsideArea);

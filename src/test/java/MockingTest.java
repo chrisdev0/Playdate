@@ -20,7 +20,7 @@ public class MockingTest extends MockTestHelpers{
     public void testMockingUtils() {
         Request request = initRequestMock(ModelCreators.createUser());
         Response response = initResponseMock();
-        injectKeyValues(request, new KeyValue("a", "b"));
+        injectKeyValue(request, new KeyValue("a", "b"));
         assertEquals("b", request.queryParams("a"));
     }
 
