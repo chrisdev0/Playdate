@@ -74,19 +74,15 @@ import java.util.Set;
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         Playdate playdate = (Playdate) o;
 
-        if (startTime != playdate.startTime) return false;
         if (id != null ? !id.equals(playdate.id) : playdate.id != null) return false;
+        if (startTime != playdate.startTime) return false;
         if (header != null ? !header.equals(playdate.header) : playdate.header != null) return false;
         if (description != null ? !description.equals(playdate.description) : playdate.description != null)
             return false;
         if (owner != null ? !owner.equals(playdate.owner) : playdate.owner != null) return false;
-        if (participants != null ? !participants.equals(playdate.participants) : playdate.participants != null)
-            return false;
-        if (invites != null ? !invites.equals(playdate.invites) : playdate.invites != null) return false;
         if (place != null ? !place.equals(playdate.place) : playdate.place != null) return false;
         return playdateVisibilityType == playdate.playdateVisibilityType;
     }
