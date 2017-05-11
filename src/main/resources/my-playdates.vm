@@ -60,7 +60,7 @@
                 <h4>$!{p.header}</h4>
                 <p>
                     $!{p.description}
-                    <a class="ui-btn" href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
+                    <a data-ajax="false" class="ui-btn" href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
                     <a data-ajax="false" class="ui-btn edit-playdate-link" href="/protected/editplaydate?playdateId=${p.id}">Redigera</a>
                     <a data-playdateid="$!{p.id}" class="ui-btn remove-playdate-link" href="#">Ta bort</a>
                 </p>

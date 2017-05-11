@@ -105,6 +105,9 @@ public class PlaydateHandler {
     /** Hanterar att ta bort en Playdate
      *  Ta även bort alla invites till playdaten
      * */
+
+    //flytta session utanför try(...) så kan den kan komma åt rollbakc,
+    //glöm inte att stänga session
     public static Object handleDeletePlaydate(Request request, Response response) {
         String playdateId = request.queryParams("playdateId");
         User user = request.session().attribute(Constants.USER_SESSION_KEY);

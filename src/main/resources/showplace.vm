@@ -14,6 +14,7 @@
     });
 
 </script>
+
 </head>
 <body>
 
@@ -79,6 +80,7 @@
                 <td>Område:</td>
                 <td>$!{place.geoArea}</td>
             </tr>
+            <tr>
                 <td>Gatuadress:</td>
                 <td>$!{place.streetAddress}</td>
             </tr>
