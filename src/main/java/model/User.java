@@ -41,6 +41,9 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
+    @OneToMany
+    private Set<FriendshipRequest> sentFriendshipRequest = new HashSet<>();
+
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 

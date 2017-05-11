@@ -23,6 +23,7 @@ public class FriendshipHandler {
 
     public static Object addFriendRequest(Request request, Response response) {
         String friendIdParam = request.queryParams("id");
+        String reportDescription = request.queryParams("reportDesc");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         if (user == null || user.getId().equals(friendId)) {
