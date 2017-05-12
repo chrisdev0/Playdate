@@ -2,6 +2,8 @@ package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
 import apilayer.handlers.Paths;
+import com.google.gson.GsonBuilder;
+import com.sun.org.apache.regexp.internal.RE;
 import dblayer.HibernateUtil;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
@@ -16,6 +18,8 @@ import utils.Utils;
 
 import java.util.Optional;
 
+import static apilayer.handlers.asynchandlers.SparkHelper.getPlaydateFromRequest;
+import static apilayer.handlers.asynchandlers.SparkHelper.setStatusCodeAndReturnString;
 import static spark.Spark.delete;
 import static spark.Spark.halt;
 
@@ -133,6 +137,9 @@ public class PlaydateHandler {
         return "";
     }
 
+    /** todo Flytta saker till DAO
+     * */
+    @Deprecated
     public static Object removePlaydateAttendance(Request request, Response response){
 
         Session session = null;
@@ -190,6 +197,16 @@ public class PlaydateHandler {
             }
         }
         return halt(400);
+    }
+
+    public static Object handleGetAttendanceForPlaydate(Request request, Response response) {
+        Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
+        if (playdateOptional.isPresent()) {
+            PlaydateDAO.getInstance().refreshPlaydate(playdateOptional.get());
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(playdateOptional.get().getParticipants());
+        }
+        return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_PLAYDATE_WITH_ID);
     }
 
 }

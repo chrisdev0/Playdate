@@ -1,6 +1,9 @@
 package handlerstest;
 
+import apilayer.Constants;
+import apilayer.handlers.Paths;
 import apilayer.handlers.asynchandlers.AttendanceInviteHandler;
+import apilayer.handlers.asynchandlers.PlaydateHandler;
 import dblayer.InviteDao;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +55,13 @@ public class AsyncInviteTest extends MockTestHelpers{
     }
 
 
+    /** Testar att
+     * 1. Skicka en invite till en användare
+     * 2. att användaren fått invite
+     * 3. Acceptera invite
+     * 4. att accepterad invite har försvunnit från listan med invites
+     * 5. och att user är en participant i playdate som invite var för
+     * */
     @Test
     public void testAcceptInvite() {
         User invited = createUser();
@@ -95,7 +105,18 @@ public class AsyncInviteTest extends MockTestHelpers{
         assertNotNull(res);
         assertTrue(res.isEmpty());
 
+        String invitesOfLoggedInUserAfterAccept = (String) AttendanceInviteHandler.getInvitesOfLoggedInUser(request1, response1);
+        assertNotNull(invitesOfLoggedInUserAfterAccept);
+        assertTrue(invitesOfLoggedInUserAfterAccept.length() == 2);
 
+        Request request3 = initRequestMock(invited);
+        Response response3 = initResponseMock();
+
+        injectKeyValue(request3, new KeyValue(Paths.QueryParams.PLAYDATE_BY_ID, playdate.getId()));
+
+        String attendance = (String) PlaydateHandler.handleGetAttendanceForPlaydate(request3, response3);
+        assertNotNull(attendance);
+        assertTrue(attendance.length() > 2);
 
         remove(playdate);
         remove(place);
@@ -111,7 +132,7 @@ public class AsyncInviteTest extends MockTestHelpers{
         Response response = initResponseMock();
         injectKeyValue(request, "playdateId", "-15");
         String res = (String) AttendanceInviteHandler.handleAttendPublicPlaydate(request, response);
-        assertTrue(res.equals("no_playdate"));
+        assertTrue(res.equals(Constants.MSG.NO_PLAYDATE_WITH_ID));
     }
 
     @Test(expected = HaltException.class)

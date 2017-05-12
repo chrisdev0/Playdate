@@ -187,6 +187,12 @@ public class PlaydateDAO {
         return ret;
     }
 
+    public void refreshPlaydate(Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            session.refresh(playdate);
+        }
+    }
+
     public boolean acceptAndAddAttendance(Invite invite) {
         Session session = null;
         Transaction tx = null;
