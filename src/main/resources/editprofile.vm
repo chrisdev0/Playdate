@@ -114,11 +114,9 @@
                                         <option value="1">Kvinna</option>
                                         <option value="2">Annat</option>
                     </select>
-
-                <h2>Beskrivning:</h2>
-                <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}
-            </textarea>
                 </div>
+                <h2>Beskrivning:</h2>
+                <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}</textarea>
             </form>
         </div>
         <div class="on-bottom-button">
