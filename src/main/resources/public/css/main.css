@@ -269,3 +269,8 @@
     margin-top: -1.3em;
     font-size: 0.8em;
 }
+
+.important-msg {
+    font-weight: bold;
+    font-size: 1.4em;
+}

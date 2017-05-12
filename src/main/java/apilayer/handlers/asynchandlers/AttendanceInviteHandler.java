@@ -13,6 +13,7 @@ import model.PlaydateVisibilityType;
 import model.User;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import utils.ParserHelpers;
 
 import java.util.List;
@@ -75,8 +76,7 @@ public class AttendanceInviteHandler {
             Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(ParserHelpers.parseToLong(playDateIdStr));
             if (playdateOptional.isPresent()) {
                 if (playdateOptional.get().getOwner().equals(getUserFromSession(request))) {
-                    boolean b = InviteDao.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(inviteMsg, playdateOptional.get(), sendToUser.get()), playdateOptional.get());
-                    if (b) {
+                    if (InviteDao.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(inviteMsg, playdateOptional.get(), sendToUser.get()), playdateOptional.get())) {
                         return "";
                     } else {
                         log.info("couldn't send invite to user " + sendToUserStr);
@@ -109,4 +109,22 @@ public class AttendanceInviteHandler {
     }
 
 
+    public static Object handleDeclineInviteToPlaydate(Request request, Response response) {
+        Long inviteId = ParserHelpers.parseToLong(request.queryParams(Paths.QueryParams.INVITE_BY_ID));
+        Optional<Invite> inviteById = InviteDao.getInstance().getInviteById(inviteId);
+        if (inviteById.isPresent()) {
+            User user = getUserFromSession(request);
+            if (inviteById.get().getInvited().equals(user)) {
+                if (InviteDao.getInstance().removeInvite(inviteById.get(), inviteById.get().getPlaydate(), user)) {
+                    return "";
+                } else {
+                    return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+                }
+            } else {
+                return setStatusCodeAndReturnString(response, 400, Constants.MSG.USER_IS_NOT_OWNER_OF_INVITE);
+            }
+        } else {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_INVITE_WITH_ID);
+        }
+    }
 }

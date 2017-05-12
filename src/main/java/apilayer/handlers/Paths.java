@@ -43,6 +43,9 @@ public class Paths {
     public static final String GETMYFRIENDS = "/showmyfriends";
     public static final String ACCEPTFRIENDSHIPREQUEST = "/acceptfriendshiprequest";
     public static final String DECLINEFRIENDSHIPREQUEST = "/declinefriendshiprequest";
+    public static final String GETMYINVITES = "/getmyinvites";
+    public static final String ACCEPTINVITE = "/acceptinvite";
+    public static final String DECLINEINVITE = "/declineinvite";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";

@@ -53,18 +53,9 @@ public class ProtectedRoutes {
 
 
 
-            /*  Hanterar add av kommentarer till ett place
-            *   place bestäms av "placeId", kommentaren av "comment"
-            *   vid success så redirectas användaren tillbaka till sidan för place
-            *       todo göra asynkront med automatisk inläggning av kommentaren
-            *       todo (också att göra då är att ladda kommentarerna asynkront)
-            *   returnerar halt(400) vid error
-            * */
             post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
 
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
-
-            get(Paths.GETONEPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
 
 
@@ -107,7 +98,9 @@ public class ProtectedRoutes {
 
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
 
+            post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
 
+            delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
 
             initProtectedStaticRoutes();
 
@@ -139,6 +132,12 @@ public class ProtectedRoutes {
         get(Paths.EDITPLAYDATE, new EditPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
         get(Paths.GETMYFRIENDS, new GetMyFriendsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.GETMYINVITES, new GetMyInvitesHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.GETONEPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+
 
     }
 

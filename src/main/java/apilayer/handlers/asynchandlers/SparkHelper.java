@@ -26,7 +26,7 @@ public class SparkHelper {
         return PlaydateDAO.getInstance().getPlaydateById(playdateId);
     }
 
-    static User getUserFromSession(Request request) {
+    public static User getUserFromSession(Request request) {
         return request.session().attribute(Constants.USER_SESSION_KEY);
     }
 

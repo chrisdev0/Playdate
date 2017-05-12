@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/css/jquery.mobile.flatui.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 
-    <link rel="stylesheet" href="css/bubbles.css" />
+    <link rel="stylesheet" href="/css/bubbles.css" />
     <script>
         $(document).ready(function() {
             $('#fb-login').one('click', function(e) {
