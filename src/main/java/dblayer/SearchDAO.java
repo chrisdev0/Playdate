@@ -39,7 +39,7 @@ public class SearchDAO {
                     of(session.createQuery(
                             "FROM Place p WHERE UPPER(name) LIKE :term OR UPPER(geoArea) LIKE :term OR UPPER(streetAddress) LIKE :term"
                             , Place.class)
-                            .setParameter("term", searchTerm.toUpperCase() + "%")
+                            .setParameter("term", "%" + searchTerm.toUpperCase() + "%")
                             .setMaxResults(limit)
                             .list());
         }
