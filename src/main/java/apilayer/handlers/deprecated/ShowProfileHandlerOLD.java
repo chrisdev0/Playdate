@@ -14,6 +14,7 @@ import static spark.Spark.halt;
 
 
 @Slf4j
+@Deprecated
 public class ShowProfileHandlerOLD extends StaticFileTemplateHandler {
 
 

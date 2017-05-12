@@ -1,5 +1,5 @@
 import apilayer.Constants;
-import apilayer.handlers.FriendshipHandler;
+import apilayer.handlers.asynchandlers.FriendshipHandler;
 import model.User;
 import org.junit.Test;
 import spark.Request;

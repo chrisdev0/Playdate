@@ -13,6 +13,7 @@ import java.util.Optional;
 
 
 @Slf4j
+@Deprecated
 public class GetOnePlaydateHandlerOLD extends StaticFileTemplateHandler {
     private Long playdateId;
 

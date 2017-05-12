@@ -38,18 +38,6 @@ public class UserDAO {
         return Optional.empty();
     }
 
-    public Optional<User> saveOrUpdateUserOnLogin(FacebookProfile facebookProfile) {
-        if (Utils.isNotNullAndNotEmpty(facebookProfile.getDisplayName(), facebookProfile.getEmail(),
-                facebookProfile.getThirdPartyId(), facebookProfile.getId())) {
-            User user = new User(facebookProfile.getDisplayName(), facebookProfile.getEmail());
-            user.setGender(Gender.genderFromFacebookGender(facebookProfile.getGender()));
-            user.setFbToken(facebookProfile.getAccessToken());
-            user.setFacebookThirdPartyID(facebookProfile.getThirdPartyId());
-            return Optional.of(user);
-        }
-        return Optional.empty();
-    }
-
     public Optional<User> getUserByThirdPartyAPIID(String thirdPartyAPIID) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.createQuery("FROM User WHERE facebookThirdPartyID = :thirdparty", User.class)
