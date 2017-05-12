@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
@@ -13,28 +14,35 @@ import java.util.Set;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(nullable = false)
+    @Expose
     private String header;
 
     @Type(type = "text")
+    @Expose
     private String description;
 
+    @Expose
     private long startTime;
 
     @ManyToOne
+    @Expose
     private User owner;
 
     @ManyToMany
     private Set<User> participants = new HashSet<>();
 
-    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
+    @OneToMany
     private Set<Invite> invites = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Expose
     private Place place;
 
+    @Expose
     private PlaydateVisibilityType playdateVisibilityType;
 
     public boolean addInvite(Invite invite) {

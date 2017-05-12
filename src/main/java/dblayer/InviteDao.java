@@ -7,7 +7,9 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class InviteDao {
@@ -52,6 +54,16 @@ public class InviteDao {
         }
         return ret;
     }
+
+
+    public Optional<List<Invite>> getInvitesOfUser(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return Optional.of(
+                    session.createQuery("FROM Invite WHERE invited = :user", Invite.class)
+                            .setParameter("user", user).list());
+        }
+    }
+
 
     public Optional<Invite> getInviteById(Long id) {
         try (Session session = HibernateUtil.getInstance().openSession()) {

@@ -49,8 +49,13 @@ public class Paths {
     }
 
     public static class QueryParams {
-        public static final String GET_ONE_PLAYDATE_BY_ID = "playdateId";
-        public static final String GET_ONE_PLACE_BY_ID = "placeId";
-        public static final String USER_ID = "userId";
+        public static final String PLAYDATE_BY_ID = "playdateId";
+        public static final String PLACE_BY_ID = "placeId";
+        public static final String USER_BY_ID = "userId";
+        public static final String COMMENT_BY_ID = "commentId";
+        public static final String INVITE_BY_ID = "inviteId";
+        public static final String COMMENT_CONTENT = "comment";
+
+        public static final String INVITE_MSG = "inviteMessage";
     }
 }

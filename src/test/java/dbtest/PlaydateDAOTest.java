@@ -207,7 +207,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertNotNull(playdate.getId());
         assertNotNull(user.getId());
 
-        Invite invite = new Invite("invite", false, playdate, user);
+        Invite invite = new Invite("invite", playdate, user);
 
         save(invite, user, playdate);
         assertNotNull(invite.getId());

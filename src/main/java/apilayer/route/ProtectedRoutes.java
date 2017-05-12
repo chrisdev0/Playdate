@@ -11,6 +11,7 @@ import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import presentable.FeedObject;
+import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
 
@@ -27,19 +28,22 @@ public class ProtectedRoutes {
 
     /** Initierar de routes som kräver att användaren är inloggad
      *
-     *  Kollar först om användaren är inloggad, om användaren inte är inloggad så returneras
-     *  halt(401) med ett meddelande
+     *  Kollar först om användaren är inloggad, om användaren inte är inloggad så
+     *  Skickas användaren tillbaka till startsidan
+     *  om route som leder till att användaren ska redirectas till
+     *  startsidan inte är av typen som hämtar en profilbild eller en platsbild från
+     *  databasen så sparas den plats användaren var på i en session
+     *  när användaren sedan loggat in så hämtas innehållet från session
+     *  och användaren redirectas till sidan användaren var på tidigare
+     *
      * */
     public static void initProtectedRoutes() {
         path(Paths.PROTECTED, () -> {
             //Kollar att användaren är inloggad innan varje request hanteras
             before("/*", (request, response) -> {
-                if (!AuthChecker.isLoggedIn(request)) {
+                if (!isLoggedIn(request)) {
                     if (shouldSaveContextPath(request.pathInfo())) {
-                        log.info("queryparams" + request.queryString());
-                        log.info("setting onloginredirect route = " + request.pathInfo());
                         String fullPath = request.pathInfo() + "?" + (request.queryString() != null && !request.queryString().isEmpty() ? request.queryString() : "");
-                        log.info("full = " + fullPath);
                         request.session(true).attribute(Constants.ONLOGINREDIRECT, fullPath);
                     }
                     response.redirect("/index.html");
@@ -138,6 +142,13 @@ public class ProtectedRoutes {
 
     }
 
-
+    /** Metoden returnerar true om användaren är inloggad
+     *  loggar användarens ip på info
+     * @param request request-objektet där session kan hämtas ifrån.
+     * @return om användaren är inloggad
+     * */
+    private static boolean isLoggedIn(Request request) {
+        return request.session().attribute(Constants.USER_SESSION_KEY) != null;
+    }
 
 }

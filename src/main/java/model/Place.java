@@ -1,6 +1,7 @@
 package model;
 
 import apilayer.Constants;
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,29 +28,35 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(unique = true)
     private String sthlmAPIid;
 
     @Column(nullable = false)
+    @Expose
     private String name;
 
     @Type(type = "text")
+    @Expose
     private String shortDescription;
 
     @Type(type = "text")
+    @Expose
     private String longDescription;
 
+    @Expose
     private String category;
 
+    @Expose
     private String geoArea, cityAddress, zip, streetAddress;
 
+    @Expose
     private String imageId;
 
     private String timeCreated;
     private String timeUpdated;
-
 
     @OneToMany
     private Set<Comment> comments = new HashSet<>();

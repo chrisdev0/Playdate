@@ -24,7 +24,7 @@ public class GetOneUserHandler extends StaticFileTemplateHandlerImpl {
     @Override
     public Optional<Map<String, Object>> createModelMap(Request request) {
         Map<String, Object> map = new HashMap<>();
-        String userIdStr = request.queryParams(Paths.QueryParams.USER_ID);
+        String userIdStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
         Long userid = ParserHelpers.parseToLong(userIdStr);
 
         Optional<User> userById = UserDAO.getInstance().getUserById(userid);

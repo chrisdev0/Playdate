@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.CoordinateHandlerUtil;
@@ -20,7 +19,7 @@ import static spark.Spark.halt;
 public class PlaceHandler {
 
     public static Object handleGetOnePlace(Request request, Response response) {
-        String idStr = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
+        String idStr = request.queryParams(Paths.QueryParams.PLACE_BY_ID);
         Long id = ParserHelpers.parseToLong(idStr);
         Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(id);
         if (placeById.isPresent()) {

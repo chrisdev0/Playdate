@@ -22,7 +22,7 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
 
     @Override
     public Optional<Map<String, Object>> createModelMap(Request request) {
-        String placeIdStr = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
+        String placeIdStr = request.queryParams(Paths.QueryParams.PLAYDATE_BY_ID);
         Long playdateId = ParserHelpers.parseToLong(placeIdStr);
         Optional<Playdate> playdateById = PlaydateDAO.getInstance().getPlaydateById(playdateId);
         Map<String, Object> map = new HashMap<>();

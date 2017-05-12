@@ -1,6 +1,7 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import dblayer.HibernateUtil;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
@@ -8,15 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import spark.HaltException;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 
 import static spark.Spark.delete;
@@ -34,18 +31,9 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        Integer visibilityId = null;
-        Long placeId = null;
-        Long startTime = null;
-        //request.queryMap().toMap().forEach((s, strings) -> log.info("key=" + s + " value= " + Arrays.toString(strings)));
-        log.info("placeid = " + request.queryParams("placeId"));
-        log.info("visibilityId = " + request.queryParams("visibilityId"));
-        log.info("header = " + request.queryParams("header"));
-        log.info("startTime= " + request.queryParams("startTime"));
-        log.info("description= " + request.queryParams("description"));
-        placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
-        startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
-        visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
+        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));;
+        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
+        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
         if (!Utils.isNotNullAndNotEmpty(header, description)) {
             log.error("header or description is empty");
@@ -69,7 +57,7 @@ public class PlaydateHandler {
         Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
         if (playdateOptional.isPresent()) {
             response.status(200);
-            String redirect = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+            String redirect = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
             log.info("created playdate successfully, redirecting to " + redirect);
             response.redirect(redirect);
         } else {
@@ -80,34 +68,9 @@ public class PlaydateHandler {
     }
 
 
-    /** Hanterar att hämta och visa en Playdate
-     *  Försöker hitta playdate med id
-     *  @param request queryParam = playdateId
-     *
-     *  kontrollerar att detta id är en long och använder sig sen av
-     *  GetOnePlaydateHandlerOLD för att hämta och mata ut Playdate-objektet till
-     *  templatefilen som anges i GetOnePlaydateHandlerOLD-konstruktorn
-     * */
-    /*public static ModelAndView handleGetOnePlaydate(Request request, Response response) {
-        String id = request.queryParams(Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID);
-        try {
-            long lId = Long.parseLong(id);
-            log.info("fetching playdate with id = " + lId);
-            return new GetOnePlaydateHandlerOLD("TODELETE/showplaydatepage.vm", lId, 400)
-                    .handleTemplateFileRequest(request, response);
-        } catch (NullPointerException | NumberFormatException e) {
-            log.error("client: " + request.ip() + " sent illegal playdate id = " + id + " e = " + e.getMessage());
-            throw halt(400);
-        }
-    }*/
-
-
     /** Hanterar att ta bort en Playdate
      *  Ta även bort alla invites till playdaten
      * */
-
-    //flytta session utanför try(...) så kan den kan komma åt rollbakc,
-    //glöm inte att stänga session
     public static Object handleDeletePlaydate(Request request, Response response) {
         String playdateId = request.queryParams("playdateId");
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
@@ -158,7 +121,7 @@ public class PlaydateHandler {
             playdate.setPlaydateVisibilityType(playdateVisibilityType);
             playdate.setPlace(placeById.get());
             if (PlaydateDAO.getInstance().updatePlaydate(playdate)) {
-                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "=" + playdateId);
+                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateId);
                 return "";
             } else {
                 log.error("error saving updated playdate");

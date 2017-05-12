@@ -48,6 +48,11 @@ public class MockTestHelpers {
             this.key = key;
             this.value = value;
         }
+
+        public KeyValue(String key, Long value) {
+            this.key = key;
+            this.value = "" + value;
+        }
     }
 
 }

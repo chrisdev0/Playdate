@@ -1,7 +1,6 @@
 package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
-import apilayer.handlers.CommentHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
@@ -10,10 +9,11 @@ import model.Comment;
 import model.Place;
 import spark.Request;
 import spark.Response;
-import utils.ParserHelpers;
 
 import java.util.Optional;
 import java.util.Set;
+
+import static apilayer.handlers.asynchandlers.SparkHelper.getPlaceFromRequest;
 
 @Slf4j
 public class CommentsHandler {
@@ -36,11 +36,10 @@ public class CommentsHandler {
      * @return      returnerar JSON med alla kommentarer
      * */
     public static Object handlePostComment(Request request, Response response) {
-        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
         String commentStr = request.queryParams("comment");
-        Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
-        Optional<Place> placeOptional = PlaceDAO.getInstance().getPlaceById(placeId);
+        Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
+            Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
             Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
             if (comments.isPresent()) {
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -54,6 +53,16 @@ public class CommentsHandler {
             response.status(400);
             return "";
         }
-
     }
+
+    public static Object handleGetCommentsOfPlace(Request request, Response response) {
+        Optional<Place> placeOptional = getPlaceFromRequest(request);
+        if (placeOptional.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(placeOptional.get().getComments());
+        }
+        response.status(400);
+        return Constants.MSG.NO_PLACE_WITH_ID;
+    }
+
+
 }
