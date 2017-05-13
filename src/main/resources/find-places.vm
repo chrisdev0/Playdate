@@ -5,6 +5,13 @@
 
     #parse("head-links.vm")
 
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -19,10 +26,43 @@
 
 
     <div data-role="main" class="ui-content">
-
-
-
-    </div>
+        <h3>Hitta platser</h3>
+        <div id="map" data-position="fixed"> </div>
+        <script>
+            function initMap() {
+                var uluru = {lat: 59.299258865101194, lng: 18.044908470153807};
+                window.map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: uluru
+                });
+            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
+        </script>
+        <div>
+            <h3>Platser:</h3>
+            <div data-role="collapsible">
+                <h4>test</h4>
+                <p>test</p>
+            </div>
+            <div data-role="collapsible">
+                <h4>test</h4>
+                <p>test</p>
+            </div>
+            <div data-role="collapsible">
+                <h4>test</h4>
+                <p>test</p>
+            </div>
+            <div data-role="collapsible">
+                <h4>test</h4>
+                <p>test</p>
+            </div>
+            <div data-role="collapsible">
+                <h4>test</h4>
+                <p>test</p>
+            </div>
+        </div>
 
 
 </div>

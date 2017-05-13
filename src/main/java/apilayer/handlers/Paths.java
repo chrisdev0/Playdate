@@ -46,7 +46,7 @@ public class Paths {
     public static final String GETMYINVITES = "/getmyinvites";
     public static final String ACCEPTINVITE = "/acceptinvite";
     public static final String DECLINEINVITE = "/declineinvite";
-    public static final String FINDPLACE = "/findplace";
+    public static final String FINDPLACE = "/findplaces";
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";

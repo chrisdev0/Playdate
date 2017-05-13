@@ -1,7 +1,9 @@
 package apilayer.handlers.asynchandlers;
 
 import apilayer.handlers.Paths;
+import com.google.gson.ExclusionStrategy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
@@ -14,16 +16,16 @@ import utils.Utils;
 import java.util.Optional;
 
 import static spark.Spark.halt;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
 @Slf4j
 public class PlaceHandler {
 
-    public static Object handleGetOnePlace(Request request, Response response) {
-        String idStr = request.queryParams(Paths.QueryParams.PLACE_BY_ID);
-        Long id = ParserHelpers.parseToLong(idStr);
-        Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(id);
+    public static Object handleGetOnePlaceWithoutComments(Request request, Response response) {
+        Optional<Place> placeById = getPlaceFromRequest(request);
         if (placeById.isPresent()) {
-            return new Gson().toJson(placeById.get());
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(placeById.get());
         } else {
             response.status(400);
             return "";

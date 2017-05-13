@@ -142,7 +142,13 @@ public class ProtectedRoutes {
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("mapsapikey", Secrets.getInstance().getValue("googlemapsAPIKey"));
+                Optional<String> googlemapsAPIKey = Secrets.getInstance().getValue("googlemapsAPIKey");
+                if (googlemapsAPIKey.isPresent()) {
+                    map.put("mapsapikey", googlemapsAPIKey.get());
+                } else {
+                    log.error("no google maps api key");
+                    return Optional.empty();
+                }
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());

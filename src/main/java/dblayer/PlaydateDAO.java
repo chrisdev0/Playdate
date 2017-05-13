@@ -225,6 +225,34 @@ public class PlaydateDAO {
         return ret;
     }
 
+    public boolean removeAttendance(Playdate playdate, User user) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            if (playdate.removeParticipant(user) && user.removeAttendingPlaydate(playdate)) {
+                session.update(playdate);
+                session.update(user);
+                ret = true;
+            } else {
+                ret = false;
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
 
 
 
