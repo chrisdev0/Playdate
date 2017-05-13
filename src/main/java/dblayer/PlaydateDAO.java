@@ -1,7 +1,9 @@
 package dblayer;
 
+import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
 import model.Invite;
+import model.Place;
 import model.Playdate;
 import model.User;
 import org.hibernate.Hibernate;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import static spark.Spark.halt;
 
@@ -253,7 +256,18 @@ public class PlaydateDAO {
         return ret;
     }
 
-
+    public Optional<List<Playdate>> getPlaydatesByLoc(double locX, double locY) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return Optional.of(session.createQuery(
+                    "FROM Playdate p WHERE p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
+                            "p.place.geoY <= :yMax AND p.place.geoY >= :yMin", Playdate.class)
+                    .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
+                    .list());
+        }
+    }
 
 
 

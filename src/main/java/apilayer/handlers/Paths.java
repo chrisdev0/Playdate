@@ -61,5 +61,8 @@ public class Paths {
         public static final String COMMENT_CONTENT = "comment";
 
         public static final String INVITE_MSG = "inviteMessage";
+        public static final String LOC_X = "locX";
+        public static final String LOC_Y = "locY";
+
     }
 }

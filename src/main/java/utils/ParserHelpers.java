@@ -16,6 +16,15 @@ public class ParserHelpers {
         }
     }
 
+    public static Double parseToDouble(String str) throws HaltException {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            log.error("error parsing double = " + str);
+            throw halt(400);
+        }
+    }
+
     public static Long parseToLong(String str) throws HaltException {
         try {
             return Long.parseLong(str);
