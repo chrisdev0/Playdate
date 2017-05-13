@@ -92,8 +92,6 @@ public class PlaydateHandler {
     public static Object handleUpdatePlaydate(Request request, Response response){ //put
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-        Long playdateId = ParserHelpers.parseToLong(request.queryParams("playdateId"));
-        Long placeId = ParserHelpers.parseToLong(request.queryParams("placeId"));
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
