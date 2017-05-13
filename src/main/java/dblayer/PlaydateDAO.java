@@ -2,10 +2,7 @@ package dblayer;
 
 import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
-import model.Invite;
-import model.Place;
-import model.Playdate;
-import model.User;
+import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
@@ -256,17 +253,19 @@ public class PlaydateDAO {
         return ret;
     }
 
-    public Optional<List<Playdate>> getPlaydatesByLoc(double locX, double locY) {
+    public Optional<List<Playdate>> getPublicPlaydatesByLoc(int locX, int locY) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return Optional.of(session.createQuery(
-                    "FROM Playdate p WHERE p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
+                    "FROM Playdate p WHERE playdateVisibilityType = :vis AND p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
                             "p.place.geoY <= :yMax AND p.place.geoY >= :yMin", Playdate.class)
                     .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
                     .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
                     .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
                     .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("vis", PlaydateVisibilityType.PUBLIC)
                     .list());
         }
+
     }
 
 

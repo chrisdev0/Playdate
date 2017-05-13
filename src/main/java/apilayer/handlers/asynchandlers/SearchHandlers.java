@@ -51,11 +51,11 @@ public class SearchHandlers {
         }
     }
 
-    public static Object searchPlaydatesByLoc(Request request, Response response) {
+    public static Object searchPublicPlaydatesByLoc(Request request, Response response) {
         double geoXstr = ParserHelpers.parseToDouble(request.queryParams(Paths.QueryParams.LOC_X));
         double geoYstr = ParserHelpers.parseToDouble(request.queryParams(Paths.QueryParams.LOC_Y));
         double[] grids = new CoordinateHandlerUtil().geodeticToGrid(geoXstr, geoYstr);
-        Optional<List<Playdate>> playdatesOpt = PlaydateDAO.getInstance().getPlaydatesByLoc(grids[0], grids[1]);
+        Optional<List<Playdate>> playdatesOpt = PlaydateDAO.getInstance().getPublicPlaydatesByLoc((int)grids[0], (int)grids[1]);
         return playdatesOpt.map(playdates -> new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(playdates)).orElse((String) setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR));
     }
 
