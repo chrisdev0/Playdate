@@ -9,10 +9,10 @@ import model.User;
 import org.junit.Test;
 import spark.Request;
 import spark.Response;
-import util.MockTestHelpers;
+import testutils.MockTestHelpers;
 
 import static apilayer.handlers.Paths.QueryParams.*;
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 import static org.junit.Assert.*;
 
 @Slf4j

@@ -4,7 +4,6 @@ import apilayer.Constants;
 import apilayer.handlers.Paths;
 import apilayer.handlers.asynchandlers.AttendanceInviteHandler;
 import apilayer.handlers.asynchandlers.PlaydateHandler;
-import dblayer.InviteDao;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
@@ -14,12 +13,12 @@ import org.junit.Test;
 import spark.HaltException;
 import spark.Request;
 import spark.Response;
-import util.MockTestHelpers;
+import testutils.MockTestHelpers;
 
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 
 import static apilayer.handlers.Paths.QueryParams.*;
 

@@ -5,13 +5,13 @@ import org.junit.Test;
 import spark.Request;
 import spark.Response;
 import spark.Session;
-import util.MockTestHelpers;
-import util.ModelCreators;
+import testutils.MockTestHelpers;
+import testutils.ModelCreators;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static util.ModelCreators.remove;
-import static util.ModelCreators.save;
+import static testutils.ModelCreators.remove;
+import static testutils.ModelCreators.save;
 
 public class MockingTest extends MockTestHelpers{
 

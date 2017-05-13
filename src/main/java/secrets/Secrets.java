@@ -6,12 +6,34 @@ import java.io.*;
 import java.util.*;
 
 @Slf4j
-public class Secrets {
+public class Secrets implements GetSecretValue {
 
     private static Secrets instance;
+
+
+
+
     private Map<String,String> keyValueMap;
     private SecretsLoader secretsLoader;
     private Set<File> loadedFiles;
+
+    public void injectValuesFromArgs(String[] args) throws Exception{
+        if (args.length == 0) {
+            loadSecretsFile("secrets.txt");
+        } else if (args.length == 1) {
+            File file = new File(args[0]);
+            if (file.exists()) {
+                loadSecretsFile(file);
+            } else {
+                log.error("Couldn't load secrets file " + args[0]);
+                throw new Exception();
+            }
+        } else {
+            if (args.length == 8) {
+
+            }
+        }
+    }
 
     /** Skapar .txt-läsar-objektet
      *  och initierar nyckel-värdemappen
@@ -34,6 +56,7 @@ public class Secrets {
     /** Returnerar en optional som omsluter det eventuella värde som finns i nyckel-värdemappen
      *  för nyckeln som skickas in som key
      * */
+    @Override
     public Optional<String> getValue(String key) {
         return Optional.ofNullable(keyValueMap.get(key));
     }

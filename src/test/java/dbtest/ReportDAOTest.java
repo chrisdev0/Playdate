@@ -5,7 +5,7 @@ import model.Report;
 import model.User;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 import static org.junit.Assert.*;
 import java.util.Optional;
 

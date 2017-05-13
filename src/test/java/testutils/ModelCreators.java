@@ -1,4 +1,4 @@
-package util;
+package testutils;
 
 import com.github.javafaker.Faker;
 import dblayer.InviteDao;
@@ -6,7 +6,6 @@ import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import model.*;
-import testhelpers.HibernateTests;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

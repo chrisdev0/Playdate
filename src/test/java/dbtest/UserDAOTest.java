@@ -6,7 +6,7 @@ import model.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 
 import static org.junit.Assert.*;
 

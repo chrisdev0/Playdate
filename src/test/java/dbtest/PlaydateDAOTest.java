@@ -9,16 +9,15 @@ import model.Place;
 import model.Playdate;
 import model.User;
 import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 
 @Slf4j
 public class PlaydateDAOTest extends HibernateTests {

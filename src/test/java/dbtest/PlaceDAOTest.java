@@ -8,12 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
 import model.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +19,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.createPlace;
-import static util.ModelCreators.createUser;
-import static util.ModelCreators.remove;
+import static testutils.ModelCreators.createPlace;
+import static testutils.ModelCreators.createUser;
+import static testutils.ModelCreators.remove;
 
 @Slf4j
 public class PlaceDAOTest extends HibernateTests {

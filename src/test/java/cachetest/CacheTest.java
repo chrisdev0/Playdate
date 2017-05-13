@@ -10,12 +10,12 @@ import org.junit.Test;
 import secrets.Secrets;
 import spark.Request;
 import spark.Response;
-import util.MockTestHelpers;
+import testutils.MockTestHelpers;
 
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 
 @Slf4j
 public class CacheTest extends MockTestHelpers {

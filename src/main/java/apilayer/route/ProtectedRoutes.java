@@ -11,6 +11,7 @@ import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import presentable.FeedObject;
+import secrets.Secrets;
 import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
@@ -137,6 +138,14 @@ public class ProtectedRoutes {
 
         get(Paths.GETONEPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
+        get(Paths.FINDPLACE, new StaticFileTemplateHandlerImpl("find-places.vm", 400, true){
+            @Override
+            public Optional<Map<String, Object>> createModelMap(Request request) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("mapsapikey", Secrets.getInstance().getValue("googlemapsAPIKey"));
+                return Optional.of(map);
+            }
+        }::handleTemplateFileRequest, new VelocityTemplateEngine());
 
 
     }

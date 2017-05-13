@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import spark.Request;
 import spark.Response;
-import util.MockTestHelpers;
-import util.ModelCreators;
+import testutils.MockTestHelpers;
+import testutils.ModelCreators;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 import static org.junit.Assert.*;
 
 @Slf4j

@@ -1,4 +1,4 @@
-package util;
+package testutils;
 
 import apilayer.Constants;
 import model.User;
@@ -7,7 +7,6 @@ import spark.Response;
 import spark.Session;
 
 import java.util.HashSet;
-import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
