@@ -1,3 +1,5 @@
+#* @vtlvariable name="places" type="java.util.Collection" *#
+#* @vtlvariable name="p" type="model.Place" *#
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,6 +7,23 @@
     <title>Admin</title>
     #parse("/admin/admin-head.vm")
 </head>
+
+<script>
+    $(document).ready(function () {
+        $('.place-clickable').click(function(e) {
+            e.preventDefault();
+            console.log("clicked");
+            var row = $(this).closest('.place-row');
+            console.log(row);
+            var output = "";
+            output += "<div class='row'><h3>" + row.data('placename') + "</h3>"
+            output += "<div class='col-md-4'><img src ='/protected/apiimage/"+ row.data('placeimage')+"'></div>"
+            output += "<div class='col-md-8'><p>" + row.data('placelongdesc') + "</p></div></div>"
+            $('#placeoutput').html(output);
+        })
+    });
+</script>
+
 <body>
 
 
@@ -16,8 +35,45 @@
     <div class="row">
         <div class="col-md-2"> </div>
         <div class="col-md-8">
-            <h1>Content</h1>
-            <p>place info</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="placeoutput">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Namn</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #foreach($p in $places)
+                            <tr class="place-row" data-placeid="$p.id" data-placename="$p.name" data-placecat="$p.category"
+                                data-placelongdesc="$p.longDescription"
+                                data-placeshortdesc="$p.shortDescription"
+                                data-placecityaddress="$p.cityAddress"
+                                data-placezip="$p.zip"
+                                data-placegeoarea="$p.geoArea"
+                                data-placegeox="$p.geoX"
+                                data-placegeoy="$p.geoY"
+                                data-placeimage="$p.imageId"
+                                data-placesthlmid="$p.sthlmAPIid">
+                                <td><a href="#" class="place-clickable">$p.id</a></td>
+                                <td><a href="#" class="place-clickable">$p.name</a></td>
+                            </tr>
+                            #end
+
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="col-md-2"> </div>
     </div>
