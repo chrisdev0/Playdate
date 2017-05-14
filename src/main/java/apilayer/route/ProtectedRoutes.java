@@ -53,31 +53,13 @@ public class ProtectedRoutes {
             });
 
 
-
-            post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
-
-            post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
-
-
-
-            //delete(Paths.DELETECOMMENT, CommentHandler::handleRemoveComment);
-            delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
-
-            //ska pathen vara showplaydate?
-            put(Paths.SHOWPLAYDATES, PlaydateHandler::removePlaydateAttendance);
-
+            /*      Övriga API-endpoints
+            *           *   place-bilder
+            *           *   profil-bild
+            *           *   feed
+            * */
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
-
-            get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
-
-            get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
-
-            get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
-
-            post(Paths.POSTNEWPROFILEPICTURE, UploadHandler::handleUploadProfilePicture);
-
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
-
             get(Paths.GETFEED, (request, response) -> {
                 Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
                 PaginationWrapper<FeedObject> paginationWrapper = new PaginationWrapper<>(
@@ -86,25 +68,50 @@ public class ProtectedRoutes {
                 return new Gson().toJson(paginationWrapper);
             });
 
+
+            /*      Kommentar-routes
+            * */
+            post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
+
+            /*      Sök-routes
+            * */
             get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
 
+
+            /*      Place-routes
+            * */
+            get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
+            get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
+            get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
+
+
+            /*      Profile-routes
+            * */
             post(Paths.EDITPROFILE, ProfileHandlers::handleEditProfile);
+            post(Paths.POSTNEWPROFILEPICTURE, UploadHandler::handleUploadProfilePicture);
 
+
+
+            /*      Playdate-routes
+            * */
             post(Paths.UPDATEPLAYDATE, PlaydateHandler::handleUpdatePlaydate);
+            put(Paths.SHOWPLAYDATES, PlaydateHandler::removePlaydateAttendance);
+            delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
+            post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
 
 
-
-            //todo ändra till post med ajax
+            /*      FriendshipRequest-routes
+            * */
             post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
-
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
 
-            post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
 
+            /*      INVITE-routes
+            * */
+            post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
 
             initProtectedStaticRoutes();
-
             AdminRoutes.initAdminRoutes();
 
         });
@@ -117,29 +124,26 @@ public class ProtectedRoutes {
     private static void initProtectedStaticRoutes() {
 
 
-        get(Paths.LANDING, new StaticFileTemplateHandlerImpl("feed.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.EDITPROFILE, new StaticFileTemplateHandlerImpl("editprofile.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.SHOWPLAYDATES, new GetUserPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-
+        get(Paths.LANDING,
+                new StaticFileTemplateHandlerImpl("feed.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.EDITPROFILE,
+                new StaticFileTemplateHandlerImpl("editprofile.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.SHOWPLAYDATES,
+                new GetUserPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
         get(Paths.CREATEPLAYDATE,
                 new StaticFileTemplateHandlerImpl("createplaydate.vm", 400, true)::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.SHOWPLACE, new GetOnePlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-
-        get(Paths.SHOWUSER, new GetOneUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.EDITPLAYDATE, new EditPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.GETMYFRIENDS, new GetMyFriendsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.GETMYINVITES, new GetMyInvitesHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-        get(Paths.GETONEPLAYDATE, new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
-
+        get(Paths.SHOWPLACE,
+                new GetOnePlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.SHOWUSER,
+                new GetOneUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.EDITPLAYDATE,
+                new EditPlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.GETMYFRIENDS,
+                new GetMyFriendsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.GETMYINVITES,
+                new GetMyInvitesHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+        get(Paths.GETONEPLAYDATE,
+                new GetOnePlaydateHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
         get(Paths.FINDPLACE, new StaticFileTemplateHandlerImpl("find-places.vm", 400, true){
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
@@ -154,8 +158,6 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
-
-
     }
 
     /** Metoden returnerar true om användaren är inloggad
