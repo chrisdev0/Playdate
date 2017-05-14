@@ -72,6 +72,7 @@ public class ProtectedRoutes {
             /*      Kommentar-routes
             * */
             post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
+            get(Paths.COMMENTSOFPLACE, CommentsHandler::handleGetCommentsOfPlace);
 
             /*      Sök-routes
             * */
@@ -98,6 +99,7 @@ public class ProtectedRoutes {
             put(Paths.SHOWPLAYDATES, PlaydateHandler::removePlaydateAttendance);
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
+            get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
 
 
             /*      FriendshipRequest-routes

@@ -19,6 +19,7 @@ import utils.Utils;
 import java.util.Optional;
 
 
+import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
 import static spark.Spark.halt;
 
@@ -78,15 +79,15 @@ public class PlaydateHandler {
         if (playdateById.isPresent()) {
             if (playdateById.get().userIsOwner(getUserFromSession(request))) {
                 if (PlaydateDAO.getInstance().deletePlaydate(playdateById.get())) {
-                    return setStatusCodeAndReturnString(response,200,Constants.MSG.OK);
+                    return setStatusCodeAndReturnString(response,200, OK);
                 }
             } else {
-                return setStatusCodeAndReturnString(response, 400, Constants.MSG.USER_IS_NOT_OWNER_OF_PLAYDATE);
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
             }
         } else {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_PLAYDATE_WITH_ID);
+            return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
         }
-        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+        return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 
     public static Object handleUpdatePlaydate(Request request, Response response){ //put
@@ -98,7 +99,7 @@ public class PlaydateHandler {
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+            return setStatusCodeAndReturnString(response, 400, ERROR);
         }
         Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
         Optional<Place> placeById = getPlaceFromRequest(request);
@@ -116,7 +117,7 @@ public class PlaydateHandler {
                 log.error("error saving updated playdate");
             }
         }
-        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+        return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 
     public static Object removePlaydateAttendance(Request request, Response response){
@@ -124,14 +125,14 @@ public class PlaydateHandler {
         User user = getUserFromSession(request);
         if (playdateOptional.isPresent()) {
             if (PlaydateDAO.getInstance().removeAttendance(playdateOptional.get(), user)) {
-                return setStatusCodeAndReturnString(response, 200, Constants.MSG.OK);
+                return setStatusCodeAndReturnString(response, 200, OK);
             } else {
                 log.error("couldn't remove playdate attendance playdateId=" + playdateOptional.get().getId() + " for userId=" + user.getId());
             }
         } else {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_PLAYDATE_WITH_ID);
+            return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
         }
-        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+        return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 
     public static Object handleGetAttendanceForPlaydate(Request request, Response response) {
@@ -141,7 +142,13 @@ public class PlaydateHandler {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                     .create().toJson(playdateOptional.get().getParticipants());
         }
-        return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_PLAYDATE_WITH_ID);
+        return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
+    }
+
+    public static Object handleGetPublicPlaydatesOfPlace(Request request, Response response) {
+        Optional<Place> placeOptional = getPlaceFromRequest(request);
+        return placeOptional.map(place -> new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                .create().toJson(PlaydateDAO.getInstance().getPlaydateAtPlace(place))).orElse((String) setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID));
     }
 
 }

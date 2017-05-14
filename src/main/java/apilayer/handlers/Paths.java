@@ -47,6 +47,8 @@ public class Paths {
     public static final String ACCEPTINVITE = "/acceptinvite";
     public static final String DECLINEINVITE = "/declineinvite";
     public static final String FINDPLACE = "/findplaces";
+    public static final String COMMENTSOFPLACE = "/commentsofplace";
+    public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
 
     public static class ADMIN {
         public static final String ADMIN = "/admin";

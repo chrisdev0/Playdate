@@ -265,7 +265,13 @@ public class PlaydateDAO {
                     .setParameter("vis", PlaydateVisibilityType.PUBLIC)
                     .list());
         }
+    }
 
+    public List<Playdate> getPlaydateAtPlace(Place place) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM Playdate WHERE place = :place", Playdate.class)
+                    .setParameter("place", place).list();
+        }
     }
 
 
