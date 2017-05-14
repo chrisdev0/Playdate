@@ -48,6 +48,13 @@ public class Paths {
     public static final String DECLINEINVITE = "/declineinvite";
     public static final String FINDPLACE = "/findplaces";
 
+    public static class ADMIN {
+        public static final String ADMIN = "/admin";
+        public static final String ADMIN_INDEX = "/index";
+    }
+
+
+
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
     }
@@ -64,5 +71,6 @@ public class Paths {
         public static final String LOC_X = "locX";
         public static final String LOC_Y = "locY";
 
+        public static final String REPORT_DESCRIPTION = "reportDescription";
     }
 }

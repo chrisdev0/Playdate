@@ -23,7 +23,7 @@ public class ReportDAOTest extends HibernateTests {
         ModelCreators.save(reporter);
         ModelCreators.save(reportedUser);
 
-        Optional<Report> report = ReportDAO.createUserReport(reporter, reportedUser, description);
+        Optional<Report> report = ReportDAO.getInstance().createUserReport(reporter, reportedUser, description);
         assertTrue(report.isPresent());
 
         ModelCreators.remove(reporter);

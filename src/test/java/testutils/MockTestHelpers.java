@@ -35,6 +35,10 @@ public class MockTestHelpers {
         }
     }
 
+    public boolean responseContainsId(String res, long id) {
+        return res.contains("\"id\":" + id);
+    }
+
     public void injectKeyValue(Request request, String key, String value) {
         when(request.queryParams(key)).thenReturn(value);
     }

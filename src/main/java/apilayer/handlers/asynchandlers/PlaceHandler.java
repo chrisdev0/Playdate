@@ -33,18 +33,11 @@ public class PlaceHandler {
     }
 
     public static Object handleGetPlaceByLoc(Request request, Response response) {
-        String locXStr = request.queryParams("locX");
-        String locYStr = request.queryParams("locY");
-        if (Utils.isNotNullAndNotEmpty(locXStr) && Utils.isNotNullAndNotEmpty(locYStr)) {
-            CoordinateHandlerUtil coordinateHandlerUtil = new CoordinateHandlerUtil();
-            try {
-                double locX = Double.parseDouble(locXStr);
-                double locY = Double.parseDouble(locYStr);
-                double[] grid = coordinateHandlerUtil.geodeticToGrid(locX, locY);
-                return new Gson().toJson(PlaceDAO.getInstance().getPlaceByLocation((int)grid[0], (int)grid[1]));
-            } catch (NumberFormatException e) {
-                log.error("Error parsing loc", e);
-            }
+        try {
+            int[] grid = getGridLocationFromRequest(request);
+            return new Gson().toJson(PlaceDAO.getInstance().getPlaceByLocation(grid[0], grid[1]));
+        } catch (IllegalArgumentException e) {
+            log.error("error converting location information", e);
         }
         return "error";
     }

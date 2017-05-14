@@ -1,54 +1,42 @@
 package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import dblayer.ReportDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Report;
 import model.User;
 import spark.*;
 import utils.ParserHelpers;
 
 import java.util.Optional;
 
+import static apilayer.Constants.MSG.*;
 import static spark.Spark.halt;
 
-/**
- * Created by martinsenden on 2017-05-11.
- */
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
+
 @Slf4j
 public class ReportHandler {
 
-    /*
-    Skapa userReport
-     */
 
-    public Object createUserReport(Request request, Response response){
-        String reportedUserIdParam = request.queryParams("userId");
-        String reportDescription = request.queryParams("reportDescription");
-        Long reportedUserId = ParserHelpers.parseToLong(reportedUserIdParam);
-        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+    public static Object createUserReport(Request request, Response response){
+        Optional<User> reportedUser = getUserFromRequestById(request);
+        String reportDescription = request.queryParams(Paths.QueryParams.REPORT_DESCRIPTION);
+        User reporter = getUserFromSession(request);
 
-        if (user == null || user.getId().equals(reportedUserId)){
-            log.error("user is null or same user as reported");
-            throw halt(400);
-        }
-
-        Optional<User> reportedUser = UserDAO.getInstance().getUserById(reportedUserId);
-
-        if (!reportedUser.isPresent()){
-            log.error("User does not exist");
-            throw halt(400);
-        }
-
-
-        if (reportedUser.isPresent()){
-            if(ReportDAO.createUserReport(user, reportedUser.get(), reportDescription).isPresent()){
-                log.info("Report has been sent");
-                response.status(200);
-                return "";
+        if (reportedUser.isPresent()) {
+            if (reportedUser.get().equals(reporter)) {
+                log.error("User can't report itself");
+                return setStatusCodeAndReturnString(response, 400, USER_CANT_REPORT_SELF);
+            } else {
+                Optional<Report> userReport = ReportDAO.getInstance().createUserReport(reporter, reportedUser.get(), reportDescription);
+                if (userReport.isPresent()) {
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                }
             }
         }
-
-        throw halt(400, "User was not reported due to an error");
+        return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 }

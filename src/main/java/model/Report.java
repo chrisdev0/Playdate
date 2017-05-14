@@ -7,10 +7,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by martinsenden on 2017-05-11.
- */
-
 @Data
 @NoArgsConstructor
 @Entity

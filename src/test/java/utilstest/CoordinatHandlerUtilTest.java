@@ -79,7 +79,14 @@ public class CoordinatHandlerUtilTest {
         assertNotEquals(doubles[1], Double.parseDouble(E), 1);
     }
 
-
+    @Test
+    public void testDoubleToInt() {
+        CoordinateHandlerUtil coordinateHandlerUtil = new CoordinateHandlerUtil();
+        double[] d = new double[]{18.13132, 17.23123};
+        int[] i = coordinateHandlerUtil.doubleToInt(d);
+        assertEquals(i[0], 18);
+        assertEquals(i[1], 17);
+    }
 
 
 }

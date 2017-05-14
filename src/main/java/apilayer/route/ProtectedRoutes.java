@@ -105,6 +105,8 @@ public class ProtectedRoutes {
 
             initProtectedStaticRoutes();
 
+            AdminRoutes.initAdminRoutes();
+
         });
     }
 

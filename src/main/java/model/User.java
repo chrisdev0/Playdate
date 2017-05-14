@@ -37,6 +37,8 @@ public class User {
     @Column(unique = true)
     private String facebookThirdPartyID;
 
+    private boolean isAdmin = false;
+
     @Expose
     private String profilePictureUrl;
 
