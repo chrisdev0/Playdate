@@ -9,6 +9,8 @@
 
     #parse("head-links.vm")
 
+
+
 </head>
 <body>
 
@@ -32,6 +34,7 @@
                 <div id="composite-picture">
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
+                <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
                 <h3>Beskrivning:</h3>
                 <p class="profile-description-text">
                     $!{other-user.description}

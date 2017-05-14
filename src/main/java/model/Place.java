@@ -61,7 +61,9 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     @OneToMany
     private Set<Comment> comments = new HashSet<>();
 
+    @Expose
     private int geoX;
+    @Expose
     private int geoY;
 
     public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {

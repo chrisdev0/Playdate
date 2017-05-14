@@ -14,6 +14,7 @@ import org.pac4j.sparkjava.SparkWebContext;
 import spark.Request;
 import spark.Response;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class FBHelpers {
         user.setFbToken(facebookProfile.getAccessToken());
         user.setGender(Gender.genderFromFacebookGender(facebookProfile.getGender()));
         user.setProfilePictureUrl(getProfilePictureOfAccessToken(facebookProfile));
+        user.setFacebookLinkUrl(facebookProfile.getAttribute("link", URI.class).toString());
         return user;
     }
 

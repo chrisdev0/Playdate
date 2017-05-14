@@ -40,6 +40,9 @@ public class User {
     private boolean isAdmin = false;
 
     @Expose
+    private String facebookLinkUrl;
+
+    @Expose
     private String profilePictureUrl;
 
     @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)

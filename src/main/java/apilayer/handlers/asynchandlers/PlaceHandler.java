@@ -35,7 +35,8 @@ public class PlaceHandler {
     public static Object handleGetPlaceByLoc(Request request, Response response) {
         try {
             int[] grid = getGridLocationFromRequest(request);
-            return new Gson().toJson(PlaceDAO.getInstance().getPlaceByLocation(grid[0], grid[1]));
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(PlaceDAO.getInstance().getPlaceByLocation(grid[0], grid[1]));
         } catch (IllegalArgumentException e) {
             log.error("error converting location information", e);
         }
