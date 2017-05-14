@@ -51,6 +51,7 @@ public class Paths {
     public static class ADMIN {
         public static final String ADMIN = "/admin";
         public static final String ADMIN_INDEX = "/index";
+        public static final String ADMIN_PLACE = "/place";
     }
 
 

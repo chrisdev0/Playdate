@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    #parse("/admin/admin-head.vm")
+</head>
+<body>
+
+
+<div id="content">
+
+
+    #parse("/admin/navbar.vm")
+
+    <div class="row">
+        <div class="col-md-2"> </div>
+        <div class="col-md-8">
+            <h1>Content</h1>
+            <p>place info</p>
+        </div>
+        <div class="col-md-2"> </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

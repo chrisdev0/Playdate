@@ -11,8 +11,8 @@
 <div class="row">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <a class="btn btn-default" href="#" role="button">Dashboard</a>
-        <a class="btn btn-default" href="#" role="button">Platser</a>
+        <a class="btn btn-default" href="/protected/admin/index" role="button">Dashboard</a>
+        <a class="btn btn-default" href="/protected/admin/place" role="button">Platser</a>
         <a class="btn btn-default" href="#" role="button">Användare</a>
         <a class="btn btn-default" href="#" role="button">Rapporter</a>
         <a class="btn btn-default" href="#" role="button">Kommentarer</a>
