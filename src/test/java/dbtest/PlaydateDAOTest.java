@@ -191,7 +191,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
 
     @Test
-    public void addInviteToUser() { // ska denna vara kvar? finns en liknande i inviteDAOtest
+    public void addInviteToUser() {
         User user = createUser();
         User owner = createUser();
 

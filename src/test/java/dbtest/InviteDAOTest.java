@@ -109,6 +109,4 @@ public class InviteDAOTest {
         remove(owner);
 
     }
-
-    //gör test som kollar att invitedao.getinvite returnerar samma som user.getinvite (typ samma som innan)
 }
