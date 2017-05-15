@@ -3,7 +3,7 @@ package apilayer.handlers.asynchandlers;
 import apilayer.Constants;
 import apilayer.handlers.Paths;
 import com.google.gson.GsonBuilder;
-import dblayer.InviteDao;
+import dblayer.InviteDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import model.PlaydateVisibilityType;
 import model.User;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import utils.ParserHelpers;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class AttendanceInviteHandler {
         String inviteIdStr = request.queryParams(Paths.QueryParams.INVITE_BY_ID);
         Long inviteId = ParserHelpers.parseToLong(inviteIdStr);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        Optional<Invite> inviteById = InviteDao.getInstance().getInviteById(inviteId);
+        Optional<Invite> inviteById = InviteDAO.getInstance().getInviteById(inviteId);
         if (inviteById.isPresent()) {
             if (inviteById.get().getInvited().equals(user)) {
                 if (PlaydateDAO.getInstance().acceptAndAddAttendance(inviteById.get())) {
@@ -76,7 +75,7 @@ public class AttendanceInviteHandler {
             Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(ParserHelpers.parseToLong(playDateIdStr));
             if (playdateOptional.isPresent()) {
                 if (playdateOptional.get().getOwner().equals(getUserFromSession(request))) {
-                    if (InviteDao.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(inviteMsg, playdateOptional.get(), sendToUser.get()), playdateOptional.get())) {
+                    if (InviteDAO.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(inviteMsg, playdateOptional.get(), sendToUser.get()), playdateOptional.get())) {
                         return "";
                     } else {
                         log.info("couldn't send invite to user " + sendToUserStr);
@@ -100,7 +99,7 @@ public class AttendanceInviteHandler {
 
     public static Object getInvitesOfLoggedInUser(Request request, Response response) {
         User user = getUserFromSession(request);
-        Optional<List<Invite>> invitesOfUser = InviteDao.getInstance().getInvitesOfUser(user);
+        Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(user);
         if (invitesOfUser.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(invitesOfUser.get());
         }
@@ -111,11 +110,11 @@ public class AttendanceInviteHandler {
 
     public static Object handleDeclineInviteToPlaydate(Request request, Response response) {
         Long inviteId = ParserHelpers.parseToLong(request.queryParams(Paths.QueryParams.INVITE_BY_ID));
-        Optional<Invite> inviteById = InviteDao.getInstance().getInviteById(inviteId);
+        Optional<Invite> inviteById = InviteDAO.getInstance().getInviteById(inviteId);
         if (inviteById.isPresent()) {
             User user = getUserFromSession(request);
             if (inviteById.get().getInvited().equals(user)) {
-                if (InviteDao.getInstance().removeInvite(inviteById.get(), inviteById.get().getPlaydate(), user)) {
+                if (InviteDAO.getInstance().removeInvite(inviteById.get(), inviteById.get().getPlaydate(), user)) {
                     return "";
                 } else {
                     return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);

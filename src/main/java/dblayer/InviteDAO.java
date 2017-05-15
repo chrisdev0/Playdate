@@ -9,18 +9,17 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
-public class InviteDao {
+public class InviteDAO {
 
-    private static InviteDao instance;
+    private static InviteDAO instance;
 
-    private InviteDao(){}
+    private InviteDAO(){}
 
-    public static InviteDao getInstance() {
+    public static InviteDAO getInstance() {
         if (instance == null) {
-            instance = new InviteDao();
+            instance = new InviteDAO();
         }
         return instance;
     }
@@ -82,10 +81,10 @@ public class InviteDao {
             user.removeInvite(invite);
             playdate.removeInvite(invite);
 
-            session.update(user);
             session.update(playdate);
-
             session.remove(invite);
+            session.update(user);
+
             tx.commit();
             ret = true;
         } catch (Exception e) {

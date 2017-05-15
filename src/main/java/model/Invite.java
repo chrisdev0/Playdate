@@ -67,7 +67,6 @@ import javax.persistence.*;
         return "Invite{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
-                ", playdate=" + playdate +
                 ", invited=" + invited +
                 '}';
     }

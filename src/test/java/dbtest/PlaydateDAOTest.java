@@ -191,7 +191,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
 
     @Test
-    public void addInviteToUser() {
+    public void addInviteToUser() { // ska denna vara kvar? finns en liknande i inviteDAOtest
         User user = createUser();
         User owner = createUser();
 
@@ -256,7 +256,23 @@ public class PlaydateDAOTest extends HibernateTests {
         remove(place);
     }
 
+    @Test
+    public void testAddAttendance(){
+        User user = createUser();
+        User owner = createUser();
+        Place place = createPlace();
+        Playdate playdate = createPlaydate(owner, place);
 
+        save(user);
+        save(owner);
+        save(place);
+        save(playdate);
 
+        assertTrue(PlaydateDAO.getInstance().addAttendance(user, playdate));
 
+        remove(playdate);
+        remove(place);
+        remove(user);
+        remove(owner);
+    }
 }
