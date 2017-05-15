@@ -1,5 +1,6 @@
 package dbtest;
 
+import com.sun.tools.internal.xjc.model.Model;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -93,8 +94,12 @@ public class UserDAOTest extends HibernateTests {
     @Test
     public void testSaveNullImage() {
         ProfilePicture profilePicture = new ProfilePicture();
-        Optional<Long> aLong = UserDAO.getInstance().saveImageToDB(profilePicture);
+        User user = ModelCreators.createUser();
+        ModelCreators.save(user);
+        Optional<Long> aLong = UserDAO.getInstance().saveImageToDB(profilePicture, user);
         assertFalse(aLong.isPresent());
+
+        ModelCreators.remove(user);
     }
 
     @Test
@@ -106,7 +111,10 @@ public class UserDAOTest extends HibernateTests {
         ProfilePicture profilePicture = new ProfilePicture();
         profilePicture.setImage(image);
 
-        Optional<Long> imageOpt = UserDAO.getInstance().saveImageToDB(profilePicture);
+        User user = ModelCreators.createUser();
+        ModelCreators.save(user);
+
+        Optional<Long> imageOpt = UserDAO.getInstance().saveImageToDB(profilePicture, user);
 
         assertTrue(imageOpt.isPresent());
         assertNotNull(profilePicture.getId());
@@ -119,6 +127,7 @@ public class UserDAOTest extends HibernateTests {
 
         boolean b = UserDAO.getInstance().deleteProfilePicture(profilePicture);
         assertTrue(b);
+        ModelCreators.remove(user);
     }
 
     @Test
@@ -130,10 +139,14 @@ public class UserDAOTest extends HibernateTests {
         ProfilePicture profilePicture = new ProfilePicture();
         profilePicture.setImage(image);
 
-        Optional<Long> imageOpt = UserDAO.getInstance().saveImageToDB(profilePicture);
+        User user = ModelCreators.createUser();
+        ModelCreators.save(user);
+
+        Optional<Long> imageOpt = UserDAO.getInstance().saveImageToDB(profilePicture, user);
 
         assertTrue(imageOpt.isPresent());
         assertNotNull(profilePicture.getId());
+        ModelCreators.remove(user);
     }
 
     @Test
