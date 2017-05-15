@@ -205,6 +205,7 @@ public class PlaydateDAO {
 
             playdate.addParticipant(user);
             user.attendPlaydate(playdate);
+            user.getInvitesToPlaydates().remove(invite);//tror den ska vara här
 
             session.update(playdate);
             session.update(user);
