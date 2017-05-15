@@ -1,9 +1,8 @@
 package dblayer;
 
+import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
-import model.Invite;
-import model.Playdate;
-import model.User;
+import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import static spark.Spark.halt;
 
@@ -86,6 +86,7 @@ public class PlaydateDAO {
      *
      *  @return om playdaten kunde sparas i databasen eller inte
      * */
+    @SuppressWarnings("Duplicates")
     public boolean updatePlaydate(Playdate playdate) {
         boolean ret = false;
         Session session = null;
@@ -186,54 +187,32 @@ public class PlaydateDAO {
         return ret;
     }
 
-    public boolean addInviteToUserAndPlaydate(User user, Invite invite, Playdate playdate) {
-        Session session = null;
-        Transaction tx = null;
-        boolean ret = false;
-        try {
-            session = HibernateUtil.getInstance().openSession();
-            tx = session.beginTransaction();
-            session.update(playdate);
-            session.update(user);
-            session.save(invite);
-
-            playdate.addInvite(invite);
-            user.addInvite(invite);
-
-            tx.commit();
-            ret = true;
-        } catch (Exception e) {
-            log.error("error adding invite", e);
-            if (tx != null) {
-                tx.rollback();
-            }
-            ret = false;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+    public void refreshPlaydate(Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            session.refresh(playdate);
         }
-        return ret;
     }
 
-    public boolean removeInvite(Invite invite, Playdate playdate, User user) {
+    public boolean acceptAndAddAttendance(Invite invite) {
         Session session = null;
         Transaction tx = null;
+        User user = invite.getInvited();
+        Playdate playdate = invite.getPlaydate();
         boolean ret = false;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            session.update(user);
+
+            playdate.addParticipant(user);
+            user.attendPlaydate(playdate);
+
             session.update(playdate);
-
-            user.removeInvite(invite);
-            playdate.removeInvite(invite);
-
+            session.update(user);
             session.remove(invite);
+
             tx.commit();
             ret = true;
         } catch (Exception e) {
-            log.error("error removing invite", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -245,5 +224,57 @@ public class PlaydateDAO {
         }
         return ret;
     }
+
+    public boolean removeAttendance(Playdate playdate, User user) {
+        Session session = null;
+        Transaction tx = null;
+        boolean ret = false;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            if (playdate.removeParticipant(user) && user.removeAttendingPlaydate(playdate)) {
+                session.update(playdate);
+                session.update(user);
+                ret = true;
+            } else {
+                ret = false;
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ret = false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
+    public Optional<List<Playdate>> getPublicPlaydatesByLoc(int locX, int locY) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return Optional.of(session.createQuery(
+                    "FROM Playdate p WHERE playdateVisibilityType = :vis AND p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
+                            "p.place.geoY <= :yMax AND p.place.geoY >= :yMin", Playdate.class)
+                    .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("yMin", locY - Constants.GRID_SEARCH_AREA_SIZE)
+                    .setParameter("vis", PlaydateVisibilityType.PUBLIC)
+                    .list());
+        }
+    }
+
+    public List<Playdate> getPlaydateAtPlace(Place place) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM Playdate p WHERE place = :place AND playdateVisibilityType = :vis", Playdate.class)
+                    .setParameter("place", place)
+                    .setParameter("vis", PlaydateVisibilityType.PUBLIC).list();
+        }
+    }
+
+
 
 }

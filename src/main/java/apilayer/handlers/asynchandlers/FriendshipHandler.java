@@ -1,6 +1,7 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
@@ -21,7 +22,7 @@ public class FriendshipHandler {
      * Om inte skapas en vänskapsförfrågan och lägger till i listan med vänskapförfrågningar ***/
 
     public static Object addFriendRequest(Request request, Response response) {
-        String friendIdParam = request.queryParams("id");
+        String friendIdParam = request.queryParams(Paths.QueryParams.FRIEND_ID);
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         if (user == null || user.getId().equals(friendId)) {

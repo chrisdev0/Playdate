@@ -1,4 +1,4 @@
-package util;
+package utilstest;
 
 import org.junit.Test;
 import utils.Utils;

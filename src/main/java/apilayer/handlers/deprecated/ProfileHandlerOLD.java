@@ -22,6 +22,7 @@ import java.util.Optional;
 import static spark.Spark.halt;
 
 @Slf4j
+@Deprecated
 public class ProfileHandlerOLD extends StaticFileTemplateHandler{
 
     public ProfileHandlerOLD(String templateName, int onErrorHTTPStatusCode) throws IllegalArgumentException {

@@ -1,0 +1,37 @@
+/*header:
+headerborder: darkgrey
+knappar: darkseagreen
+knapptext: darkgreen
+body: beige*/
+
+html body div.ui-header{
+    background: #d8f6a4;
+    border-color: #8f8f8f;
+}
+html body div.ui-footer{
+    background: #d8f6a4;
+    border-color: #8f8f8f;
+}
+#footer div a.ui-btn{
+    background: #d8f6a4 !important;
+    border:0;
+    box-shadow: none;
+}
+div.ui-content{
+    background: #eff6da;
+    color: #1a6207;
+    font-family: Avenir;
+    text-shadow: none !important;
+}
+html body div .ui-btn{
+    background: #b6d489 !important;
+    color: #1a6207 !important;
+    font-family: Avenir;
+    text-shadow: none !important;
+}
+html body div .ui-bar{
+    background: #b6d489 !important;
+    color: #1a6207;
+    font-family: Avenir;
+    text-shadow: none !important;
+}

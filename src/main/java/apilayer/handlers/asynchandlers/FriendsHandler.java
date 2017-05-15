@@ -17,7 +17,7 @@ import java.util.Optional;
 public class FriendsHandler {
 
     public static Object handleAcceptFriendRequest(Request request, Response response) {
-        String userIdStr = request.queryParams(Paths.QueryParams.USER_ID);
+        String userIdStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
         Long userId = ParserHelpers.parseToLong(userIdStr);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Optional<User> userById = UserDAO.getInstance().getUserById(userId);
@@ -37,7 +37,7 @@ public class FriendsHandler {
     }
 
     public static Object handleDeclineFriendshipRequest(Request request, Response response) {
-        String userIdStr = request.queryParams(Paths.QueryParams.USER_ID);
+        String userIdStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
         Long userId = ParserHelpers.parseToLong(userIdStr);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Optional<User> userById = UserDAO.getInstance().getUserById(userId);

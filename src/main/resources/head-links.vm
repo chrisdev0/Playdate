@@ -8,6 +8,7 @@
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/jquery.mobile.flatui.css">
 <link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="stylesheet" type="text/css" href="/css/colors.css">
 
 <script>
     $(function () {

@@ -7,12 +7,58 @@
     #parse("head-links.vm")
 
 <script>
-    $("#post-comment").one(function(e){
-        e.preventDefault();
-        $("#comment-form").submit();
-        $("#popupBasic").popup('close');
-    });
+    $(document).ready(function() {
+        $.getJSON('/protected/commentsofplace?placeId=$!place.id',function(res) {
+            console.log(res);
+            $('#show-comments').html("");
+            $.each(res, function (index, comment) {
+                renderComment(comment)
+            });
+        })
 
+        var renderComment = function (comment){
+            var output = "<div class='bottom-line'>";
+            output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
+                    " "+ comment.commentDate +"</p>"
+            output += "<p>" + comment.comment + "</p>"
+            output += "</div>"
+            $('#show-comments').append(output);
+        }
+
+        $('#makeComment').submit(function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            $.ajax({
+                type: 'POST',
+                url: '/protected/postcomment',
+                data: $('#makeComment').serialize(),
+                success: function(res) {
+                    console.log(res);
+                    res = JSON.parse(res);
+                    $('#comment').val("");
+                    $('#show-comments').html("");
+                    $.each(res,function(index, comment) {
+                        renderComment(comment)
+                    })
+                }
+            })
+        });
+
+
+        $.getJSON('/protected/playdatesofplace?placeId=$!place.id',function(res) {
+            console.log(res);
+            var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-filter="true" data-input="#myFilter">'
+            $.each(res, function (index, playdate) {
+                var output = "<li>";
+                output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-filter='true' data-input='#myFilter'>" + playdate.header + "</a>";
+                output += "</li>";
+                ooutput += output;
+            });
+            ooutput += "</ul>"
+            $('#playdates-here-output').html(ooutput);
+        })
+    })
 </script>
 
 </head>
@@ -39,11 +85,19 @@
             </div>
                 <div class="ui-block-b">
                     <ul id="btns-list" style="float:right;">
-                        <li><a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a></li>
+                        <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
                         <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                         <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
                     </ul>
                 </div>
+        </div>
+        <div class="show-place-buttons">
+
+            <a href="#playdates-here" class="ui-btn ui-mini ui-btn-inline" style="margin-left:6%;">Playdates här</a>
+
+
+            <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
+
         </div>
         <p class="place-description">
             #if($place.longDescription)
@@ -55,21 +109,7 @@
             #end
         </p>
 
-        <div data-role="popup" id="popupBasic">
-            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <div data-role="header">
-                <h1>Kommentera plats</h1>
-            </div>
-            <div data-role="main" class="ui-content">
-            <form id="comment-form" action="/protected/postcomment" method="POST">
-                <textarea name="comment" id="comment-title" data-autogrow="false"></textarea>
-                <input type="hidden" name="placeId" value="$!{place.id}">
-            </form>
-            </div>
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="post-comment" data-ajax="false">Skicka kommentar</a>
-            </div>
-        </div>
+
 
         <table class="place-info-table">
             <tr>
@@ -85,26 +125,31 @@
                 <td>$!{place.streetAddress}</td>
             </tr>
         </table>
-        <div class="show-place-buttons">
-            <a href="#" class="ui-btn">Skapa Playdate Här</a>
-
-
-            <a href="#" class="ui-btn ui-mini ui-btn-inline" style="margin-left:6%;">Playdates här</a>
-
-
-            <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
+        <div id="make-comment">
+            <form id="makeComment">
+                <textarea id="comment" name="comment"></textarea>
+                <input type="hidden" id="placeId" name="placeId" value="$!place.id">
+                <input type="submit" class="ui-btn" value="Skicka kommentar">
+            </form>
+        </div>
+        <div id="show-comments">
 
         </div>
     </div>
 </div>
 
 <div data-role="page" id="playdates-here">
-    <h2>Kommande playdates här</h2>
+    <div data-role="main" class="ui-content">
+        <label for="myFilter" >Sök efter Playdates</label>
+        <form class="ui-filterable">
+            <input id="myFilter" data-type="search">
+        </form>
+        <div id="playdates-here-output"></div>
+
+    </div>
 </div>
 
 
-
-</div>
 
 </body>
 </html>

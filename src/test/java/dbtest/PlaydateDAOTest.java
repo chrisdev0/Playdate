@@ -9,16 +9,15 @@ import model.Place;
 import model.Playdate;
 import model.User;
 import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 
 @Slf4j
 public class PlaydateDAOTest extends HibernateTests {
@@ -207,7 +206,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertNotNull(playdate.getId());
         assertNotNull(user.getId());
 
-        Invite invite = new Invite("invite", false, playdate, user);
+        Invite invite = new Invite("invite", playdate, user);
 
         save(invite, user, playdate);
         assertNotNull(invite.getId());

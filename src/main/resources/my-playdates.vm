@@ -74,8 +74,8 @@
                 <h4>$!{p2.header}</h4>
                 <p>
                     $!{p2.description}
-                    <a class="ui-btn" href="/protected/getoneplaydate?playdateId=$!{p2.id}">Visa</a>
-                    <a class="ui-btn" href="/protected/showplaydate/$!{p2.id}">Lämna</a>
+                    <a class="ui-btn" data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p2.id}">Visa</a>
+                    <a class="ui-btn" data-ajax="false" href="/protected/showplaydate/$!{p2.id}">Lämna</a>
                 </p>
 
             </div>

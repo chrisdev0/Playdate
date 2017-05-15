@@ -9,6 +9,21 @@
 
     #parse("head-links.vm")
 
+
+    <script>
+        $(document).ready(function () {
+            $('#add-friend').click(function (e) {
+                e.preventDefault();
+
+                $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function(res) {
+                    console.log(res);
+                })
+
+            })
+        });
+    </script>
+
+
 </head>
 <body>
 
@@ -32,6 +47,7 @@
                 <div id="composite-picture">
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
+                <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
                 <h3>Beskrivning:</h3>
                 <p class="profile-description-text">
                     $!{other-user.description}
@@ -42,7 +58,18 @@
                     $!{other-user.phoneNumber}
                 </p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
-                <a href="#" class="ui-btn" data-mini="true">Lägg till vän</a>
+                #if($friendsetting == 0)
+                    <a href="/protected/editmyprofile">Redigera</a>
+                #elseif($friendsetting == 1)
+                    <p>ta bort vän</p>
+                #elseif($friendsetting == 2)
+                    <p>acceptera vän</p>
+                    <p>avböj vänförfrågan</p>
+                #elseif($friendsetting == 3)
+                    <p>du har skickat request till användaren</p>
+                #elseif($friendsetting == 4)
+                    <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
+                #end
                 <h3>Öppna Playdates:</h3>
                 #foreach($p in $playdates)
                     <div data-role="collapsible" data-mini="true">

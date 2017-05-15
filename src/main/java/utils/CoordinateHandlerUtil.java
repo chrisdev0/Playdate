@@ -8,6 +8,8 @@ package utils;
  *  Klarar av att konvertera från RT90 2.5 g V till lat och long och tillbaka
  *  Tack till @Author https://github.com/paera
  *
+ *  Modiferad för att ta in korrekta typer
+ *  och en hjälpmetod för att konvertera en double[] till int[]
  * */
 public class CoordinateHandlerUtil {
 
@@ -148,4 +150,9 @@ public class CoordinateHandlerUtil {
 
         return lat_lon;
     }
+
+    public int[] doubleToInt(double[] d) {
+        return new int[]{(int) d[0], (int) d[1]};
+    }
+
 }

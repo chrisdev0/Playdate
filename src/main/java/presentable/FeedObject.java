@@ -1,10 +1,7 @@
 package presentable;
 
 import apilayer.handlers.Paths;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
 import model.Place;
 import model.Playdate;
 
@@ -43,7 +40,7 @@ public class FeedObject {
                 playdate.getDescription(),
                 Paths.PLAYDATE_IMAGE + "/" + playdate.getId(),
                 0,
-                Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "?=" + playdate.getId());
+                Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "?=" + playdate.getId());
     }
 
     public static FeedObject createFromPlace(Place place) {
@@ -53,7 +50,7 @@ public class FeedObject {
                 place.getShortDescription(),
                 Paths.APIIMAGE + "/" + place.getImageId(),
                 1,
-                Paths.PROTECTED + Paths.GETONEPLACE + "/" + Paths.QueryParams.GET_ONE_PLAYDATE_BY_ID + "?=" + place.getId()
+                Paths.PROTECTED + Paths.GETONEPLACE + "/" + Paths.QueryParams.PLAYDATE_BY_ID + "?=" + place.getId()
         );
     }
 

@@ -1,16 +1,12 @@
 package dbtest;
-import apilayer.handlers.FriendshipHandler;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
-
-import javax.swing.text.html.Option;
+import testutils.ModelCreators;
 
 import static org.junit.Assert.*;
 

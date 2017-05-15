@@ -1,4 +1,4 @@
-package util;
+package utilstest;
 
 import model.Gender;
 import org.junit.Test;

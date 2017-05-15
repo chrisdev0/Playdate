@@ -1,0 +1,71 @@
+#* @vtlvariable name="invites" type="java.util.Collection" *#
+#* @vtlvariable name="invite" type="model.Invite" *#
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+    <script>
+        $(document).ready(function() {
+            $('.accept-invite').click(function(e) {
+                e.preventDefault();
+                $.post($(this).attr('href'),function (res) {
+                    console.log("res of post = " + res);
+                })
+            })
+            $('.decline-invite').click(function(e) {
+                e.preventDefault();
+                $.ajax($(this).attr('href'), {
+                    type: 'DELETE',
+                    success: function(res) {
+                        console.log("res of post = " + res);
+                        $(this).parent('div').remove();
+                    }
+                })
+
+            })
+        })
+    </script>
+
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+
+    <div data-role="main" class="ui-content">
+        <h3>Mina inbjudningar:</h3>
+        #if($invites.size() == 0)
+            <p class="important-msg">Du har inga inbjudningar</p>
+            <a href="#">Klicka här för att hitta playdates</a>
+        #else
+            #foreach($invite in $invites)
+                <div data-role="collapsible">
+                    <h3>$invite.playdate.header</h3>
+                    <p>$invite.playdate.description</p>
+                    <a href="/protected/acceptinvite?inviteId=$invite.id" class="ui-btn accept-invite">Acceptera</a>
+                    <a href="/protected/declineinvite?inviteId=$invite.id" class="ui-btn decline-invite">Avböj</a>
+                </div>
+            #end
+        #end
+
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

@@ -5,13 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static util.ModelCreators.*;
+import static testutils.ModelCreators.*;
 
 import static org.junit.Assert.*;
 

@@ -1,20 +1,16 @@
 package model;
 
 import apilayer.Constants;
-import com.sun.corba.se.spi.activation._InitialNameServiceImplBase;
-import lombok.AllArgsConstructor;
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
-import stockholmapi.jsontojava.ServiceUnitType;
 import stockholmapi.jsontojava.ServiceUnitTypes;
 import stockholmapi.jsontojava.Value2;
-import stockholmapi.temporaryobjects.PlaceHolder;
 import utils.CoordinateHandlerUtil;
-import utils.Utils;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -32,38 +28,42 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(unique = true)
     private String sthlmAPIid;
 
     @Column(nullable = false)
+    @Expose
     private String name;
 
     @Type(type = "text")
+    @Expose
     private String shortDescription;
 
     @Type(type = "text")
+    @Expose
     private String longDescription;
 
+    @Expose
     private String category;
 
+    @Expose
     private String geoArea, cityAddress, zip, streetAddress;
 
+    @Expose
     private String imageId;
 
     private String timeCreated;
     private String timeUpdated;
 
-    private boolean isInitialized = false;
+    @OneToMany
+    private Set<Comment> comments = new HashSet<>();
 
-
-
-
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<Comment> comments;
-
+    @Expose
     private int geoX;
+    @Expose
     private int geoY;
 
     public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
@@ -74,10 +74,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
-        this.comments = new HashSet<>();
         this.shortDescription = shortDescription;
-        isInitialized = true;
-        comments = new HashSet<>();
     }
 
     @Transient
@@ -91,20 +88,14 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     }
 
     public boolean addComment(Comment comment) {
-        if (comments == null) {
-            comments = new HashSet<>();
-        }
         return comments.add(comment);
     }
 
     public boolean removeComment(Comment comment) {
-        return comments != null && comments.remove(comment);
+        return comments.remove(comment);
     }
 
 
-    public boolean isInitialized() {
-        return isInitialized;
-    }
 
     public Place injectInfo(DetailedServiceUnit detailedServiceUnit) {
         setName(detailedServiceUnit.getName());
@@ -118,14 +109,10 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         setGeoX(detailedServiceUnit.getGeographicalPosition().getX());
         setGeoY(detailedServiceUnit.getGeographicalPosition().getY());
         setLongDescription((String)detailedServiceUnit.getAttributesIdToValue().get(API_DESCRIPTION));
-        isInitialized = true;
-        comments = new HashSet<>();
         return this;
     }
 
-    /** todo kolla så att den hittar en bild om det är så att
-     *  platsen har mer än 1 bild
-     * */
+
     public static Place constructFromDetailedServiceUnit(DetailedServiceUnit detailedServiceUnit) {
         detailedServiceUnit.createMapOfAttributes();
         Place place = new Place().injectInfo(detailedServiceUnit);
@@ -146,7 +133,6 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         geoY = serviceUnitTypes.getGeographicalPosition().getY();
         timeCreated = serviceUnitTypes.getTimeCreated();
         timeUpdated = serviceUnitTypes.getTimeUpdated();
-        comments = new HashSet<>();
     }
 
 
@@ -154,14 +140,12 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         Place place = (Place) o;
 
-        if (isInitialized != place.isInitialized) return false;
+        if (id != null ? !id.equals(place.id) : place.id != null) return false;
         if (geoX != place.geoX) return false;
         if (geoY != place.geoY) return false;
-        if (id != null ? !id.equals(place.id) : place.id != null) return false;
         if (sthlmAPIid != null ? !sthlmAPIid.equals(place.sthlmAPIid) : place.sthlmAPIid != null) return false;
         if (name != null ? !name.equals(place.name) : place.name != null) return false;
         if (shortDescription != null ? !shortDescription.equals(place.shortDescription) : place.shortDescription != null)
@@ -176,8 +160,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
             return false;
         if (imageId != null ? !imageId.equals(place.imageId) : place.imageId != null) return false;
         if (timeCreated != null ? !timeCreated.equals(place.timeCreated) : place.timeCreated != null) return false;
-        if (timeUpdated != null ? !timeUpdated.equals(place.timeUpdated) : place.timeUpdated != null) return false;
-        return comments != null ? comments.equals(place.comments) : place.comments == null;
+        return timeUpdated != null ? timeUpdated.equals(place.timeUpdated) : place.timeUpdated == null;
     }
 
     @Override
@@ -196,8 +179,6 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         result = 31 * result + (imageId != null ? imageId.hashCode() : 0);
         result = 31 * result + (timeCreated != null ? timeCreated.hashCode() : 0);
         result = 31 * result + (timeUpdated != null ? timeUpdated.hashCode() : 0);
-        result = 31 * result + (isInitialized ? 1 : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + geoX;
         result = 31 * result + geoY;
         return result;

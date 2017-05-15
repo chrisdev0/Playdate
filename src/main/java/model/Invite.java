@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,21 +10,22 @@ import javax.persistence.*;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
+    @Expose
     private String message;
 
-    private boolean declined;
-
     @ManyToOne
+    @Expose
     private Playdate playdate;
 
     @ManyToOne
+    @Expose
     private User invited;
 
-    public Invite(String message, boolean declined, Playdate playdate, User invited) {
+    public Invite(String message, Playdate playdate, User invited) {
         this.message = message;
-        this.declined = declined;
         this.playdate = playdate;
         this.invited = invited;
     }
@@ -44,7 +46,6 @@ import javax.persistence.*;
             return id.equals(invite.id);
         }
 
-        if (declined != invite.declined) return false;
         if (id != null ? !id.equals(invite.id) : invite.id != null) return false;
         if (message != null ? !message.equals(invite.message) : invite.message != null) return false;
         if (!playdate.equals(invite.playdate)) return false;
@@ -56,7 +57,6 @@ import javax.persistence.*;
         int result = super.hashCode();
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + (declined ? 1 : 0);
         result = 31 * result + playdate.hashCode();
         result = 31 * result + invited.hashCode();
         return result;
@@ -67,7 +67,6 @@ import javax.persistence.*;
         return "Invite{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
-                ", declined=" + declined +
                 ", playdate=" + playdate +
                 ", invited=" + invited +
                 '}';

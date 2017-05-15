@@ -6,9 +6,6 @@ import org.hibernate.Transaction;
 
 import java.util.Optional;
 
-/**
- * Created by martinsenden on 2017-05-11.
- */
 public class ReportDAO {
 
     private static ReportDAO instance;
@@ -20,37 +17,30 @@ public class ReportDAO {
         return instance;
     }
 
-  /*
-    Skapa rapport
-  */
+    public Optional<Report> createUserReport(User reporter, User reportedUser, String reportDescription ){
+        Optional<Report> ret = Optional.empty();
+        Transaction tx = null;
+        Session session = null;
+        Report report = new Report(reporter, reportedUser, reportDescription);
 
-  public static Optional<Report> createUserReport(User reporter, User reportedUser, String reportDescription ){
-      Optional<Report> ret = Optional.empty();
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.save(report);
+            session.update(reporter);
+            session.update(reportedUser);
+            tx.commit();
+            ret = Optional.of(report);
+        } catch(Exception e){
+            if (tx != null){
+                tx.rollback();
+            }
+        } finally{
+            if (session != null) {
+                session.close();
+            }
+        }
 
-      Transaction tx = null;
-      Session session = null;
-      Report report = new Report(reporter, reportedUser, reportDescription);
-
-      try {
-        session = HibernateUtil.getInstance().openSession();
-        tx = session.beginTransaction();
-        session.save(report);
-        session.update(reporter);
-        session.update(reportedUser);
-        tx.commit();
-        ret = Optional.of(report);
-
-      }
-      catch(Exception e){
-          if (tx != null){
-              tx.rollback();
-          }
-      } finally{
-          if (session != null) {
-              session.close();
-          }
-      }
-
-      return ret;
-  }
+        return ret;
+    }
 }

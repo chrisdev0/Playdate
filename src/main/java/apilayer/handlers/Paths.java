@@ -43,14 +43,40 @@ public class Paths {
     public static final String GETMYFRIENDS = "/showmyfriends";
     public static final String ACCEPTFRIENDSHIPREQUEST = "/acceptfriendshiprequest";
     public static final String DECLINEFRIENDSHIPREQUEST = "/declinefriendshiprequest";
+    public static final String GETMYINVITES = "/getmyinvites";
+    public static final String ACCEPTINVITE = "/acceptinvite";
+    public static final String DECLINEINVITE = "/declineinvite";
+    public static final String FINDPLACE = "/findplaces";
+    public static final String COMMENTSOFPLACE = "/commentsofplace";
+    public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
+    public static final String GETONEPLACEJSON = "/getplaceasjson";
+    public static final String SENDFRIENDSHIPREQUEST = "/sendfriendrequest";
+
+    public static class ADMIN {
+        public static final String ADMIN = "/admin";
+        public static final String ADMIN_INDEX = "/index";
+        public static final String ADMIN_PLACE = "/place";
+    }
+
+
 
     public static class StaticFilePaths {
         public static final String INDEX_HTML = "/index.html";
     }
 
     public static class QueryParams {
-        public static final String GET_ONE_PLAYDATE_BY_ID = "playdateId";
-        public static final String GET_ONE_PLACE_BY_ID = "placeId";
-        public static final String USER_ID = "userId";
+        public static final String PLAYDATE_BY_ID = "playdateId";
+        public static final String PLACE_BY_ID = "placeId";
+        public static final String USER_BY_ID = "userId";
+        public static final String COMMENT_BY_ID = "commentId";
+        public static final String INVITE_BY_ID = "inviteId";
+        public static final String COMMENT_CONTENT = "comment";
+
+        public static final String INVITE_MSG = "inviteMessage";
+        public static final String LOC_X = "locX";
+        public static final String LOC_Y = "locY";
+
+        public static final String REPORT_DESCRIPTION = "reportDescription";
+        public static final String FRIEND_ID = "friendId";
     }
 }

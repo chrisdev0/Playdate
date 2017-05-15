@@ -5,7 +5,7 @@ import model.Report;
 import model.User;
 import org.junit.Test;
 import testhelpers.HibernateTests;
-import util.ModelCreators;
+import testutils.ModelCreators;
 import static org.junit.Assert.*;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class ReportDAOTest extends HibernateTests {
         ModelCreators.save(reporter);
         ModelCreators.save(reportedUser);
 
-        Optional<Report> report = ReportDAO.createUserReport(reporter, reportedUser, description);
+        Optional<Report> report = ReportDAO.getInstance().createUserReport(reporter, reportedUser, description);
         assertTrue(report.isPresent());
 
         ModelCreators.remove(reporter);
