@@ -170,6 +170,35 @@ public class UserDAO {
         }
     }
 
+    public int getFriendState(User thisUser, User otherUser) {
+        if (thisUser.equals(otherUser)) {
+            //inloggad användare är samma som användarens profil
+            return 0;
+        } else {
+            if (checkIfFriendWithUser(thisUser.getId(), otherUser.getId()).isPresent()) {
+                //inloggad användare är redan vän med användaren
+                return 1;
+            } else {
+                Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(otherUser.getId(), thisUser.getId());
+                if (friendshipRequest.isPresent()) {
+                    if (friendshipRequest.get().getReceiver().equals(thisUser)) {
+                        //inloggad användare har fått friendshiprequest av användaren
+                        return 2;
+                    } else {
+                        //inloggad användare har skickat friendshriprequest till användaren
+                        return 3;
+                    }
+                } else {
+                    //inloggad användare har inte fått friendshiprequest,
+                    //är inte vänner
+                    //och har inte skickat friendshriprequest
+                    //(och användarna är inte samma)
+                    return 4;
+                }
+            }
+        }
+    }
+
     /*** Hämtar alla användare man har skickat friendrequests till ***/
     public Optional<Set<User>> getSentFriendRequest(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {

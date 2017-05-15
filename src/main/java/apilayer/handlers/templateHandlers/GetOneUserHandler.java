@@ -2,6 +2,7 @@ package apilayer.handlers.templateHandlers;
 
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.Paths;
+import apilayer.handlers.asynchandlers.SparkHelper;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import model.Playdate;
@@ -36,6 +37,7 @@ public class GetOneUserHandler extends StaticFileTemplateHandlerImpl {
                 playdates.forEach(playdate -> playdate.getPlace().setComments(null));
                 Set<Playdate> collect = playdates.stream().filter(playdate -> playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)).collect(Collectors.toSet());
                 map.put("playdates", collect);
+                map.put("friendsetting", UserDAO.getInstance().getFriendState(SparkHelper.getUserFromSession(request), userById.get()));
             }
         } else {
             throw halt(400);
