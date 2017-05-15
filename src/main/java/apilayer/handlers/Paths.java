@@ -49,6 +49,7 @@ public class Paths {
     public static final String FINDPLACE = "/findplaces";
     public static final String COMMENTSOFPLACE = "/commentsofplace";
     public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
+    public static final String GETONEPLACEJSON = "/getplaceasjson";
 
     public static class ADMIN {
         public static final String ADMIN = "/admin";

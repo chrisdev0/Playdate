@@ -42,8 +42,7 @@ public class CommentsHandler {
             Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
             Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
             if (comments.isPresent()) {
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                return gson.toJson(comments.get());
+                return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(comments.get());
             } else {
                 response.status(400);
                 return "";

@@ -84,6 +84,7 @@ public class ProtectedRoutes {
             get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
             get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
             get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
+            get(Paths.GETONEPLACEJSON, PlaceHandler::handleGetOnePlaceWithoutComments);
 
 
             /*      Profile-routes

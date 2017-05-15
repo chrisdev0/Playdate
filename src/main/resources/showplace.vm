@@ -7,11 +7,7 @@
     #parse("head-links.vm")
 
 <script>
-    $("#post-comment").one(function(e){
-        e.preventDefault();
-        $("#comment-form").submit();
-        $("#popupBasic").popup('close');
-    });
+
 
 </script>
 
@@ -39,7 +35,7 @@
             </div>
                 <div class="ui-block-b">
                     <ul id="btns-list" style="float:right;">
-                        <li><a href="#popupBasic" data-rel="popup" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-comment ui-btn-icon-notext" data-transition="pop">comment</a></li>
+                        <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
                         <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                         <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
                     </ul>
@@ -55,21 +51,7 @@
             #end
         </p>
 
-        <div data-role="popup" id="popupBasic">
-            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <div data-role="header">
-                <h1>Kommentera plats</h1>
-            </div>
-            <div data-role="main" class="ui-content">
-            <form id="comment-form" action="/protected/postcomment" method="POST">
-                <textarea name="comment" id="comment-title" data-autogrow="false"></textarea>
-                <input type="hidden" name="placeId" value="$!{place.id}">
-            </form>
-            </div>
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="post-comment" data-ajax="false">Skicka kommentar</a>
-            </div>
-        </div>
+
 
         <table class="place-info-table">
             <tr>
