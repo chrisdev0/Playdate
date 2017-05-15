@@ -37,4 +37,8 @@ public class Utils {
         return true;
     }
 
+    public static boolean validateLengthOfString(int min, int max, String input){
+        return !(input.length() < min || input.length() > max || input.equals(null));
+    }
+
 }
