@@ -35,3 +35,7 @@ html body div .ui-bar{
     font-family: Avenir;
     text-shadow: none !important;
 }
+
+div[data-role='page']{
+    background: #eff6da;
+}
