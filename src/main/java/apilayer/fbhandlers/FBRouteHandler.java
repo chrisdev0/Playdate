@@ -22,6 +22,8 @@ import static spark.Spark.halt;
 @Slf4j
 public class FBRouteHandler {
 
+    /** todo REFACTOR
+     * */
     public static Object handleFacebookLogin(Request request, Response response) {
         Optional<FacebookProfile> facebookProfileOptional = FBHelpers.getFacebookProfile(request, response);
         if (!facebookProfileOptional.isPresent()) {

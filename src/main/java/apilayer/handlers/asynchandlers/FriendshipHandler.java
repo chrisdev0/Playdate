@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
 import dblayer.UserDAO;
@@ -7,8 +7,8 @@ import model.*;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
-
 import java.util.Optional;
+import java.util.Set;
 
 import static spark.Spark.halt;
 
@@ -17,9 +17,8 @@ import static spark.Spark.halt;
 public class FriendshipHandler {
 
 
-    /*
-    Skicka vänskapsförfrågan och lägg till i friendRequest-listan
-    */
+    /*** Kontrollerar om användarna redan är vänner eller om en vänförfrågan redan är skapad.
+     * Om inte skapas en vänskapsförfrågan och lägger till i listan med vänskapförfrågningar ***/
 
     public static Object addFriendRequest(Request request, Response response) {
         String friendIdParam = request.queryParams("id");
@@ -30,14 +29,6 @@ public class FriendshipHandler {
             throw halt(400, "user is null or same friend id as current user sent");
         }
 
-        /*
-        Kolla om det finns en vänförfrågan sedan tidigare
-         */
-
-        /*
-        Göra kontroll om person A är vän med person B eller vice versa
-         */
-
         Optional<User> friend = UserDAO.getInstance().getUserById(friendId);
 
         if (friend.isPresent()) {
@@ -46,7 +37,6 @@ public class FriendshipHandler {
                 throw halt(400, "Users are already friends");
             }
         }
-
 
         if (friend.isPresent()) {
             if (UserDAO.getInstance().createFriendshipRequest(user, friend.get()).isPresent()) {
@@ -59,7 +49,7 @@ public class FriendshipHandler {
         throw halt(400);
     }
 
-
+    /*** kontrollerar om användarna är vänner, är dem det tas vänskapen bort ***/
     public static Object removeFriend(Request request, Response response) {
 
         String friendIdParam = request.queryParams("friendId");
@@ -84,7 +74,6 @@ public class FriendshipHandler {
             throw halt(400, "user is null");
         }
 
-        //gör en koll att friendshipen innehåller dessa vänner.
         if (UserDAO.getInstance().deleteFriendship(friendship.get())) {
             log.info("Friend has been deleted");
             response.status(200);
@@ -93,12 +82,9 @@ public class FriendshipHandler {
         throw halt(400);
     }
 
+    /*** Hämtar en user och vän. Kontrollerar att en vänskapsförfrågan är skapad mellan dem,
+     *  tar isåfall bort den ***/
     public static Object declineReceivedFriendshipRequest(Request request, Response response) {
-        /*
-        Göra alla tester för att se till att användaren är receiver,
-        Sedan kalla på declineFriendRequest i UserDAO
-        */
-
         String friendIdParam = request.queryParams("friendId");
         Long friendId = ParserHelpers.parseToLong(friendIdParam);
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
@@ -124,6 +110,8 @@ public class FriendshipHandler {
         throw halt(400);
     }
 
+    /*** Hämtar en user och vän. Kontrollerar att en vänskapsförfrågan är skapad mellan dem och att de inte redan är vänner,
+     * skapar isåfall en vänskap mellan dem och tar bort vänförfrågan***/
     public static Object acceptFriendRequest(Request request, Response response) {
         /*
         Överföra från friendRequest-listan till Friends-listan för båda användare.
@@ -156,9 +144,5 @@ public class FriendshipHandler {
         }
         throw halt(400);
     }
-
-    /*
-    Hämta mina vänskapsförfrågningar, hämta mina kompisar,
-     */
 
 }

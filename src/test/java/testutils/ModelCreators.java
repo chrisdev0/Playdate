@@ -1,11 +1,11 @@
-package util;
+package testutils;
 
 import com.github.javafaker.Faker;
+import dblayer.InviteDao;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import model.*;
-import testhelpers.HibernateTests;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +67,7 @@ public class ModelCreators {
     }
 
     public static void remove(Invite invite) {
-        boolean b = PlaydateDAO.getInstance().removeInvite(invite, invite.getPlaydate(), invite.getInvited());
+        boolean b = InviteDao.getInstance().removeInvite(invite, invite.getPlaydate(), invite.getInvited());
         assertTrue(b);
     }
 
@@ -102,15 +102,19 @@ public class ModelCreators {
     }
 
     public static void save(Invite invite, User user, Playdate playdate) {
-        boolean b = PlaydateDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+        boolean b = InviteDao.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
         assertTrue(b);
     }
 
-    public static void save(User user, User friend){
-        boolean b = UserDAO.getInstance().createFriendshipRequest(user, friend).isPresent();
-
-        assertTrue(b);
+    public static FriendshipRequest save(User user, User friend){
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        assertTrue(friendshipRequest.isPresent());
+        return friendshipRequest.get();
     }
 
+    public static void save(FriendshipRequest friendshipRequest) {
+        boolean b = UserDAO.getInstance().createFriendship(friendshipRequest).isPresent();
+        assertTrue(b);
+    }
 
 }

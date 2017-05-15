@@ -50,6 +50,7 @@
         <mapping class="model.FriendshipRequest" />
         <mapping class="model.ProfilePicture" />
         <mapping class="model.GeographicalArea" />
+        <mapping class="model.Report" />
 
     </session-factory>
 </hibernate-configuration>

@@ -1,45 +1,44 @@
-package apilayer.handlers;
+package apilayer.handlers.asynchandlers;
 
+import apilayer.handlers.Paths;
+import com.google.gson.ExclusionStrategy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
-import spark.ModelAndView;
+import model.Place;
 import spark.Request;
 import spark.Response;
 import utils.CoordinateHandlerUtil;
+import utils.ParserHelpers;
 import utils.Utils;
 
+import java.util.Optional;
+
 import static spark.Spark.halt;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
 @Slf4j
 public class PlaceHandler {
 
-    /*public static ModelAndView handleGetOnePlace(Request request, Response response) {
-        String id = request.queryParams(Paths.QueryParams.GET_ONE_PLACE_BY_ID);
-        try {
-            long lId = Long.parseLong(id);
-            log.info("fetching place with id = " + lId);
-            return new GetOnePlaceHandlerOLD("TODELETE/showplacepage.vm", lId, 400)
-                    .handleTemplateFileRequest(request, response);
-        } catch (NullPointerException | NumberFormatException e) {
-            log.info("client: " + request.ip() + " sent illegal place id = " + id + " e = " + e.getMessage());
-            throw halt(400);
+    public static Object handleGetOnePlaceWithoutComments(Request request, Response response) {
+        Optional<Place> placeById = getPlaceFromRequest(request);
+        if (placeById.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(placeById.get());
+        } else {
+            response.status(400);
+            return "";
         }
-    }*/
+    }
 
     public static Object handleGetPlaceByLoc(Request request, Response response) {
-        String locXStr = request.queryParams("locX");
-        String locYStr = request.queryParams("locY");
-        if (Utils.isNotNullAndNotEmpty(locXStr) && Utils.isNotNullAndNotEmpty(locYStr)) {
-            CoordinateHandlerUtil coordinateHandlerUtil = new CoordinateHandlerUtil();
-            try {
-                double locX = Double.parseDouble(locXStr);
-                double locY = Double.parseDouble(locYStr);
-                double[] grid = coordinateHandlerUtil.geodeticToGrid(locX, locY);
-                return new Gson().toJson(PlaceDAO.getInstance().getPlaceByLocation((int)grid[0], (int)grid[1]));
-            } catch (NumberFormatException e) {
-                log.error("Error parsing loc", e);
-            }
+        try {
+            int[] grid = getGridLocationFromRequest(request);
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(PlaceDAO.getInstance().getPlaceByLocation(grid[0], grid[1]));
+        } catch (IllegalArgumentException e) {
+            log.error("error converting location information", e);
         }
         return "error";
     }

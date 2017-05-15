@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+    <script src="/js/CoordinateHandler.js"></script>
+
+    <style>
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+
+    <script>
+        function initMap() {
+
+            window.getLocation = function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(p){
+                        if(window.map != undefined) {
+                            console.log("setting center to")
+                            console.log(p.coords)
+                            map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
+                        } else {
+                            console.log("map is undefined")
+                        }
+                    });
+                } else {
+                    console.log("no navigator")
+                }
+            }
+
+
+            var uluru = {lat: 59.299258865101194, lng: 18.044908470153807};
+            window.map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: uluru
+            });
+
+            setTimeout(function () {
+                console.log("running timeout");
+                window.getLocation();
+            }, 1500);
+
+
+            window.markers = [];
+
+            window.map.addListener('dragend', function () {
+                var lat = this.getCenter().lat();
+                var lng = this.getCenter().lng();
+                window.getAndRenderPlaceForPos(lat, lng);
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    console.log("no navigator")
+                }
+            }
+
+            function showPosition(pos) {
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+                window.getAndRenderPlaceForPos(lat, lng);
+            }
+
+            var clearMarkers = function(map) {
+                for(var i = 0; i < window.markers.length; i++) {
+                    window.markers[i].setMap(map)
+                }
+            };
+
+            var clearPlaces = function() {
+                $('#place-output').html("");
+                clearMarkers(null);
+                window.markers = [];
+            };
+
+            window.getAndRenderPlaceForPos = function(lat, lng) {
+
+                var placeoutput = $('#place-output');
+
+                clearPlaces();
+
+                $.getJSON('/protected/getplacebylocation?locX=' + lat + "&locY=" + lng, function (res) {
+                    console.log(res)
+                    if(res.length == 0) {
+                        var output = "<h3>Hittade inga platser här</h3><p>Testa att flytta kartan lite</p>"
+                        console.log("hittade inga platser")
+                        console.log("sätter output till = " + output);
+                        $('#place-output').html(output);
+                    } else {
+                        $.each(res, function (index, place) {
+                            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
+                            output += '<h3>' + place.name + '</h3>';
+                            output += '<p>' + place.shortDescription + '</p>';
+                            output += "</div>";
+
+                            placeoutput.append(output);
+
+                            var ch = new CoordinateHandler();
+
+                            latlng = ch.gridToGeodetic(place.geoX, place.geoY);
+                            var marker = new google.maps.Marker({
+                                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
+                                title: 'hello'
+                            });
+                            marker.setMap(window.map);
+                            window.markers.push(marker);
+                            marker.addListener('click',function() {
+                                var anchor = "#marker" + place.id;
+                                $('html, body').animate({
+                                    scrollTop: $(anchor).offset().top
+                                }, 500);
+                                $(anchor).collapsible('expand');
+                            })
+
+                        });
+                        $('div[data-role=collapsible]').collapsible();
+                    }
+                });
+            }
+
+
+
+            getLocation();
+
+
+
+        });
+    </script>
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+    <div data-role="main" class="ui-content">
+        <h3>Hitta platser</h3>
+        <div id="map"> </div>
+
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
+        </script>
+        <div>
+            <h3>Platser:</h3>
+            <div id="place-output"></div>
+        </div>
+
+
+    </div>
+
+</body>
+</html>

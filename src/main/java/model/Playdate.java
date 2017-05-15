@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
@@ -13,28 +14,35 @@ import java.util.Set;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(nullable = false)
+    @Expose
     private String header;
 
     @Type(type = "text")
+    @Expose
     private String description;
 
+    @Expose
     private long startTime;
 
     @ManyToOne
+    @Expose
     private User owner;
 
     @ManyToMany
     private Set<User> participants = new HashSet<>();
 
-    @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
+    @OneToMany
     private Set<Invite> invites = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Expose
     private Place place;
 
+    @Expose
     private PlaydateVisibilityType playdateVisibilityType;
 
     public boolean addInvite(Invite invite) {
@@ -74,19 +82,15 @@ import java.util.Set;
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         Playdate playdate = (Playdate) o;
 
-        if (startTime != playdate.startTime) return false;
         if (id != null ? !id.equals(playdate.id) : playdate.id != null) return false;
+        if (startTime != playdate.startTime) return false;
         if (header != null ? !header.equals(playdate.header) : playdate.header != null) return false;
         if (description != null ? !description.equals(playdate.description) : playdate.description != null)
             return false;
         if (owner != null ? !owner.equals(playdate.owner) : playdate.owner != null) return false;
-        if (participants != null ? !participants.equals(playdate.participants) : playdate.participants != null)
-            return false;
-        if (invites != null ? !invites.equals(playdate.invites) : playdate.invites != null) return false;
         if (place != null ? !place.equals(playdate.place) : playdate.place != null) return false;
         return playdateVisibilityType == playdate.playdateVisibilityType;
     }

@@ -90,5 +90,10 @@ public class SecretsLoaderTest {
         testFiles.forEach(File::delete);
     }
 
+    @Test
+    public void testLoadFromArgs() throws Exception {
+        Secrets secrets = Secrets.getInstance();
+        secrets.injectValuesFromArgs(new String[]{});
+    }
 
 }

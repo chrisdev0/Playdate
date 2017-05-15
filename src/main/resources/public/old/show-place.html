@@ -21,26 +21,6 @@
 
 
 
-      <script>
-          function loadMap() {
-
-              var mapOptions = {
-                  center:new google.maps.LatLng(59.334591, 18.063240),
-                  zoom:5
-              }
-
-              var map = new google.maps.Map(document.getElementById("sample"),mapOptions);
-
-              var marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(58.588455, 16.188313),
-                  map: map,
-
-
-              });
-
-              marker.setMap(map);
-          }
-      </script>
   </head>
 
   <body onload = "loadMap()">

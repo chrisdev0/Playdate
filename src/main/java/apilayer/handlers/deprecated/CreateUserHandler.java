@@ -1,4 +1,4 @@
-package apilayer.handlers;
+package apilayer.handlers.deprecated;
 
 
 import dblayer.HibernateUtil;
@@ -14,6 +14,7 @@ import utils.Utils;
 import static spark.Spark.*;
 
 @Slf4j
+@Deprecated
 public class CreateUserHandler {
 
     /** Denna metod hanterar skapandet av en användare

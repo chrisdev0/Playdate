@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import org.hibernate.annotations.*;
 
@@ -15,15 +16,18 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
     private Long id;
 
     @Column(nullable = false)
+    @Expose
     private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
 
     @Type(type = "text")
+    @Expose
     private String description;
 
     private String phoneNumber;
@@ -33,6 +37,12 @@ public class User {
     @Column(unique = true)
     private String facebookThirdPartyID;
 
+    private boolean isAdmin = false;
+
+    @Expose
+    private String facebookLinkUrl;
+
+    @Expose
     private String profilePictureUrl;
 
     @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)
@@ -41,12 +51,17 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendshipRequest> friendshipRequest = new HashSet<>();
 
+
+    @OneToMany(mappedBy = "sender")
+    private Set<FriendshipRequest> sentFriendshipRequest = new HashSet<>();
+
     @OneToMany(mappedBy = "invited", cascade = CascadeType.REMOVE)
     private Set<Invite> invitesToPlaydates = new HashSet<>();
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private Set<Playdate> attendingPlaydates = new HashSet<>();
 
+    @Expose
     private Gender gender;
 
     public User() {
@@ -61,8 +76,12 @@ public class User {
         return this.friendshipRequest.add(friendshipRequest);
     }
 
+    public boolean addSentFriendshipRequest(FriendshipRequest friendshipRequest) {
+        return this.sentFriendshipRequest.add(friendshipRequest);
+    }
+
     public boolean addFriend(User friend){
-        return friends.add(new Friendship(this, friend));
+        return friends.add(new Friendship(friend, this));
     }
 
     public boolean removeFriend(Friendship fr){
