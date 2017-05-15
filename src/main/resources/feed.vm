@@ -73,8 +73,6 @@
 
 <div data-role="page" id="pageone">
  
- 
-  
 
   <div data-role="main" class="ui-content">
       <div id="output">

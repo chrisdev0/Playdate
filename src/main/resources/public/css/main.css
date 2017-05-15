@@ -1,7 +1,9 @@
 .center {
     text-align: center !important;
 }
-
+#side-panel{
+    background: #eff6da;
+}
 .header-shadow {
     -webkit-box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
@@ -20,7 +22,9 @@
 
 .close-btn-pos {
     display: block;
-    background: #2c3e50;
+    background: #d8f6a4;
+    border: 1px solid;
+    border-color: #8f8f8f;
     color: white;
     height: 2.7em;
 }
