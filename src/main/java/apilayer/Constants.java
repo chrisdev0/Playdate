@@ -41,6 +41,7 @@ public class Constants {
         public static final String USER_IS_NOT_OWNER_OF_INVITE = "user_is_not_owner_of_invite";
         public static final String NO_INVITE_WITH_ID = "no_invite_with_id";
         public static final String USER_CANT_REPORT_SELF = "user_try_report_self";
+        public static final String VALIDATION_ERROR = "validation_error";
 
         public static final String OK = "";
     }
