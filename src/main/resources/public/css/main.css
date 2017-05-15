@@ -274,3 +274,7 @@
     font-weight: bold;
     font-size: 1.4em;
 }
+
+.bottom-line {
+    border-bottom: 1px solid #e1e1e1;
+}

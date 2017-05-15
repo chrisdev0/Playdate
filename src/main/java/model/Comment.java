@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @NoArgsConstructor
-@Data public class Comment {
+@Data public class Comment implements Comparable<Comment>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,5 +37,10 @@ import java.util.Date;
         this.comment = comment;
         this.commenter = commenter;
         this.hidden = hidden;
+    }
+
+    @Override
+    public int compareTo(Comment o) {
+        return o.commentDate.compareTo(commentDate);
     }
 }

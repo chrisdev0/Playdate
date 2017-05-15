@@ -7,8 +7,58 @@
     #parse("head-links.vm")
 
 <script>
+    $(document).ready(function() {
+        $.getJSON('/protected/commentsofplace?placeId=$!place.id',function(res) {
+            console.log(res);
+            $('#show-comments').html("");
+            $.each(res, function (index, comment) {
+                renderComment(comment)
+            });
+        })
+
+        var renderComment = function (comment){
+            var output = "<div class='bottom-line'>";
+            output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
+                    " "+ comment.commentDate +"</p>"
+            output += "<p>" + comment.comment + "</p>"
+            output += "</div>"
+            $('#show-comments').append(output);
+        }
+
+        $('#makeComment').submit(function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            $.ajax({
+                type: 'POST',
+                url: '/protected/postcomment',
+                data: $('#makeComment').serialize(),
+                success: function(res) {
+                    console.log(res);
+                    res = JSON.parse(res);
+                    $('#comment').val("");
+                    $('#show-comments').html("");
+                    $.each(res,function(index, comment) {
+                        renderComment(comment)
+                    })
+                }
+            })
+        });
 
 
+        $.getJSON('/protected/playdatesofplace?placeId=$!place.id',function(res) {
+            console.log(res);
+            var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-filter="true" data-input="#myFilter">'
+            $.each(res, function (index, playdate) {
+                var output = "<li>";
+                output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-filter='true' data-input='#myFilter'>" + playdate.header + "</a>";
+                output += "</li>";
+                ooutput += output;
+            });
+            ooutput += "</ul>"
+            $('#playdates-here-output').html(ooutput);
+        })
+    })
 </script>
 
 </head>
@@ -41,6 +91,14 @@
                     </ul>
                 </div>
         </div>
+        <div class="show-place-buttons">
+
+            <a href="#playdates-here" class="ui-btn ui-mini ui-btn-inline" style="margin-left:6%;">Playdates här</a>
+
+
+            <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
+
+        </div>
         <p class="place-description">
             #if($place.longDescription)
                 $!{place.longDescription}
@@ -67,26 +125,31 @@
                 <td>$!{place.streetAddress}</td>
             </tr>
         </table>
-        <div class="show-place-buttons">
-            <a href="#" class="ui-btn">Skapa Playdate Här</a>
-
-
-            <a href="#" class="ui-btn ui-mini ui-btn-inline" style="margin-left:6%;">Playdates här</a>
-
-
-            <a href="#" class="ui-btn ui-mini ui-btn-inline">Platser i närheten</a>
+        <div id="make-comment">
+            <form id="makeComment">
+                <textarea id="comment" name="comment"></textarea>
+                <input type="hidden" id="placeId" name="placeId" value="$!place.id">
+                <input type="submit" class="ui-btn" value="Skicka kommentar">
+            </form>
+        </div>
+        <div id="show-comments">
 
         </div>
     </div>
 </div>
 
 <div data-role="page" id="playdates-here">
-    <h2>Kommande playdates här</h2>
+    <div data-role="main" class="ui-content">
+        <label for="myFilter" >Sök efter Playdates</label>
+        <form class="ui-filterable">
+            <input id="myFilter" data-type="search">
+        </form>
+        <div id="playdates-here-output"></div>
+
+    </div>
 </div>
 
 
-
-</div>
 
 </body>
 </html>

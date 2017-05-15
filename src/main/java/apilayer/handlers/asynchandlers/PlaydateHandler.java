@@ -147,8 +147,11 @@ public class PlaydateHandler {
 
     public static Object handleGetPublicPlaydatesOfPlace(Request request, Response response) {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
-        return placeOptional.map(place -> new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-                .create().toJson(PlaydateDAO.getInstance().getPlaydateAtPlace(place))).orElse((String) setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID));
+        if (placeOptional.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create().toJson(PlaydateDAO.getInstance().getPlaydateAtPlace(placeOptional.get()));
+        }
+        return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);
     }
 
 }
