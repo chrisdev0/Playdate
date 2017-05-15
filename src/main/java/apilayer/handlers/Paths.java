@@ -50,6 +50,7 @@ public class Paths {
     public static final String COMMENTSOFPLACE = "/commentsofplace";
     public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
     public static final String GETONEPLACEJSON = "/getplaceasjson";
+    public static final String SENDFRIENDSHIPREQUEST = "/sendfriendrequest";
 
     public static class ADMIN {
         public static final String ADMIN = "/admin";
@@ -76,5 +77,6 @@ public class Paths {
         public static final String LOC_Y = "locY";
 
         public static final String REPORT_DESCRIPTION = "reportDescription";
+        public static final String FRIEND_ID = "friendId";
     }
 }

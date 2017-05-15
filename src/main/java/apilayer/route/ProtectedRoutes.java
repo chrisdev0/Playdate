@@ -107,6 +107,7 @@ public class ProtectedRoutes {
             * */
             post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
+            post(Paths.SENDFRIENDSHIPREQUEST, FriendshipHandler::addFriendRequest);
 
 
             /*      INVITE-routes
