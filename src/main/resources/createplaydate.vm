@@ -215,7 +215,7 @@
 
                 <label for="place-input-field">Sök plats:</label>
 
-
+                <input type="search" name="place-input-field" id="place-input-field">
                 <ul id="search-suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#place-input-field">
                     <li>Test</li>
                 </ul>

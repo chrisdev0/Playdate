@@ -27,7 +27,6 @@ public class FBRouteHandler {
     public static Object handleFacebookLogin(Request request, Response response) {
         Optional<FacebookProfile> facebookProfileOptional = FBHelpers.getFacebookProfile(request, response);
         if (!facebookProfileOptional.isPresent()) {
-            log.error("no facebook profile from request");
             Map<String, Object> map = new HashMap<>();
             map.put("code", "" + 400);
             map.put("error_msg", "no facebook profile");
@@ -41,7 +40,6 @@ public class FBRouteHandler {
             if (userOptional.isPresent()) {
                 user = userOptional.get();
             }
-            log.info("Save user on login = " + userOptional.isPresent());
             request.session(true).attribute(Constants.USER_SESSION_KEY, user);
         } catch (Exception e) {
             log.error("error session ", e);

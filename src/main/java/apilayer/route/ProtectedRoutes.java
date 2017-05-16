@@ -109,7 +109,10 @@ public class ProtectedRoutes {
             post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
             post(Paths.SENDFRIENDSHIPREQUEST, FriendshipHandler::addFriendRequest);
-
+            /*      Friendship-routes
+            * */
+            delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
+            delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
 
             /*      INVITE-routes
             * */
