@@ -4,6 +4,7 @@ import apilayer.Constants;
 import apilayer.handlers.Paths;
 import com.google.gson.GsonBuilder;
 import com.sun.org.apache.regexp.internal.RE;
+import com.sun.tools.internal.jxc.ap.Const;
 import dblayer.HibernateUtil;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
@@ -33,15 +34,19 @@ public class PlaydateHandler {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
 
-        if (!Utils.validateLengthOfString(3, 30, header) ||
-                !Utils.validateLengthOfString(20, 300, description)) {
-            setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header) ||
+                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
 
         }
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
+
+        if (!Utils.validateStartTime(startTime)){
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
         if (!Utils.isNotNullAndNotEmpty(header, description)) {
             log.error("header or description is empty");
             response.status(400);
@@ -99,6 +104,16 @@ public class PlaydateHandler {
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
+
+        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header) ||
+                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+
+        }
+        if (!Utils.validateStartTime(startTime)){
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
+
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {

@@ -19,6 +19,14 @@ public class Constants {
     public static final int QUICK_PLACE_SEARCH_LIMIT = 5;
     public static final String ONLOGINREDIRECT = "onloginredirect";
 
+    public static final Long TIMEDECIDER = 86400000L * 30;
+    public static final int SHORTDESCMIN = 3;
+    public static final int SHORTDESCMAX = 20;
+    public static final int LONGDESCMIN = 10;
+    public static final int LONGDESCMAX = 300;
+
+
+
     static {
         if (DEV) {
             ABSOLUTE_URL = "http://localhost:" + PORT;

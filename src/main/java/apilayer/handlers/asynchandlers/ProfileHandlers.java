@@ -29,7 +29,7 @@ public class ProfileHandlers {
         String genderSelectValue = request.queryParams("genderselect");
         String phoneStr = request.queryParams("phoneinput");
         if (!Utils.isValidPhoneNumber(phoneStr) ||
-                !Utils.validateLengthOfString(20, 300, description)){
+                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)){
             return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
         }
         int genderInt = ParserHelpers.parseToInt(genderSelectValue);

@@ -76,6 +76,10 @@ public class Paths {
         public static final String COMMENT_BY_ID = "commentId";
         public static final String INVITE_BY_ID = "inviteId";
         public static final String COMMENT_CONTENT = "comment";
+        public static final String HEADER = "header";
+        public static final String DESCRIPTION = "description";
+        public static final String VISIBILITY_ID = "visibilityId";
+        public static final String STARTTIME = "startTime";
 
         public static final String INVITE_MSG = "inviteMessage";
         public static final String LOC_X = "locX";

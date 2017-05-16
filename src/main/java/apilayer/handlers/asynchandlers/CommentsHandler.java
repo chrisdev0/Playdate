@@ -3,6 +3,7 @@ package apilayer.handlers.asynchandlers;
 import apilayer.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.tools.internal.jxc.ap.Const;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -12,15 +13,14 @@ import org.apache.commons.lang.StringEscapeUtils;
 import model.Playdate;
 import spark.Request;
 import spark.Response;
+import utils.Utils;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static apilayer.handlers.asynchandlers.SparkHelper.getPlaceFromRequest;
-import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
-import static apilayer.handlers.asynchandlers.SparkHelper.getPlaydateFromRequest;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
 @Slf4j
 public class CommentsHandler {
@@ -44,6 +44,11 @@ public class CommentsHandler {
      * */
     public static Object handlePostPlaceComment(Request request, Response response) {
         String commentStr = request.queryParams("comment");
+
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, commentStr)) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
+
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
             Comment comment = new Comment(commentStr, getUserFromSession(request), false);
@@ -64,6 +69,11 @@ public class CommentsHandler {
 
     public static Object handlePostPlaydateComment(Request request, Response response) {
         String commentStr = request.queryParams("comment");
+
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, commentStr)){
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
+
         Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
         if (playdateOptional.isPresent()) {
             Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
