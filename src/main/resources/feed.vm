@@ -9,6 +9,21 @@
     <script>
 
         $(document).ready(function () {
+            window.userpos;
+
+            window.getLocation = function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(p){
+                        console.log("got position running get data");
+                        window.userpos = p;
+                        getData(p);
+                    });
+                } else {
+                    console.log("no navigator")
+                }
+            }
+
+            window.getLocation();
 
             var outputDiv = $('#output');
             Object.prototype.hasOwnProperty = function(property) {
@@ -19,10 +34,12 @@
             var pendingAjax = false;
 
 
-            var getData = function () {
-                pendingAjax = true;
 
-                $.getJSON('/protected/getfeed?offset=' + window.offset).done(function (data) {
+            var getData = function (p) {
+                pendingAjax = true;
+                console.log("getdata function");
+                $.getJSON('/protected/getfeed?locX=' + p.coords.latitude + '&locY=' + p.coords.longitude)
+                        .done(function (data) {
                     console.log(data.collection);
                     window.offset = parseInt(data.paginationOffset) + 10 ;
                     pendingAjax = false;
@@ -45,6 +62,7 @@
 
             };
 
+            /*
             $(window).scroll(function () {
                 var atHeight = ($(window).scrollTop() + $(window).height());
                 var totalHeight = $(document).height() -50;
@@ -53,8 +71,8 @@
                     getData();
                 }
             });
-
-            getData()
+*/
+            //getData()
 
 
         });

@@ -60,6 +60,8 @@ public class ProtectedRoutes {
             * */
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
+            get(Paths.GETFEED, FeedHandler::handleGetFeed);
+            /*
             get(Paths.GETFEED, (request, response) -> {
                 Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
                 PaginationWrapper<FeedObject> paginationWrapper = new PaginationWrapper<>(
@@ -67,7 +69,7 @@ public class ProtectedRoutes {
                         norrmalm.get().getPaginationOffset());
                 return new Gson().toJson(paginationWrapper);
             });
-
+            */
 
             /*      Kommentar-routes
             * */
