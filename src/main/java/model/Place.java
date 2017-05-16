@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.Type;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
@@ -67,14 +68,50 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     private int geoY;
 
     public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
-        this.sthlmAPIid = sthlmAPIid;
-        this.name = name;
-        this.imageId = imageId;
+        this.sthlmAPIid = StringEscapeUtils.escapeHtml(sthlmAPIid);
+        this.name = StringEscapeUtils.escapeHtml(name);
+        this.imageId = StringEscapeUtils.escapeHtml(imageId);
         this.timeCreated = timeCreated;
         this.timeUpdated = timeUpdated;
         this.geoX = geoX;
         this.geoY = geoY;
-        this.shortDescription = shortDescription;
+        this.shortDescription = StringEscapeUtils.escapeHtml(shortDescription);
+    }
+
+    public void setSthlmAPIid(String sthlmAPIid) {
+        this.sthlmAPIid = StringEscapeUtils.escapeHtml(sthlmAPIid);
+    }
+
+    public void setName(String name) {
+        this.name = StringEscapeUtils.escapeHtml(name);
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = StringEscapeUtils.escapeHtml(shortDescription);
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = StringEscapeUtils.escapeHtml(longDescription);
+    }
+
+    public void setCategory(String category) {
+        this.category = StringEscapeUtils.escapeHtml(category);
+    }
+
+    public void setGeoArea(String geoArea) {
+        this.geoArea = StringEscapeUtils.escapeHtml(geoArea);
+    }
+
+    public void setCityAddress(String cityAddress) {
+        this.cityAddress = StringEscapeUtils.escapeHtml(cityAddress);
+    }
+
+    public void setZip(String zip) {
+        this.zip = StringEscapeUtils.escapeHtml(zip);
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = StringEscapeUtils.escapeHtml(streetAddress);
     }
 
     @Transient

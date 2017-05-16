@@ -3,6 +3,7 @@ package model;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -34,9 +35,13 @@ import java.util.Date;
 
 
     public Comment(String comment, User commenter, boolean hidden) {
-        this.comment = comment;
+        this.comment = StringEscapeUtils.escapeHtml(comment);
         this.commenter = commenter;
         this.hidden = hidden;
+    }
+
+    public void setComment(String comment) {
+        this.comment = StringEscapeUtils.escapeHtml(comment);
     }
 
     @Override

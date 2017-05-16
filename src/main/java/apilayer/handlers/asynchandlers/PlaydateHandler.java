@@ -15,10 +15,7 @@ import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
-
 import java.util.Optional;
-
-
 import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
 import static spark.Spark.halt;
@@ -35,6 +32,12 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
+
+        if (!Utils.validateLengthOfString(3, 30, header) ||
+                !Utils.validateLengthOfString(20, 300, description)) {
+            setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+
+        }
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));

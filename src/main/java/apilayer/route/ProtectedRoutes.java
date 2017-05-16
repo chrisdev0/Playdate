@@ -71,8 +71,11 @@ public class ProtectedRoutes {
 
             /*      Kommentar-routes
             * */
-            post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
+            post(Paths.POSTPLACECOMMENT, CommentsHandler::handlePostPlaceComment);
             get(Paths.COMMENTSOFPLACE, CommentsHandler::handleGetCommentsOfPlace);
+            //playdate
+            post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
+            get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
 
             /*      Sök-routes
             * */
@@ -108,7 +111,10 @@ public class ProtectedRoutes {
             post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
             post(Paths.SENDFRIENDSHIPREQUEST, FriendshipHandler::addFriendRequest);
-
+            /*      Friendship-routes
+            * */
+            delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
+            delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
 
             /*      INVITE-routes
             * */
