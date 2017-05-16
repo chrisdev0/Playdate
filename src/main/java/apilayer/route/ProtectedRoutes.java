@@ -104,7 +104,7 @@ public class ProtectedRoutes {
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
-
+            get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
 
             /*      FriendshipRequest-routes
             * */

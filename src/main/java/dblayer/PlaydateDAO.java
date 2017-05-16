@@ -73,6 +73,13 @@ public class PlaydateDAO {
         return playdates;
     }
 
+    public List<Playdate> getPlaydatesOfMultiplePlace(List<Long> ids) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM Playdate WHERE  playdateVisibilityType = :vis AND place.id IN (:ids)", Playdate.class)
+                    .setParameter("ids", ids).setParameter("vis", PlaydateVisibilityType.PUBLIC).list();
+        }
+    }
+
     public Optional<List<Playdate>> getPlaydatesAttending(User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             String hql = "SELECT p FROM Playdate p JOIN p.participants u WHERE u = :user";
