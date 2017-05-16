@@ -51,6 +51,8 @@ public class Paths {
     public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
     public static final String GETONEPLACEJSON = "/getplaceasjson";
     public static final String SENDFRIENDSHIPREQUEST = "/sendfriendrequest";
+    public static final String REMOVEFRIENDSHIP = "/removefriend";
+    public static final String REMOVEFRIENDSHIPREQUEST = "/removefriendshiprequest";
 
     public static class ADMIN {
         public static final String ADMIN = "/admin";
