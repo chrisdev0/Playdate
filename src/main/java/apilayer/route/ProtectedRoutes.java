@@ -73,7 +73,9 @@ public class ProtectedRoutes {
             * */
             post(Paths.POSTPLACECOMMENT, CommentsHandler::handlePostPlaceComment);
             get(Paths.COMMENTSOFPLACE, CommentsHandler::handleGetCommentsOfPlace);
+            //playdate
             post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
+            get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
 
             /*      Sök-routes
             * */

@@ -82,6 +82,9 @@ public class CommentsHandler {
         }
     }
 
+
+
+
     public static Object handleGetCommentsOfPlace(Request request, Response response) {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
@@ -91,6 +94,17 @@ public class CommentsHandler {
         response.status(400);
         return Constants.MSG.NO_PLACE_WITH_ID;
     }
+
+    public static Object handleGetCommentsOfPlaydate(Request request, Response response) {
+        Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
+        if (playdateOptional.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+                    playdateOptional.get().getComments().stream().sorted().collect(Collectors.toList()));
+        }
+        response.status(400);
+        return Constants.MSG.NO_PLACE_WITH_ID;
+    }
+
 
 
 }
