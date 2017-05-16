@@ -1,5 +1,6 @@
 package model;
 
+import apilayer.Constants;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -9,10 +10,11 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 @Entity
 @Data
-public class Playdate {
+public class Playdate implements Comparable<Playdate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -122,5 +124,15 @@ public class Playdate {
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + (playdateVisibilityType != null ? playdateVisibilityType.hashCode() : 0);
         return result;
+    }
+
+
+    public boolean playdateIsInFuture(){
+        return startTime > (System.currentTimeMillis() - Constants.COUNT_PLAYDATE_AS_FUTURE_CUTOFF);
+    }
+
+    @Override
+    public int compareTo(Playdate p) {
+        return Long.compare(p.startTime, startTime);
     }
 }

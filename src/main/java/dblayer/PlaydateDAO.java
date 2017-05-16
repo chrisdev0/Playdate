@@ -10,8 +10,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import static spark.Spark.halt;
 
@@ -60,7 +67,7 @@ public class PlaydateDAO {
      *  @param user         användaren vars playdates som användaren ska attenda som ska returneras
      *  @return             Listan med playdates
      * */
-    public Set<Playdate> getPlaydateWhoUserIsAttending(User user) {
+    public Set<Playdate> getAllPlaydateWhoUserIsAttendingAlsoOwner(User user) {
         Set<Playdate> playdates = new HashSet<>();
         try (Session session = HibernateUtil.getInstance().openSession()) {
             String hql = "SELECT p FROM Playdate p JOIN p.participants u WHERE u.id = :id";
@@ -308,6 +315,20 @@ public class PlaydateDAO {
             }
         }
         return Optional.ofNullable(ret);
+    }
+
+    public List<Playdate> getPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriend(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            session.refresh(user);
+            String hql = "SELECT distinct p FROM Playdate p, User, Friendship f WHERE f.requester = :user AND f.friend = p.owner " +
+                    "AND (p.playdateVisibilityType = :public OR p.playdateVisibilityType = :friendsonly) AND (:userid NOT IN (SELECT par.id FROM p.participants par WHERE par.id = :userid))";
+            return session.createQuery(hql, Playdate.class)
+                    .setParameter("user", user)
+                    .setParameter("userid", user.getId())
+                    .setParameter("public", PlaydateVisibilityType.PUBLIC)
+                    .setParameter("friendsonly", PlaydateVisibilityType.FRIENDS_ONLY)
+                    .list();
+        }
     }
 
 

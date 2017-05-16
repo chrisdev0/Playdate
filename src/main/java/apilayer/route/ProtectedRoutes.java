@@ -171,6 +171,9 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest);
+
     }
 
     /** Metoden returnerar true om användaren är inloggad

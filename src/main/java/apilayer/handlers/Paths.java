@@ -64,8 +64,9 @@ public class Paths {
     public static final String REMOVEFRIENDSHIPREQUEST = "/removefriendshiprequest";
     public static final String GETPLAYDATESOFMULTIPLEPLACE = "/getplaydatesofmultipleplace";
 
-    /**
+    /**     EVENTS
      * */
+    public static final String GETMYEVENTS = "/getmyinvites";
 
 
 
