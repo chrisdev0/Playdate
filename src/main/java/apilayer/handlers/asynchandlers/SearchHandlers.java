@@ -17,6 +17,8 @@ import utils.ParserHelpers;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
@@ -59,5 +61,12 @@ public class SearchHandlers {
         return playdatesOpt.map(playdates -> new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(playdates)).orElse((String) setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR));
     }
 
+
+    public static Object searchPublicPlaydatesByMultiPlace(Request request, Response response) {
+        String[] multiPlaceIds = request.queryParams(Paths.QueryParams.MULTI_PLACE_IDS).split(",");
+        List<Long> placeIds = Stream.of(multiPlaceIds).map(ParserHelpers::parseToLong).collect(Collectors.toList());
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+                .toJson(PlaydateDAO.getInstance().getPlaydatesOfMultiplePlace(placeIds));
+    }
 
 }

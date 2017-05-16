@@ -62,6 +62,7 @@ public class Paths {
     public static final String SENDFRIENDSHIPREQUEST = "/sendfriendrequest";
     public static final String REMOVEFRIENDSHIP = "/removefriend";
     public static final String REMOVEFRIENDSHIPREQUEST = "/removefriendshiprequest";
+    public static final String GETPLAYDATESOFMULTIPLEPLACE = "/getplaydatesofmultipleplace";
 
     /**
      * */
@@ -109,5 +110,6 @@ public class Paths {
 
         public static final String REPORT_DESCRIPTION = "reportDescription";
         public static final String FRIEND_ID = "friendId";
+        public static final String MULTI_PLACE_IDS = "placeIds";
     }
 }
