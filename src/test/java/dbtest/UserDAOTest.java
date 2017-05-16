@@ -1,6 +1,5 @@
 package dbtest;
 
-import com.sun.tools.internal.xjc.model.Model;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
