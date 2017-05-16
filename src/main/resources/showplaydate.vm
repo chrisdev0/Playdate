@@ -18,11 +18,7 @@
 
 <div data-role="page" id="pageone">
 
-
-
-
     <div data-role="main" class="ui-content">
-
 
         <h2>$!{playdate.header}</h2>
         <p style= "margin-top: -1.5em;"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
@@ -43,8 +39,8 @@
                          break;
                 }
             document.write(output);
-
-
+            </script>
+            <script>
             $(document).ready(function() {
                 $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function(res) {
                     console.log(res);
@@ -83,6 +79,7 @@
                     })
                 });
                 </script>
+
                 <script>
                 $(document).ready(function () {
 
@@ -157,18 +154,15 @@
         </div>
 
         <div id="make-comment">
-            <form id="makeComment">
+            <form data-ajax="false" id="makeComment">
                 <textarea id="comment" name="comment"></textarea>
                 <input type="hidden" id="playdateId" name="playdateId" value="$!playdate.id">
                 <input type="submit" class="ui-btn" value="Skicka kommentar">
             </form>
         </div>
         <div id="show-comments">
-        </div>
 
-        #if ($playdate.getOwner()==$user)
-            <a data-playdateid="$!{playdate.id}" style="margin-top: 20%; background: #e33c13 !important; color:white !important;" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#">Ta bort</a>
-        #end
+        </div>
 
         <div data-role="popup" id="popupBasic">
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
@@ -178,3 +172,7 @@
 
 </body>
 </html>
+
+## #if ($playdate.getOwner()==$user)
+##<a data-playdateid="$!{playdate.id}" style="margin-top: 20%; background: #e33c13 !important; color:white !important;" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#">Ta bort</a>
+###end/
