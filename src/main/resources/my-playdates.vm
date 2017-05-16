@@ -21,6 +21,7 @@
                 $.ajax('/protected/deleteplaydate?playdateId=' + playdateid, {
                     type: 'DELETE',
                     success: function(res){
+                        window.location.replace("/protected/showplaydates");
                         console.log("success remove playdate");
                         console.log(res)
                         div.remove();

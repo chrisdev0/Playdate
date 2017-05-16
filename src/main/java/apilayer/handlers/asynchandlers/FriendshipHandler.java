@@ -11,6 +11,8 @@ import utils.ParserHelpers;
 import java.util.Optional;
 import java.util.Set;
 
+import static apilayer.Constants.MSG.*;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
 import static spark.Spark.halt;
 
 
@@ -146,4 +148,31 @@ public class FriendshipHandler {
         throw halt(400);
     }
 
+    public static Object handleRemoveFriend(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<User> friendOpt = getUserFromRequestById(request);
+        if (friendOpt.isPresent()) {
+            boolean b = UserDAO.getInstance().removeFriendship(user, friendOpt.get());
+            if(b) {
+                return setStatusCodeAndReturnString(response, 200, OK);
+            } else {
+                return setStatusCodeAndReturnString(response, 200, ERROR);
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, NO_USER_WITH_ID);
+    }
+
+    public static Object handleRemoveFriendshipRequest(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<User> friendOpt = getUserFromRequestById(request);
+        if (friendOpt.isPresent()) {
+            if (UserDAO.getInstance().removeOrDeclineFriendshipRequest(user, friendOpt.get())) {
+                return setStatusCodeAndReturnString(response, 200, OK);
+            } else {
+                return setStatusCodeAndReturnString(response, 400, ERROR);
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, NO_USER_WITH_ID);
+
+    }
 }

@@ -2,6 +2,8 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -64,9 +67,6 @@ public class User {
     @Expose
     private Gender gender;
 
-    public User() {
-
-    }
 
     public boolean attendPlaydate(Playdate playdate) {
         return attendingPlaydates.add(playdate);
@@ -97,7 +97,7 @@ public class User {
     }
 
     public User(String name, String email) {
-        this.name = name;
+        setName(name);
         this.email = email.toUpperCase();
     }
 
@@ -111,14 +111,6 @@ public class User {
 
     public boolean removeInvite(Invite invite) {
         return invitesToPlaydates.remove(invite);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -142,8 +134,12 @@ public class User {
         else return true;
     }
 
-    public void setEmail(String email) {
-        this.email = email != null ? email.toUpperCase() : email;
+    public void setName(String name) {
+        this.name = StringEscapeUtils.escapeHtml(name);
+    }
+
+    public void setDescription(String description) {
+        this.description = StringEscapeUtils.escapeHtml(description);
     }
 
     @Override

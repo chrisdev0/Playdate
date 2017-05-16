@@ -417,4 +417,56 @@ public class UserDAO {
         return ret;
     }
 
+
+    public boolean removeFriendship(User user, User friend) {
+        boolean ret = false;
+        Session session;
+        Transaction tx = null;
+        try {
+            Optional<Friendship> friendship1 = checkIfFriendWithUser(user.getId(), friend.getId());
+            Optional<Friendship> friendship2 = checkIfFriendWithUser(friend.getId(), user.getId());
+
+            if (friendship1.isPresent() && friendship2.isPresent()) {
+                session = HibernateUtil.getInstance().openSession();
+                tx = session.beginTransaction();
+                session.delete(friendship1.get());
+                session.delete(friendship2.get());
+                session.update(user);
+                session.update(friend);
+                tx.commit();
+                ret = true;
+            }
+        } catch (Exception e) {
+            log.error("error removing friendship", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
+        return ret;
+    }
+
+    public boolean removeOrDeclineFriendshipRequest(User user, User friend) {
+        Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(user.getId(), friend.getId());
+        boolean ret = false;
+        if (friendshipRequest.isPresent()) {
+            Session session;
+            Transaction tx = null;
+            try {
+                session = HibernateUtil.getInstance().openSession();
+                tx = session.beginTransaction();
+                session.remove(friendshipRequest.get());
+                session.update(user);
+                session.update(friend);
+                tx.commit();
+                ret = true;
+            } catch (Exception e) {
+                log.error("error removing friendshiprequest", e);
+                if (tx != null) {
+                    tx.rollback();
+                }
+            }
+        }
+        return ret;
+    }
+
 }

@@ -33,7 +33,7 @@ public class TestComments extends MockTestHelpers {
 
         injectKeyValue(request, new KeyValue("placeId", "" + place.getId()), new KeyValue("comment", "kommentar"));
 
-        String json = (String)CommentsHandler.handlePostComment(request, response);
+        String json = (String)CommentsHandler.handlePostPlaceComment(request, response);
         log.info("statuscode = " + response.status());
 
         log.info(json);
@@ -57,7 +57,7 @@ public class TestComments extends MockTestHelpers {
 
         injectKeyValue(request, new KeyValue(Paths.QueryParams.PLACE_BY_ID, place.getId()), new KeyValue(Paths.QueryParams.COMMENT_CONTENT, "kommentar"));
 
-        String json = (String) CommentsHandler.handlePostComment(request, response);
+        String json = (String) CommentsHandler.handlePostPlaceComment(request, response);
 
         Request request1 = initRequestMock(user);
         Response response1 = initResponseMock();
@@ -93,7 +93,7 @@ public class TestComments extends MockTestHelpers {
 
         injectKeyValue(request, new KeyValue(PLACE_BY_ID, place.getId()), new KeyValue(COMMENT_CONTENT, (String) null));
 
-        String answer = (String) CommentsHandler.handlePostComment(request, response);
+        String answer = (String) CommentsHandler.handlePostPlaceComment(request, response);
         assertNotNull(answer);
         assertTrue(answer.isEmpty());
         remove(place);

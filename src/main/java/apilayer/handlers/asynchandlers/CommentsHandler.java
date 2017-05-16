@@ -4,9 +4,12 @@ import apilayer.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
+import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
+import org.apache.commons.lang.StringEscapeUtils;
+import model.Playdate;
 import spark.Request;
 import spark.Response;
 
@@ -16,6 +19,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.getPlaceFromRequest;
+import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
+import static apilayer.handlers.asynchandlers.SparkHelper.getPlaydateFromRequest;
 
 @Slf4j
 public class CommentsHandler {
@@ -37,11 +42,11 @@ public class CommentsHandler {
      *
      * @return      returnerar JSON med alla kommentarer
      * */
-    public static Object handlePostComment(Request request, Response response) {
+    public static Object handlePostPlaceComment(Request request, Response response) {
         String commentStr = request.queryParams("comment");
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
-            Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
+            Comment comment = new Comment(commentStr, getUserFromSession(request), false);
             Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
             if (comments.isPresent()) {
                 return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
@@ -57,6 +62,29 @@ public class CommentsHandler {
         }
     }
 
+    public static Object handlePostPlaydateComment(Request request, Response response) {
+        String commentStr = request.queryParams("comment");
+        Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
+        if (playdateOptional.isPresent()) {
+            Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
+            Optional<Set<Comment>> comments = PlaydateDAO.getInstance().savePlaydateComment(comment, playdateOptional.get());
+            if (comments.isPresent()) {
+                return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+                        comments.get().stream().sorted().collect(Collectors.toList()));
+            } else {
+                response.status(400);
+                return "";
+            }
+        } else {
+            log.error("couldn't find playdate to post comment in");
+            response.status(400);
+            return "";
+        }
+    }
+
+
+
+
     public static Object handleGetCommentsOfPlace(Request request, Response response) {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
@@ -66,6 +94,17 @@ public class CommentsHandler {
         response.status(400);
         return Constants.MSG.NO_PLACE_WITH_ID;
     }
+
+    public static Object handleGetCommentsOfPlaydate(Request request, Response response) {
+        Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
+        if (playdateOptional.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+                    playdateOptional.get().getComments().stream().sorted().collect(Collectors.toList()));
+        }
+        response.status(400);
+        return Constants.MSG.NO_PLACE_WITH_ID;
+    }
+
 
 
 }

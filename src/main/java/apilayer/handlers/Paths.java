@@ -7,7 +7,9 @@ public class Paths {
 
     public static final String GETONEPLACE = "/getoneplace";
 
-    public static final String POSTCOMMENT = "/postcomment";
+    public static final String POSTPLACECOMMENT = "/postcomment";
+
+    public static final String POSTPLAYDATECOMMENT = "/postplaydatecomment";
 
     public static final String LOGOUT = "/logout";
 
@@ -51,6 +53,9 @@ public class Paths {
     public static final String GETPLAYDATEOFPLACE = "/playdatesofplace";
     public static final String GETONEPLACEJSON = "/getplaceasjson";
     public static final String SENDFRIENDSHIPREQUEST = "/sendfriendrequest";
+    public static final String REMOVEFRIENDSHIP = "/removefriend";
+    public static final String REMOVEFRIENDSHIPREQUEST = "/removefriendshiprequest";
+    public static final String COMMENTSOFPLAYDATE = "/getcommentsofplaydate";
 
     public static class ADMIN {
         public static final String ADMIN = "/admin";

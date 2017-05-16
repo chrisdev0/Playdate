@@ -20,6 +20,48 @@
                 })
 
             })
+
+            $('#remove-friend').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/removefriend?userId=' + $(this).data('userid'),
+                    success: function(res) {
+                        console.log("res = " + res);
+                    }
+                });
+            });
+
+            $('#remove-friendrequest').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/removefriendshiprequest?userId=' + $(this).data('userid'),
+                    success: function(res) {
+                        console.log("res = " + res);
+                    }
+                });
+            });
+            $('#accept-friendrequest').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/acceptfriendshiprequest?userId=' + $(this).data('userid'),
+                    success: function(res) {
+                        console.log("res = " + res);
+                    }
+                });
+            });
+            $('#decline-friendrequest').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/declinefriendshiprequest?userId=' + $(this).data('userid'),
+                    success: function(res) {
+                        console.log("res = " + res);
+                    }
+                });
+            });
         });
     </script>
 
@@ -54,6 +96,7 @@
             </div>
         </div>
         <div class="other-user-reportable">
+
             <h2>$!{other-user.name}</h2>
 
             <a href="#popupReport" data-rel="popup" data-transition="slideup" style="float: right; top: -5px; right: 15px"
@@ -70,20 +113,21 @@
                     $!{other-user.description}
                 </p>
             </div>
-            <div class="ui-block-b profile-right-block">
+            <p class="ui-block-b profile-right-block">
                 <p>
                     $!{other-user.phoneNumber}
                 </p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
                 #if($friendsetting == 0)
-                    <p><a href="/protected/editmyprofile">Redigera</a></p>
+
+                    <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
                 #elseif($friendsetting == 1)
-                    <p>ta bort vän</p>
+                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend">Ta bort vän</a>
                 #elseif($friendsetting == 2)
-                    <p>acceptera vän</p>
-                    <p>avböj vänförfrågan</p>
+                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest">Acceptera vän</a>
+                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest">Avböj vänförfrågan</a>
                 #elseif($friendsetting == 3)
-                    <p>du har skickat request till användaren</p>
+                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" data-ajax="false">Ta bort vänskapsförfrågan</a>
                 #elseif($friendsetting == 4)
                     <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
                 #end

@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 
@@ -39,6 +40,9 @@ public class Playdate {
     @OneToMany
     private Set<Invite> invites = new HashSet<>();
 
+    @OneToMany
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @Expose
     private Place place;
@@ -54,6 +58,10 @@ public class Playdate {
         return invites.remove(invite);
     }
 
+    public boolean addComment(Comment comment) { return comments.add(comment); }
+
+    public boolean removeComment(Comment comment){ return comments.remove(comment); }
+
     public boolean addParticipant(User participant) {
         return participants.add(participant);
     }
@@ -66,14 +74,21 @@ public class Playdate {
     }
 
     public Playdate(String header, String description, long startTime, User owner, Place place, PlaydateVisibilityType playdateVisibilityType) {
-        this.header = header;
-        this.description = description;
+        this.header = StringEscapeUtils.escapeHtml(header);
+        this.description = StringEscapeUtils.escapeHtml(description);
         this.startTime = startTime;
         this.owner = owner;
         this.place = place;
         this.playdateVisibilityType = playdateVisibilityType;
     }
 
+    public void setHeader(String header) {
+        this.header = StringEscapeUtils.escapeHtml(header);
+    }
+
+    public void setDescription(String description) {
+        this.description = StringEscapeUtils.escapeHtml(description);
+    }
 
     public boolean userIsOwner(User user) {
         return owner.equals(user);
