@@ -1,4 +1,5 @@
 import apilayer.Constants;
+import apilayer.handlers.Paths;
 import apilayer.handlers.asynchandlers.FriendshipHandler;
 import model.User;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class MockingTest extends MockTestHelpers{
         save(friend);
 
         when(request.session().attribute(Constants.USER_SESSION_KEY)).thenReturn(user);
-        when(request.queryParams("id")).thenReturn("" + friend.getId());
+        when(request.queryParams(Paths.QueryParams.FRIEND_ID)).thenReturn("" + friend.getId());
 
 
         FriendshipHandler.addFriendRequest(request, response);

@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data public class Playdate {
+@Data
+public class Playdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

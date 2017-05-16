@@ -12,6 +12,8 @@ import spark.Response;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.getPlaceFromRequest;
 
@@ -42,8 +44,8 @@ public class CommentsHandler {
             Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
             Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
             if (comments.isPresent()) {
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                return gson.toJson(comments.get());
+                return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+                        comments.get().stream().sorted().collect(Collectors.toList()));
             } else {
                 response.status(400);
                 return "";
@@ -58,7 +60,8 @@ public class CommentsHandler {
     public static Object handleGetCommentsOfPlace(Request request, Response response) {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
-            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(placeOptional.get().getComments());
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+                    placeOptional.get().getComments().stream().sorted().collect(Collectors.toList()));
         }
         response.status(400);
         return Constants.MSG.NO_PLACE_WITH_ID;

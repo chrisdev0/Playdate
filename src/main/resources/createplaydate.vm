@@ -14,9 +14,9 @@
 
     <script>
         $(document).ready(function() {
-            $('#place-search-type').change(function(e) {
+            $('#place-search-type').change(function (e) {
                 var searchtype = $('#place-search-type').val();
-                $('.place-searcher-div').each(function(index, div) {
+                $('.place-searcher-div').each(function (index, div) {
                     var id = $(this).data('search-type-id');
                     if (id == searchtype) {
                         $(this).removeClass('hidden')
@@ -26,8 +26,35 @@
                             $(this).addClass('hidden');
                         }
                     }
-                })
-            })
+                });
+            });
+
+            function getParams() {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for(var i = 0; i < hashes.length; i++)
+                {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+
+            var placeId = getParams()['placeId'];
+            if(placeId != undefined) {
+                $.getJSON('/protected/getplaceasjson?placeId=' + placeId, function (res) {
+                    console.log(res);
+                    $('#placeId').val(res.id);
+
+                    $('#show-place-placeholder').html(
+                            "<p class='name-with-button'>" + res.name + "</p>" +
+                            "<a href='/protected/showplace?placeId=" + res.id +"'>Visa</a>"
+                    );
+
+                });
+            }
+
         });
 
     </script>
@@ -153,6 +180,7 @@
                             <td>Öppen för vänner:</td>
                             <td>Playdaten blir synlig för alla dina vänner</td>
                         </tr>
+                        <tr>
                         <td>Offentlig:</td>
                         <td>Playdaten blir synlig för alla användare</td>
                         </tr>
@@ -164,7 +192,7 @@
             <div class="ui-field-contain">
                 <div class="visibility-btn">
                     <label for="visibility-type">Öppenhetsnivå:
-                        <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id="info-btn" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
+                        <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id=" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
                     </label>
                 </div>
                     <select name="visibilityId" id="visibility-type">

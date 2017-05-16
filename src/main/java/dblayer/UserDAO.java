@@ -1,12 +1,12 @@
 package dblayer;
 
+import apilayer.handlers.Paths;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.pac4j.oauth.profile.facebook.FacebookProfile;
-import utils.Utils;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -103,7 +103,7 @@ public class UserDAO {
     }
 
 
-    public Optional<Long> saveImageToDB(ProfilePicture profilePicture) {
+    public Optional<Long> saveImageToDB(ProfilePicture profilePicture, User user) {
         Optional<Long> ret = Optional.empty();
         Session session = null;
         Transaction tx = null;
@@ -111,6 +111,8 @@ public class UserDAO {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             Long id = (Long) session.save(profilePicture);
+            user.setProfilePictureUrl(Paths.PROTECTED + Paths.GETPROFILEPICTURE + "/" + id);
+            session.update(user);
             tx.commit();
             ret = Optional.of(id);
         } catch (Exception e) {
@@ -167,6 +169,35 @@ public class UserDAO {
                     .stream()
                     .map(FriendshipRequest::getSender)
                     .collect(Collectors.toSet()));
+        }
+    }
+
+    public int getFriendState(User thisUser, User otherUser) {
+        if (thisUser.equals(otherUser)) {
+            //inloggad användare är samma som användarens profil
+            return 0;
+        } else {
+            if (checkIfFriendWithUser(thisUser.getId(), otherUser.getId()).isPresent()) {
+                //inloggad användare är redan vän med användaren
+                return 1;
+            } else {
+                Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(otherUser.getId(), thisUser.getId());
+                if (friendshipRequest.isPresent()) {
+                    if (friendshipRequest.get().getReceiver().equals(thisUser)) {
+                        //inloggad användare har fått friendshiprequest av användaren
+                        return 2;
+                    } else {
+                        //inloggad användare har skickat friendshriprequest till användaren
+                        return 3;
+                    }
+                } else {
+                    //inloggad användare har inte fått friendshiprequest,
+                    //är inte vänner
+                    //och har inte skickat friendshriprequest
+                    //(och användarna är inte samma)
+                    return 4;
+                }
+            }
         }
     }
 

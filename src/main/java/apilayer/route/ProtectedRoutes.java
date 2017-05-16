@@ -84,6 +84,7 @@ public class ProtectedRoutes {
             get(Paths.GETPLACEBYLOCATION, PlaceHandler::handleGetPlaceByLoc);
             get(Paths.GETPLACEBYNAME, PlaceHandler::handleGetPlaceByName);
             get(Paths.GETPLACEBYGEONAME, PlaceHandler::handleGetPlaceByGeoArea);
+            get(Paths.GETONEPLACEJSON, PlaceHandler::handleGetOnePlaceWithoutComments);
 
 
             /*      Profile-routes
@@ -106,6 +107,7 @@ public class ProtectedRoutes {
             * */
             post(Paths.ACCEPTFRIENDSHIPREQUEST, FriendsHandler::handleAcceptFriendRequest);
             post(Paths.DECLINEFRIENDSHIPREQUEST, FriendsHandler::handleDeclineFriendshipRequest);
+            post(Paths.SENDFRIENDSHIPREQUEST, FriendshipHandler::addFriendRequest);
 
 
             /*      INVITE-routes

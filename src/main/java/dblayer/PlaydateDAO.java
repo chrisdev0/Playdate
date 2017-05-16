@@ -205,6 +205,7 @@ public class PlaydateDAO {
 
             playdate.addParticipant(user);
             user.attendPlaydate(playdate);
+            user.getInvitesToPlaydates().remove(invite);//tror den ska vara här
 
             session.update(playdate);
             session.update(user);
@@ -269,8 +270,9 @@ public class PlaydateDAO {
 
     public List<Playdate> getPlaydateAtPlace(Place place) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            return session.createQuery("FROM Playdate WHERE place = :place", Playdate.class)
-                    .setParameter("place", place).list();
+            return session.createQuery("FROM Playdate p WHERE place = :place AND playdateVisibilityType = :vis", Playdate.class)
+                    .setParameter("place", place)
+                    .setParameter("vis", PlaydateVisibilityType.PUBLIC).list();
         }
     }
 

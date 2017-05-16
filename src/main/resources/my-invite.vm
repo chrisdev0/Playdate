@@ -58,7 +58,6 @@
                     <a href="/protected/declineinvite?inviteId=$invite.id" class="ui-btn decline-invite">Avböj</a>
                 </div>
             #end
-
         #end
 
 
