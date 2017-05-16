@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 
@@ -65,14 +66,21 @@ import java.util.Set;
     }
 
     public Playdate(String header, String description, long startTime, User owner, Place place, PlaydateVisibilityType playdateVisibilityType) {
-        this.header = header;
-        this.description = description;
+        this.header = StringEscapeUtils.escapeHtml(header);
+        this.description = StringEscapeUtils.escapeHtml(description);
         this.startTime = startTime;
         this.owner = owner;
         this.place = place;
         this.playdateVisibilityType = playdateVisibilityType;
     }
 
+    public void setHeader(String header) {
+        this.header = StringEscapeUtils.escapeHtml(header);
+    }
+
+    public void setDescription(String description) {
+        this.description = StringEscapeUtils.escapeHtml(description);
+    }
 
     public boolean userIsOwner(User user) {
         return owner.equals(user);

@@ -7,6 +7,7 @@ import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
+import org.apache.commons.lang.StringEscapeUtils;
 import spark.Request;
 import spark.Response;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.getPlaceFromRequest;
+import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
 
 @Slf4j
 public class CommentsHandler {
@@ -41,7 +43,7 @@ public class CommentsHandler {
         String commentStr = request.queryParams("comment");
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
-            Comment comment = new Comment(commentStr, request.session().attribute(Constants.USER_SESSION_KEY), false);
+            Comment comment = new Comment(commentStr, getUserFromSession(request), false);
             Optional<Set<Comment>> comments = PlaceDAO.getInstance().saveComment(comment, placeOptional.get());
             if (comments.isPresent()) {
                 return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(

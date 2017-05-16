@@ -108,7 +108,7 @@
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest">Acceptera vän</a>
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest">Avböj vänförfrågan</a>
                 #elseif($friendsetting == 3)
-                    <a href="#" id="remove-friendrequest" data-ajax="false">Ta bort vänskapsförfrågan</a>
+                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" data-ajax="false">Ta bort vänskapsförfrågan</a>
                 #elseif($friendsetting == 4)
                     <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
                 #end

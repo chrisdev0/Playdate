@@ -452,7 +452,7 @@ public class UserDAO {
             try {
                 session = HibernateUtil.getInstance().openSession();
                 tx = session.beginTransaction();
-                session.remove(friendshipRequest.isPresent());
+                session.remove(friendshipRequest.get());
                 session.update(user);
                 session.update(friend);
                 tx.commit();

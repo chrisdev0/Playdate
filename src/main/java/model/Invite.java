@@ -2,10 +2,13 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
 @Data public class Invite {
 
     @Id
@@ -24,15 +27,16 @@ import javax.persistence.*;
     @Expose
     private User invited;
 
+    public void setMessage(String message) {
+        this.message = StringEscapeUtils.escapeHtml(message);
+    }
+
     public Invite(String message, Playdate playdate, User invited) {
-        this.message = message;
+        this.message = StringEscapeUtils.escapeHtml(message);
         this.playdate = playdate;
         this.invited = invited;
     }
 
-    public Invite() {
-
-    }
 
     @Override
     public boolean equals(Object o) {
