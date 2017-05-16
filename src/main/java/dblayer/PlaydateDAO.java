@@ -205,6 +205,7 @@ public class PlaydateDAO {
 
             playdate.addParticipant(user);
             user.attendPlaydate(playdate);
+            user.getInvitesToPlaydates().remove(invite);//tror den ska vara här
 
             session.update(playdate);
             session.update(user);
@@ -275,6 +276,32 @@ public class PlaydateDAO {
         }
     }
 
+    @SuppressWarnings("Duplicates")
+    public Optional<Set<Comment>> savePlaydateComment(Comment comment, Playdate playdate) {
+        Set<Comment> ret = null;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            Hibernate.initialize(playdate.getComments());
+            playdate.addComment(comment);
+            session.save(comment);
+            session.update(playdate);
+            tx.commit();
+            ret = playdate.getComments();
+        } catch (Exception e) {
+            log.error("error save comment", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return Optional.ofNullable(ret);
+    }
 
 
 }

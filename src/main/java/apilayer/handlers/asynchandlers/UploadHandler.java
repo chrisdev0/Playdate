@@ -16,6 +16,8 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
+
 
 @Slf4j
 public class UploadHandler {
@@ -36,14 +38,18 @@ public class UploadHandler {
             Part part = request.raw().getPart(Constants.PROFILE_PICTURE_UPLOAD_NAME);
             try (InputStream is = part.getInputStream()) {
                 byte[] image = IOUtils.toByteArray(is);
+                if (image.length > 1024000){
+                    return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+                }
                 ProfilePicture profilePicture = new ProfilePicture();
                 profilePicture.setImage(image);
                 log.info("uploaded profile picture size = " + profilePicture.getImage().length);
-                Optional<Long> aLong = UserDAO.getInstance().saveImageToDB(profilePicture);
+                Optional<Long> aLong = UserDAO.getInstance().saveImageToDB(profilePicture, user);
                 if (aLong.isPresent()) {
                     user.setProfilePictureUrl(Paths.PROTECTED + Paths.GETPROFILEPICTURE + "/" + aLong.get());
                     return user.getProfilePictureUrl();
                 } else {
+                    log.info("Returnerar status 400");
                     response.status(400);
                     return "";
                 }

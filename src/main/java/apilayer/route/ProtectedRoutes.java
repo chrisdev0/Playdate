@@ -71,8 +71,9 @@ public class ProtectedRoutes {
 
             /*      Kommentar-routes
             * */
-            post(Paths.POSTCOMMENT, CommentsHandler::handlePostComment);
+            post(Paths.POSTPLACECOMMENT, CommentsHandler::handlePostPlaceComment);
             get(Paths.COMMENTSOFPLACE, CommentsHandler::handleGetCommentsOfPlace);
+            post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
 
             /*      Sök-routes
             * */

@@ -188,6 +188,8 @@ public class PlaceDAO {
     /** Sparar en kommentar i databasen
      *  uppdaterar Place som kommentaren gäller
      * */
+
+    @SuppressWarnings("Duplicates")
     public Optional<Set<Comment>> saveComment(Comment comment, Place place) {
         Set<Comment> ret = null;
         Session session = null;

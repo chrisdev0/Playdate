@@ -2,7 +2,7 @@ package apilayer.handlers.templateHandlers;
 
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.asynchandlers.SparkHelper;
-import dblayer.InviteDao;
+import dblayer.InviteDAO;
 import model.Invite;
 import spark.Request;
 
@@ -20,7 +20,7 @@ public class GetMyInvitesHandler extends StaticFileTemplateHandlerImpl {
     @Override
     public Optional<Map<String, Object>> createModelMap(Request request) {
         Map<String, Object> map = new HashMap<>();
-        Optional<List<Invite>> invitesOfUser = InviteDao.getInstance().getInvitesOfUser(SparkHelper.getUserFromSession(request));
+        Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(SparkHelper.getUserFromSession(request));
         if (invitesOfUser.isPresent()) {
             map.put("invites", invitesOfUser.get());
         } else {

@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data public class Playdate {
+@Data
+public class Playdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +40,9 @@ import java.util.Set;
     @OneToMany
     private Set<Invite> invites = new HashSet<>();
 
+    @OneToMany
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @Expose
     private Place place;
@@ -53,6 +57,10 @@ import java.util.Set;
     public boolean removeInvite(Invite invite) {
         return invites.remove(invite);
     }
+
+    public boolean addComment(Comment comment) { return comments.add(comment); }
+
+    public boolean removeComment(Comment comment){ return comments.remove(comment); }
 
     public boolean addParticipant(User participant) {
         return participants.add(participant);
