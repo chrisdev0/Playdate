@@ -58,9 +58,10 @@ public class ProtectedRoutes {
             *           *   profil-bild
             *           *   feed
             * */
+            get(Paths.GETFEED, FeedHandler::handleGetFeed);
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
-            get(Paths.GETFEED, FeedHandler::handleGetFeed);
+
             /*
             get(Paths.GETFEED, (request, response) -> {
                 Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
