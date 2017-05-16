@@ -59,7 +59,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/protected/postcomment',
+                    url: '/protected/postplaydatecomment',
                     data: $('#makeComment').serialize(),
                     success: function(res) {
                         console.log(res);
@@ -75,45 +75,6 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function(res) {
-                console.log(res);
-                $('#show-comments').html("");
-                $.each(res, function (index, comment) {
-                    renderComment(comment)
-                });
-            })
-
-            var renderComment = function (comment){
-                var output = "<div class='bottom-line'>";
-                output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
-                        " "+ comment.commentDate +"</p>"
-                output += "<p>" + comment.comment + "</p>"
-                output += "</div>"
-                $('#show-comments').append(output);
-            }
-
-            $('#makeComment').submit(function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/protected/postplaydatecomment',
-                    data: $('#makeComment').serialize(),
-                    success: function(res) {
-                        console.log(res);
-                        res = JSON.parse(res);
-                        $('#comment').val("");
-                        $('#show-comments').html("");
-                        $.each(res,function(index, comment) {
-                            renderComment(comment)
-                        })
-                    }
-                })
-            });
-    </script>
 
 </head>
 <body>
@@ -232,12 +193,6 @@
                 </div>
         </div>
     </div>
-
-
-
-
-
-
 
 </body>
 </html>
