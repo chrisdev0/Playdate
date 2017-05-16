@@ -134,12 +134,16 @@
 
 
                     <div data-role="collapsible" data-mini="true">
-                        <h4>Playdates</h4>
-                    #foreach($p in $playdates)
 
-                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a>
-                    </div>
+                        <h4>Playdates</h4>
+
+
+                #foreach($p in $playdates)
+                    <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+
                 #end
+                    </div>
+
             </div>
         </div>
     </div>
