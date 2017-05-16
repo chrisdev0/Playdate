@@ -193,6 +193,11 @@
     width: 8.6em;
 }
 
+#two-btn-popup{
+    width: 10em;
+    font-size: 0.85em;
+}
+
 #fb-login {
 
     background: #4661d9;
