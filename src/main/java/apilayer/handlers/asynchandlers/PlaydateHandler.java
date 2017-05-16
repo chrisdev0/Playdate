@@ -32,45 +32,29 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-
-        if (!Utils.validateLengthOfString(3, 30, header) ||
-                !Utils.validateLengthOfString(20, 300, description)) {
-            setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
-
-        }
-        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         Optional<Place> placeOptional = getPlaceFromRequest(request);
+        if (!Utils.validateLengthOfString(3, 30, header) ||
+                !Utils.validateLengthOfString(20, 300, description) ||
+                !placeOptional.isPresent()) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
-        if (!Utils.isNotNullAndNotEmpty(header, description)) {
-            log.error("header or description is empty");
-            response.status(400);
-            return "missing_info";
-        }
-        try {
-            playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
-        } catch (Exception e) {
-            log.error("visibility type was illegal: " + visibilityId);
-            throw halt(400, "illegal visbilitytype");
-        }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
-        if (!placeOptional.isPresent() || user == null) {
-            log.error("user is null or couldnt find place with id = " + request.queryParams(Paths.QueryParams.PLACE_BY_ID));
-            response.status(400);
-            return "";
+        try {
+            playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(ParserHelpers.parseToInt(request.queryParams("visibilityId")));
+        } catch (Exception e) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
         }
-        Playdate playdate = new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType);
-        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance()
+                .saveNewPlaydate(new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType));
         if (playdateOptional.isPresent()) {
-            response.status(200);
-            String redirect = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
-            log.info("created playdate successfully, redirecting to " + redirect);
-            response.redirect(redirect);
+            response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId());
+            return setStatusCodeAndReturnString(response, 200, OK);
         } else {
             log.error("couldn't create playdate");
-            response.status(400);
+            return setStatusCodeAndReturnString(response, 400, ERROR);
         }
-        return "";
     }
 
 
