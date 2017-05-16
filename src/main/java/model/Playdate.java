@@ -39,6 +39,9 @@ public class Playdate {
     @OneToMany
     private Set<Invite> invites = new HashSet<>();
 
+    @OneToMany
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @Expose
     private Place place;
@@ -53,6 +56,10 @@ public class Playdate {
     public boolean removeInvite(Invite invite) {
         return invites.remove(invite);
     }
+
+    public boolean addComment(Comment comment) { return comments.add(comment); }
+
+    public boolean removeComment(Comment comment){ return comments.remove(comment); }
 
     public boolean addParticipant(User participant) {
         return participants.add(participant);

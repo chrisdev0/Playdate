@@ -7,7 +7,9 @@ public class Paths {
 
     public static final String GETONEPLACE = "/getoneplace";
 
-    public static final String POSTCOMMENT = "/postcomment";
+    public static final String POSTPLACECOMMENT = "/postcomment";
+
+    public static final String POSTPLAYDATECOMMENT = "/postplaydatecomment";
 
     public static final String LOGOUT = "/logout";
 

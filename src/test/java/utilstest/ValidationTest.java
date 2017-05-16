@@ -45,7 +45,7 @@ public class ValidationTest extends MockTestHelpers{
     @Test
     public void testValidateLengthOfString(){
         /*
-        Prova längd på sträng
+        Prova längd på sträng, kan prova alla olika?
          */
     }
 }
