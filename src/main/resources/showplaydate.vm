@@ -1,4 +1,5 @@
 #* @vtlvariable name="playdate" type="model.Playdate" *#
+#* @vtlvariable name="user" type="model.User" *#
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,21 +7,8 @@
 
     #parse("head-links.vm")
 
-    <script>
-        $("#post-comment").one(function(e){
-            e.preventDefault();
-            $("#comment-form").submit();
-            $("#popupBasic").popup('close');
-        });
-
-        $(document).ready(function(){
-
-        })
-    </script>
-
 </head>
 <body>
-
 
     #parse("side-panel.vm")
 
@@ -58,7 +46,7 @@
 
 
             $(document).ready(function() {
-                $.getJSON('/protected/commentsofplace?playdateId=$!playdate.id',function(res) {
+                $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function(res) {
                     console.log(res);
                     $('#show-comments').html("");
                     $.each(res, function (index, comment) {
@@ -81,7 +69,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '/protected/postcomment',
+                        url: '/protected/postplaydatecomment',
                         data: $('#makeComment').serialize(),
                         success: function(res) {
                             console.log(res);
@@ -171,7 +159,7 @@
         <div id="make-comment">
             <form id="makeComment">
                 <textarea id="comment" name="comment"></textarea>
-                <input type="hidden" id="placeId" name="placeId" value="$!place.id">
+                <input type="hidden" id="playdateId" name="playdateId" value="$!playdate.id">
                 <input type="submit" class="ui-btn" value="Skicka kommentar">
             </form>
         </div>
@@ -187,12 +175,6 @@
             <p>Här ska man hämta alla vänner och kunna lägga till dem</p>
         </div>
     </div>
-
-
-
-
-
-
 
 </body>
 </html>
