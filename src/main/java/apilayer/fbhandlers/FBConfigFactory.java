@@ -29,7 +29,7 @@ public class FBConfigFactory implements ConfigFactory {
     public FBConfigFactory(String salt, String appid, String absolute_callback, String secret) {
         SALT = salt;
         APPID = appid;
-        ABSOLUTE_CALLBACK = Constants.ABSOLUTE_URL + absolute_callback;
+        ABSOLUTE_CALLBACK = absolute_callback;
         SECRET = secret;
     }
 
@@ -37,6 +37,7 @@ public class FBConfigFactory implements ConfigFactory {
     public Config build() {
         FacebookClient facebookClient = new FacebookClient(APPID, SECRET);
         facebookClient.setScope(Constants.FACEBOOK_SCOPE);
+        log.info("using " + ABSOLUTE_CALLBACK + " as callback");
         Clients clients = new Clients(ABSOLUTE_CALLBACK, facebookClient);
         Config config = new Config(clients);
         config.setHttpActionAdapter(new CustomHttpActionAdapter());

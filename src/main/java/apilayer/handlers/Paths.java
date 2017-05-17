@@ -66,8 +66,10 @@ public class Paths {
 
     /**     EVENTS
      * */
-    public static final String GETMYEVENTS = "/getmyinvites";
-
+    public static final String GETMYEVENTS = "/getmyevents";
+    public static final String GETUSERATTENDINGPLAYDATES = "/getuserattentindplaydates";
+    public static final String GETPLAYDATESWHOUSERMAYWANTTOATTEND = "/getsuggestedplaydates";
+    public static final String GETPUBLICPLAYDATESBYLOCATION = "/getpublicplaydatesbylocation";
 
     /**     REPORTS
      * */
