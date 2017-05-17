@@ -108,19 +108,20 @@
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
                 <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
+                <p>Kön: $!{other-user.gender.frontname}</p>
                 <h3>Beskrivning:</h3>
                 <p class="profile-description-text">
                     $!{other-user.description}
                 </p>
             </div>
             <div class="ui-block-b profile-right-block">
-                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
-                <p>Kön: $!{other-user.gender.frontname}</p>
+
                 #if($friendsetting == 0)
 
                     <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
                 #elseif($friendsetting == 1)
-                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend">Ta bort vän</a>
+                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate" data-rel="popup">Ta bort vän</a>
                 #elseif($friendsetting == 2)
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest">Acceptera vän</a>
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest">Avböj vänförfrågan</a>
@@ -130,17 +131,16 @@
                     <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
                 #end
 
+                <div data-role="collapsible" data-mini="true">
 
-                    <div data-role="collapsible" data-mini="true">
-
-                        <h4>Playdates</h4>
+                    <h4>Playdates</h4>
 
 
-                #foreach($p in $playdates)
-                    <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                    #foreach($p in $playdates)
+                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
 
-                #end
-                    </div>
+                    #end
+                </div>
 
             </div>
         </div>
