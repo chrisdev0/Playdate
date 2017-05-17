@@ -3,6 +3,7 @@ package apilayer;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public abstract class StaticFileTemplateHandler  {
             if (injectUser) {
                 injectUser(request, opt.get());
             }
+            opt.get().put("Utils", Utils.class);
             return new ModelAndView(opt.get(), templateName);
         } else {
             throw halt(haltNumber);
