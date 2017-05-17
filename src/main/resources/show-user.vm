@@ -13,6 +13,7 @@
     <script>
 
         $(document).ready(function () {
+
             $('#add-friend').click(function (e) {
                 e.preventDefault();
 
@@ -80,8 +81,8 @@
                         console.log(res);
                         $('#report').val("");
                        $('#popupReport').popup('close');
-                       #*FIXA OM TID FINNS
-                       $('#confirm-popup').popup('open');*#
+
+
 
                     }
 
@@ -111,12 +112,6 @@
 
 
     <div data-role="main" class="ui-content">
-        <div data-role="popup" id="confirm-popup">
-            <h1>Rapportera</h1>
-            <div data-role="header">
-                <h1>Rapportera</h1>
-            </div>
-        </div>
         <div data-role="popup" id="popupReport">
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
@@ -182,6 +177,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 </body>
