@@ -77,7 +77,7 @@
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
                         </li>
                     #foreach($u in $friends)
-                        <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                        <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
                             <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
                         </li>
 

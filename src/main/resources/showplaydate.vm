@@ -1,4 +1,6 @@
 #* @vtlvariable name="playdate" type="model.Playdate" *#
+#* @vtlvariable name="u" type="model.User" *#
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,8 +83,6 @@
                     }
                 });
             });
-
-
 
 
         });
@@ -191,7 +191,27 @@
 
         <div data-role="popup" id="popupAdd">
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                <label for="myFilter" >Sök efter vänner</label>
+                <form class="ui-filterable">
+                    <input id="myFilter" data-type="search">
+                </form>
+
+                <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
+
+                    #foreach($u in $friends)
+                        <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                            <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
+                        </li>
+
+
+                    #end
+
+                </ul>
+            #* #end *#
+
+
             <p>Här ska man kunna lägga till personer till playdate</p>
+
         </div>
 
         <div data-role="popup" id="popupParticipant">
