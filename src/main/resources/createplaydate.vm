@@ -1,3 +1,4 @@
+#* @vtlvariable name="Utils" type="utils.Utils" *#
 #* @vtlvariable name="playdate" type="model.Playdate" *#
 
 
@@ -112,8 +113,8 @@
                 console.log("edit playdatemode");
                 $('#create-playdate-form').attr('action', '/protected/updateplaydate');
                 $('#playdateId').val("${playdate.id}");
-                $('#header-field').val("${playdate.header}");
-                $('#description-field').val("${playdate.description}");
+                $('#header-field').val("${Utils.unEscapeHTML($playdate.header)}");
+                $('#description-field').val("${Utils.unEscapeHTML(${playdate.description})}");
                 $('#visibility-type').val("${playdate.playdateVisibilityType.nr}").change();
                 console.log("place id = " + "${playdate.getPlace().getId()}");
                 $('#placeId').val("${playdate.getPlace().getId()}");
