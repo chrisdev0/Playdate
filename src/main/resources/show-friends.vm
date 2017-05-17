@@ -67,18 +67,25 @@
                 <form class="ui-filterable">
                     <input id="myFilter" data-type="search">
                 </form>
-                #if($friends.size() == 0)
+               #* #if($friends.size() == 0)
                     <h3>Du har inga vänner :(</h3>
                 #else
-                <ul data-role="listview"  data-theme="f" data-split-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
-
+                *#
+                <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
+                        </li>
+                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
+                        </li>
                     #foreach($u in $friends)
                         <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                             <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
                         </li>
+
+
                     #end
+
                 </ul>
-                #end
+               #* #end *#
             </div>
         </div>
     </div>
@@ -111,12 +118,16 @@
         <div class="listview-borders">
 
 
-            <ul data-role="listview" data-split-icon="gear" data-theme="f" data-inset="true">
+            <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
                     <li><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                         <a href="#" class="friendship-request-popup" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
                 #end
+                <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
+                    <a href="#addfriendpopup" data-rel="popup" data-transition="slideup" ></a></li>
+                <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
+                    <a href="#addfriendpopup" data-rel="popup" data-transition="slideup" ></a></li>
             </ul>
 
         </div>
@@ -150,11 +161,11 @@
                     <input id="filter" data-type="search">
                 </form>
 
-                <ul data-role="listview" data-split-icon="gear" data-theme="f" data-icon="plus" data-filter="true" data-input="#filter"  data-inset="true">
+                <ul data-role="listview" data-split-icon="check" data-theme="f" data-icon="plus" data-filter="true" data-input="#filter"  data-inset="true">
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
-                        <a href="#addfriendpopup" data-rel="popup" data-transition="slideup" ></a></li>
+                        <a href="#"></a></li>
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
-                        <a href="#addfriendpopup" data-rel="popup" data-transition="slideup" ></a></li>
+                        <a href="#"></a></li>
 
                 </ul>
             </div>

@@ -114,9 +114,7 @@
                 </p>
             </div>
             <div class="ui-block-b profile-right-block">
-                <p>
-                    $!{other-user.phoneNumber}
-                </p>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
                 #if($friendsetting == 0)
 
@@ -134,12 +132,16 @@
 
 
                     <div data-role="collapsible" data-mini="true">
-                        <h4>Playdates</h4>
-                    #foreach($p in $playdates)
 
-                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a>
-                    </div>
+                        <h4>Playdates</h4>
+
+
+                #foreach($p in $playdates)
+                    <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+
                 #end
+                    </div>
+
             </div>
         </div>
     </div>
