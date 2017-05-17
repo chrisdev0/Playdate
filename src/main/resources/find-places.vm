@@ -105,7 +105,9 @@
                             var output = '<div data-role="collapsible" id="marker'+place.id+'">';
                             output += '<h3>' + place.name + '</h3>';
                             output += '<p>' + place.shortDescription + '</p>';
+                            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '</p>';
                             output += "</div>";
+
 
                             placeoutput.append(output);
 
