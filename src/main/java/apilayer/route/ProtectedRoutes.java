@@ -80,6 +80,10 @@ public class ProtectedRoutes {
             post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
             get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
 
+            /* Report-routes */
+            post(Paths.POSTREPORT, ReportHandler::createUserReport);
+
+
             /*      Sök-routes
             * */
             get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
