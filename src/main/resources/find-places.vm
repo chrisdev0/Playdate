@@ -104,6 +104,7 @@
                         $.each(res, function (index, place) {
                             var output = '<div data-role="collapsible" id="marker'+place.id+'">';
                             output += '<h3>' + place.name + '</h3>';
+                            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
                             output += '<p>' + place.shortDescription + '</p>';
                             output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '</p>';
                             output += "</div>";
@@ -156,14 +157,14 @@
 
 
     <div data-role="main" class="ui-content">
-        <h3>Hitta platser</h3>
+        <h1>Hitta platser</h1>
         <div id="map"> </div>
 
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
         </script>
         <div>
-            <h3>Platser:</h3>
+            <h2>Platser:</h2>
             <div id="place-output"></div>
         </div>
 
