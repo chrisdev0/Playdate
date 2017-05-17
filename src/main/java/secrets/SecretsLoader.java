@@ -1,5 +1,7 @@
 package secrets;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 class SecretsLoader {
 
     //Rader som börjar med denna symbol ses som kommentarer
@@ -26,6 +28,7 @@ class SecretsLoader {
         Map<String, String> tempMap = new HashMap<>();
         int lineNumber = 0;
         while ((line = bufferedReader.readLine()) != null) {
+            log.info("line#" + lineNumber + ": " + line);
             lineNumber++;
             if (lineIsCommentOrEmpty(line)) {
                 continue;
