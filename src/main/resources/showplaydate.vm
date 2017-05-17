@@ -1,4 +1,5 @@
 #* @vtlvariable name="playdate" type="model.Playdate" *#
+#* @vtlvariable name="friends" type="java.util.Collection" *#
 #* @vtlvariable name="u" type="model.User" *#
 
 <!DOCTYPE html>
@@ -12,14 +13,14 @@
 
         $(document).ready(function() {
 
-         #*   $.getJSON('/protexted/getcommentsofplaydates?playdateId=$!playdate.id',function (res) {
+         $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function (res) {
                 console.log(res);
                 $('#show-comments').html("");
-                $.each(res, function (index, comment)){
+                $.each(res, function (index, comment){
                     renderComment(comment)
 
                 });
-        })*#
+        })
 
         var renderComment = function (comment){
             var output = "<div class='bottom-line'>";
@@ -168,11 +169,7 @@
             <p>$!{playdate.description}</p>
         </div>
         <h3>Kommentar:</h3>
-        <div class="descriptionfield-showplaydate">
-            #foreach($!participant in $!playdate.participants)
-                <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
-            #end
-        </div>
+
 
         <div id="make-comment">
             <form data-ajax="false" id="makeComment">
@@ -190,33 +187,52 @@
         #end
 
         <div data-role="popup" id="popupAdd">
+
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-                <label for="myFilter" >Sök efter vänner</label>
-                <form class="ui-filterable">
-                    <input id="myFilter" data-type="search">
-                </form>
+            <div data-role="header">
+                <h3>Lägg till vän</h3>
+            </div>
+            <div class="listview-borders">
+                <div>
+                    <form class="ui-filterable">
+                        <input id="myFilter" data-type="search">
+                    </form>
+                #* #if($friends.size() == 0)
+                     <h3>Du har inga vänner :(</h3>
+                 #else
+                 *#
+                    <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
 
-                <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
-
-                    #foreach($u in $friends)
-                        <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
-                            <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
-                        </li>
+                        #foreach($u in $friends)
+                            <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
+                                <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
+                            </li>
 
 
-                    #end
+                        #end
 
-                </ul>
-            #* #end *#
+                    </ul>
+                #* #end *#
+                </div>
+            </div>
 
-
-            <p>Här ska man kunna lägga till personer till playdate</p>
+            <div data-role="footer" style="text-align: center;">
+                <a href="#" class="ui-btn" id="addparticipant" data-ajax="false">Lägg till</a>
+            </div>
 
         </div>
 
         <div data-role="popup" id="popupParticipant">
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <p>Här ska man kunna se deltagare av pd</p>
+            <div data-role="header">
+                <h3>Deltagare</h3>
+            </div>
+            <div class="descriptionfield-showplaydate">
+                #foreach($!participant in $!playdate.participants)
+                    <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                #end
+            </div>
+
         </div>
 
         <div data-role="popup" id="popupValidate" data-overlay-theme="d" data-theme="d" data-dismissible="false" style="max-width:400px;">

@@ -72,6 +72,7 @@
                 #else
                 *#
                 <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
+
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
                         </li>
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
