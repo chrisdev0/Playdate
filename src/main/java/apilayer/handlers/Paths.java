@@ -69,7 +69,9 @@ public class Paths {
     public static final String GETMYEVENTS = "/getmyinvites";
 
 
-
+    /**     REPORTS
+     * */
+    public static final String POSTREPORT = "/postreport";
 
 
 
