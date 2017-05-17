@@ -138,8 +138,8 @@
 <div data-role="page" id="search-friend" >
 
     <div data-role="main" class="ui-content">
-        <div data-role="popup" id="addfriendpopup" data-overlay-theme="b" data-theme="a" data-tolerance="0,0">
-            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" data-theme="a" class="ui-btn-left">Close</a>
+        <div data-role="popup" id="addfriendpopup" data-overlay-theme="b"  data-tolerance="0,0">
+            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" class="ui-btn-left">Close</a>
             <div class="listview-borders">
                 <ul data-role="listview" data-theme="f">
                     <li data-icon="user">
