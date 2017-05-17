@@ -137,7 +137,7 @@
 
 
                 #foreach($p in $playdates)
-                    <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                    <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
 
                 #end
                     </div>
