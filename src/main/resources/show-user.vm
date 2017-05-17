@@ -114,9 +114,7 @@
                 </p>
             </div>
             <div class="ui-block-b profile-right-block">
-                <p>
-                    $!{other-user.phoneNumber}
-                </p>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
                 #if($friendsetting == 0)
 
