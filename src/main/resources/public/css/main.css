@@ -361,3 +361,21 @@
     height: 200px;
     filter: saturate(280%);
 }
+#rapportera-användare{
+    font-size: 10px;
+    float: right;
+    right: 15px;
+    margin-top: 95%;
+}
+a{
+    text-decoration: none;
+}
+
+.inviteList li {
+
+}
+
+.inviteList {
+    list-style: none;
+    padding-left: 0;
+}

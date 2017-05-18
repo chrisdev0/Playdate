@@ -79,26 +79,26 @@ $(document).ready(function() {
         searchField.val("");
     });
 
-    $('#create-playdate-form').on('submit',function(e) {
+
+    var convertStartTime = function() {
         var starttime = $('#startTime');
         var date = $('#datepicker-field').datebox('getTheDate');
         var time = $('#timepicker-field').datebox('getTheDate');
         date.setHours(time.getHours());
         date.setMinutes(time.getMinutes());
-        console.log("setting start time to " + date.getTime());
         starttime.val(date.getTime());
-        console.log("starttimevalue = " + starttime.val());
-    });
+    };
 
     $('#create-playdate-btn').click(function (e) {
         e.preventDefault();
-
+        convertStartTime();
         $.ajax({
             type: 'POST',
-            url: '/protected/createplaydate',
+            url: $('#create-playdate-form').attr('action'),
             data: $('#create-playdate-form').serialize(),
             success: function(e) {
                 console.log("created playdate")
+                window.location.replace(e);
             },
             error: function(e) {
                 console.log(e)
