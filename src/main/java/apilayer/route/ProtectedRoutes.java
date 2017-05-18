@@ -58,8 +58,11 @@ public class ProtectedRoutes {
             *           *   profil-bild
             *           *   feed
             * */
+            get(Paths.GETFEED, FeedHandler::handleGetFeed);
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
+
+            /*
             get(Paths.GETFEED, (request, response) -> {
                 Optional<PaginationWrapper<Place>> norrmalm = PlaceDAO.getInstance().getPlacesByGeoArea("Norrmalm", ParserHelpers.parseToInt(request.queryParams("offset")), 10);
                 PaginationWrapper<FeedObject> paginationWrapper = new PaginationWrapper<>(
@@ -67,7 +70,7 @@ public class ProtectedRoutes {
                         norrmalm.get().getPaginationOffset());
                 return new Gson().toJson(paginationWrapper);
             });
-
+            */
 
             /*      Kommentar-routes
             * */
@@ -76,6 +79,10 @@ public class ProtectedRoutes {
             //playdate
             post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
             get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
+
+            /* Report-routes */
+            post(Paths.POSTREPORT, ReportHandler::createUserReport);
+
 
             /*      Sök-routes
             * */
@@ -104,7 +111,7 @@ public class ProtectedRoutes {
             delete(Paths.DELETEPLAYDATE, PlaydateHandler::handleDeletePlaydate);
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
-
+            get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
 
             /*      FriendshipRequest-routes
             * */
@@ -168,6 +175,9 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest);
+
     }
 
     /** Metoden returnerar true om användaren är inloggad

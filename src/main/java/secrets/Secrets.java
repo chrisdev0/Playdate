@@ -10,9 +10,6 @@ public class Secrets implements GetSecretValue {
 
     private static Secrets instance;
 
-
-
-
     private Map<String,String> keyValueMap;
     private SecretsLoader secretsLoader;
     private Set<File> loadedFiles;
@@ -87,8 +84,20 @@ public class Secrets implements GetSecretValue {
     public static Secrets getInstance() {
         if (instance == null) {
             instance = new Secrets();
+            instance.initSecrets();
         }
         return instance;
+    }
+
+    private void initSecrets() {
+        File file = new File("secrets.txt");
+        if (file.exists()) {
+            try {
+                loadSecretsFile(file);
+            } catch (Exception e) {
+                log.error("error loading secrets file, ");
+            }
+        }
     }
 
 }

@@ -21,13 +21,15 @@ public class FeedObject {
     private String header;
     private String shortDescription;
     private String imageUrl;
+    private String placeName;
     private int objectTypeId;
     private String onClickUrl;
 
-    public FeedObject(Long id, String header, String shortDescription, String imageUrl, int objectTypeId, String onClickUrl) {
+    public FeedObject(Long id, String header, String placeName, String shortDescription, String imageUrl, int objectTypeId, String onClickUrl) {
         this.id = id;
         this.header = header;
         this.shortDescription = shortDescription;
+        this.placeName = placeName;
         this.imageUrl = imageUrl;
         this.objectTypeId = objectTypeId;
         this.onClickUrl = onClickUrl;
@@ -37,25 +39,40 @@ public class FeedObject {
         return new FeedObject(
                 playdate.getId(),
                 playdate.getHeader(),
+                playdate.getPlace().getName(),
                 playdate.getDescription(),
-                Paths.PLAYDATE_IMAGE + "/" + playdate.getId(),
+                Paths.APIIMAGE + "/" + playdate.getPlace().getImageId(),
                 0,
-                Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "?=" + playdate.getId());
+                Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdate.getId());
     }
 
     public static FeedObject createFromPlace(Place place) {
         return new FeedObject(
                 place.getId(),
                 place.getName(),
+                place.getName(),
                 place.getShortDescription(),
                 Paths.APIIMAGE + "/" + place.getImageId(),
                 1,
-                Paths.PROTECTED + Paths.GETONEPLACE + "/" + Paths.QueryParams.PLAYDATE_BY_ID + "?=" + place.getId()
+                Paths.PROTECTED + Paths.SHOWPLACE + "?" + Paths.QueryParams.PLACE_BY_ID + "=" + place.getId()
         );
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        FeedObject that = (FeedObject) o;
 
+        if (objectTypeId != that.objectTypeId) return false;
+        return id != null ? id.equals(that.id) : that.id == null;
+    }
 
-
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + objectTypeId;
+        return result;
+    }
 }

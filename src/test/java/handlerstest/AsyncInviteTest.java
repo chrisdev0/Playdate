@@ -42,7 +42,7 @@ public class AsyncInviteTest extends MockTestHelpers{
         String res = (String) AttendanceInviteHandler.handleAttendPublicPlaydate(request, response);
         log.info("Result = " + res);
 
-        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getPlaydateWhoUserIsAttending(user);
+        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getAllPlaydateWhoUserIsAttendingAlsoOwner(user);
         assertNotNull(playdateWhoUserIsAttending);
 
         playdateWhoUserIsAttending.forEach(playdate1 -> assertTrue(playdate.equals(playdate1)));

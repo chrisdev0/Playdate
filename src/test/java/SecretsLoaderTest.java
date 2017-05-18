@@ -1,3 +1,4 @@
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
+@Slf4j
 public class SecretsLoaderTest {
 
     private List<File> testFiles = new ArrayList<>();
@@ -36,6 +38,16 @@ public class SecretsLoaderTest {
         printWriter.close();
         testFiles.add(testFile);
         return testFileName;
+    }
+
+    @Test
+    public void testLoadSecretsTXTFile() {
+        try {
+            Secrets secrets = Secrets.getInstance().loadSecretsFile("secrets.txt");
+        } catch (Exception e) {
+            log.error("error loading secrets, failing", e);
+            fail();
+        }
     }
 
     @Test

@@ -11,14 +11,19 @@
 
 
     <script>
+
         $(document).ready(function () {
+
             $('#add-friend').click(function (e) {
                 e.preventDefault();
 
                 $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function(res) {
                     console.log(res);
                 })
+
             })
+
+
 
             $('#remove-friend').click(function (e) {
                 e.preventDefault();
@@ -61,7 +66,35 @@
                     }
                 });
             });
-        });
+
+
+
+            $('#send-report').click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postreport',
+                    data: $('#makeReport').serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        $('#report').val("");
+                       $('#popupReport').popup('close');
+
+
+
+                    }
+
+                });
+
+
+
+
+
+            })
+        })
+
     </script>
 
 
@@ -79,11 +112,28 @@
 
 
     <div data-role="main" class="ui-content">
+        <div data-role="popup" id="popupReport">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <div data-role="header">
+                <h1>Rapportera</h1>
+            </div>
+            <div data-role="main" class="ui-content" id="make-report">
+                <form data-ajax="false" id="makeReport" action="/protected/postreport" method="POST">
+                    <textarea cols="30" rows="8" name="reportDescription" id="report" placeholder="Skriv anmälan"></textarea>
+                    <input type="hidden" name="userId" value="$!other-user.id">
+                    <input data-ajax="false" id="send-report" type="submit" class="ui-btn" value="Skicka">
+                </form>
+            </div>
+
+        </div>
         <div class="other-user-reportable">
 
             <h2>$!{other-user.name}</h2>
-            <a href="#" style="float: right; top: -5px; right: -20px" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
+
+            <a href="#popupReport" data-rel="popup" data-transition="slideup" style="float: right; top: -5px; right: 15px"
+               class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
         </div>
+
         <div class="ui-grid-a profile-page">
             <div class="ui-block-a">
                 <div id="composite-picture">
@@ -96,12 +146,11 @@
                 </p>
             </div>
             <div class="ui-block-b profile-right-block">
-                <p>
-                    $!{other-user.phoneNumber}
-                </p>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
                 #if($friendsetting == 0)
-                    <a data-ajax="false" href="/protected/editmyprofile">Redigera Profil</a>
+
+                    <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
                 #elseif($friendsetting == 1)
                     <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend">Ta bort vän</a>
                 #elseif($friendsetting == 2)
@@ -112,17 +161,24 @@
                 #elseif($friendsetting == 4)
                     <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
                 #end
-                <h3>Öppna Playdates:</h3>
-                #foreach($p in $playdates)
-                    <div data-role="collapsible" data-mini="true">
-                        <h4>$p.header</h4>
-                        <p>$p.description</p>
-                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
-                    </div>
-                #end
+
+
+                <div data-role="collapsible" data-mini="true">
+
+                    <h4>Playdates</h4>
+
+
+                    #foreach($p in $playdates)
+                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+
+                    #end
+                </div>
+
             </div>
         </div>
     </div>
+
+
 </div>
 
 </body>
