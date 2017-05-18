@@ -130,8 +130,6 @@
 
             <h2>$!{other-user.name}</h2>
 
-            <a href="#popupReport" data-rel="popup" data-transition="slideup" style="float: right; top: -5px; right: 15px"
-               class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
         </div>
 
         <div class="ui-grid-a profile-page">
@@ -144,10 +142,11 @@
                 <p class="profile-description-text">
                     $!{other-user.description}
                 </p>
-            </div>
-            <div class="ui-block-b profile-right-block">
                 <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
+            </div>
+            <div class="ui-block-b profile-right-block" style="margin-top: 20%;">
+
                 #if($friendsetting == 0)
 
                     <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
@@ -157,13 +156,13 @@
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest">Acceptera vän</a>
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest">Avböj vänförfrågan</a>
                 #elseif($friendsetting == 3)
-                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" data-ajax="false">Ta bort vänskapsförfrågan</a>
+                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" class="ui-btn ui-corner-all ui-shadow" style="font-size: 8px;" data-ajax="false">Ta bort vänskapsförfrågan</a>
                 #elseif($friendsetting == 4)
-                    <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
+                    <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn ui-corner-all ui-shadow data-mini="true">Lägg till vän</a>
                 #end
 
 
-                <div data-role="collapsible" data-mini="true">
+                <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
 
                     <h4>Playdates</h4>
 
@@ -175,6 +174,7 @@
                 </div>
 
             </div>
+            <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
         </div>
     </div>
 
