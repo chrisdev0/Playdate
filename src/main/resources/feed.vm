@@ -6,60 +6,7 @@
 
     #parse("head-links.vm")
 
-    <script>
-
-        $(document).ready(function () {
-
-            var outputDiv = $('#output');
-            Object.prototype.hasOwnProperty = function(property) {
-                return this[property] !== undefined;
-            };
-
-            window.offset = 0;
-            var pendingAjax = false;
-
-
-            var getData = function () {
-                pendingAjax = true;
-
-                $.getJSON('/protected/getfeed?offset=' + window.offset).done(function (data) {
-                    console.log(data.collection);
-                    window.offset = parseInt(data.paginationOffset) + 10 ;
-                    pendingAjax = false;
-                    $.each(data.collection, function (index, feed) {
-                        console.log(feed);
-                        renderFeedObject(feed)
-                    });
-                });
-            };
-
-            var renderFeedObject = function (feed) {
-                var outputStr = "<h3 class='ui-bar ui-bar-a ui-corner-all'>" + feed.header + "</h3>";
-                outputStr += '<div class="ui-body"><div>';
-                outputStr += '<img height="200" src="/protected' + feed.imageUrl + '">';
-                outputStr += '<p>Beskrivning:' + feed.shortDescription;
-                outputStr += '</div><p>';
-                outputStr += "</div>";
-                outputDiv.append(outputStr);
-                console.log(outputStr)
-
-            };
-
-            $(window).scroll(function () {
-                var atHeight = ($(window).scrollTop() + $(window).height());
-                var totalHeight = $(document).height() -50;
-                var bo = (atHeight > totalHeight);
-                if (bo && !pendingAjax) {
-                    getData();
-                }
-            });
-
-            getData()
-
-
-        });
-
-    </script>
+    <script src="/js/feed.js"></script>
 
 </head>
 <body>

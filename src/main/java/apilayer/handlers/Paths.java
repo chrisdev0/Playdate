@@ -64,11 +64,14 @@ public class Paths {
     public static final String REMOVEFRIENDSHIPREQUEST = "/removefriendshiprequest";
     public static final String GETPLAYDATESOFMULTIPLEPLACE = "/getplaydatesofmultipleplace";
 
-    /**
+    /**     EVENTS
      * */
+    public static final String GETMYEVENTS = "/getmyinvites";
 
 
-
+    /**     REPORTS
+     * */
+    public static final String POSTREPORT = "/postreport";
 
 
 

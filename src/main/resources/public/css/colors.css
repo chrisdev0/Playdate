@@ -5,11 +5,11 @@ knapptext: darkgreen
 body: beige*/
 
 html body div.ui-header{
-    background: #b6d489;
+    background: #b6d489 !important ;
     border-color: #8f8f8f;
 }
 html body div.ui-footer{
-    background: #b6d489;
+    background: #b6d489 !important;
     border-color: #8f8f8f;
 }
 #footer div a.ui-btn{
@@ -19,7 +19,7 @@ html body div.ui-footer{
 }
 div.ui-content{
     background: #eff6da;
-    color: #1a6207;
+    color: #1a6207 ;
     font-family: Avenir;
     text-shadow: none;
 }

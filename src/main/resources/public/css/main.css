@@ -284,3 +284,80 @@
 .bottom-line{
     border-bottom: 1px solid #e1e1e1;
 }
+
+
+.feed-content:first-child {
+    margin-top: 1.6em;
+}
+
+.feed-content {
+    border: 1px solid black;
+    background: white;
+    margin-bottom: 1em;
+    border-top-left-radius: 0.6em;
+    border-top-right-radius: 0.6em;
+    overflow: hidden;
+}
+
+.feed-content p {
+    margin: 0 auto;
+    padding: 1em 0.4em 1em;
+}
+
+.feed-object-type {
+    position: absolute;
+    z-index: 200;
+    width: 100%;
+    text-align: right;
+}
+
+.feed-object-type span {
+    color: white;
+    position: relative;
+    right: 8px;
+    font-size: 1.3em;
+    opacity: 100;
+}
+
+.object-type-0 {
+    background: rgba(20, 20, 20, 0.6);
+}
+
+
+.object-type-1 {
+    background: rgba(119, 152, 200, 0.6);
+}
+
+.feed-image-composite {
+    position: relative;
+}
+
+.feed-object-description {
+    color: black;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+.feed-object-description a {
+    display: block;
+}
+
+.feed-image-composite h1 {
+    position: absolute;
+    text-align: center;
+    top: 1em;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    color: white;
+    font-weight: bold;
+    font-size: 2.5em;
+    -webkit-text-stroke: 2px black;
+    font-family: sans-serif;
+}
+
+.feed-image-composite img {
+    width: 100%;
+    height: 200px;
+    filter: saturate(280%);
+}

@@ -11,7 +11,9 @@
 
 
     <script>
+
         $(document).ready(function () {
+
             $('#add-friend').click(function (e) {
                 e.preventDefault();
 
@@ -20,6 +22,8 @@
                 })
 
             })
+
+
 
             $('#remove-friend').click(function (e) {
                 e.preventDefault();
@@ -62,7 +66,35 @@
                     }
                 });
             });
-        });
+
+
+
+            $('#send-report').click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postreport',
+                    data: $('#makeReport').serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        $('#report').val("");
+                       $('#popupReport').popup('close');
+
+
+
+                    }
+
+                });
+
+
+
+
+
+            })
+        })
+
     </script>
 
 
@@ -85,23 +117,23 @@
             <div data-role="header">
                 <h1>Rapportera</h1>
             </div>
-            <div data-role="main" class="ui-content">
-                <form id="comment-form" action="/protected/postcomment" method="POST">
-                    <textarea cols="30" rows="8" name="report" id="textareaReport" placeholder="Anmälan"></textarea>
-                    <input type="hidden" name="?" value="#">
+            <div data-role="main" class="ui-content" id="make-report">
+                <form data-ajax="false" id="makeReport" action="/protected/postreport" method="POST">
+                    <textarea cols="30" rows="8" name="reportDescription" id="report" placeholder="Skriv anmälan"></textarea>
+                    <input type="hidden" name="userId" value="$!other-user.id">
+                    <input data-ajax="false" id="send-report" type="submit" class="ui-btn" value="Skicka">
                 </form>
             </div>
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="post-comment" data-ajax="false">Skicka</a>
-            </div>
+
         </div>
         <div class="other-user-reportable">
 
             <h2>$!{other-user.name}</h2>
 
             <a href="#popupReport" data-rel="popup" data-transition="slideup" style="float: right; top: -5px; right: 15px"
-                  class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
+               class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
         </div>
+
         <div class="ui-grid-a profile-page">
             <div class="ui-block-a">
                 <div id="composite-picture">
@@ -114,9 +146,7 @@
                 </p>
             </div>
             <div class="ui-block-b profile-right-block">
-                <p>
-                    $!{other-user.phoneNumber}
-                </p>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
                 #if($friendsetting == 0)
 
@@ -133,16 +163,22 @@
                 #end
 
 
-                    <div data-role="collapsible" data-mini="true">
-                        <h4>Playdates</h4>
-                    #foreach($p in $playdates)
+                <div data-role="collapsible" data-mini="true">
 
-                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a>
-                    </div>
-                #end
+                    <h4>Playdates</h4>
+
+
+                    #foreach($p in $playdates)
+                        <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+
+                    #end
+                </div>
+
             </div>
         </div>
     </div>
+
+
 </div>
 
 </body>
