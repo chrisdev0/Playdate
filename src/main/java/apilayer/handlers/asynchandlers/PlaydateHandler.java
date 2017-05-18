@@ -43,8 +43,8 @@ public class PlaydateHandler {
         Optional<Playdate> playdateOptional = PlaydateDAO.getInstance()
                 .saveNewPlaydate(new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType));
         if (playdateOptional.isPresent()) {
-            response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId());
-            return setStatusCodeAndReturnString(response, 200, OK);
+            String redirectUrl = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+            return setStatusCodeAndReturnString(response, 200, redirectUrl);
         } else {
             log.error("couldn't create playdate");
             return setStatusCodeAndReturnString(response, 400, ERROR);

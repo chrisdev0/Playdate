@@ -74,7 +74,7 @@
                 </p>
 
             </div>
-        #end
+
         <hr>
         <h2>Andras:</h2>
         #foreach($p2 in $playdatesAttending)

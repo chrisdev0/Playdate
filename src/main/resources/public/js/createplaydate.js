@@ -98,6 +98,7 @@ $(document).ready(function() {
             data: $('#create-playdate-form').serialize(),
             success: function(e) {
                 console.log("created playdate")
+                window.location.replace(e);
             },
             error: function(e) {
                 console.log(e)
