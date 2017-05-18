@@ -3,14 +3,9 @@ package apilayer.handlers.asynchandlers;
 import apilayer.Constants;
 import apilayer.handlers.Paths;
 import com.google.gson.GsonBuilder;
-import com.sun.org.apache.regexp.internal.RE;
-import dblayer.HibernateUtil;
-import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
@@ -32,25 +27,13 @@ public class PlaydateHandler {
     public static Object handleMakePlaydate(Request request, Response response) {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
-
-        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header) ||
-                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
-
-        }
-        Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         Optional<Place> placeOptional = getPlaceFromRequest(request);
+        String validaton = getValidationError(header, description, placeOptional);
+        if (!validaton.isEmpty()) {
+            return setStatusCodeAndReturnString(response, 400, VALIDATION_ERROR + validaton);
+        }
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
-
-        if (!Utils.validateStartTime(startTime)){
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
-        }
-        if (!Utils.isNotNullAndNotEmpty(header, description)) {
-            log.error("header or description is empty");
-            response.status(400);
-            return "missing_info";
-        }
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(ParserHelpers.parseToInt(request.queryParams("visibilityId")));
@@ -66,6 +49,20 @@ public class PlaydateHandler {
             log.error("couldn't create playdate");
             return setStatusCodeAndReturnString(response, 400, ERROR);
         }
+    }
+
+    private static String getValidationError(String header, String description, Optional<Place> placeOptional) {
+        String ret = "";
+        if (!Utils.validateLengthOfString(3, 30, header)) {
+            ret += "_header";
+        }
+        if (!Utils.validateLengthOfString(20, 300, description)) {
+            ret += "_description";
+        }
+        if (!placeOptional.isPresent()) {
+            ret += "_place";
+        }
+        return ret;
     }
 
 
@@ -94,16 +91,6 @@ public class PlaydateHandler {
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
         PlaydateVisibilityType playdateVisibilityType;
-
-        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header) ||
-                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
-
-        }
-        if (!Utils.validateStartTime(startTime)){
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
-        }
-
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
         } catch (Exception e) {
