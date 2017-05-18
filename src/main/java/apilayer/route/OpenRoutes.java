@@ -52,8 +52,9 @@ public class OpenRoutes {
         Optional<String> fbAppIdOpt = secrets.getValue("fbAppId");
         Optional<String> fbSaltOpt = secrets.getValue("fbSalt");
         Optional<String> fbSecretOpt = secrets.getValue("fbSecret");
-        if (fbAppIdOpt.isPresent() && fbSaltOpt.isPresent() && fbSecretOpt.isPresent()) {
-            initFacebookRoutes(fbSaltOpt.get(), fbAppIdOpt.get(), fbSecretOpt.get());
+        Optional<String> fbCallback = secrets.getValue("fbCallback");
+        if (fbAppIdOpt.isPresent() && fbSaltOpt.isPresent() && fbSecretOpt.isPresent() && fbCallback.isPresent()) {
+            initFacebookRoutes(fbSaltOpt.get(), fbAppIdOpt.get(), fbSecretOpt.get(),fbCallback.get());
         } else {
             log.error("missing facebook values");
             stop();
@@ -64,8 +65,8 @@ public class OpenRoutes {
     /** Initierar routes för facebooklogin
      *
      * */
-    public static void initFacebookRoutes(String fbSalt, String fbAppId, String fbSecret) {
-        FBConfigFactory fbConfigFactory = new FBConfigFactory(fbSalt, fbAppId, Paths.FBCALLBACK, fbSecret);
+    public static void initFacebookRoutes(String fbSalt, String fbAppId, String fbSecret, String fbAbsoluteCallback) {
+        FBConfigFactory fbConfigFactory = new FBConfigFactory(fbSalt, fbAppId, fbAbsoluteCallback, fbSecret);
         Config config = fbConfigFactory.build();
         SecurityFilter securityFilter = new SecurityFilter(config, "FacebookClient");
 

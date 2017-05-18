@@ -97,6 +97,8 @@ public class Secrets implements GetSecretValue {
             } catch (Exception e) {
                 log.error("error loading secrets file, ");
             }
+        } else {
+            log.error("no secrets.txt file");
         }
     }
 

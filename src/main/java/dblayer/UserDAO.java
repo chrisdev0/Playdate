@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -469,4 +470,15 @@ public class UserDAO {
         return ret;
     }
 
+    public List<User> getPotentialFriends(String search, int offset, int limit, User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "SELECT DISTINCT u FROM User u LEFT JOIN u.sentFriendshipRequest fr LEFT JOIN u.friendshipRequest frr" +
+                    " LEFT JOIN u.friends f WHERE u != :user AND u.name LIKE :search";
+            return session.createQuery(hql, User.class)
+                    .setParameter("search", "%" + search + "%")
+                    .setParameter("user", user)
+                    .setMaxResults(limit).setFirstResult(offset)
+                    .list();
+        }
+    }
 }
