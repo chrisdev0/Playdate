@@ -61,8 +61,37 @@ $(document).ready(function() {
         })
     }
 
-    $('#update-profile-btn').one('click',function(e) {
+    $('#update-profile-btn').on('click',function(e) {
         e.preventDefault();
-        $('#update-profile-form').submit();
+
+        $.ajax({
+            type: 'POST',
+            url: $('#update-profile-form').attr('action'),
+            data: $('#update-profile-form').serialize(),
+            success: function (e) {
+                window.location.replace(e)
+            },
+            error: function (e) {
+                console.log(e)
+                var error = e.responseText;
+                console.log(error);
+                if(error.substr(0,6) === 'valida'){
+                    error = error.replace('validation_error_', '');
+                    var split = error.split("_");
+                    var errorsMsg = "";
+                    for(var i = 0; i < split.length; i++) {
+                        if (split[i] === 'description') {
+                            errorsMsg += "Beskrivningen måste vara mellan 10 och 300 tecken lång<br>"
+                        }
+                        if (split[i] === 'phone') {
+                            errorsMsg += "Felaktigt telefonnummer<br>"
+                        }
+                    }
+                    console.log(errorsMsg);
+                    $('#validationPopup p').html(errorsMsg);
+                    $('#validationPopup').popup('open');
+                }
+            }
+        });
     })
 });

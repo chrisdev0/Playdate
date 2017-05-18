@@ -1,6 +1,7 @@
 package utils;
 
 import apilayer.Constants;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,4 +49,11 @@ public class Utils {
         return (startTime > System.currentTimeMillis() && startTime < (System.currentTimeMillis() + Constants.TIMEDECIDER));
     }
 
+    public static String escapeHTML(String toEscape) {
+        return StringEscapeUtils.escapeHtml(toEscape);
+    }
+
+    public static String unEscapeHTML(String toUnEscape) {
+        return StringEscapeUtils.unescapeHtml(toUnEscape);
+    }
 }

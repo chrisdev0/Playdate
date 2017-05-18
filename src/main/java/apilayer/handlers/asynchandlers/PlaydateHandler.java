@@ -53,16 +53,18 @@ public class PlaydateHandler {
 
     private static String getValidationError(String header, String description, long startTime, Optional<Place> placeOptional) {
         String ret = "";
-        if (!Utils.validateLengthOfString(3, 30, header)) {
+        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header)) {
             ret += "_header";
         }
-        if (!Utils.validateLengthOfString(20, 300, description)) {
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
             ret += "_description";
         }
         if (!placeOptional.isPresent()) {
             ret += "_place";
         }
-
+        if(!Utils.validateStartTime(startTime)){
+            ret += "_starttime";
+        }
         return ret;
     }
 
@@ -91,6 +93,11 @@ public class PlaydateHandler {
         String description = request.queryParams("description");
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
+        Optional<Place> placeById = getPlaceFromRequest(request);
+        String validationError = getValidationError(header, description, startTime, placeById);
+        if (!validationError.isEmpty()) {
+            return setStatusCodeAndReturnString(response, 400, VALIDATION_ERROR + validationError);
+        }
         PlaydateVisibilityType playdateVisibilityType;
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
@@ -98,7 +105,6 @@ public class PlaydateHandler {
             return setStatusCodeAndReturnString(response, 400, ERROR);
         }
         Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
-        Optional<Place> placeById = getPlaceFromRequest(request);
         if (playdateOptional.isPresent() && placeById.isPresent()) {
             Playdate playdate = playdateOptional.get();
             playdate.setHeader(header);
@@ -107,8 +113,8 @@ public class PlaydateHandler {
             playdate.setPlaydateVisibilityType(playdateVisibilityType);
             playdate.setPlace(placeById.get());
             if (PlaydateDAO.getInstance().updatePlaydate(playdate)) {
-                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId());
-                return "";
+                String redirectUrl = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+                return setStatusCodeAndReturnString(response, 200, redirectUrl);
             } else {
                 log.error("error saving updated playdate");
             }

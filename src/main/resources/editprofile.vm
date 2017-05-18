@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="/css/croppie.css">
     <script src="/js/croppie.js"></script>
     <script src="/js/edituser.js"></script>
+    <script>
+        window.genderid = $user.gender.id
+    </script>
+
 </head>
 
 <body>
@@ -71,6 +75,9 @@
         <div data-role="footer">
             <a href="#" class="ui-btn" id="upload-picture">Ladda upp bild</a>
         </div>
+    </div>
+    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
+        <p></p>
     </div>
 </div>
 

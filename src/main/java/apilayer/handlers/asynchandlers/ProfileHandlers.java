@@ -27,10 +27,10 @@ public class ProfileHandlers {
         String description = request.queryParams("description");
 
         String genderSelectValue = request.queryParams("genderselect");
-        String phoneStr = request.queryParams("phoneinput");
-        if (!Utils.isValidPhoneNumber(phoneStr) ||
-                !Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)){
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        String phoneStr = Utils.removeNonDigitChars(request.queryParams("phoneinput"));
+        String validateError = getValidationErrorMsg(phoneStr, description);
+        if (!validateError.isEmpty()) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR + validateError);
         }
         int genderInt = ParserHelpers.parseToInt(genderSelectValue);
         Gender gender = Gender.genderIdToGender(genderInt);
@@ -38,11 +38,20 @@ public class ProfileHandlers {
         user.setPhoneNumber(phoneStr);
         user.setDescription(description);
         if (UserDAO.getInstance().saveUpdatedUser(user)) {
-            response.redirect(Paths.PROTECTED + Paths.EDITPROFILE);
-            return "";
+            return setStatusCodeAndReturnString(response, 200, Paths.PROTECTED + Paths.EDITPROFILE);
         }
-        response.status(400);
-        return "";
+        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+    }
+
+    private static String getValidationErrorMsg(String phone, String description) {
+        String ret = "";
+        if (!Utils.isValidPhoneNumber(phone)) {
+            ret += "_phone";
+        }
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
+            ret += "_description";
+        }
+        return ret;
     }
 
 }
