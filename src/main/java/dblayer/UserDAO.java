@@ -472,13 +472,13 @@ public class UserDAO {
 
     public List<User> getPotentialFriends(String search, int offset, int limit, User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            String hql = "FROM User u, Friendship f, FriendshipRequest fr WHERE u != :user AND " +
-                    "" +
-                    "u.name LIKE :search";
+            String hql = "SELECT u FROM User u, Friendship f, FriendshipRequest fr WHERE u != :user AND " +
+                    "f.friend != u AND f.requester != u AND fr.receiver !=  u AND fr.sender != u";
             return session.createQuery(hql, User.class)
-                    .setParameter("search", "%" + search + "%")
+                    //.setParameter("search", "%" + search + "%")
                     .setParameter("user", user)
-                    .setMaxResults(limit).setFirstResult(offset).list();
+                    //.setMaxResults(limit).setFirstResult(offset)
+                    .list();
         }
     }
 }

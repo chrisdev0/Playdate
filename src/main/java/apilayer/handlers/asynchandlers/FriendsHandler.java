@@ -2,6 +2,7 @@ package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
 import apilayer.handlers.Paths;
+import com.google.gson.GsonBuilder;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Friendship;
@@ -11,8 +12,10 @@ import spark.Response;
 import spark.Request;
 import utils.ParserHelpers;
 
+import java.util.List;
 import java.util.Optional;
 
+import static apilayer.handlers.asynchandlers.SparkHelper.getOffsetFromRequest;
 import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
 
 @Slf4j
@@ -59,9 +62,9 @@ public class FriendsHandler {
     public static Object getPotentialFriends(Request request, Response response) {
         User user = getUserFromSession(request);
         String search = request.queryParams(Paths.QueryParams.SEARCH_TERM);
-        UserDAO.getInstance().getPotentialFriends(search);
-
-
+        int offset = getOffsetFromRequest(request);
+        List<User> potentialFriends = UserDAO.getInstance().getPotentialFriends(search, offset, Constants.SEARCH_USER_OFFSET, user);
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(potentialFriends);
     }
 
 
