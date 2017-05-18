@@ -13,43 +13,43 @@
 
         $(document).ready(function() {
 
-         $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function (res) {
+            $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function (res) {
                 console.log(res);
                 $('#show-comments').html("");
                 $.each(res, function (index, comment){
                     renderComment(comment)
 
                 });
-        })
-
-        var renderComment = function (comment){
-            var output = "<div class='bottom-line'>";
-            output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
-                    " "+ comment.commentDate +"</p>"
-            output += "<p>" + comment.comment + "</p>"
-            output += "</div>"
-            $('#show-comments').append(output);
-        }
-
-        $('#makeComment').submit(function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            $.ajax({
-                type: 'POST',
-                url: '/protected/postplaydatecomment',
-                data: $('#makeComment').serialize(),
-                success: function(res) {
-                    console.log(res);
-                    res = JSON.parse(res);
-                    $('#comment').val("");
-                    $('#show-comments').html("");
-                    $.each(res,function(index, comment) {
-                        renderComment(comment)
-                    })
-                }
             })
-        });
+
+            var renderComment = function (comment){
+                var output = "<div class='bottom-line'>";
+                output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
+                        " "+ comment.commentDate +"</p>"
+                output += "<p>" + comment.comment + "</p>"
+                output += "</div>"
+                $('#show-comments').append(output);
+            }
+
+            $('#makeComment').submit(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postplaydatecomment',
+                    data: $('#makeComment').serialize(),
+                    success: function(res) {
+                        console.log(res);
+                        res = JSON.parse(res);
+                        $('#comment').val("");
+                        $('#show-comments').html("");
+                        $.each(res,function(index, comment) {
+                            renderComment(comment)
+                        })
+                    }
+                })
+            });
 
             $("#post-comment").one(function(e){
                 e.preventDefault();
@@ -85,9 +85,19 @@
                 });
             });
 
+            $('#add-friend-to-playdate').click(function (e) {
+                e.preventDefault();
+
+                $.post('/protected/sendinvite"?friendId=' + $(this).data('userid'), function(res) {
+                    console.log(res);
+                })
+            })
+
+            ##class="add-friend-to-playdate"  data-userid
 
         });
     </script>
+
 
 
 </head>
@@ -188,36 +198,30 @@
 
         <div data-role="popup" id="popupAdd">
 
+
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
                 <h3>Lägg till vän</h3>
             </div>
+
             <div class="listview-borders">
                 <div>
                     <form class="ui-filterable">
                         <input id="myFilter" data-type="search">
                     </form>
-                #* #if($friends.size() == 0)
-                     <h3>Du har inga vänner :(</h3>
-                 #else
-                 *#
-                    <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
-
+                    <ul class="inviteList" data-filter="true" data-input="#myFilter" data-inset="true">
+                    ##&& !($u in $playdate.getParticipants())
                         #foreach($u in $friends)
-                            <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
-                                <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
+
+                            <li>
+                                <p><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}
+                                <a href="#" class="add-friend-to-playdate" data-ajax="false" data-userid="$!{u.id}" >Bjud in vän</a>
+                            </p>
                             </li>
-
-
                         #end
 
                     </ul>
-                #* #end *#
                 </div>
-            </div>
-
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="addparticipant" data-ajax="false">Lägg till</a>
             </div>
 
         </div>
@@ -238,10 +242,10 @@
         <div data-role="popup" id="popupValidate" data-overlay-theme="d" data-theme="d" data-dismissible="false" style="max-width:400px;">
                 <div role="main" class="ui-content">
                     <h3 class="ui-title">Är du säker på att du vill ta bort Playdaten?</h3>
-                    <div id="two-btn-popup">
-                    <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
-                    <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
-                    </div>
+            <div id="two-btn-popup">
+                        <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
+                        <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
+            </div>
                 </div>
         </div>
     </div>

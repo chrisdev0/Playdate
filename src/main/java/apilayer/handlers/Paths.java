@@ -53,6 +53,7 @@ public class Paths {
     public static final String GETMYINVITES = "/getmyinvites";
     public static final String ACCEPTINVITE = "/acceptinvite";
     public static final String DECLINEINVITE = "/declineinvite";
+    public static final String SENDINVITE = "/sendivite";
 
     /**     VÄNNER
      * */

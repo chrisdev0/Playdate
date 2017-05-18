@@ -128,6 +128,7 @@ public class ProtectedRoutes {
             * */
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
+            post(Paths.SENDINVITE, AttendanceInviteHandler::handleSendInviteToPlaydate);
 
 
             /*      EVENT-routes
