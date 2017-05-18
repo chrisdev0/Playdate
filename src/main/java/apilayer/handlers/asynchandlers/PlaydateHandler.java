@@ -28,11 +28,11 @@ public class PlaydateHandler {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
         Optional<Place> placeOptional = getPlaceFromRequest(request);
-        String validaton = getValidationError(header, description, placeOptional);
+        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
+        String validaton = getValidationError(header, description, startTime,  placeOptional);
         if (!validaton.isEmpty()) {
             return setStatusCodeAndReturnString(response, 400, VALIDATION_ERROR + validaton);
         }
-        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         try {
@@ -51,7 +51,7 @@ public class PlaydateHandler {
         }
     }
 
-    private static String getValidationError(String header, String description, Optional<Place> placeOptional) {
+    private static String getValidationError(String header, String description, long startTime, Optional<Place> placeOptional) {
         String ret = "";
         if (!Utils.validateLengthOfString(3, 30, header)) {
             ret += "_header";
@@ -62,6 +62,7 @@ public class PlaydateHandler {
         if (!placeOptional.isPresent()) {
             ret += "_place";
         }
+
         return ret;
     }
 
