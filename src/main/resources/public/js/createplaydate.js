@@ -95,7 +95,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: '/protected/createplaydate',
+            url: $('#create-playdate-form').attr('action'),
             data: $('#create-playdate-form').serialize(),
             success: function(e) {
                 console.log("created playdate")
