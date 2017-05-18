@@ -38,11 +38,13 @@ public class PotentialFriendsHandlerTest extends MockTestHelpers {
 
 
         String res = (String) FriendsHandler.getPotentialFriends(request, response);
-        log.info(res);
+        assertTrue(responseContainsId(res,friend.getId()));
+        assertFalse(responseContainsId(res,notpotentialfriend.getId()));
 
 
         remove(user);
         remove(friend);
+        remove(notpotentialfriend);
 
     }
 
