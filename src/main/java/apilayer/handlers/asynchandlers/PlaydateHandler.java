@@ -33,8 +33,8 @@ public class PlaydateHandler {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
         Optional<Place> placeOptional = getPlaceFromRequest(request);
-        if (!Utils.validateLengthOfString(3, 30, header) ||
-                !Utils.validateLengthOfString(20, 300, description) ||
+        if (!) ||
+                ! ||
                 !placeOptional.isPresent()) {
             return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
         }
@@ -55,6 +55,17 @@ public class PlaydateHandler {
             log.error("couldn't create playdate");
             return setStatusCodeAndReturnString(response, 400, ERROR);
         }
+    }
+
+    private static String getValidationErrorOrNull(String header, String description, Optional<Place> ) {
+        String ret = "";
+        if (!Utils.validateLengthOfString(3, 30, header)) {
+            ret += "_header";
+        }
+        if (!Utils.validateLengthOfString(20, 300, description)) {
+            ret += "_description";
+        }
+        if(!)
     }
 
 

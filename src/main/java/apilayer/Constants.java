@@ -15,7 +15,7 @@ public class Constants {
     public static final String MAGIC_MISSING_IMAGE = "-1";
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
-    public static final int QUICK_PLACE_SEARCH_LIMIT = 5;
+    public static final int QUICK_PLACE_SEARCH_LIMIT = 10;
     public static final String ONLOGINREDIRECT = "onloginredirect";
     public static final long COUNT_PLAYDATE_AS_FUTURE_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
 

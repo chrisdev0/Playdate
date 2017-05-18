@@ -116,5 +116,6 @@ public class Paths {
         public static final String REPORT_DESCRIPTION = "reportDescription";
         public static final String FRIEND_ID = "friendId";
         public static final String MULTI_PLACE_IDS = "placeIds";
+        public static final String SEARCH_TERM = "searchTerm";
     }
 }

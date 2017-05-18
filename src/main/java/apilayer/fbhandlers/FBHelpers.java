@@ -45,7 +45,9 @@ public class FBHelpers {
         FacebookClient client = new DefaultFacebookClient(facebookProfile.getAccessToken(), Version.LATEST);
         try {
             JsonObject json = client.fetchObject("me/picture", JsonObject.class, Parameter.with("redirect", "false"));
-            return json.get("data").asObject().get("url").asString();
+            String userImageUrl = json.get("data").asObject().get("url").asString();
+            log.info("got profile picture url = " + userImageUrl);
+            return userImageUrl;
         } catch (Exception e) {
             log.error("error fetchobject ",e);
         }

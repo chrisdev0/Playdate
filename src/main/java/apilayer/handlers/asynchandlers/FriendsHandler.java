@@ -13,6 +13,8 @@ import utils.ParserHelpers;
 
 import java.util.Optional;
 
+import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
+
 @Slf4j
 public class FriendsHandler {
 
@@ -52,6 +54,14 @@ public class FriendsHandler {
         }
         response.status(400);
         return "";
+    }
+
+    public static Object getPotentialFriends(Request request, Response response) {
+        User user = getUserFromSession(request);
+        String search = request.queryParams(Paths.QueryParams.SEARCH_TERM);
+        UserDAO.getInstance().getPotentialFriends(search);
+
+
     }
 
 
