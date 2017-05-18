@@ -122,11 +122,19 @@ public class ProtectedRoutes {
             * */
             delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
             delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
+            get(Paths.GETPOTENTIALFRIENDS, FriendsHandler::getPotentialFriends);
 
             /*      INVITE-routes
             * */
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
+
+
+            /*      EVENT-routes
+            * */
+            get(Paths.GETUSERATTENDINGPLAYDATES, EventHandler::getAllPlaydatesWhoUserIsAttendingOrOwnerFuture);
+            get(Paths.GETPLAYDATESWHOUSERMAYWANTTOATTEND, EventHandler::getAllPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriendFuture);
+            get(Paths.GETPUBLICPLAYDATESBYLOCATION, EventHandler::getPublicPlaydatesCloseToUserFuture);
 
             initProtectedStaticRoutes();
             AdminRoutes.initAdminRoutes();
@@ -176,7 +184,7 @@ public class ProtectedRoutes {
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
 
-        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest);
+        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
     }
 

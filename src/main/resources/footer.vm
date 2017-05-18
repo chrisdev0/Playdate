@@ -7,7 +7,7 @@
         </div>
         <div class="ui-block-c center-content"><a data-ajax="false"  href="/protected/feed" class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-top ui-btn-inline">Feed</a>
         </div>
-        <div class="ui-block-d center-content"><a data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-icon-calendar ui-btn-icon-top ui-btn-inline">Event</a>
+        <div class="ui-block-d center-content"><a data-ajax="false" href="/protected/getmyevents" class="ui-shadow ui-btn ui-corner-all ui-icon-calendar ui-btn-icon-top ui-btn-inline">Event</a>
         </div>
         <div class="ui-block-e center-content"><a data-ajax="false" href="/protected/getmyinvites" class="ui-shadow ui-btn ui-corner-all ui-icon-mail ui-btn-icon-top ui-btn-inline">Inbjudningar</a>
         </div>
