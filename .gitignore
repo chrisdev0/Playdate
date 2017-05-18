@@ -10,3 +10,6 @@ playdate.iml
 MavenBuild.properties
 project/
 .DS_Store
+clientskeystore
+/keystore
+/keystore.jks

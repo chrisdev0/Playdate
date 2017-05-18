@@ -22,7 +22,17 @@ public class WebServer {
     private static final boolean SHOULD_LOAD_PLACES = true;
 
     public WebServer() {
-        port(Constants.PORT);
+        Secrets secrets = Secrets.getInstance();
+
+        Optional<String> serverPort = secrets.getValue("serverPort");
+        if (serverPort.isPresent()) {
+            log.info("using port from secrets");
+            port(Integer.parseInt(serverPort.get()));
+        } else {
+            log.info("using port 9000");
+            port(9000);
+        }
+        initHTTPS();
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
         initHibernate();
@@ -36,6 +46,17 @@ public class WebServer {
             }
         }
         initRoutes();
+    }
+
+    private void initHTTPS() {
+        if (Secrets.getInstance().getValue("ssl").isPresent() && Secrets.getInstance().getValue("ssl").get().equals("yes")) {
+            try {
+                secure("keystore.jks", Secrets.getInstance().getValue("sslPass").get(), null, null);
+            } catch (Exception e) {
+                log.error("error creating secure");
+                log.error("",e);
+            }
+        }
     }
 
     /** Sätter vart statiska filer ska hämtas ifrån
@@ -75,10 +96,6 @@ public class WebServer {
         //initierar de routes för REST som inte kräver att användarne är inloggad
         OpenRoutes.initOpenRoutes();
     }
-
-
-
-
 
 
 
