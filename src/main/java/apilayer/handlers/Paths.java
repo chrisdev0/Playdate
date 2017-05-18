@@ -66,25 +66,22 @@ public class Paths {
 
     /**     EVENTS
      * */
-    public static final String GETMYEVENTS = "/getmyinvites";
+   /* public static final String GETMYEVENTS = "/getmyinvites";*/
+
+
+    /**     REPORTS
+     * */
+
+    public static final String GETMYEVENTS = "/getmyevents";
+    public static final String GETUSERATTENDINGPLAYDATES = "/getuserattentindplaydates";
+    public static final String GETPLAYDATESWHOUSERMAYWANTTOATTEND = "/getsuggestedplaydates";
+    public static final String GETPUBLICPLAYDATESBYLOCATION = "/getpublicplaydatesbylocation";
 
 
     /**     REPORTS
      * */
     public static final String POSTREPORT = "/postreport";
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static final String GETPOTENTIALFRIENDS = "/getpotentialfriends";
 
 
     public static class ADMIN {
@@ -110,9 +107,10 @@ public class Paths {
         public static final String INVITE_MSG = "inviteMessage";
         public static final String LOC_X = "locX";
         public static final String LOC_Y = "locY";
-
+        public static final String OFFSET = "offset";
         public static final String REPORT_DESCRIPTION = "reportDescription";
         public static final String FRIEND_ID = "friendId";
         public static final String MULTI_PLACE_IDS = "placeIds";
+        public static final String SEARCH_TERM = "searchTerm";
     }
 }

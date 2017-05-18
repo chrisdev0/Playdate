@@ -1,6 +1,7 @@
 #* @vtlvariable name="u" type="model.User" *#
 #* @vtlvariable name="friends" type="java.util.Collection" *#
 #* @vtlvariable name="friendsrequest" type="java.util.Collection" *#
+#* @vtlvariable name="user" type="java.util.Collection" *#
 
 <html>
 <head>
@@ -44,6 +45,15 @@
             $('#popup').popup("open");
 
         });
+
+            $('#add-friend').click(function (e) {
+                e.preventDefault();
+
+                $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function(res) {
+                    console.log(res);
+                })
+
+            })
     })
 </script>
 
@@ -67,26 +77,18 @@
                 <form class="ui-filterable">
                     <input id="myFilter" data-type="search">
                 </form>
-               #* #if($friends.size() == 0)
+               #if($friends.size() == 0)
                     <h3>Du har inga vänner :(</h3>
                 #else
-                *#
-                <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
 
-                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
-                        </li>
-                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
-                        </li>
+                <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
                     #foreach($u in $friends)
                         <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
                             <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
                         </li>
-
-
                     #end
-
                 </ul>
-               #* #end *#
+               #end
             </div>
         </div>
     </div>
@@ -162,9 +164,12 @@
                     <input id="filter" data-type="search">
                 </form>
 
-                <ul data-role="listview" data-split-icon="check" data-theme="f" data-icon="plus" data-filter="true" data-input="#filter"  data-inset="true">
-                    <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Adele</a>
-                        <a href="#"></a></li>
+                <ul data-role="listview" data-split-icon="plus" data-theme="f" data-filter="true" data-input="#filter"  data-inset="true">
+                    #foreach($u in $User)
+                    <li><a href="#"><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                        <a href="#" id="add-friend"></a>
+                    </li>
+                    #end
                     <li><a href="#"><img src="../images/barnen.png" class="img-size" alt="adele" class="ui-li-icon ui-corner-all">Bengt</a>
                         <a href="#"></a></li>
 
