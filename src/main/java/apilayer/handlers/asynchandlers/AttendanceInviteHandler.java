@@ -14,6 +14,7 @@ import model.User;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
+import utils.Utils;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +71,10 @@ public class AttendanceInviteHandler {
         String sendToUserStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
         String playDateIdStr = request.queryParams(Paths.QueryParams.PLAYDATE_BY_ID);
         String inviteMsg = request.queryParams(Paths.QueryParams.INVITE_MSG);
+
+        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, inviteMsg)) {
+            setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
         Optional<User> sendToUser = UserDAO.getInstance().getUserById(ParserHelpers.parseToLong(sendToUserStr));
         if (sendToUser.isPresent()) {
             Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(ParserHelpers.parseToLong(playDateIdStr));

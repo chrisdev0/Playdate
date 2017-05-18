@@ -1,8 +1,6 @@
 package utils;
 
-
-
-import org.apache.commons.lang.StringEscapeUtils;
+import apilayer.Constants;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,15 +40,12 @@ public class Utils {
     }
 
     public static boolean validateLengthOfString(int min, int max, String input){
+        input = input.trim();
         return !(input.length() < min || input.length() > max || input.equals(null));
     }
 
-    public static String escapeHTML(String toEscape) {
-        return StringEscapeUtils.escapeHtml(toEscape);
-    }
-
-    public static String unEscapeHTML(String toUnEscape) {
-        return StringEscapeUtils.unescapeHtml(toUnEscape);
+    public static boolean validateStartTime(Long startTime){
+        return (startTime > System.currentTimeMillis() && startTime < (System.currentTimeMillis() + Constants.TIMEDECIDER));
     }
 
 }

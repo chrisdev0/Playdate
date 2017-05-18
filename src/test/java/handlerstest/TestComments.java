@@ -83,21 +83,6 @@ public class TestComments extends MockTestHelpers {
         assertEquals(answer, Constants.MSG.NO_PLACE_WITH_ID);
     }
 
-    @Test
-    public void testPostIllegalCommentNoComment() {
-        Request request = initRequestMock(createUser());
-        Response response = initResponseMock();
-
-        Place place = createPlace();
-        save(place);
-
-        injectKeyValue(request, new KeyValue(PLACE_BY_ID, place.getId()), new KeyValue(COMMENT_CONTENT, (String) null));
-
-        String answer = (String) CommentsHandler.handlePostPlaceComment(request, response);
-        assertNotNull(answer);
-        assertTrue(answer.isEmpty());
-        remove(place);
-    }
 
 
 }

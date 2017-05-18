@@ -13,6 +13,7 @@ public class Constants {
     public static final String USER_SESSION_KEY = "user";
     public static final int LENGTH_OF_SALT = 20;
     public static final String MAGIC_MISSING_IMAGE = "-1";
+    public static final String ABSOLUTE_URL;
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
     public static final int QUICK_PLACE_SEARCH_LIMIT = 10;
@@ -20,6 +21,21 @@ public class Constants {
     public static final long COUNT_PLAYDATE_AS_FUTURE_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
     public static final int SEARCH_USER_OFFSET = 15;
 
+    public static final Long TIMEDECIDER = 86400000L * 30;
+    public static final int SHORTDESCMIN = 3;
+    public static final int SHORTDESCMAX = 20;
+    public static final int LONGDESCMIN = 10;
+    public static final int LONGDESCMAX = 300;
+
+
+
+    static {
+        if (DEV) {
+            ABSOLUTE_URL = "http://localhost:" + PORT;
+        } else {
+            ABSOLUTE_URL = null;
+        }
+    }
 
 
     public class MSG {
