@@ -20,19 +20,19 @@ html body div.ui-footer{
 div.ui-content{
     background: #eff6da;
     color: #1a6207 ;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
     text-shadow: none;
 }
 html body div .ui-btn{
     background: #b6d489 !important;
     color: #1a6207 !important;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
     text-shadow: none !important;
 }
 html body div .ui-bar{
     background: #b6d489 !important;
     color: #1a6207;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
     text-shadow: none !important;
 }
 

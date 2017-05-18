@@ -370,3 +370,12 @@
 a{
     text-decoration: none;
 }
+
+.inviteList li {
+
+}
+
+.inviteList {
+    list-style: none;
+    padding-left: 0;
+}
