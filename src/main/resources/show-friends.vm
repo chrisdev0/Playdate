@@ -123,8 +123,7 @@
 
 
         <div class="listview-borders">
-
-
+            <h3>Vänförfrågningar</h3>
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
                     <li><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
@@ -132,7 +131,8 @@
                     </li>
                 #end
             </ul>
-
+            <h3>Skickade vänförfrågningar</h3>
+            <ul data-role="listview" data-split-icon="delete" data-theme="f" data-inset="true" id="sent-request-output"></ul>
         </div>
     </div>
 
@@ -145,9 +145,13 @@
             <label for="search-friends-field">Sök vän genom namn</label>
             <input type="text" id="friends-searchterm" name="search-friend-name" data-ajax="false">
         </form>
-        <ul data-role="listview"  data-theme="f" data-icon="plus"  data-filter="true" data-input="#search-friends-field" data-inset="true" id="potential-friends-output">
+        <ul data-role="listview" data-split-icon="plus"  data-inset="true" id="potential-friends-output">
 
         </ul>
+    </div>
+
+    <div data-role="popup" id="resPopup" data-position-to="window" data-transition="turn">
+        <p></p>
     </div>
 
 </div>

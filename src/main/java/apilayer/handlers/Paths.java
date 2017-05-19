@@ -83,6 +83,7 @@ public class Paths {
      * */
     public static final String POSTREPORT = "/postreport";
     public static final String GETPOTENTIALFRIENDS = "/getpotentialfriends";
+    public static final String GETSENTFRIENDREQUESTS = "/getsentfriendshiprequest";
 
 
     public static class ADMIN {
