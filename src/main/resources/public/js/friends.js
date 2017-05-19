@@ -19,8 +19,8 @@ $(document).ready(function () {
                 '<div class="potential-friends-item" >' +
                     '<div class="composite-friend-item">' +
                         '<img class="small-profile" src="' + user.profilePictureUrl + '">' +
-                        '<span><a data-ajax="false" href="/protected/showuser?userId='+ user.id +'" ' + user.name +'</span>' +
-                        '<a data-ajax="false" class="add-user-as-friend" data-user-id=' + user.id + '></a> ' +
+                        '<span><a data-ajax="false" href="/protected/showuser?userId='+ user.id +'"></a>' + user.name +'</span>' +
+                        '<a data-ajax="false" class="add-user-as-friend ui-btn ui-icon-plus ui-btn-icon-notext ui-btn-inline" data-user-id=' + user.id + '>Lägg till vän</a> ' +
                     '</div>' +
                 '</div>' +
                 '</li>';
