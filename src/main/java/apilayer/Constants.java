@@ -54,6 +54,7 @@ public class Constants {
         public static final String VALIDATION_ERROR = "validation_error";
 
         public static final String OK = "";
+        public static final String ALREADY_INVITED = "already_invited";
     }
     
     public class ADMIN {

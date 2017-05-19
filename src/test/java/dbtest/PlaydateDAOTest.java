@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static testutils.ModelCreators.*;
 
 @Slf4j
 public class PlaydateDAOTest extends HibernateTests {
@@ -228,7 +227,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertNotNull(playdate.getId());
         assertNotNull(user.getId());
 
-        Invite invite = new Invite("invite", playdate, user);
+        Invite invite = new Invite(playdate, user);
 
         save(invite, user, playdate);
         assertNotNull(invite.getId());
