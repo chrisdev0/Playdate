@@ -1,0 +1,79 @@
+$(document).ready(function () {
+
+    var potentialfriendsouput = $('#potential-friends-output');
+
+    $('#friends-searchterm').on('input', function () {
+        var text = $(this).val();
+        if (text.length > 2) {
+            $.getJSON('/protected/getpotentialfriends?searchTerm=' + text, function (res) {
+                renderFriends(res, potentialfriendsouput,'add-friend-btn');
+            });
+        }
+    });
+
+
+    var renderFriends = function(friends, output, btnclass) {
+        output.html("");
+        var ooutput = "";
+        $.each(friends, function (index, user) {
+            ooutput += '<li>' +
+                '<a href="#"><img src="'+ user.profilePictureUrl +'" class="img-size">' + user.name + '</a>' +
+                '<a href="#" class="'+btnclass+'" data-userid="'+ user.id +'" data-ajax="false"></a>' +
+                '</li>';
+        });
+        output.html(ooutput);
+        output.listview('refresh');
+    };
+
+    potentialfriendsouput.on('click', '.add-friend-btn', function (e) {
+        e.preventDefault();
+        var li = $(this).closest('li');
+        $.ajax({
+            type: 'POST',
+            url: '/protected/sendfriendrequest?friendId=' + $(this).data('userid'),
+            success: function (res) {
+                li.remove();
+                runGetSentRequest()
+                $('#resPopup p').text('Vänförfrågan skickad');
+                $('#resPopup').popup('open');
+            },
+            error: function (res) {
+                $('#resPopup p').text('Något gick fel, prova igen senare');
+                $('#resPopup').popup('open');
+            }
+        });
+    });
+
+
+    var sentRequestOutput = $('#sent-request-output');
+
+    var runGetSentRequest = function () {
+        $.getJSON('/protected/getsentfriendshiprequest',function(friends) {
+            renderFriends(friends, sentRequestOutput, 'remove-friend-request');
+        })
+    };
+
+    runGetSentRequest();
+
+
+    sentRequestOutput.on('click', '.remove-friend-request', function (e) {
+        e.preventDefault();
+        var li = $(this).closest('li');
+        $.ajax({
+            type: 'DELETE',
+            url: '/protected/removefriendshiprequest?userId=' + $(this).data('userid'),
+            success: function(res) {
+                li.remove();
+            },
+            error: function(res){
+                console.log("error removing friends")
+            }
+        });
+
+    });
+
+
+
+
+
+});

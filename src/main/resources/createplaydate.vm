@@ -1,3 +1,4 @@
+#* @vtlvariable name="Utils" type="utils.Utils" *#
 #* @vtlvariable name="playdate" type="model.Playdate" *#
 
 
@@ -9,111 +10,17 @@
     #parse("head-links.vm")
 
     <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
+    <script src="/js/createplaydate.js"></script>
     <script src="/js/jtsage-datebox.js"></script>
-
-
-    <script>
-        $(document).ready(function() {
-            $('#place-search-type').change(function (e) {
-                var searchtype = $('#place-search-type').val();
-                $('.place-searcher-div').each(function (index, div) {
-                    var id = $(this).data('search-type-id');
-                    if (id == searchtype) {
-                        $(this).removeClass('hidden')
-                    } else {
-                        if (!$(this).hasClass('hidden')) {
-
-                            $(this).addClass('hidden');
-                        }
-                    }
-                });
-            });
-
-            function getParams() {
-                var vars = [], hash;
-                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                for(var i = 0; i < hashes.length; i++)
-                {
-                    hash = hashes[i].split('=');
-                    vars.push(hash[0]);
-                    vars[hash[0]] = hash[1];
-                }
-                return vars;
-            }
-
-            var placeId = getParams()['placeId'];
-            if(placeId != undefined) {
-                $.getJSON('/protected/getplaceasjson?placeId=' + placeId, function (res) {
-                    console.log(res);
-                    $('#placeId').val(res.id);
-
-                    $('#show-place-placeholder').html(
-                            "<p class='name-with-button'>" + res.name + "</p>" +
-                            "<a href='/protected/showplace?placeId=" + res.id +"'>Visa</a>"
-                    );
-
-                });
-            }
-
-        });
-
-    </script>
     <script>
 
         $(document).ready(function () {
-
-            var searchField = $('#place-input-field');
-
-            var searchSuggestionts = $('#search-suggestions');
-
-            searchField.on('input',function(e) {
-                var text = $(this).val();
-                if(text.length > 3) {
-                    $.getJSON('/protected/searchplacebyterm?searchTerm=' + text, {}, function(data) {
-                        var suggestion = "";
-                        console.log(data)
-                        $.each(data,function(index,place){
-                            suggestion += "<li class='place-list-object' data-place-name="+ place.name + " data-place-id="+ place.id + ">" + place.name+ "</li>"
-                        });
-                        searchSuggestionts.html(suggestion);
-                        searchSuggestionts.listview("refresh");
-
-                    })
-                }
-            })
-
-            searchSuggestionts.on('click',".place-list-object",function(e) {
-                var placeId = $(this).data('placeId');
-                var placeName = $(this).data('placeName');
-                $('#show-place-placeholder').html(
-                        "<p class='name-with-button'>" + placeName + "</p>" +
-                        "<a href='/protected/showplace?placeId=" + placeId +"'>Visa</a>"
-                );
-                $('#placeId').val(placeId);
-                searchSuggestionts.html('');
-                searchSuggestionts.listview("refresh");
-                searchField.val("");
-            });
-
-            $('#create-playdate-form').on('submit',function(e) {
-                var starttime = $('#startTime');
-                var date = $('#datepicker-field').datebox('getTheDate');
-                var time = $('#timepicker-field').datebox('getTheDate');
-                date.setHours(time.getHours());
-                date.setMinutes(time.getMinutes());
-                console.log("setting start time to " + date.getTime());
-                starttime.val(date.getTime());
-                console.log("starttimevalue = " + starttime.val());
-            });
-
-
             #if($playdate)
-
                 console.log("edit playdatemode");
                 $('#create-playdate-form').attr('action', '/protected/updateplaydate');
                 $('#playdateId').val("${playdate.id}");
-                $('#header-field').val("${playdate.header}");
-                $('#description-field').val("${playdate.description}");
+                $('#header-field').val("${Utils.unEscapeHTML($playdate.header)}");
+                $('#description-field').val("${Utils.unEscapeHTML(${playdate.description})}");
                 $('#visibility-type').val("${playdate.playdateVisibilityType.nr}").change();
                 console.log("place id = " + "${playdate.getPlace().getId()}");
                 $('#placeId').val("${playdate.getPlace().getId()}");
@@ -130,7 +37,6 @@
                 $('#datepicker-field').datebox('setTheDate', dateBoxDate);
                 $('#timepicker-field').datebox('setTheDate', time);
             #end
-
         });
 
     </script>
@@ -181,8 +87,8 @@
                             <td>Playdaten blir synlig för alla dina vänner</td>
                         </tr>
                         <tr>
-                        <td>Offentlig:</td>
-                        <td>Playdaten blir synlig för alla användare</td>
+                            <td>Offentlig:</td>
+                            <td>Playdaten blir synlig för alla användare</td>
                         </tr>
                     </table>
                 </div>
@@ -195,7 +101,7 @@
                         <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id=" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
                     </label>
                 </div>
-                    <select name="visibilityId" id="visibility-type">
+                <select name="visibilityId" id="visibility-type">
                     <option value="0">Offentlig</option>
                     <option value="1">Öppen för vänner</option>
                     <option value="2">Privat</option>
@@ -215,9 +121,8 @@
 
                 <label for="place-input-field">Sök plats:</label>
 
-                <input type="search" name="place-input-field" id="place-input-field">
-                <ul id="search-suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#place-input-field">
-                    <li>Test</li>
+                <input type="search" name="place-input-field" id="place-input-field" data-ajax="false">
+                <ul id="search-suggestions" data-role="listview" data-inset="true"  data-input="#place-input-field">
                 </ul>
                 <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära mig</a>
             </div>
@@ -238,7 +143,9 @@
             </div>
         </form>
     </div>
-
+    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
+        <p></p>
+    </div>
 
 </div>
 

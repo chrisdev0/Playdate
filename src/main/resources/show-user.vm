@@ -11,7 +11,9 @@
 
 
     <script>
+
         $(document).ready(function () {
+
             $('#add-friend').click(function (e) {
                 e.preventDefault();
 
@@ -20,6 +22,8 @@
                 })
 
             })
+
+
 
             $('#remove-friend').click(function (e) {
                 e.preventDefault();
@@ -62,7 +66,35 @@
                     }
                 });
             });
-        });
+
+
+
+            $('#send-report').click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postreport',
+                    data: $('#makeReport').serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        $('#report').val("");
+                       $('#popupReport').popup('close');
+
+
+
+                    }
+
+                });
+
+
+
+
+
+            })
+        })
+
     </script>
 
 
@@ -85,66 +117,66 @@
             <div data-role="header">
                 <h1>Rapportera</h1>
             </div>
-            <div data-role="main" class="ui-content">
-                <form id="comment-form" action="/protected/postcomment" method="POST">
-                    <textarea cols="30" rows="8" name="report" id="textareaReport" placeholder="Anmälan"></textarea>
-                    <input type="hidden" name="?" value="#">
+            <div data-role="main" class="ui-content" id="make-report">
+                <form data-ajax="false" id="makeReport" action="/protected/postreport" method="POST">
+                    <textarea cols="30" rows="8" name="reportDescription" id="report" placeholder="Skriv anmälan"></textarea>
+                    <input type="hidden" name="userId" value="$!other-user.id">
+                    <input data-ajax="false" id="send-report" type="submit" class="ui-btn" value="Skicka">
                 </form>
             </div>
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="post-comment" data-ajax="false">Skicka</a>
-            </div>
+
         </div>
         <div class="other-user-reportable">
 
             <h2>$!{other-user.name}</h2>
 
-            <a href="#popupReport" data-rel="popup" data-transition="slideup" style="float: right; top: -5px; right: 15px"
-                  class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-alert ui-btn-icon-notext">Rapportera användare</a>
         </div>
+
         <div class="ui-grid-a profile-page">
             <div class="ui-block-a">
                 <div id="composite-picture">
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
                 <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
+                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
+                <p>Kön: $!{other-user.gender.frontname}</p>
                 <h3>Beskrivning:</h3>
                 <p class="profile-description-text">
                     $!{other-user.description}
                 </p>
+
             </div>
-            <div class="ui-block-b profile-right-block">
-                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
-                <p>Kön: $!{other-user.gender.frontname}</p>
+
+            <div class="ui-block-b profile-right-block" style="margin-top: 20%;">
+
                 #if($friendsetting == 0)
 
                     <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
                 #elseif($friendsetting == 1)
-                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend">Ta bort vän</a>
+                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate" data-rel="popup">Ta bort vän</a>
                 #elseif($friendsetting == 2)
-                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest">Acceptera vän</a>
-                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest">Avböj vänförfrågan</a>
+                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest" class="ui-btn ui-corner-all ui-shadow">Acceptera vän</a>
+                    <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest" class="ui-btn ui-corner-all ui-shadow">Avböj vänförfrågan</a>
                 #elseif($friendsetting == 3)
-                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" data-ajax="false">Ta bort vänskapsförfrågan</a>
+                    <a href="#" data-userid="$!other-user.id" id="remove-friendrequest" class="ui-btn ui-corner-all ui-shadow" style="font-size: 8px;" data-ajax="false">Ta bort vänskapsförfrågan</a>
                 #elseif($friendsetting == 4)
-                    <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn" data-mini="true">Lägg till vän</a>
+                    <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn ui-corner-all ui-shadow">Lägg till vän</a>
                 #end
 
+                <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
+                    <h4>Playdates</h4>
+                    #foreach($p in $playdates)
 
-                    <div data-role="collapsible" data-mini="true">
-
-                        <h4>Playdates</h4>
-
-
-                #foreach($p in $playdates)
-                    <a href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
-
-                #end
-                    </div>
+                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                    #end
+                </div>
 
             </div>
+            <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
         </div>
     </div>
+
+
 </div>
 
 </body>

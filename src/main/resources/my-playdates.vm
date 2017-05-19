@@ -10,32 +10,7 @@
 
     #parse("head-links.vm")
 
-    <script>
-        $(document).ready(function () {
-
-            $('.remove-playdate-link').click(function (e) {
-                e.preventDefault();
-                var playdateid = $(this).data('playdateid');
-                var div = $(this).closest('.removeable-playdate-parent');
-                console.log("trying to delete playdate with id = " + playdateid);
-                $.ajax('/protected/deleteplaydate?playdateId=' + playdateid, {
-                    type: 'DELETE',
-                    success: function(res){
-                        window.location.replace("/protected/showplaydates");
-                        console.log("success remove playdate");
-                        console.log(res)
-                        div.remove();
-                    },
-                    error: function(res){
-                        console.log("failed to remove playdate")
-                        console.log(res)
-                    }
-                })
-
-            });
-
-        });
-    </script>
+    <script src="/js/myplaydates.js"></script>
 
 </head>
 <body>
@@ -48,12 +23,8 @@
     #parse("footer.vm")
 
 <div data-role="page" id="pageone">
-
-
-
-
     <div data-role="main" class="ui-content">
-        <a href="/protected/createplaydate" data-ajax="false" class="ui-btn ui-icon-plus ui-btn-icon-right">Skapa ny Playdate</a>
+        <a href="/protected/createplaydate" data-ajax="false" class="ui-btn ui-icon-plus ui-btn-icon-right ui-btn-corner-all">Skapa ny Playdate</a>
         <hr>
         <h2>Mina:</h2>
         #foreach($p in $playdatesOwner)
@@ -68,20 +39,22 @@
 
             </div>
         #end
+
         <hr>
         <h2>Andras:</h2>
-        #foreach($p2 in $playdatesAttending)
-            <div data-role="collapsible" data-theme="a" data-content-theme="b">
-                <h4>$!{p2.header}</h4>
-                <p>
-                    $!{p2.description}
-                    <a class="ui-btn" data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p2.id}">Visa</a>
-                    <a class="ui-btn" data-ajax="false" href="/protected/showplaydate/$!{p2.id}">Lämna</a>
-                </p>
 
-            </div>
-        #end
-    </div>
+        <div class="listview-borders">
+            <ul data-role="listview" data-inset="true">
+                #foreach($p2 in $playdatesAttending)
+                    <li>
+                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p2.id}" class="ui-btn ui-icon-carat-r ui-btn-icon-right"
+                           data-inset="true" >$!{p2.header}, $!{p2.place.getName()}</a>
+                    </li>
+                #end
+            </ul>
+        </div>
+
+
 
 
 </div>

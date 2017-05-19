@@ -1,14 +1,56 @@
 #* @vtlvariable name="playdate" type="model.Playdate" *#
+#* @vtlvariable name="friends" type="java.util.Collection" *#
+#* @vtlvariable name="u" type="model.User" *#
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Playdate</title>
 
     #parse("head-links.vm")
+    <script src="/js/playdate-invites.js"></script>
 
     <script>
 
         $(document).ready(function() {
+
+            $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function (res) {
+                console.log(res);
+                $('#show-comments').html("");
+                $.each(res, function (index, comment){
+                    renderComment(comment)
+
+                });
+            })
+
+            var renderComment = function (comment){
+                var output = "<div class='bottom-line'>";
+                output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
+                        " "+ comment.commentDate +"</p>"
+                output += "<p>" + comment.comment + "</p>"
+                output += "</div>"
+                $('#show-comments').append(output);
+            }
+
+            $('#makeComment').submit(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postplaydatecomment',
+                    data: $('#makeComment').serialize(),
+                    success: function(res) {
+                        console.log(res);
+                        res = JSON.parse(res);
+                        $('#comment').val("");
+                        $('#show-comments').html("");
+                        $.each(res,function(index, comment) {
+                            renderComment(comment)
+                        })
+                    }
+                })
+            });
 
             $("#post-comment").one(function(e){
                 e.preventDefault();
@@ -44,36 +86,17 @@
                 });
             });
 
-            var renderComment = function (comment){
-                var output = "<div class='bottom-line'>";
-                output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
-                        " "+ comment.commentDate +"</p>"
-                output += "<p>" + comment.comment + "</p>"
-                output += "</div>"
-                $('#show-comments').append(output);
-            }
-
-            $('#makeComment').submit(function(e) {
+            $('#add-friend-to-playdate').click(function (e) {
                 e.preventDefault();
-                e.stopImmediatePropagation();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/protected/postplaydatecomment',
-                    data: $('#makeComment').serialize(),
-                    success: function(res) {
-                        console.log(res);
-                        res = JSON.parse(res);
-                        $('#comment').val("");
-                        $('#show-comments').html("");
-                        $.each(res,function(index, comment) {
-                            renderComment(comment)
-                        })
-                    }
+                $.post('/protected/sendinvite"?friendId=' + $(this).data('userid'), function(res) {
+                    console.log(res);
                 })
-            });
+            })
+
         });
     </script>
+
 
 
 </head>
@@ -128,15 +151,17 @@
                     #end
                     <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                     #if ($playdate.getOwner()==$user)
-                        <li><a href="#popupBasic" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-user ui-btn-icon-notext" data-transition="pop">adduser</a></li>
+                        <li><a href="#popupAdd" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">adduser</a></li>
+
                     #end
+                    <li><a href="#popupParticipant" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-user ui-btn-icon-notext" data-transition="pop">showallusers</a></li>
                 </ul>
             </div>
         </div>
         <h2>Datum och tid:</h2>
         <div class="descriptionfield-showplaydate">
             <p><script>
-                var timeDateFormat = new Date ($!{playdate.getStartTime()});
+                var timeDateFormat = new Date($!{playdate.getStartTime()});
                 var output = "Den ";
                 output += timeDateFormat.getDate()+"/"+(timeDateFormat.getMonth() +1)
                         +" "+timeDateFormat.getFullYear()+" klockan "+timeDateFormat.getHours()+":";
@@ -152,14 +177,8 @@
         <div class="descriptionfield-showplaydate">
             <p>$!{playdate.description}</p>
         </div>
-        <h3>Deltagare:</h3>
-
         <h3>Kommentar:</h3>
-        <div class="descriptionfield-showplaydate">
-            #foreach($!participant in $!playdate.participants)
-                <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
-            #end
-        </div>
+
 
         <div id="make-comment">
             <form data-ajax="false" id="makeComment">
@@ -173,23 +192,57 @@
         </div>
 
         #if ($playdate.getOwner()==$user)
-            <a data-playdateid="$!{playdate.id}" style="margin-top: 20%; background: #e33c13 !important; color:white !important;" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate" data-rel="popup">Ta bort</a>
+            <a data-playdateid="$!{playdate.id}" style="margin-top: 20%; background: #e33c13 !important; color:white !important;" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate" data-rel="popup">Ta bort playdate</a>
         #end
 
-        <div data-role="popup" id="popupBasic">
+        <div data-role="popup" id="popupAdd">
+
+
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <p>Här ska man hämta alla vänner och kunna lägga till dem</p>
+            <div data-role="header">
+                <h3>Lägg till vän</h3>
+            </div>
+
+            <div class="listview-borders">
+                <div>
+                    <form class="ui-filterable">
+                        <input id="myFilter" data-type="search">
+                    </form>
+                    <ul class="inviteList" data-filter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
+                        #foreach($u in $friends)
+                            <li>
+                                <p><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}
+                                    <a href="#" class="add-friend-to-playdate" data-ajax="false" data-playdateid="$!{playdate.id}" data-userid="$!{u.id}">Bjud in vän</a>
+                                </p>
+                            </li>
+                        #end
+
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
+        <div data-role="popup" id="popupParticipant">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <div data-role="header">
+                <h3>Deltagare</h3>
+            </div>
+            <div class="descriptionfield-showplaydate">
+                #foreach($!participant in $!playdate.participants)
+                    <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                #end
+            </div>
 
+        </div>
 
         <div data-role="popup" id="popupValidate" data-overlay-theme="d" data-theme="d" data-dismissible="false" style="max-width:400px;">
                 <div role="main" class="ui-content">
                     <h3 class="ui-title">Är du säker på att du vill ta bort Playdaten?</h3>
-                    <div id="two-btn-popup">
-                    <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
-                    <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
-                    </div>
+            <div id="two-btn-popup">
+                            <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
+                            <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
+            </div>
                 </div>
         </div>
     </div>

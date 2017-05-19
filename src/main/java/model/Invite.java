@@ -16,9 +16,6 @@ import javax.persistence.*;
     @Expose
     private Long id;
 
-    @Expose
-    private String message;
-
     @ManyToOne
     @Expose
     private Playdate playdate;
@@ -27,12 +24,7 @@ import javax.persistence.*;
     @Expose
     private User invited;
 
-    public void setMessage(String message) {
-        this.message = StringEscapeUtils.escapeHtml(message);
-    }
-
-    public Invite(String message, Playdate playdate, User invited) {
-        this.message = StringEscapeUtils.escapeHtml(message);
+    public Invite(Playdate playdate, User invited) {
         this.playdate = playdate;
         this.invited = invited;
     }
@@ -51,7 +43,6 @@ import javax.persistence.*;
         }
 
         if (id != null ? !id.equals(invite.id) : invite.id != null) return false;
-        if (message != null ? !message.equals(invite.message) : invite.message != null) return false;
         if (!playdate.equals(invite.playdate)) return false;
         return invited.equals(invite.invited);
     }
@@ -60,7 +51,6 @@ import javax.persistence.*;
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
         result = 31 * result + playdate.hashCode();
         result = 31 * result + invited.hashCode();
         return result;
@@ -70,7 +60,6 @@ import javax.persistence.*;
     public String toString() {
         return "Invite{" +
                 "id=" + id +
-                ", message='" + message + '\'' +
                 ", invited=" + invited +
                 '}';
     }

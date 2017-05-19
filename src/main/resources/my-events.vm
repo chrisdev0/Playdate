@@ -5,6 +5,8 @@
 
     #parse("head-links.vm")
 
+    <script src="/js/eventpage.js"></script>
+
 </head>
 <body>
 
@@ -22,6 +24,14 @@
 
     <div data-role="main" class="ui-content">
 
+        <h2>Kommande playdates</h2>
+        <div id="upcomming-playdates-output"></div>
+
+        <h2>Playdates jag kan gå med i</h2>
+        <div id="suggested-playdates-output"></div>
+
+        <h2>Playdates i närheten</h2>
+        <div id="public-playdates-output"></div>
     </div>
 
 

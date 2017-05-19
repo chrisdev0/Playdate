@@ -22,7 +22,17 @@ public class WebServer {
     private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
-        port(Constants.PORT);
+        Secrets secrets = Secrets.getInstance();
+
+        Optional<String> serverPort = secrets.getValue("serverPort");
+        if (serverPort.isPresent()) {
+            log.info("using port from secrets");
+            port(Integer.parseInt(serverPort.get()));
+        } else {
+            log.info("using port 9000");
+            port(9000);
+        }
+        initHTTPS();
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
         initHibernate();
@@ -30,12 +40,27 @@ public class WebServer {
         if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
             try {
                 new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MOTIONSSPÅR);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.BADPLATSER);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MUSEUM);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.UTOMHUSBASSÄNGER);
                 initDEVData();
             } catch (Exception e) {
                 log.error("error loading places ", e);
             }
         }
         initRoutes();
+    }
+
+    private void initHTTPS() {
+        if (Secrets.getInstance().getValue("ssl").isPresent() && Secrets.getInstance().getValue("ssl").get().equals("yes")) {
+            try {
+                secure("keystore.jks", Secrets.getInstance().getValue("sslPass").get(), null, null);
+            } catch (Exception e) {
+                log.error("error creating secure");
+                log.error("",e);
+            }
+        }
     }
 
     /** Sätter vart statiska filer ska hämtas ifrån
@@ -75,10 +100,6 @@ public class WebServer {
         //initierar de routes för REST som inte kräver att användarne är inloggad
         OpenRoutes.initOpenRoutes();
     }
-
-
-
-
 
 
 

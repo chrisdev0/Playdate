@@ -4,20 +4,17 @@ import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Invite;
-import model.Place;
-import model.Playdate;
-import model.User;
+import model.*;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import testutils.ModelCreators;
+import static testutils.ModelCreators.*;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static testutils.ModelCreators.*;
 
 @Slf4j
 public class PlaydateDAOTest extends HibernateTests {
@@ -63,6 +60,30 @@ public class PlaydateDAOTest extends HibernateTests {
         boolean b2 = PlaydateDAO.getInstance().deletePlaydate(playdate);
         assertFalse(b2);
         remove(user);
+        remove(place);
+    }
+
+    @Test
+    public void testSavePlaydateComment(){
+        Place place = createPlace();
+        User user = createUser();
+        Playdate playdate = createPlaydate(user, place);
+        Comment comment = new Comment();
+        comment.setCommenter(user);
+        comment.setComment("Testcomment");
+
+        save(user);
+
+        boolean b = PlaceDAO.getInstance().storeOrUpdatePlace(place);
+        assertTrue(b);
+
+        Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().saveNewPlaydate(playdate);
+        assertTrue(playdateOptional.isPresent());
+
+        assertTrue(PlaydateDAO.getInstance().savePlaydateComment(comment, playdate).isPresent());
+
+        remove(user);
+        remove(playdate);
         remove(place);
     }
 
@@ -151,7 +172,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
 
     @Test
-    public void testgetPlaydateWhoUserIsAttending() {
+    public void testGetPlaydateWhoUserIsAttending() {
         User user = createUser();
         User owner = createUser();
 
@@ -206,7 +227,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertNotNull(playdate.getId());
         assertNotNull(user.getId());
 
-        Invite invite = new Invite("invite", playdate, user);
+        Invite invite = new Invite(playdate, user);
 
         save(invite, user, playdate);
         assertNotNull(invite.getId());

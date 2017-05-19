@@ -331,5 +331,16 @@ public class PlaydateDAO {
         }
     }
 
+    public List<User> getPotentialFriendsToInvite(User user, Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "SELECT f.friend FROM Friendship f WHERE f.requester = :user AND f.friend NOT IN " +
+                    "(SELECT i.invited FROM Invite i WHERE i.playdate = :playdate) AND f.friend NOT IN " +
+                    "(SELECT u FROM Playdate p, User u WHERE p = :playdate)";
+            return session.createQuery(hql, User.class)
+                    .setParameter("user", user)
+                    .setParameter("playdate",playdate)
+                    .list();
+        }
+    }
 
 }

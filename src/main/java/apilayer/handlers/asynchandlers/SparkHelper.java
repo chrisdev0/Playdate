@@ -41,6 +41,10 @@ public class SparkHelper {
         return request.session().attribute(Constants.USER_SESSION_KEY);
     }
 
+    public static int getOffsetFromRequest(Request request) {
+        return ParserHelpers.parseToInt(request.queryParams(Paths.QueryParams.OFFSET));
+    }
+
     public static int[] getGridLocationFromRequest(Request request) throws IllegalArgumentException {
         try {
             CoordinateHandlerUtil coordinateHandlerUtil = new CoordinateHandlerUtil();

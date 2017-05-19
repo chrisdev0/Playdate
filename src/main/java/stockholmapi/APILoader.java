@@ -63,7 +63,7 @@ public class APILoader {
     }
 
     public void doLoadDuringRun(String apiKey, String serviceGuideServiceTypeId) throws Exception{
-        new DetailedServiceGuideServiceLoader(apiKey).load(new ServiceGuideServiceLoader(apiKey).load(), serviceGuideServiceTypeId)
+        new DetailedServiceGuideServiceLoader(apiKey).load(new ServiceGuideServiceLoader(apiKey).load(serviceGuideServiceTypeId), serviceGuideServiceTypeId)
                 .forEach(detailedServiceUnit -> toAddToDB.add(Place.constructFromDetailedServiceUnit(detailedServiceUnit)));
     }
 

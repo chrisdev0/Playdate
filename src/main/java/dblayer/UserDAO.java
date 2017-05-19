@@ -3,10 +3,16 @@ package dblayer;
 import apilayer.handlers.Paths;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.mapping.Join;
 
+import javax.persistence.JoinColumn;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -240,6 +246,10 @@ public class UserDAO {
             if (tx != null) {
                 tx.rollback();
             }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
         return ret;
     }
@@ -420,7 +430,7 @@ public class UserDAO {
 
     public boolean removeFriendship(User user, User friend) {
         boolean ret = false;
-        Session session;
+        Session session = null;
         Transaction tx = null;
         try {
             Optional<Friendship> friendship1 = checkIfFriendWithUser(user.getId(), friend.getId());
@@ -441,6 +451,10 @@ public class UserDAO {
             if (tx != null) {
                 tx.rollback();
             }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
         return ret;
     }
@@ -449,7 +463,7 @@ public class UserDAO {
         Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(user.getId(), friend.getId());
         boolean ret = false;
         if (friendshipRequest.isPresent()) {
-            Session session;
+            Session session = null;
             Transaction tx = null;
             try {
                 session = HibernateUtil.getInstance().openSession();
@@ -464,9 +478,27 @@ public class UserDAO {
                 if (tx != null) {
                     tx.rollback();
                 }
+            } finally {
+                if (session != null) {
+                    session.close();
+                }
             }
         }
         return ret;
     }
 
+
+    public List<User> getPotentialFriends(String search, User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "SELECT u FROM User u WHERE " +
+                    "u.id NOT IN (SELECT f.friend.id FROM Friendship f WHERE f.friend.id = :userid OR f.requester.id = :userid) " +
+                    "AND u.id NOT IN (SELECT fr.sender FROM FriendshipRequest fr WHERE fr.sender.id = :userid OR fr.receiver = :userid)" +
+                    "AND u.id NOT IN (SELECT fr.receiver FROM FriendshipRequest fr WHERE fr.receiver.id = :userid OR fr.sender = :userid) " +
+                    "AND u.name LIKE :search";
+            return session.createQuery(hql, User.class)
+                    .setParameter("search", "%" + search.toUpperCase() + "%")
+                    .setParameter("userid", user.getId())
+                    .list();
+        }
+    }
 }

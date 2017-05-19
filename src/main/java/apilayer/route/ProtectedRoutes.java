@@ -80,6 +80,10 @@ public class ProtectedRoutes {
             post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
             get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
 
+            /* Report-routes */
+            post(Paths.POSTREPORT, ReportHandler::createUserReport);
+
+
             /*      Sök-routes
             * */
             get(Paths.SEARCH_PLACE_BY_TERM, SearchHandlers::searchPlaces);
@@ -118,11 +122,21 @@ public class ProtectedRoutes {
             * */
             delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
             delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
+            get(Paths.GETPOTENTIALFRIENDS, FriendsHandler::getPotentialFriends);
+            get(Paths.GETSENTFRIENDREQUESTS, FriendsHandler::getSentFriendRequest);
 
             /*      INVITE-routes
             * */
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
+            post(Paths.SENDINVITE, AttendanceInviteHandler::handleSendInviteToPlaydate);
+
+
+            /*      EVENT-routes
+            * */
+            get(Paths.GETUSERATTENDINGPLAYDATES, EventHandler::getAllPlaydatesWhoUserIsAttendingOrOwnerFuture);
+            get(Paths.GETPLAYDATESWHOUSERMAYWANTTOATTEND, EventHandler::getAllPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriendFuture);
+            get(Paths.GETPUBLICPLAYDATESBYLOCATION, EventHandler::getPublicPlaydatesCloseToUserFuture);
 
             initProtectedStaticRoutes();
             AdminRoutes.initAdminRoutes();
@@ -172,7 +186,7 @@ public class ProtectedRoutes {
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
 
-        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest);
+        get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
     }
 
