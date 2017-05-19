@@ -20,9 +20,9 @@ $(document).ready(function () {
         divOutput.html("");
         var ooutput = "";
         $.each(friends, function (index, friend) {
-            var output = '<div>' +
-                '<p>' + friend.name + '</p>' +
-                '</div>';
+            var output = '<li>' +
+                "<div class='potential-friends-list' data-user-id='user.id' >' + friend.name + '</div>" +
+                '</li>';
             ooutput += output;
         });
         divOutput.html(ooutput);
