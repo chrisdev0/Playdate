@@ -40,6 +40,10 @@ public class WebServer {
         if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
             try {
                 new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MOTIONSSPÅR);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.BADPLATSER);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MUSEUM);
+                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.UTOMHUSBASSÄNGER);
                 initDEVData();
             } catch (Exception e) {
                 log.error("error loading places ", e);

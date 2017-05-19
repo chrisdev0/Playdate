@@ -123,6 +123,7 @@ public class ProtectedRoutes {
             delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
             delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
             get(Paths.GETPOTENTIALFRIENDS, FriendsHandler::getPotentialFriends);
+            get(Paths.GETSENTFRIENDREQUESTS, FriendsHandler::getSentFriendRequest);
 
             /*      INVITE-routes
             * */

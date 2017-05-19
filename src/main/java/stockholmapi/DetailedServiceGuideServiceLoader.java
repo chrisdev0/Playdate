@@ -23,16 +23,9 @@ public class DetailedServiceGuideServiceLoader {
         this.apiKey = apiKey;
     }
 
-    public static void main(String[] args) throws Exception {
-        new DetailedServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0").load(
-                new ServiceGuideServiceLoader("a42963ca81a64e55869481b281ad36c0").load()
-                , APIUtils.URLS.LEKPLATSER
-        ).forEach(s -> System.out.println(s.getName()));
-
-    }
 
     public List<DetailedServiceUnit> load(ServiceUnitTypes[] serviceUnitTypes, String serviceUnitTypeId) throws Exception {
-        final int idsPerUrl = 20;
+        final int idsPerUrl = 30;
         final String baseUrl = APIUtils.URLS.urlHelper(APIUtils.URLS.MULTI_SERVICE_GUIDE_SERVICE_DETAILED_WITH_ID_PLACEHOLDER, serviceUnitTypeId, apiKey).toExternalForm();
         List<DetailedServiceUnit> detailedServiceUnits = new ArrayList<>();
         List<String> urls = new ArrayList<>();

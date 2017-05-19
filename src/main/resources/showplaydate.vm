@@ -8,6 +8,7 @@
     <title>Playdate</title>
 
     #parse("head-links.vm")
+    <script src="/js/playdate-invites.js"></script>
 
     <script>
 
@@ -93,8 +94,6 @@
                 })
             })
 
-            ##class="add-friend-to-playdate"  data-userid
-
         });
     </script>
 
@@ -162,7 +161,7 @@
         <h2>Datum och tid:</h2>
         <div class="descriptionfield-showplaydate">
             <p><script>
-                var timeDateFormat = new Date ($!{playdate.getStartTime()});
+                var timeDateFormat = new Date($!{playdate.getStartTime()});
                 var output = "Den ";
                 output += timeDateFormat.getDate()+"/"+(timeDateFormat.getMonth() +1)
                         +" "+timeDateFormat.getFullYear()+" klockan "+timeDateFormat.getHours()+":";
@@ -209,14 +208,12 @@
                     <form class="ui-filterable">
                         <input id="myFilter" data-type="search">
                     </form>
-                    <ul class="inviteList" data-filter="true" data-input="#myFilter" data-inset="true">
-                    ##&& !($u in $playdate.getParticipants())
+                    <ul class="inviteList" data-filter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
                         #foreach($u in $friends)
-
                             <li>
                                 <p><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}
-                                <a href="#" class="add-friend-to-playdate" data-ajax="false" data-userid="$!{u.id}" >Bjud in vän</a>
-                            </p>
+                                    <a href="#" class="add-friend-to-playdate" data-ajax="false" data-playdateid="$!{playdate.id}" data-userid="$!{u.id}">Bjud in vän</a>
+                                </p>
                             </li>
                         #end
 
@@ -243,8 +240,8 @@
                 <div role="main" class="ui-content">
                     <h3 class="ui-title">Är du säker på att du vill ta bort Playdaten?</h3>
             <div id="two-btn-popup">
-                        <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
-                        <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
+                            <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
+                            <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
             </div>
                 </div>
         </div>

@@ -7,6 +7,7 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +68,15 @@ public class InviteDAO {
     public Optional<Invite> getInviteById(Long id) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(Invite.class).loadOptional(id);
+        }
+    }
+
+    public Optional<Invite> getInviteOfUserAndPlaydate(User user, Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "FROM Invite WHERE invited = :user AND playdate = :playdate";
+            return session.createQuery(hql, Invite.class)
+                    .setParameter("user", user)
+                    .setParameter("playdate", playdate).uniqueResultOptional();
         }
     }
 

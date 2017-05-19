@@ -161,4 +161,15 @@ public class PlaydateHandler {
         return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);
     }
 
+    public static Object handleGetFriendsToInvite(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Playdate> playdate = getPlaydateFromRequest(request);
+        if (playdate.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(user, playdate.get()));
+        } else {
+            return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
+        }
+    }
+
 }

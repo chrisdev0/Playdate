@@ -31,7 +31,7 @@ public class InviteDAOTest {
         save(place);
         save(playdate);
 
-        Invite invite = new Invite("message", playdate, invited);
+        Invite invite = new Invite(playdate, invited);
         save(invite, invited, playdate);
         assertNotNull(invite.getId());
 
@@ -56,7 +56,7 @@ public class InviteDAOTest {
         save(place);
         save(playdate);
 
-        Invite invite = new Invite("message", playdate, invited);
+        Invite invite = new Invite(playdate, invited);
         save(invite, invited, playdate);
         assertNotNull(invite.getId());
 
@@ -88,7 +88,7 @@ public class InviteDAOTest {
         save(place);
         save(playdate);
 
-        Invite invite = new Invite("message", playdate, invited);
+        Invite invite = new Invite(playdate, invited);
         save(invite, invited, playdate);
         assertNotNull(invite.getId());
 
