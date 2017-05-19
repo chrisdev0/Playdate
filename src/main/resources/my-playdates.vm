@@ -24,7 +24,7 @@
 
 <div data-role="page" id="pageone">
     <div data-role="main" class="ui-content">
-        <a href="/protected/createplaydate" data-ajax="false" class="ui-btn ui-icon-plus ui-btn-icon-right">Skapa ny Playdate</a>
+        <a href="/protected/createplaydate" data-ajax="false" class="ui-btn ui-icon-plus ui-btn-icon-right ui-btn-corner-all">Skapa ny Playdate</a>
         <hr>
         <h2>Mina:</h2>
        ## #foreach($p in $playdatesOwner)
@@ -34,6 +34,20 @@
            ## </li>
        ## </ul>
        ## #end
+
+
+        <div class="listview-borders">
+            <ul data-role="listview" data-inset="true">
+                #foreach($p in $playdatesOwner)
+                <li>
+                    <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}" class="ui-btn ui-icon-carat-r ui-btn-icon-right"
+                    data-inset="true" >$!{p.header}, $!{p.place.getName()}</a>
+                </li>
+                #end
+            </ul>
+        </div>
+
+        #*#foreach($p in $playdatesOwner)
 
         <div data-role="collapsible" class="removeable-playdate-parent" data-theme="b" data-content-theme="b">
                 <h4>$!{p.header}</h4>
@@ -45,10 +59,23 @@
                 </p>
 
             </div>
-
+#end
+*#
         <hr>
         <h2>Andras:</h2>
-        #foreach($p2 in $playdatesAttending)
+
+        <div class="listview-borders">
+            <ul data-role="listview" data-inset="true">
+                #foreach($p2 in $playdatesAttending)
+                    <li>
+                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p2.id}" class="ui-btn ui-icon-carat-r ui-btn-icon-right"
+                           data-inset="true" >$!{p2.header}, $!{p2.place.getName()}</a>
+                    </li>
+                #end
+            </ul>
+        </div>
+
+      #*  #foreach($p2 in $playdatesAttending)
             <div data-role="collapsible" data-theme="a" data-content-theme="b">
                 <h4>$!{p2.header}</h4>
                 <p>
@@ -60,6 +87,7 @@
             </div>
         #end
     </div>
+    *#
 
 
 </div>
