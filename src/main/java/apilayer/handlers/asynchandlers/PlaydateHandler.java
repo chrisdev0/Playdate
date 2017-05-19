@@ -151,7 +151,12 @@ public class PlaydateHandler {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-                    .create().toJson(PlaydateDAO.getInstance().getPlaydateAtPlace(placeOptional.get()));
+                    .create().toJson(PlaydateDAO.getInstance()
+                            .getPlaydateAtPlace(placeOptional.get())
+                            .stream()
+                            .filter(Playdate::playdateIsInFuture)
+
+                    );
         }
         return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);
     }

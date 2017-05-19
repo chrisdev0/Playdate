@@ -4,12 +4,9 @@ $(document).ready(function () {
     var divOutput = $('#potential-friends-output');
 
     $('#friends-searchterm').on('input', function () {
-        console.log("input");
         var text = $(this).val();
         if (text.length > 2) {
-
             $.getJSON('/protected/getpotentialfriends?searchTerm=' + text, function (res) {
-                console.log(res);
                 renderFriends(res);
             });
         }
