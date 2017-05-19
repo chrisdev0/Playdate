@@ -10,7 +10,7 @@
 
     #parse("head-links.vm")
 
-    <script src="/js/myplaydate.js"></script>
+    <script src="/js/myplaydates.js"></script>
 
 </head>
 <body>
