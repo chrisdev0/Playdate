@@ -487,8 +487,7 @@ public class UserDAO {
         return ret;
     }
 
-    /** todo fungerar fortfarande inte
-     * */
+
     public List<User> getPotentialFriends(String search, User user) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             String hql = "SELECT u FROM User u WHERE " +
