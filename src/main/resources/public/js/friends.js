@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     var divOutput = $('#potential-friends-output');
 
     $('#friends-searchterm').on('input', function () {
@@ -12,15 +11,19 @@ $(document).ready(function () {
         }
     });
 
-
     var renderFriends = function(friends) {
         divOutput.html("");
         var ooutput = "";
-        $.each(friends, function (index, friend) {
-            var output = '<li>' +
-                "<div class='potential-friends-list' data-user-id='user.id' >' + friend.name + '</div>" +
+        $.each(friends, function (index, user) {
+            ooutput += '<li>' +
+                '<div class="potential-friends-item" >' +
+                    '<div class="composite-friend-item">' +
+                        '<img class="small-profile" src="' + user.profilePictureUrl + '">' +
+                        '<span><a data-ajax="false" href="/protected/showuser?userId='+ user.id +'" ' + user.name +'</span>' +
+                        '<a data-ajax="false" class="add-user-as-friend" data-user-id=' + user.id + '></a> ' +
+                    '</div>' +
+                '</div>' +
                 '</li>';
-            ooutput += output;
         });
         divOutput.html(ooutput);
     };
