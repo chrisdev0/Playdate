@@ -5,7 +5,6 @@ import dblayer.*;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Session;
-import utils.Utils;
 
 
 import java.util.*;
@@ -32,7 +31,7 @@ public class Data {
         user.setName(faker.name().firstName() + " " + faker.name().lastName());
         user.setGender(Gender.values()[faker.random().nextInt(2)]);
         user.setDescription("Jag heter " + unEscapeHTML(user.getName().split(" ")[0]) + " och är " + getRandomIntBetween(27, 40)
-        + "Jag är " + (user.getGender().equals(Gender.MALE) ? "pappa" : "mamma") + " till lilla " + faker.name().firstName()
+        + "år gammal. Jag är " + (user.getGender().equals(Gender.MALE) ? "pappa" : "mamma") + " till lilla " + faker.name().firstName()
         + ", " +faker.random().nextInt(4) + "år."
         );
         user.setEmail("" + getRandomIntBetween(0, 100) + faker.internet().emailAddress());
@@ -74,15 +73,68 @@ public class Data {
             toInvite--;
         }
         List<User> friendsToInvite = getNumberOfRandomFriends(toInvite, user.getFriends());
+        Collections.shuffle(friendsToInvite);
+        int index = 0;
+        while (index < size && toInvite >= 0){
+            if (inviteFriendToPlaydate(playdate,friendsToInvite.get(index))) {
+                toInvite--;
+            }
+            index++;
+        }
+
         friendsToInvite.forEach(user1 -> inviteFriendToPlaydate(playdate, user1));
     }
 
-    public static void inviteFriendToPlaydate(Playdate playdate, User friend) {
+    public static void createUsersWhoHavePlaydateWhereUserIsInvited(User user) {
+        Optional<User> savedUserForInjectData = createSavedUserForInjectData();
+        if (!savedUserForInjectData.isPresent()) {
+            log.info("unable to create user");
+            return;
+        }
+
+        createFriend(savedUserForInjectData.get());
+        Optional<Place> randomPlace = getRandomPlace();
+        if (!randomPlace.isPresent()) {
+            log.info("unable to find random place");
+            return;
+        }
+        Optional<Playdate> savedPlaydate = createSavedPlaydate(savedUserForInjectData.get(), randomPlace.get());
+        if (!savedPlaydate.isPresent()) {
+            log.info("unable to create playdate");
+            return;
+        }
+        if (makeUserFriends(user, savedUserForInjectData.get())) {
+            boolean b = inviteFriendToPlaydate(savedPlaydate.get(), user);
+            if (!b) {
+                log.info("unable to invite user");
+            }
+        }
+    }
+
+    private static boolean makeUserFriends(User user, User friend) {
+        Optional<FriendshipRequest> friendshipRequest = UserDAO.getInstance().createFriendshipRequest(user, friend);
+        if (!friendshipRequest.isPresent()) {
+            log.info("unable to create friendshiprequest");
+            return false;
+        }
+        Optional<Friendship> friendship = UserDAO.getInstance().createFriendship(friendshipRequest.get());
+        if (!friendship.isPresent()) {
+            log.info("unable to create friendship");
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public static boolean inviteFriendToPlaydate(Playdate playdate, User friend) {
         Invite invite = new Invite(playdate, friend);
         boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         if (!b) {
             log.info("unable to send invite");
+            return false;
         }
+        return true;
     }
 
 
@@ -108,7 +160,7 @@ public class Data {
                 "Skulle vara trevligt om någon annan vill hänga med. Stället ligger vid " + unEscapeHTML(place.getStreetAddress()
         ));
 
-        playdate.setHeader(headers[faker.random().nextInt(2)] + " " + place.getName());
+        playdate.setHeader(headers[faker.random().nextInt(2)] + " " + unEscapeHTML(place.getName()));
         return PlaydateDAO.getInstance().saveNewPlaydate(playdate);
     }
 

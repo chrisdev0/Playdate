@@ -8,6 +8,9 @@
     <title>Playdate</title>
 
     #parse("head-links.vm")
+    <script>
+        window.playdateid = "$!playdate.id"
+    </script>
     <script src="/js/playdate-invites.js"></script>
 
     <script>
@@ -211,9 +214,7 @@
                     <ul class="inviteList" data-filter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
                         #foreach($u in $friends)
                             <li>
-                                <p><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}
-                                    <a href="#" class="add-friend-to-playdate" data-ajax="false" data-playdateid="$!{playdate.id}" data-userid="$!{u.id}">Bjud in vän</a>
-                                </p>
+
                             </li>
                         #end
 

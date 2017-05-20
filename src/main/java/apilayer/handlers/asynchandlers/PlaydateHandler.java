@@ -162,7 +162,6 @@ public class PlaydateHandler {
     }
 
     public static Object handleGetFriendsToInvite(Request request, Response response) {
-        User user = getUserFromSession(request);
         Optional<Playdate> playdate = getPlaydateFromRequest(request);
         if (playdate.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()

@@ -108,6 +108,7 @@ public class ProtectedRoutes {
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
             get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
+            get(Paths.GETPOTENTIALFRIENDSTOINVITE, PlaydateHandler::handleGetFriendsToInvite);
 
             /*      FriendshipRequest-routes
             * */

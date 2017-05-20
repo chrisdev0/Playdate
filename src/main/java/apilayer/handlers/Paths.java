@@ -86,7 +86,7 @@ public class Paths {
     public static final String GETSENTFRIENDREQUESTS = "/getsentfriendshiprequest";
     public static final String ADDDATA = "/add-data";
     public static final String FORCELOGIN = "/force-login";
-
+    public static final String GETPOTENTIALFRIENDSTOINVITE = "/getpotentialfriendstoinvite";
 
 
     public static class ADMIN {
