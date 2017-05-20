@@ -5,13 +5,11 @@ import apilayer.route.ProtectedRoutes;
 import apilayer.route.StaticFileRoutes;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
-import secrets.envvar.Secrets;
+import secrets.Secrets;
 import spark.route.RouteOverview;
 import stockholmapi.APILoader;
 import stockholmapi.helpers.APIUtils;
 
-
-import java.util.Optional;
 
 import static dblayer.DBDataCreator.initDEVData;
 import static spark.Spark.*;

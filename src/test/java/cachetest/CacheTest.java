@@ -7,7 +7,6 @@ import model.DBAPIImage;
 import model.Place;
 import org.junit.Test;
 
-import secrets.Secrets;
 import spark.Request;
 import spark.Response;
 import testutils.MockTestHelpers;

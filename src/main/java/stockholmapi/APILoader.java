@@ -1,26 +1,19 @@
 package stockholmapi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.GeographicalArea;
 import model.Place;
-import org.apache.commons.collections.set.CompositeSet;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import secrets.envvar.Secrets;
-import stockholmapi.helpers.APIUtils;
-import stockholmapi.jsontojava.ServiceUnitTypes;
+import secrets.Secrets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static stockholmapi.helpers.APIUtils.getUrl;
-import static stockholmapi.helpers.APIUtils.stupidStockholmAPIJSONToNotStupidJSON;
 
 @Slf4j
 public class APILoader {

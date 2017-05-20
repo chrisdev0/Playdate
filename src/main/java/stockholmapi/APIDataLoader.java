@@ -3,19 +3,17 @@ package stockholmapi;
 import apilayer.Constants;
 import cache.Cache;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.DBAPIImage;
 import model.Place;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import secrets.envvar.Secrets;
+import secrets.Secrets;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 import stockholmapi.jsontojava.Value2;
 
 import java.net.URL;
-import java.util.Optional;
 
 import static stockholmapi.helpers.APIUtils.*;
 import static stockholmapi.helpers.APIUtils.API_HUVUDBILD;

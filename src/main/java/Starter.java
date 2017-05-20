@@ -1,7 +1,7 @@
 import apilayer.Constants;
 import apilayer.WebServer;
 import lombok.extern.slf4j.Slf4j;
-import secrets.envvar.Secrets;
+import secrets.Secrets;
 
 @Slf4j
 public class Starter {

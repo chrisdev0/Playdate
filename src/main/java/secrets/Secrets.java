@@ -2,104 +2,128 @@ package secrets;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
-import java.util.*;
+
+import java.util.Map;
 
 @Slf4j
-public class Secrets implements GetSecretValue {
+public class Secrets {
 
-    private static Secrets instance;
+    public static String DB_HOST;
+    public static String DB_USER;
+    public static String DB_PASS;
 
-    private Map<String,String> keyValueMap;
-    private SecretsLoader secretsLoader;
-    private Set<File> loadedFiles;
+    public static String STHML_API_KEY;
+    public static String GOOGLE_MAPS_KEY;
 
-    public void injectValuesFromArgs(String[] args) throws Exception{
-        if (args.length == 0) {
-            loadSecretsFile("secrets.txt");
-        } else if (args.length == 1) {
-            File file = new File(args[0]);
-            if (file.exists()) {
-                loadSecretsFile(file);
-            } else {
-                log.error("Couldn't load secrets file " + args[0]);
+    public static String FB_SALT;
+    public static String FB_APP_ID;
+    public static String FB_SECRET;
+    public static String FB_CALLBACK;
+
+    public static Boolean USE_SSL;
+    public static String KEYSTORE_PASSWORD;
+
+    public static Integer PORT;
+
+    private static class ENV_KEYS {
+
+        public static String KEY_TO_DB_HOST = "__PLAYDATE_DB_HOST";
+        public static String KEY_TO_DB_USER = "__PLAYDATE_DB_USER";
+        public static String KEY_TO_DB_PASS = "__PLAYDATE_DB_PASS";
+
+        public static String KEY_TO_STHML_API_KEY = "__PLAYDATE_STOCKHOLM_KEY";
+        public static String KEY_TO_GOOGLE_MAPS_KEY = "__PLAYDATE_GOOGLE_MAPS_KEY";
+
+        public static String KEY_TO_FB_SALT = "__PLAYDATE_FB_SALT";
+        public static String KEY_TO_FB_APP_ID = "__PLAYDATE_FB_APP_ID";
+        public static String KEY_TO_FB_SECRET = "__PLAYDATE_FB_SECRET";
+        public static String KEY_TO_FB_CALLBACK = "__PLAYDATE_CALLBACK";
+
+        public static String KEY_TO_USE_SSL = "__PLAYDATE_USE_SSL";
+        public static String KEY_TO_KEYSTORE_PASSWORD = "__PLAYDATE_KEYSTORE_PASS";
+
+        public static String KEY_TO_PORT = "__PLAYDATE_SERVER_PORT";
+
+
+    }
+
+
+    public  static void initSecrets(boolean debug) throws Exception {
+        Map<String, String> env = System.getenv();
+        if (debug) {
+            printEnv(env);
+        }
+        DB_HOST = env.get(ENV_KEYS.KEY_TO_DB_HOST);
+        DB_USER = env.get(ENV_KEYS.KEY_TO_DB_USER);
+        DB_PASS = env.get(ENV_KEYS.KEY_TO_DB_PASS);
+
+        STHML_API_KEY = env.get(ENV_KEYS.KEY_TO_STHML_API_KEY);
+        GOOGLE_MAPS_KEY = env.get(ENV_KEYS.KEY_TO_GOOGLE_MAPS_KEY);
+
+        FB_APP_ID = env.get(ENV_KEYS.KEY_TO_FB_APP_ID);
+        FB_CALLBACK = env.get(ENV_KEYS.KEY_TO_FB_CALLBACK);
+        FB_SALT = env.get(ENV_KEYS.KEY_TO_FB_SALT);
+        FB_SECRET = env.get(ENV_KEYS.KEY_TO_FB_SECRET);
+
+        extractUseSSL(env.get(ENV_KEYS.KEY_TO_USE_SSL));
+        KEYSTORE_PASSWORD = env.get(ENV_KEYS.KEY_TO_KEYSTORE_PASSWORD);
+
+        extractPort(env.get(ENV_KEYS.KEY_TO_PORT));
+
+        checkFields();
+        log.info("All settings loaded successfully");
+    }
+
+    private static void extractPort(String portStr) throws Exception {
+        try {
+            PORT = Integer.parseInt(portStr);
+        } catch (Exception e) {
+            log.error("Illegal port number " + portStr);
+            throw new Exception();
+        }
+
+    }
+
+    private static void extractUseSSL(String ssl) throws Exception{
+        if (ssl == null) {
+            log.error("SSL enviroment variable not set, Please set the " + ENV_KEYS.KEY_TO_USE_SSL + " environment variable");
+            throw new Exception();
+        }
+        ssl = ssl.toLowerCase();
+        switch (ssl) {
+            case "yes":
+            case "true":
+                USE_SSL = true;
+                break;
+            case "no":
+            case "false":
+                USE_SSL = false;
+                break;
+            default:
+                log.error("incorrect USE_SSL value, must be yes true no or false");
                 throw new Exception();
+        }
+    }
+
+    private static void checkFields() throws Exception {
+        if (("" + DB_USER + DB_HOST + DB_PASS +
+                FB_CALLBACK + FB_APP_ID + FB_SECRET + FB_SALT +
+                KEYSTORE_PASSWORD + PORT +
+                USE_SSL + GOOGLE_MAPS_KEY + STHML_API_KEY).contains("null")) {
+            log.error("unset variable");
+            throw new Exception();
+        }
+    }
+
+    private static void printEnv(Map<String, String> env) {
+        log.info("Using the following environment variables");
+        env.forEach((s, s2) -> {
+            if (s.startsWith("__PLAYDATE")) {
+                log.info("[Key=" + s + "]=" + s2);
             }
-        } else {
-            if (args.length == 8) {
-
-            }
-        }
-    }
-
-    /** Skapar .txt-läsar-objektet
-     *  och initierar nyckel-värdemappen
-     * */
-    private Secrets() {
-        secretsLoader = new SecretsLoader();
-        keyValueMap = new HashMap<>();
-        loadedFiles = new HashSet<>();
+        });
     }
 
 
-    /** Försöker ladda nyckel-värde från filen med filnamnet som skickas in som parameter
-     *  returnerar this för method chaining
-     * */
-    public Secrets loadSecretsFile(String fileName) throws SecretsParserException, IOException {
-        loadSecretsFile(new File(fileName));
-        return this;
-    }
-
-    /** Returnerar en optional som omsluter det eventuella värde som finns i nyckel-värdemappen
-     *  för nyckeln som skickas in som key
-     * */
-    @Override
-    public Optional<String> getValue(String key) {
-        return Optional.ofNullable(keyValueMap.get(key));
-    }
-
-    /** Försöker ladda nyckel-värde från filen som skickas in som parameter
-     *  returnerar this för method chaining
-     * */
-    public Secrets loadSecretsFile(File file) throws IOException, SecretsParserException {
-        if (loadedFiles.contains(file)) {
-            log.info("Tried to load already loaded file " + file.getName());
-            return this;
-        } else {
-            secretsLoader.extractKeyValuesFromFile(file, this);
-            loadedFiles.add(file);
-            log.info("Loaded " + file.getName() + " secret values file");
-        }
-        return this;
-    }
-
-    /** Lägger till alla värden från mappen som skickas in som parameter i nyckel-värdemappen
-     * */
-    void addToMap(Map<String, String> tempMap) {
-        keyValueMap.putAll(tempMap);
-    }
-
-    /** Singleton-pattern
-     * */
-    public static Secrets getInstance() {
-        if (instance == null) {
-            instance = new Secrets();
-            instance.initSecrets();
-        }
-        return instance;
-    }
-
-    private void initSecrets() {
-        File file = new File("secrets.txt");
-        if (file.exists()) {
-            try {
-                loadSecretsFile(file);
-            } catch (Exception e) {
-                log.error("error loading secrets file, ");
-            }
-        } else {
-            log.error("no secrets.txt file");
-        }
-    }
 
 }

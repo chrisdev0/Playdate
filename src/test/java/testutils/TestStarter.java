@@ -2,7 +2,7 @@ package testutils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
-import secrets.envvar.Secrets;
+import secrets.Secrets;
 
 @Slf4j
 public class TestStarter {

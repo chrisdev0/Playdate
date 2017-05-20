@@ -4,26 +4,12 @@ import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.fbhandlers.FBConfigFactory;
 import apilayer.fbhandlers.FBRouteHandler;
 import apilayer.handlers.*;
-import cache.Cache;
-import com.google.gson.Gson;
-import dblayer.PaginationWrapper;
-import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.DBAPIImage;
-import model.Place;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.SecurityFilter;
-import presentable.FeedObject;
-import secrets.envvar.Secrets;
+import secrets.Secrets;
 import spark.template.velocity.VelocityTemplateEngine;
-import utils.ParserHelpers;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 
