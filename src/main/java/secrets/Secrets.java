@@ -27,22 +27,22 @@ public class Secrets {
 
     private static class ENV_KEYS {
 
-        public static String KEY_TO_DB_HOST = "__PLAYDATE_DB_HOST";
-        public static String KEY_TO_DB_USER = "__PLAYDATE_DB_USER";
-        public static String KEY_TO_DB_PASS = "__PLAYDATE_DB_PASS";
+        public static String KEY_TO_DB_HOST = "PLAYDATE_DB_HOST";
+        public static String KEY_TO_DB_USER = "PLAYDATE_DB_USER";
+        public static String KEY_TO_DB_PASS = "PLAYDATE_DB_PASS";
 
-        public static String KEY_TO_STHML_API_KEY = "__PLAYDATE_STOCKHOLM_KEY";
-        public static String KEY_TO_GOOGLE_MAPS_KEY = "__PLAYDATE_GOOGLE_MAPS_KEY";
+        public static String KEY_TO_STHML_API_KEY = "PLAYDATE_STOCKHOLM_KEY";
+        public static String KEY_TO_GOOGLE_MAPS_KEY = "PLAYDATE_GOOGLE_MAPS_KEY";
 
-        public static String KEY_TO_FB_SALT = "__PLAYDATE_FB_SALT";
-        public static String KEY_TO_FB_APP_ID = "__PLAYDATE_FB_APP_ID";
-        public static String KEY_TO_FB_SECRET = "__PLAYDATE_FB_SECRET";
-        public static String KEY_TO_FB_CALLBACK = "__PLAYDATE_CALLBACK";
+        public static String KEY_TO_FB_SALT = "PLAYDATE_FB_SALT";
+        public static String KEY_TO_FB_APP_ID = "PLAYDATE_FB_APP_ID";
+        public static String KEY_TO_FB_SECRET = "PLAYDATE_FB_SECRET";
+        public static String KEY_TO_FB_CALLBACK = "PLAYDATE_CALLBACK";
 
-        public static String KEY_TO_USE_SSL = "__PLAYDATE_USE_SSL";
-        public static String KEY_TO_KEYSTORE_PASSWORD = "__PLAYDATE_KEYSTORE_PASS";
+        public static String KEY_TO_USE_SSL = "PLAYDATE_USE_SSL";
+        public static String KEY_TO_KEYSTORE_PASSWORD = "PLAYDATE_KEYSTORE_PASS";
 
-        public static String KEY_TO_PORT = "__PLAYDATE_SERVER_PORT";
+        public static String KEY_TO_PORT = "PLAYDATE_SERVER_PORT";
 
 
     }
@@ -118,7 +118,7 @@ public class Secrets {
     private static void printEnv(Map<String, String> env) {
         log.info("Using the following environment variables");
         env.forEach((s, s2) -> {
-            if (s.startsWith("__PLAYDATE")) {
+            if (s.startsWith("PLAYDATE")) {
                 log.info("[Key=" + s + "]=" + s2);
             }
         });
