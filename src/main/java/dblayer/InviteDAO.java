@@ -25,19 +25,19 @@ public class InviteDAO {
         return instance;
     }
 
-    public boolean addInviteToUserAndPlaydate(User user, Invite invite, Playdate playdate) {
+    public boolean addInviteToUserAndPlaydate(Invite invite) {
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            session.update(playdate);
-            session.update(user);
+            session.update(invite.getPlaydate());
+            session.update(invite.getInvited());
             session.save(invite);
 
-            playdate.addInvite(invite);
-            user.addInvite(invite);
+            invite.getPlaydate().addInvite(invite);
+            invite.getInvited().addInvite(invite);
 
             tx.commit();
             ret = true;

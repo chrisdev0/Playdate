@@ -33,7 +33,7 @@ public class InviteDAOTest extends TestStarter {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);
@@ -58,7 +58,7 @@ public class InviteDAOTest extends TestStarter {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);
@@ -90,7 +90,7 @@ public class InviteDAOTest extends TestStarter {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);

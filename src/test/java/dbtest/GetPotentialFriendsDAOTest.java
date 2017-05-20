@@ -2,7 +2,6 @@ package dbtest;
 
 import dblayer.InviteDAO;
 import dblayer.PlaydateDAO;
-import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.junit.Test;
@@ -64,7 +63,7 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
 
 
         Invite invite = new Invite(playdate, invitedFriend);
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invitedFriend, invite, playdate);
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
 
 
@@ -100,7 +99,7 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
 
 
         Invite invite = new Invite(playdate, attendingFriend);
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(attendingFriend, invite, playdate);
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
 
         boolean b1 = PlaydateDAO.getInstance().acceptAndAddAttendance(invite);
@@ -145,11 +144,11 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
 
 
         Invite invite = new Invite(playdate, attendingFriend);
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(attendingFriend, invite, playdate);
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
 
-        Invite invite2 = new Invite(playdate, attendingFriend);
-        boolean b2 = InviteDAO.getInstance().addInviteToUserAndPlaydate(invitedFriend, invite2, playdate);
+        Invite invite2 = new Invite(playdate, invitedFriend);
+        boolean b2 = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite2);
         assertTrue(b2);
 
         boolean b1 = PlaydateDAO.getInstance().acceptAndAddAttendance(invite);
@@ -174,9 +173,11 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
     public void testMultiFriendAndOneFriendAttendingOneFriendInvitedDAO() {
         List<User> notAttendingOrInvitedFriends = new ArrayList<>();
         User user = createUser();
-
+        user.setName("ÄGARE");
         User invitedFriend = createUser();
+        invitedFriend.setName("INBJUDEN VÄN");
         User attendingFriend = createUser();
+        attendingFriend.setName("DELTAGANDE VÄN");
         Place place = createPlace();
         Playdate playdate = createPlaydate(user, place);
         save(user);
@@ -190,6 +191,7 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
             User friend = createUser();
             notAttendingOrInvitedFriends.add(friend);
             save(friend);
+            friend.setName("VÄNSOMSKARETURNERAS");
             FriendshipRequest f = save(user, friend);
             save(f);
         }
@@ -205,11 +207,11 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
 
 
         Invite invite = new Invite(playdate, attendingFriend);
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(attendingFriend, invite, playdate);
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
 
-        Invite invite2 = new Invite(playdate, attendingFriend);
-        boolean b2 = InviteDAO.getInstance().addInviteToUserAndPlaydate(invitedFriend, invite2, playdate);
+        Invite invite2 = new Invite(playdate, invitedFriend);
+        boolean b2 = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite2);
         assertTrue(b2);
 
         boolean b1 = PlaydateDAO.getInstance().acceptAndAddAttendance(invite);
@@ -218,6 +220,9 @@ public class GetPotentialFriendsDAOTest extends TestStarter {
 
         List<User> potentialFriendsToInvite = PlaydateDAO.getInstance().getPotentialFriendsToInvite(playdate);
         log.info("found potential friends to invites = " + potentialFriendsToInvite.size());
+        potentialFriendsToInvite.forEach(user1 -> {
+            log.info("user id =" + user1.getName());
+        });
         assertEquals(potentialFriendsToInvite.size(), 10);
 
 

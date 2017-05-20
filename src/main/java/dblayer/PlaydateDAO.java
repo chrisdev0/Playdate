@@ -333,7 +333,7 @@ public class PlaydateDAO {
 
     public List<User> getPotentialFriendsToInvite(Playdate playdate) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            String hql = "SELECT fr.friend FROM Friendship fr WHERE fr.requester = :user AND " +
+            String hql = "SELECT DISTINCT fr.friend FROM Friendship fr WHERE fr.requester = :user AND " +
                     " fr.friend NOT IN " +
                     "(SELECT participant FROM Playdate p JOIN p.participants participant WHERE p = :playdate) AND " +
                     "fr.friend NOT IN " +

@@ -101,8 +101,8 @@ public class ModelCreators {
         assertTrue(playdateOptional.isPresent());
     }
 
-    public static void save(Invite invite, User user, Playdate playdate) {
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+    public static void save(Invite invite) {
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
     }
 

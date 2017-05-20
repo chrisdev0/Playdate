@@ -229,7 +229,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
         Invite invite = new Invite(playdate, user);
 
-        save(invite, user, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         remove(invite);
