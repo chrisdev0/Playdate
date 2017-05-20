@@ -20,7 +20,7 @@ public class WebServer {
     private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
-        port(Secrets.PORT);
+        port(getHerokuAssignedPort());
         initHTTPS();
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
@@ -38,6 +38,14 @@ public class WebServer {
             }
         }
         initRoutes();
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return Secrets.PORT; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
     private void initHTTPS() {
