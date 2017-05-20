@@ -166,7 +166,7 @@ public class PlaydateHandler {
         Optional<Playdate> playdate = getPlaydateFromRequest(request);
         if (playdate.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(user, playdate.get()));
+                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(playdate.get()));
         } else {
             return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
         }
