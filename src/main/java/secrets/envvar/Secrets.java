@@ -2,6 +2,7 @@ package secrets.envvar;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 import java.util.Map;
 
 @Slf4j
@@ -19,26 +20,110 @@ public class Secrets {
     public static String FB_SECRET;
     public static String FB_CALLBACK;
 
-    public static boolean USE_SSL;
+    public static Boolean USE_SSL;
     public static String KEYSTORE_PASSWORD;
 
-    public static int PORT;
+    public static Integer PORT;
+
+    private static class ENV_KEYS {
+
+        public static String KEY_TO_DB_HOST = "__PLAYDATE_DB_HOST";
+        public static String KEY_TO_DB_USER = "__PLAYDATE_DB_USER";
+        public static String KEY_TO_DB_PASS = "__PLAYDATE_DB_PASS";
+
+        public static String KEY_TO_STHML_API_KEY = "__PLAYDATE_STOCKHOLM_KEY";
+        public static String KEY_TO_GOOGLE_MAPS_KEY = "__PLAYDATE_GOOGLE_MAPS_KEY";
+
+        public static String KEY_TO_FB_SALT = "__PLAYDATE_FB_SALT";
+        public static String KEY_TO_FB_APP_ID = "__PLAYDATE_FB_APP_ID";
+        public static String KEY_TO_FB_SECRET = "__PLAYDATE_FB_SECRET";
+        public static String KEY_TO_FB_CALLBACK = "__PLAYDATE_CALLBACK";
+
+        public static String KEY_TO_USE_SSL = "__PLAYDATE_USE_SSL";
+        public static String KEY_TO_KEYSTORE_PASSWORD = "__PLAYDATE_KEYSTORE_PASS";
+
+        public static String KEY_TO_PORT = "__PLAYDATE_SERVER_PORT";
 
 
-    Secrets() {
-        Map<String, String> env = System.getenv();
-        printEnv(env);
     }
 
-    private void printEnv(Map<String, String> env) {
+
+    public  static void initSecrets(boolean debug) {
+        Map<String, String> env = System.getenv();
+        if (debug) {
+            printEnv(env);
+        }
+        DB_HOST = env.get(ENV_KEYS.KEY_TO_DB_HOST);
+        DB_USER = env.get(ENV_KEYS.KEY_TO_DB_USER);
+        DB_PASS = env.get(ENV_KEYS.KEY_TO_DB_PASS);
+
+        STHML_API_KEY = env.get(ENV_KEYS.KEY_TO_STHML_API_KEY);
+        GOOGLE_MAPS_KEY = env.get(ENV_KEYS.KEY_TO_GOOGLE_MAPS_KEY);
+
+        FB_APP_ID = env.get(ENV_KEYS.KEY_TO_FB_APP_ID);
+        FB_CALLBACK = env.get(ENV_KEYS.KEY_TO_FB_CALLBACK);
+        FB_SALT = env.get(ENV_KEYS.KEY_TO_FB_SALT);
+        FB_SECRET = env.get(ENV_KEYS.KEY_TO_FB_SECRET);
+
+        extractUseSSL(env.get(ENV_KEYS.KEY_TO_USE_SSL));
+        KEYSTORE_PASSWORD = env.get(ENV_KEYS.KEY_TO_KEYSTORE_PASSWORD);
+
+        extractPort(env.get(ENV_KEYS.KEY_TO_PORT));
+
+        checkFields();
+        log.info("All settings loaded successfully");
+    }
+
+    private static void extractPort(String portStr) {
+        try {
+            PORT = Integer.parseInt(portStr);
+        } catch (Exception e) {
+            log.error("Illegal port number " + portStr);
+            System.exit(-3);
+        }
+    }
+
+    private static void extractUseSSL(String ssl) {
+        if (ssl == null) {
+            log.error("SSL enviroment variable not set, Please set the " + ENV_KEYS.KEY_TO_USE_SSL + " environment variable");
+            System.exit(-3);
+        }
+        ssl = ssl.toLowerCase();
+        switch (ssl) {
+            case "yes":
+            case "true":
+                USE_SSL = true;
+                break;
+            case "no":
+            case "false":
+                USE_SSL = false;
+                break;
+            default:
+                log.error("incorrect USE_SSL value, must be yes true no or false");
+                System.exit(-3);
+        }
+    }
+
+    private static void checkFields() {
+        if (("" + DB_USER + DB_HOST + DB_PASS +
+                FB_CALLBACK + FB_APP_ID + FB_SECRET + FB_SALT +
+                KEYSTORE_PASSWORD + PORT +
+                USE_SSL + GOOGLE_MAPS_KEY + STHML_API_KEY).contains("null")) {
+            log.error("unset variable");
+            System.exit(-2);
+
+        }
+    }
+
+    private static void printEnv(Map<String, String> env) {
+        log.info("Using the following environment variables");
         env.forEach((s, s2) -> {
-            log.info("[Key=" + s + "]=" + s2);
+            if (s.startsWith("__PLAYDATE")) {
+                log.info("[Key=" + s + "]=" + s2);
+            }
         });
     }
 
-    public static void main(String[] args) {
-        new Secrets();
-    }
 
 
 }
