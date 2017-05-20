@@ -8,7 +8,7 @@ värdena sparade i environment variables, detta gör det enkelt
 att sätta värdena i Jenkins och Heroku.
 
 #######################################################################################################
-######################################          HTTP          #########################################
+######################################          HTTPS         #########################################
 #######################################################################################################
 
 För att kunna använda appen på en telefon så måste vi använda https.
@@ -22,7 +22,9 @@ Hur man genererar keystore.jks går att läsa här
 https://www.sslshopper.com/article-how-to-create-a-self-signed-certificate-using-java-keytool.html
 Callback för Facebook måste då sättas till https://.... i environment variables
 och callback till https://... måste också läggas in i Facebook Developer
-När ni kört HTTPS en gång så måste ni alltid köra https
+När ni kört HTTPS en gång så måste ni alltid köra https, Facebook gillar inte att man
+först loggar in med https och sen byter till http, tror jag.
+
 I webbläsaren måste man också skriva HTTPS://localhost:9000
 skriver man bara localhost:9000 så tas man till http://...
 och den finns inte om man kör med SSL
@@ -63,11 +65,16 @@ PLAYDATE_KEYSTORE_PASS
 PLAYDATE_SERVER_PORT
 
 
+#######     Ni ska inte skriva in värdena här någonstans utan de
+#######     måste läggas till i environment variables
+
 ##  PLAYDATE_DB_HOST ska vara satt till URL för databasen
 ##  ungefär samma som tidigare fast utan allt efter namnet på
 ##  databasen vilket är samma som ert SU användarnamn
 ##
 ##  Alltså ungefär jdbc:mysql://mysql.dsv.su.se/SU-ANVÄNDARNAMN
+##  och INTE
+##  jdbc:mysql://mysql.dsv.su.se/SU-ANVÄNDARNAMN?blablabla=blabla&blabla=bla
 ##
 PLAYDATE_DB_HOST
 
