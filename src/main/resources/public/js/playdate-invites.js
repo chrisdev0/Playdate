@@ -2,6 +2,82 @@ $(document).ready(function () {
 
     var invitelist = $('#invite-friends-list');
 
+    $.getJSON('/protected/getcommentsofplaydate?playdateId=' + window.playdateid, function (res) {
+        console.log(res);
+        $('#show-comments').html("");
+        $.each(res, function (index, comment) {
+            renderComment(comment)
+        });
+    });
+
+    var renderComment = function (comment) {
+        var output = "<div class='bottom-line'>";
+        var date = new Date(comment.commentDate);
+
+        output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
+            " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
+            date.getHours() + ":" + date.getMinutes() + "</p>"
+        output += "<p>" + comment.comment + "</p>"
+        output += "</div>"
+        $('#show-comments').append(output);
+    };
+
+    $('#makeComment').submit(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        $.ajax({
+            type: 'POST',
+            url: '/protected/postplaydatecomment',
+            data: $('#makeComment').serialize(),
+            success: function(res) {
+                console.log(res);
+                res = JSON.parse(res);
+                $('#comment').val("");
+                $('#show-comments').html("");
+                $.each(res,function(index, comment) {
+                    renderComment(comment)
+                })
+            }
+        })
+    });
+
+    $("#post-comment").one(function(e){
+        e.preventDefault();
+        $("#comment-form").submit();
+        $("#popupBasic").popup('close');
+    });
+
+    $('.remove-playdate-link').click(function (e) {
+        e.preventDefault();
+        var playdateid = $(this).data('playdateid');
+        var div = $(this).closest('.removeable-playdate-parent');
+        console.log("trying to delete playdate with id = " + playdateid);
+        $("#popupYes").attr('href','/protected/deleteplaydate?playdateId=' + playdateid)
+        $("#popupValidate").popup("open");
+
+    });
+    $('#popupYes').click(function (e) {
+        console.log("Yes clicked")
+        e.preventDefault()
+        $.ajax($(this).attr('href'), {
+            type: 'DELETE',
+            success: function(res){
+                window.location.replace("/protected/showplaydates");
+                console.log("success remove playdate");
+                console.log(res)
+
+            },
+            error: function(res){
+                console.log("failed to remove playdate")
+                console.log(res)
+                alert("Kunde inte ta bort Playdate!")
+            }
+        });
+    });
+
+
+
     invitelist.on('click', '.add-friend-to-playdate', function (e) {
         e.preventDefault();
 
