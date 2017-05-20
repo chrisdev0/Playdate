@@ -11,7 +11,7 @@ import java.util.HashSet;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MockTestHelpers {
+public class MockTestHelpers extends TestStarter {
 
 
     public Request initRequestMock(User user) {

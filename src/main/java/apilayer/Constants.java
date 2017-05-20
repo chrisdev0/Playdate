@@ -6,7 +6,7 @@ public class Constants {
 
     public static final boolean ENV_PRINT_DEBUG = true;
 
-
+    public static final String HIBERNATE_DB_URL_SETTINGS = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     public static final String FACEBOOK_SCOPE = "public_profile,email";
 
@@ -17,7 +17,9 @@ public class Constants {
 
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
+
     public static final int QUICK_PLACE_SEARCH_LIMIT = 10;
+
     public static final String ONLOGINREDIRECT = "onloginredirect";
     public static final long COUNT_PLAYDATE_AS_FUTURE_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
     public static final int SEARCH_USER_OFFSET = 15;
@@ -48,6 +50,14 @@ public class Constants {
 
         public static final String OK = "";
         public static final String ALREADY_INVITED = "already_invited";
+
+        public class ValidationErrors {
+
+            public static final String ERROR_STARTTIME = "_starttime";
+            public static final String ERROR_PLACE = "_place";
+            public static final String ERROR_DESCRIPTION = "_description";
+            public static final String ERROR_HEADER = "_header";
+        }
     }
     
     public class ADMIN {

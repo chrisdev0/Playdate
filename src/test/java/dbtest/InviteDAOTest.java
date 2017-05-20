@@ -8,6 +8,7 @@ import model.Place;
 import model.Playdate;
 import model.User;
 import org.junit.Test;
+import testutils.TestStarter;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
 import static testutils.ModelCreators.*;
 
 @Slf4j
-public class InviteDAOTest {
+public class InviteDAOTest extends TestStarter {
 
 
     @Test

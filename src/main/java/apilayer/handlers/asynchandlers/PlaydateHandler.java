@@ -54,16 +54,16 @@ public class PlaydateHandler {
     private static String getValidationError(String header, String description, long startTime, Optional<Place> placeOptional) {
         String ret = "";
         if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header)) {
-            ret += "_header";
+            ret += Constants.MSG.ValidationErrors.ERROR_HEADER;
         }
         if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
-            ret += "_description";
+            ret += Constants.MSG.ValidationErrors.ERROR_DESCRIPTION;
         }
         if (!placeOptional.isPresent()) {
-            ret += "_place";
+            ret += Constants.MSG.ValidationErrors.ERROR_PLACE;
         }
         if(!Utils.validateStartTime(startTime)){
-            ret += "_starttime";
+            ret += Constants.MSG.ValidationErrors.ERROR_STARTTIME;
         }
         return ret;
     }

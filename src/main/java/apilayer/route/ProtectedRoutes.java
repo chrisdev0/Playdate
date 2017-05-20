@@ -11,7 +11,7 @@ import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
 import presentable.FeedObject;
-import secrets.Secrets;
+import secrets.envvar.Secrets;
 import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
@@ -175,13 +175,7 @@ public class ProtectedRoutes {
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
                 Map<String, Object> map = new HashMap<>();
-                Optional<String> googlemapsAPIKey = Secrets.getInstance().getValue("googlemapsAPIKey");
-                if (googlemapsAPIKey.isPresent()) {
-                    map.put("mapsapikey", googlemapsAPIKey.get());
-                } else {
-                    log.error("no google maps api key");
-                    return Optional.empty();
-                }
+                map.put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());

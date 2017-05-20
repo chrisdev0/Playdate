@@ -15,7 +15,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.SecurityFilter;
 import presentable.FeedObject;
-import secrets.Secrets;
+import secrets.envvar.Secrets;
 import spark.template.velocity.VelocityTemplateEngine;
 import utils.ParserHelpers;
 
@@ -44,29 +44,14 @@ public class OpenRoutes {
 
 
 
-        initializeFacebookLogin();
-    }
-
-    private static void initializeFacebookLogin() {
-        Secrets secrets = Secrets.getInstance();
-        Optional<String> fbAppIdOpt = secrets.getValue("fbAppId");
-        Optional<String> fbSaltOpt = secrets.getValue("fbSalt");
-        Optional<String> fbSecretOpt = secrets.getValue("fbSecret");
-        Optional<String> fbCallback = secrets.getValue("fbCallback");
-        if (fbAppIdOpt.isPresent() && fbSaltOpt.isPresent() && fbSecretOpt.isPresent() && fbCallback.isPresent()) {
-            initFacebookRoutes(fbSaltOpt.get(), fbAppIdOpt.get(), fbSecretOpt.get(),fbCallback.get());
-        } else {
-            log.error("missing facebook values");
-            stop();
-            return;
-        }
+        initFacebookRoutes();
     }
 
     /** Initierar routes för facebooklogin
      *
      * */
-    public static void initFacebookRoutes(String fbSalt, String fbAppId, String fbSecret, String fbAbsoluteCallback) {
-        FBConfigFactory fbConfigFactory = new FBConfigFactory(fbSalt, fbAppId, fbAbsoluteCallback, fbSecret);
+    public static void initFacebookRoutes() {
+        FBConfigFactory fbConfigFactory = new FBConfigFactory(Secrets.FB_SALT, Secrets.FB_APP_ID, Secrets.FB_CALLBACK, Secrets.FB_SECRET);
         Config config = fbConfigFactory.build();
         SecurityFilter securityFilter = new SecurityFilter(config, "FacebookClient");
 

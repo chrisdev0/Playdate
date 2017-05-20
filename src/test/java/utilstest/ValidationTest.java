@@ -84,7 +84,7 @@ public class ValidationTest extends MockTestHelpers{
 
         String s = (String) PlaydateHandler.handleMakePlaydate(request, response);
         log.info("Här är s: " + s);
-        assertEquals(s, Constants.MSG.VALIDATION_ERROR);
+        assertEquals(s, Constants.MSG.VALIDATION_ERROR + Constants.MSG.ValidationErrors.ERROR_STARTTIME);
 
         remove(playdate);
         remove(user);

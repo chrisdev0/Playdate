@@ -8,6 +8,7 @@ import model.*;
 import org.eclipse.jetty.util.log.Log;
 import org.hibernate.Session;
 import org.junit.Test;
+import testutils.TestStarter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 import static testutils.ModelCreators.*;
 
 @Slf4j
-public class GetPlaydatesOfFriendTest {
+public class GetPlaydatesOfFriendTest extends TestStarter {
 
 
     @Test

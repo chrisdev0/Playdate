@@ -8,7 +8,7 @@ import model.Place;
 import org.apache.commons.collections.set.CompositeSet;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import secrets.Secrets;
+import secrets.envvar.Secrets;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.ServiceUnitTypes;
 
@@ -33,7 +33,8 @@ public class APILoader {
         toAddToDB = new ArrayList<>();
     }
 
-    public void doLoadOnStartup(String apiKey, String serviceGuideServiceTypeId) throws Exception{
+    public void doLoadOnStartup(String serviceGuideServiceTypeId) throws Exception {
+        final String apiKey = Secrets.STHML_API_KEY;
         long start = System.currentTimeMillis();
         log.info("started loading api data");
         List<GeographicalArea> geographicalAreas = Arrays.stream(new GeographicalAreaLoader(apiKey).load())

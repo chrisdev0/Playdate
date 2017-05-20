@@ -5,7 +5,7 @@ import apilayer.route.ProtectedRoutes;
 import apilayer.route.StaticFileRoutes;
 import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
-import secrets.Secrets;
+import secrets.envvar.Secrets;
 import spark.route.RouteOverview;
 import stockholmapi.APILoader;
 import stockholmapi.helpers.APIUtils;
@@ -22,28 +22,18 @@ public class WebServer {
     private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
-        Secrets secrets = Secrets.getInstance();
-
-        Optional<String> serverPort = secrets.getValue("serverPort");
-        if (serverPort.isPresent()) {
-            log.info("using port from secrets");
-            port(Integer.parseInt(serverPort.get()));
-        } else {
-            log.info("using port 9000");
-            port(9000);
-        }
+        port(Secrets.PORT);
         initHTTPS();
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
         initHibernate();
-        Optional<String> stockholmAPIKEYopt = Secrets.getInstance().getValue("stockholmAPIKEY");
-        if (stockholmAPIKEYopt.isPresent() && SHOULD_LOAD_PLACES) {
+        if (SHOULD_LOAD_PLACES) {
             try {
-                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.LEKPLATSER);
-                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MOTIONSSPÅR);
-                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.BADPLATSER);
-                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.MUSEUM);
-                new APILoader().doLoadOnStartup(stockholmAPIKEYopt.get(), APIUtils.URLS.UTOMHUSBASSÄNGER);
+                new APILoader().doLoadOnStartup(APIUtils.URLS.LEKPLATSER);
+                new APILoader().doLoadOnStartup(APIUtils.URLS.MOTIONSSPÅR);
+                new APILoader().doLoadOnStartup(APIUtils.URLS.BADPLATSER);
+                new APILoader().doLoadOnStartup(APIUtils.URLS.MUSEUM);
+                new APILoader().doLoadOnStartup(APIUtils.URLS.UTOMHUSBASSÄNGER);
                 initDEVData();
             } catch (Exception e) {
                 log.error("error loading places ", e);
@@ -53,12 +43,11 @@ public class WebServer {
     }
 
     private void initHTTPS() {
-        if (Secrets.getInstance().getValue("ssl").isPresent() && Secrets.getInstance().getValue("ssl").get().equals("yes")) {
+        if (Secrets.USE_SSL) {
             try {
-                secure("keystore.jks", Secrets.getInstance().getValue("sslPass").get(), null, null);
+                secure("keystore.jks", Secrets.KEYSTORE_PASSWORD, null, null);
             } catch (Exception e) {
-                log.error("error creating secure");
-                log.error("",e);
+                log.error("error creating secure", e);
             }
         }
     }

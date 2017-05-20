@@ -48,7 +48,7 @@ public class Secrets {
     }
 
 
-    public  static void initSecrets(boolean debug) {
+    public  static void initSecrets(boolean debug) throws Exception {
         Map<String, String> env = System.getenv();
         if (debug) {
             printEnv(env);
@@ -74,19 +74,20 @@ public class Secrets {
         log.info("All settings loaded successfully");
     }
 
-    private static void extractPort(String portStr) {
+    private static void extractPort(String portStr) throws Exception {
         try {
             PORT = Integer.parseInt(portStr);
         } catch (Exception e) {
             log.error("Illegal port number " + portStr);
-            System.exit(-3);
+            throw new Exception();
         }
+
     }
 
-    private static void extractUseSSL(String ssl) {
+    private static void extractUseSSL(String ssl) throws Exception{
         if (ssl == null) {
             log.error("SSL enviroment variable not set, Please set the " + ENV_KEYS.KEY_TO_USE_SSL + " environment variable");
-            System.exit(-3);
+            throw new Exception();
         }
         ssl = ssl.toLowerCase();
         switch (ssl) {
@@ -100,18 +101,17 @@ public class Secrets {
                 break;
             default:
                 log.error("incorrect USE_SSL value, must be yes true no or false");
-                System.exit(-3);
+                throw new Exception();
         }
     }
 
-    private static void checkFields() {
+    private static void checkFields() throws Exception {
         if (("" + DB_USER + DB_HOST + DB_PASS +
                 FB_CALLBACK + FB_APP_ID + FB_SECRET + FB_SALT +
                 KEYSTORE_PASSWORD + PORT +
                 USE_SSL + GOOGLE_MAPS_KEY + STHML_API_KEY).contains("null")) {
             log.error("unset variable");
-            System.exit(-2);
-
+            throw new Exception();
         }
     }
 

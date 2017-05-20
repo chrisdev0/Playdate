@@ -55,7 +55,7 @@ public class TestComments extends MockTestHelpers {
         Request request = initRequestMock(user);
         Response response = initResponseMock();
 
-        injectKeyValue(request, new KeyValue(Paths.QueryParams.PLACE_BY_ID, place.getId()), new KeyValue(Paths.QueryParams.COMMENT_CONTENT, "kommentar"));
+        injectKeyValue(request, new KeyValue(Paths.QueryParams.PLACE_BY_ID, place.getId()), new KeyValue(Paths.QueryParams.COMMENT_CONTENT, "ganska lång kommentar kommentar"));
 
         String json = (String) CommentsHandler.handlePostPlaceComment(request, response);
 
