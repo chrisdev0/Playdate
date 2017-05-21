@@ -10,6 +10,7 @@ import model.PlaydateVisibilityType;
 import model.User;
 import spark.Request;
 import utils.ParserHelpers;
+import utils.filters.TimeFilterable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class GetOneUserHandler extends StaticFileTemplateHandlerImpl {
         Optional<User> userById = UserDAO.getInstance().getUserById(userid);
         if (userById.isPresent()) {
             map.put("other-user", userById.get());
-            Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(userById.get().getId());
+            Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(userById.get().getId(), TimeFilterable.TimeFilter.ALL);
             if (playdateByOwnerId.isPresent()) {
                 List<Playdate> playdates = playdateByOwnerId.get();
                 playdates.forEach(playdate -> playdate.getPlace().setComments(null));

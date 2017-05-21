@@ -125,7 +125,7 @@
                     <form class="ui-filterable">
                         <input id="myFilter" data-type="search">
                     </form>
-                    <ul class="inviteList" data-role="listview" data-filter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
+                    <ul class="inviteList" data-role="listview" data-timeFilter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
                     </ul>
                 </div>
             </div>

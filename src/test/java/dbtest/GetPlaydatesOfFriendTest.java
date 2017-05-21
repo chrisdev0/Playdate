@@ -1,16 +1,13 @@
 package dbtest;
 
-import dblayer.HibernateUtil;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import org.eclipse.jetty.util.log.Log;
-import org.hibernate.Session;
 import org.junit.Test;
 import testutils.TestStarter;
+import utils.filters.TimeFilterable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +52,7 @@ public class GetPlaydatesOfFriendTest extends TestStarter {
         assertTrue(friendship.isPresent());
 
 
-        List<Playdate> playdatesWhoUserIsNotAttendingButCanAttendThroughFriend = PlaydateDAO.getInstance().getPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriend(user);
+        List<Playdate> playdatesWhoUserIsNotAttendingButCanAttendThroughFriend = PlaydateDAO.getInstance().getPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriend(user, TimeFilterable.TimeFilter.ALL);
         log.info("size of result = " + playdatesWhoUserIsNotAttendingButCanAttendThroughFriend.size());
         log.info("ids");
         for (Playdate s : playdatesWhoUserIsNotAttendingButCanAttendThroughFriend) {

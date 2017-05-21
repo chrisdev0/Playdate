@@ -1,7 +1,6 @@
 package apilayer.handlers.asynchandlers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +10,7 @@ import model.User;
 import presentable.FeedObject;
 import spark.Request;
 import spark.Response;
+import utils.filters.TimeFilterable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class FeedHandler {
         Long start = System.currentTimeMillis();
         User user = getUserFromSession(request);
         int[] grid = getGridLocationFromRequest(request);
-        Optional<List<Playdate>> publicPlaydatesByLoc = PlaydateDAO.getInstance().getPublicPlaydatesByLoc(grid[0], grid[1]);
+        Optional<List<Playdate>> publicPlaydatesByLoc = PlaydateDAO.getInstance().getPublicPlaydatesByLoc(grid[0], grid[1], TimeFilterable.TimeFilter.ALL);
         List<FeedObject> feedObjects = new ArrayList<>();
         publicPlaydatesByLoc.ifPresent(playdates -> feedObjects.addAll(playdates.stream()
                 .filter(Playdate::playdateIsInFuture)
@@ -32,7 +32,7 @@ public class FeedHandler {
         List<Place> placeByLocation = PlaceDAO.getInstance().getPlaceByLocation(grid[0], grid[1]);
         feedObjects.addAll(placeByLocation.stream().map(FeedObject::createFromPlace).collect(Collectors.toList()));
         Collections.shuffle(feedObjects);
-        Set<Playdate> allPlaydateWhoUserIsAttendingAlsoOwner = PlaydateDAO.getInstance().getAllPlaydateWhoUserIsAttendingAlsoOwner(user);
+        Set<Playdate> allPlaydateWhoUserIsAttendingAlsoOwner = PlaydateDAO.getInstance().getAllPlaydateWhoUserIsAttendingAlsoOwner(user, TimeFilterable.TimeFilter.ALL);
         Set<FeedObject> attending = allPlaydateWhoUserIsAttendingAlsoOwner.stream()
                 .filter(Playdate::playdateIsInFuture)
                 .map(FeedObject::createFromPlayDate).collect(Collectors.toSet());

@@ -14,6 +14,7 @@ import spark.HaltException;
 import spark.Request;
 import spark.Response;
 import testutils.MockTestHelpers;
+import utils.filters.TimeFilterable;
 
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class AsyncInviteTest extends MockTestHelpers{
         String res = (String) AttendanceInviteHandler.handleAttendPublicPlaydate(request, response);
         log.info("Result = " + res);
 
-        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getAllPlaydateWhoUserIsAttendingAlsoOwner(user);
+        Set<Playdate> playdateWhoUserIsAttending = PlaydateDAO.getInstance().getAllPlaydateWhoUserIsAttendingAlsoOwner(user, TimeFilterable.TimeFilter.ALL);
         assertNotNull(playdateWhoUserIsAttending);
 
         playdateWhoUserIsAttending.forEach(playdate1 -> assertTrue(playdate.equals(playdate1)));

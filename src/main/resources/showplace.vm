@@ -48,10 +48,10 @@
 
         $.getJSON('/protected/playdatesofplace?placeId=$!place.id',function(res) {
             console.log(res);
-            var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-filter="true" data-input="#myFilter">'
+            var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-timeFilter="true" data-input="#myFilter">'
             $.each(res, function (index, playdate) {
                 var output = "<li>";
-                output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-filter='true' data-input='#myFilter'>" + playdate.header + "</a>";
+                output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-timeFilter='true' data-input='#myFilter'>" + playdate.header + "</a>";
                 output += "</li>";
                 ooutput += output;
             });

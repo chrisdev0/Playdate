@@ -13,6 +13,7 @@ import spark.Request;
 import spark.Response;
 import utils.CoordinateHandlerUtil;
 import utils.ParserHelpers;
+import utils.filters.TimeFilterable;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class SearchHandlers {
         double geoXstr = ParserHelpers.parseToDouble(request.queryParams(Paths.QueryParams.LOC_X));
         double geoYstr = ParserHelpers.parseToDouble(request.queryParams(Paths.QueryParams.LOC_Y));
         double[] grids = new CoordinateHandlerUtil().geodeticToGrid(geoXstr, geoYstr);
-        Optional<List<Playdate>> playdatesOpt = PlaydateDAO.getInstance().getPublicPlaydatesByLoc((int)grids[0], (int)grids[1]);
+        Optional<List<Playdate>> playdatesOpt = PlaydateDAO.getInstance().getPublicPlaydatesByLoc((int)grids[0], (int)grids[1], TimeFilterable.TimeFilter.ALL);
         return playdatesOpt.map(playdates -> new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(playdates)).orElse((String) setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR));
     }
 
@@ -66,7 +67,7 @@ public class SearchHandlers {
         String[] multiPlaceIds = request.queryParams(Paths.QueryParams.MULTI_PLACE_IDS).split(",");
         List<Long> placeIds = Stream.of(multiPlaceIds).map(ParserHelpers::parseToLong).collect(Collectors.toList());
         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-                .toJson(PlaydateDAO.getInstance().getPlaydatesOfMultiplePlace(placeIds));
+                .toJson(PlaydateDAO.getInstance().getPlaydatesOfMultiplePlace(placeIds, TimeFilterable.TimeFilter.ALL));
     }
 
 }

@@ -37,11 +37,8 @@ public class PotentialFriendsHandlerTest extends MockTestHelpers {
         users.add(notpotentialfriend);
         users.add(potentialFriend);
         notpotentialfriend.setName("---------123123123213");
-        notpotentialfriend.setDescription("ska inte vara med");
         friend.setName("abcdefg");
-        friend.setDescription("ska inte vara med");
         potentialFriend.setName("abcdefg");
-        potentialFriend.setDescription("Ska vara med");
 
 
 

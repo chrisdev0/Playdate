@@ -30,7 +30,6 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Long playdateId = ParserHelpers.parseToLong(placeIdStr);
         Optional<Playdate> playdateById = PlaydateDAO.getInstance().getPlaydateById(playdateId);
-        Optional<Set<User>> friendsOfUser = UserDAO.getInstance().getFriendsOfUser(user);
         Map<String, Object> map = new HashMap<>();
         if (playdateById.isPresent()) {
             map.put("playdate", playdateById.get());
@@ -38,11 +37,6 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
             throw halt(400);
         }
 
-        if (friendsOfUser.isPresent()) {
-            map.put("friends", friendsOfUser.get());
-        } else {
-            throw halt(400);
-        }
         return Optional.of(map);
     }
 }

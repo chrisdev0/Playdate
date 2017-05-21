@@ -85,7 +85,7 @@
                     <h3>Du har inga vänner :(</h3>
                 #else
 
-                    <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
+                    <ul data-role="listview"  data-theme="f" data-icon="user"  data-timeFilter="true" data-input="#myFilter"  data-inset="true">
                         #foreach($u in $friends)
                             <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
                                 <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>

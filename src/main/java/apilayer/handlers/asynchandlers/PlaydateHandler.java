@@ -10,6 +10,8 @@ import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
+import utils.filters.TimeFilterable;
+
 import java.util.Optional;
 import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
@@ -152,7 +154,7 @@ public class PlaydateHandler {
         if (placeOptional.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                     .create().toJson(PlaydateDAO.getInstance()
-                            .getPlaydateAtPlace(placeOptional.get())
+                            .getPlaydateAtPlace(placeOptional.get(), TimeFilterable.TimeFilter.ALL)
                             .stream()
                             .filter(Playdate::playdateIsInFuture)
 
