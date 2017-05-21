@@ -14,94 +14,38 @@
         }
     </style>
     <script src="/js/init-map.js"></script>
-   
 
+    <script src="/js/init-full-map.js"></script>
     <script>
-        $(document).ready(function () {
+
+        var renderPlace = function(place, placeoutput){
+            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
+            output += '<h3>' + place.name + '</h3>';
+            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
+            output += '<p>' + place.shortDescription + '</p>';
+            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '</p>';
+            output += "</div>";
 
 
+            placeoutput.append(output);
 
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    console.log("no navigator")
-                }
-            }
+            var ch = new CoordinateHandler();
 
-            function showPosition(pos) {
-                var lat = pos.coords.latitude;
-                var lng = pos.coords.longitude;
-                window.getAndRenderPlaceForPos(lat, lng);
-            }
-
-            var clearMarkers = function(map) {
-                for(var i = 0; i < window.markers.length; i++) {
-                    window.markers[i].setMap(map)
-                }
-            };
-
-            var clearPlaces = function() {
-                $('#place-output').html("");
-                clearMarkers(null);
-                window.markers = [];
-            };
-
-            window.getAndRenderPlaceForPos = function(lat, lng) {
-
-                var placeoutput = $('#place-output');
-
-                clearPlaces();
-
-                $.getJSON('/protected/getplacebylocation?locX=' + lat + "&locY=" + lng, function (res) {
-                    console.log(res)
-                    if(res.length == 0) {
-                        var output = "<h3>Hittade inga platser här</h3><p>Testa att flytta kartan lite</p>"
-                        console.log("hittade inga platser")
-                        console.log("sätter output till = " + output);
-                        $('#place-output').html(output);
-                    } else {
-                        $.each(res, function (index, place) {
-                            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
-                            output += '<h3>' + place.name + '</h3>';
-                            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
-                            output += '<p>' + place.shortDescription + '</p>';
-                            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '</p>';
-                            output += "</div>";
-
-
-                            placeoutput.append(output);
-
-                            var ch = new CoordinateHandler();
-
-                            latlng = ch.gridToGeodetic(place.geoX, place.geoY);
-                            var marker = new google.maps.Marker({
-                                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
-                                title: 'hello'
-                            });
-                            marker.setMap(window.map);
-                            window.markers.push(marker);
-                            marker.addListener('click',function() {
-                                var anchor = "#marker" + place.id;
-                                $('html, body').animate({
-                                    scrollTop: $(anchor).offset().top
-                                }, 500);
-                                $(anchor).collapsible('expand');
-                            })
-
-                        });
-                        $('div[data-role=collapsible]').collapsible();
-                    }
-                });
-            }
-
-
-
-            getLocation();
-
-
-
-        });
+            latlng = ch.gridToGeodetic(place.geoX, place.geoY);
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
+                title: 'hello'
+            });
+            marker.setMap(window.map);
+            window.markers.push(marker);
+            marker.addListener('click',function() {
+                var anchor = "#marker" + place.id;
+                $('html, body').animate({
+                    scrollTop: $(anchor).offset().top
+                }, 500);
+                $(anchor).collapsible('expand');
+            })
+        }
     </script>
 </head>
 <body>

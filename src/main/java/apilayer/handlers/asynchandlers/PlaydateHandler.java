@@ -154,10 +154,7 @@ public class PlaydateHandler {
         if (placeOptional.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                     .create().toJson(PlaydateDAO.getInstance()
-                            .getPlaydateAtPlace(placeOptional.get(), TimeFilterable.TimeFilter.ALL)
-                            .stream()
-                            .filter(Playdate::playdateIsInFuture)
-
+                            .getPlaydateAtPlace(placeOptional.get(), TimeFilterable.TimeFilter.FUTURE)
                     );
         }
         return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);

@@ -3,8 +3,20 @@
 <html>
 <head>
     <title>Playdate</title>
-
     #parse("head-links.vm")
+    <script src="/js/init-map.js"></script>
+    <script src="/js/CoordinateHandler.js"></script>
+
+    <style>
+        #map, #popupMap-popup {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        window.placeX = "$!place.geoX";
+        window.placeY = "$!place.geoY";
+    </script>
 
 <script>
     $(document).ready(function() {
@@ -86,7 +98,7 @@
                 <div class="ui-block-b">
                     <ul id="btns-list" style="float:right;">
                         <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
-                        <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                        <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                         <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
                     </ul>
                 </div>
@@ -135,6 +147,17 @@
 
         </div>
     </div>
+
+    <div data-role="popup" id="popupMap">
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        <div id="map">
+
+        </div>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initPopupMap">
+        </script>
+    </div>
+
 </div>
 
 <div data-role="page" id="playdates-here">

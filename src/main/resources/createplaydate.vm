@@ -10,12 +10,57 @@
     #parse("head-links.vm")
 
     <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
+    <script src="/js/CoordinateHandler.js"></script>
     <script src="/js/createplaydate.js"></script>
     <script src="/js/jtsage-datebox.js"></script>
-    <script>
 
+    <script src="/js/init-full-map.js"></script>
+    <script src="/js/init-map.js"></script>
+
+    <style>
+        #map, #popupMap-popup {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        var renderPlace = function(place, placeoutput){
+            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
+            output += '<h3>' + place.name + '</h3>';
+            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
+            output += '<p>' + place.shortDescription + '</p>';
+            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '' +
+                    '<a href="#" class="choose-place-link" data-placeid="'+ place.id +'" data-place-name="'+ place.name +'">Välj</a>' +
+                    '</p>';
+            output += "</div>";
+
+            placeoutput.append(output);
+
+            var ch = new CoordinateHandler();
+
+            latlng = ch.gridToGeodetic(place.geoX, place.geoY);
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
+                title: 'hello'
+            });
+            marker.setMap(window.map);
+            window.markers.push(marker);
+            marker.addListener('click',function() {
+                var anchor = "#marker" + place.id;
+                $('html, body').animate({
+                    scrollTop: $(anchor).offset().top
+                }, 500);
+                $(anchor).collapsible('expand');
+            })
+        }
+    </script>
+    <script>
+        window.placeX;
+        window.placeY;
         $(document).ready(function () {
             #if($playdate)
+                window.placeX = "$!playdate.place.geoX";
+                window.placeY = "$!playdate.place.geoY";
                 console.log("edit playdatemode");
                 $('#create-playdate-form').attr('action', '/protected/updateplaydate');
                 $('#playdateId').val("${playdate.id}");
@@ -51,8 +96,6 @@
     #parse("header.vm")
 
     #parse("footer.vm")
-
-
 
 
 <div data-role="page" id="pageone">
@@ -152,7 +195,16 @@
 <div data-role="page" id="choose-place">
 
     <div data-role="main" class="ui-content">
+        <h1>Hitta platser</h1>
+        <div id="map"> </div>
 
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
+        </script>
+        <div>
+            <h2>Platser:</h2>
+            <div id="place-output"></div>
+        </div>
     </div>
 
 </div>

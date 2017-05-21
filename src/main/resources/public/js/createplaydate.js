@@ -75,6 +75,18 @@ $(document).ready(function() {
         searchField.val("");
     });
 
+    $('#place-output').on('click', 'choose-place-link', function (e) {
+        e.preventDefault();
+        var placeId = $(this).data('placeId');
+        var placeName = $(this).data('placeName');
+        $('#show-place-placeholder').html(
+            "<p class='name-with-button'>" + placeName + "</p>" +
+            "<a href='/protected/showplace?placeId=" + placeId +"'>Visa</a>"
+        );
+        $('#placeId').val(placeId);
+
+    });
+
 
     var convertStartTime = function() {
         var starttime = $('#startTime');
