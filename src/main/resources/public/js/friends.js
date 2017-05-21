@@ -25,6 +25,13 @@ $(document).ready(function () {
         output.listview('refresh');
     };
 
+    $('.swipable-friend-request').on("swipe", function (e) {
+        console.log("swipe");
+    });
+    $('.swipable-friend-request').on("click",function(e) {
+        console.log("click");
+    })
+
     potentialfriendsouput.on('click', '.add-friend-btn', function (e) {
         e.preventDefault();
         var li = $(this).closest('li');

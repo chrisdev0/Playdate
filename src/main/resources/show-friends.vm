@@ -126,7 +126,7 @@
             <h3>Vänförfrågningar</h3>
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
-                    <li><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                    <li class="swipable-friend-request"><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                         <a href="#" class="friendship-request-popup" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
                 #end

@@ -28,15 +28,12 @@ $(document).ready(function () {
         window.markers = [];
     };
 
-    window.getAndRenderPlaceForPos = function(lat, lng) {
-
-
-
+    window.getAndRenderPlaceForPos = function (lat, lng) {
         clearPlaces();
 
         $.getJSON('/protected/getplacebylocation?locX=' + lat + "&locY=" + lng, function (res) {
             console.log(res)
-            if(res.length == 0) {
+            if (res.length == 0) {
                 var output = "<h3>Hittade inga platser här</h3><p>Testa att flytta kartan lite</p>"
                 console.log("hittade inga platser")
                 console.log("sätter output till = " + output);
@@ -48,7 +45,7 @@ $(document).ready(function () {
                 $('div[data-role=collapsible]').collapsible();
             }
         });
-    }
+    };
 
 
 

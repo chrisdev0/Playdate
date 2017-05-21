@@ -30,7 +30,7 @@
             output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
             output += '<p>' + place.shortDescription + '</p>';
             output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '' +
-                    '<a href="#" class="choose-place-link" data-placeid="'+ place.id +'" data-place-name="'+ place.name +'">Välj</a>' +
+                    '<a href="#" class="choose-place-link" data-place-id="'+ place.id +'" data-place-name="'+ place.name +'">Välj</a>' +
                     '</p>';
             output += "</div>";
 
@@ -196,6 +196,7 @@
 
     <div data-role="main" class="ui-content">
         <h1>Hitta platser</h1>
+        <a href="#pageone" id="back-to-create" data-ajax="false">Tillbaka</a>
         <div id="map"> </div>
 
         <script async defer
