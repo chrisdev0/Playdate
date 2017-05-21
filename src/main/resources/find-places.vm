@@ -13,48 +13,8 @@
             width: 100%;
         }
     </style>
-
-    <script>
-        function initMap() {
-
-            window.getLocation = function() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(p){
-                        if(window.map != undefined) {
-                            console.log("setting center to")
-                            console.log(p.coords)
-                            map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
-                        } else {
-                            console.log("map is undefined")
-                        }
-                    });
-                } else {
-                    console.log("no navigator")
-                }
-            }
-
-
-            var uluru = {lat: 59.299258865101194, lng: 18.044908470153807};
-            window.map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: uluru
-            });
-
-            setTimeout(function () {
-                console.log("running timeout");
-                window.getLocation();
-            }, 1500);
-
-
-            window.markers = [];
-
-            window.map.addListener('dragend', function () {
-                var lat = this.getCenter().lat();
-                var lng = this.getCenter().lng();
-                window.getAndRenderPlaceForPos(lat, lng);
-            });
-        }
-    </script>
+    <script src="/js/init-map.js"></script>
+   
 
     <script>
         $(document).ready(function () {

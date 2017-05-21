@@ -10,10 +10,19 @@
     #parse("head-links.vm")
     <script>
         window.playdateid = "$!playdate.id"
+        window.placeX = "$!playdate.place.geoX";
+        window.placeY = "$!playdate.place.geoY";
     </script>
     <script src="/js/playdate-invites.js"></script>
+    <script src="/js/init-map.js"></script>
+    <script src="/js/CoordinateHandler.js"></script>
 
-
+    <style>
+        #map, #popupMap-popup {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
 
 
 </head>
@@ -66,7 +75,7 @@
                     #if ($playdate.getOwner()==$user)
                         <li><a data-ajax="false" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-edit ui-btn-icon-notext edit-playdate-link" href="/protected/editplaydate?playdateId=${playdate.id}">Redigera</a></li>
                     #end
-                    <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                    <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                     #if ($playdate.getOwner()==$user)
                         <li><a href="#popupAdd" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">adduser</a></li>
 
@@ -138,11 +147,24 @@
                 <h3>Deltagare</h3>
             </div>
             <div class="descriptionfield-showplaydate">
-                #foreach($!participant in $!playdate.participants)
-                    <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                #if($playdate.participants.size() == 0){
+                    <p class="popup-message">Den här playdaten har inga deltagare.<br>Testa att bjuda in några vänner</p>
+                #else
+                    #foreach($!participant in $!playdate.participants)
+                        <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                    #end
                 #end
             </div>
+        </div>
 
+        <div data-role="popup" id="popupMap">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <div id="map">
+
+            </div>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initPopupMap">
+            </script>
         </div>
 
         <div data-role="popup" id="popupValidate" data-overlay-theme="d" data-theme="d" data-dismissible="false" style="max-width:400px;">

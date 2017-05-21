@@ -152,51 +152,7 @@
 <div data-role="page" id="choose-place">
 
     <div data-role="main" class="ui-content">
-        <h2>Sök Plats</h2>
-        <div>
 
-            <div class="ui-field-contain">
-                <label for="place-search-type">Sökmetod</label>
-                <select name="place-search-type" id="place-search-type">
-                    <option value="0">Sök nära mig</option>
-                    <option value="1">Sök på karta</option>
-                    <option value="2">Sök på namn</option>
-                    <option value="3">Sök på område</option>
-                </select>
-            </div>
-        </div>
-        <div id="place-searcher">
-            <div id="place-searchby-close" class="place-searcher-div" data-search-type-id="0">
-                <a href="#" class="ui-btn">Hämta min plats</a>
-                <p id="place-by-loc-error"></p>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-map" data-search-type-id="1">
-                <a href="#" class="ui-btn">Öppna Karta</a>
-                <p id="place-by-map-error"></p>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-name" data-search-type-id="2">
-                <form>
-                    <label for="place-by-name-field">Sök på namn:</label>
-                    <input type="text" name="place-by-name-field" id="place-by-name-field">
-                    <a href="#" class="ui-btn" id="submit-search-by-name">Sök</a>
-                </form>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-area" data-search-type-id="3">
-                <form>
-                    <label for="place-by-name-field">Sök på områdesnamn:</label>
-                    <div class="ui-field-contain">
-                        <label for="area-name-select">Område:</label>
-                        <select name="area-name-select" id="area-name-select">
-                            <option value="0">Norrmalm</option>
-                            <option value="1">Test2</option>
-                            <option value="2">Test3</option>
-                        </select>
-                    </div>
-                    <a href="#" class="ui-btn" id="submit-search-by-area-name">Sök</a>
-                </form>
-            </div>
-            <div id="place-results"></div>
-        </div>
     </div>
 
 </div>
