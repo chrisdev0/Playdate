@@ -9,10 +9,7 @@ import model.User;
 import spark.Request;
 import utils.filters.TimeFilterable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public class GetUserPlaydateHandler extends StaticFileTemplateHandlerImpl {
@@ -26,14 +23,23 @@ public class GetUserPlaydateHandler extends StaticFileTemplateHandlerImpl {
         Map<String, Object> map = new HashMap<>();
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
 
-        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user, TimeFilterable.TimeFilter.ALL);
-        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId(), TimeFilterable.TimeFilter.ALL);
+        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user, TimeFilterable.TimeFilter.FUTURE);
+        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId(), TimeFilterable.TimeFilter.FUTURE);
 
-        if (!playdateByOwnerId.isPresent() || !playdatesAttending.isPresent()) {
+
+        Optional<List<Playdate>> historyPlaydatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user, TimeFilterable.TimeFilter.HISTORY);
+        Optional<List<Playdate>> historyPlaydateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId(), TimeFilterable.TimeFilter.HISTORY);
+
+        if (!playdateByOwnerId.isPresent() || !playdatesAttending.isPresent() || !historyPlaydateByOwnerId.isPresent() || !historyPlaydatesAttending.isPresent()) {
             return Optional.of(map);
         }
+
+        Set<Playdate> history = new HashSet<>();
+        history.addAll(historyPlaydateByOwnerId.get());
+        history.addAll(historyPlaydatesAttending.get());
         map.put("playdatesAttending", playdatesAttending.get());
         map.put("playdatesOwner", playdateByOwnerId.get());
+        map.put("playdatehistory", history);
         return Optional.of(map);
     }
 }
