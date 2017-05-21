@@ -74,9 +74,8 @@ public class PlaydateDAO {
             List<Playdate> playdatesList = injectTimeToQuery(session,hql,timeFilter).setParameter("id", user.getId()).list();
             playdatesList.forEach(playdate -> Hibernate.initialize(playdate.getParticipants()));
             playdates.addAll(playdatesList);
-
         }
-        getPlaydateByOwnerId(user.getId(), TimeFilter.ALL).ifPresent(playdates::addAll);
+        getPlaydateByOwnerId(user.getId(), timeFilter).ifPresent(playdates::addAll);
         return playdates;
     }
 

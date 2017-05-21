@@ -32,7 +32,7 @@ $(document).ready(function () {
         var ooutput = "";
         $.each(playdates, function (index, playdate) {
             var output = '<div>' +
-                '<p>' + playdate.header + '</p>' +
+                '<p><a data-ajax="false" href="/protected/getoneplaydate?playdateId='+playdate.id+'">' + playdate.header + '</a></p>' +
                 '</div>';
             ooutput += output;
         });
