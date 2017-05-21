@@ -1,5 +1,21 @@
 $(document).ready(function () {
 
+    var friendrequests = $('.swipable-friend-request');
+
+    $.each(friendrequests, function (index, f) {
+        var hammertime = new Hammer(friendrequests[index]);
+        hammertime.on('swiperight', function (e) {
+            console.log("swipe");
+            var target = $(e.target).closest('li');
+            target.animate({
+                left: '+=100',
+                opacity: 0.25
+            },750,function() {
+                target.remove();
+            })
+        });
+    });
+
     var potentialfriendsouput = $('#potential-friends-output');
 
     $('#friends-searchterm').on('input', function () {
@@ -25,12 +41,9 @@ $(document).ready(function () {
         output.listview('refresh');
     };
 
-    $('.swipable-friend-request').on("swipe", function (e) {
-        console.log("swipe");
-    });
-    $('.swipable-friend-request').on("click",function(e) {
-        console.log("click");
-    })
+
+
+
 
     potentialfriendsouput.on('click', '.add-friend-btn', function (e) {
         e.preventDefault();

@@ -11,6 +11,7 @@
     #parse("head-links.vm")
 
     <script src="/js/friends.js"></script>
+    <script src="/js/hammer.min.js"></script>
 </head>
 
 <script>
