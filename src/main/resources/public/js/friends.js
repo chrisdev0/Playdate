@@ -11,7 +11,17 @@ $(document).ready(function () {
                 left: '+=100',
                 opacity: 0.25
             },750,function() {
-                target.remove();
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/declinefriendshiprequest?userId=' + $(target).find('.friendship-request-popup').data('userid'),
+                    success: function(res){
+                        target.remove();
+                    },
+                    error: function(res) {
+                        console.log("error removing friendrequest")
+                    }
+                });
+
             })
         });
     });
