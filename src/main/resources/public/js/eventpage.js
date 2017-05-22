@@ -33,7 +33,7 @@ $(document).ready(function () {
         $.each(playdates, function (index, playdate) {
              var output = '<li>' +
 
-                    '<a data-ajax="false" class="ui-btn href="/protected/getoneplaydate?playdateId='+playdate.id+'">' + playdate.header + '</a>' +
+                    '<a data-ajax="false" class="ui-btn" href="/protected/getoneplaydate?playdateId='+playdate.id+'">' + playdate.header + '</a>' +
 
 
                         '</li>';
