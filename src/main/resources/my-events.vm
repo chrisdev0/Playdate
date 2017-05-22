@@ -25,13 +25,29 @@
     <div data-role="main" class="ui-content">
 
         <h2>Kommande playdates</h2>
-        <div id="upcomming-playdates-output"></div>
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="upcomming-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
 
         <h2>Playdates jag kan gå med i</h2>
-        <div id="suggested-playdates-output"></div>
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="suggested-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
 
         <h2>Playdates i närheten</h2>
-        <div id="public-playdates-output"></div>
+
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="public-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
     </div>
 
 
