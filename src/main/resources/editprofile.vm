@@ -56,7 +56,7 @@
             <a class="ui-btn ui-shadow ui-corner-all" id="update-profile-btn" data-ajax="false">Uppdatera Profil</a>
         </div>
         <div class="remove-user">
-            <a href="#popup-remove-user" data-rel="popup" class="ui-btn ui-shadow ui-corner-all" id="remove-profile-btn" data-transition="pop">Avregistera mig</a>
+            <a href="#popup-remove-user" data-rel="popup" class="ui-btn ui-shadow ui-corner-all" id="remove-profile-btn" style="background: #ff4304 !important; color:white !important;" data-transition="pop">Avregistera mig</a>
         </div>
     </div>
     <div data-role="popup" id="popup" data-dismissible="false">
