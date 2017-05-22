@@ -4,38 +4,34 @@ public class Constants {
 
     public static final boolean DEV = true;
 
-    public static final int PORT = 9000;
+    public static final boolean ENV_PRINT_DEBUG = true;
+
+    public static final String HIBERNATE_DB_URL_SETTINGS = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     public static final String FACEBOOK_SCOPE = "public_profile,email";
 
     public static final int GRID_SEARCH_AREA_SIZE = 2000;
 
     public static final String USER_SESSION_KEY = "user";
-    public static final int LENGTH_OF_SALT = 20;
     public static final String MAGIC_MISSING_IMAGE = "-1";
-    public static final String ABSOLUTE_URL;
+
 
     public static final String PROFILE_PICTURE_UPLOAD_NAME = "profile_picture_file";
-    public static final int QUICK_PLACE_SEARCH_LIMIT = 10;
-    public static final String ONLOGINREDIRECT = "onloginredirect";
-    public static final long COUNT_PLAYDATE_AS_FUTURE_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
-    public static final int SEARCH_USER_OFFSET = 15;
 
+    public static final int QUICK_PLACE_SEARCH_LIMIT = 10;
+
+    public static final String ONLOGINREDIRECT = "onloginredirect";
+    
+    public static final long COUNT_PLAYDATE_AS_FUTURE_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
+    public static final long COUNT_PLAYDATE_AS_NEAR_CUTOFF = 1000 * 60 * 60 * 18; //18 timmar
+    public static long COUNT_PLAYDATE_AS_RECENT = 1000 * 60 * 60 * 18;
+
+    public static final int SEARCH_USER_OFFSET = 15;
     public static final Long TIMEDECIDER = 86400000L * 30;
     public static final int SHORTDESCMIN = 3;
     public static final int SHORTDESCMAX = 20;
     public static final int LONGDESCMIN = 10;
     public static final int LONGDESCMAX = 300;
-
-
-
-    static {
-        if (DEV) {
-            ABSOLUTE_URL = "http://localhost:" + PORT;
-        } else {
-            ABSOLUTE_URL = null;
-        }
-    }
 
 
     public class MSG {
@@ -55,6 +51,14 @@ public class Constants {
 
         public static final String OK = "";
         public static final String ALREADY_INVITED = "already_invited";
+
+        public class ValidationErrors {
+
+            public static final String ERROR_STARTTIME = "_starttime";
+            public static final String ERROR_PLACE = "_place";
+            public static final String ERROR_DESCRIPTION = "_description";
+            public static final String ERROR_HEADER = "_header";
+        }
     }
     
     public class ADMIN {

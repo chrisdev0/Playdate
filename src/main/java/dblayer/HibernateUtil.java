@@ -1,15 +1,12 @@
 package dblayer;
 
+import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import secrets.Secrets;
-import secrets.SecretsParserException;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 public class HibernateUtil {
@@ -31,15 +28,7 @@ public class HibernateUtil {
      * */
     private HibernateUtil() {
         try {
-            Secrets secrets = Secrets.getInstance().loadSecretsFile("secrets.txt");
-            Optional<String> usernameOpt = secrets.getValue("dbUserName");
-            Optional<String> passwordOpt = secrets.getValue("dbPassword");
-            Optional<String> dbUrlOpt = secrets.getValue("dbName");
-            if (usernameOpt.isPresent() && passwordOpt.isPresent() && dbUrlOpt.isPresent()) {
-                sessionFactory = initConfig(dbUrlOpt.get(), usernameOpt.get(), passwordOpt.get());
-            } else {
-                throw new SecretsParserException("Missing Database values");
-            }
+            sessionFactory = initConfig(Secrets.DB_HOST,Secrets.DB_USER,Secrets.DB_PASS);
         } catch (Exception e) {
             log.error("Error creating hibernate util", e);
             System.exit(-2);
@@ -53,7 +42,7 @@ public class HibernateUtil {
         return new Configuration().configure("hibernate.cfg.xml")
                 .setProperty("hibernate.connection.password", password)
                 .setProperty("hibernate.connection.username", username)
-                .setProperty("hibernate.connection.url", dbUrl)
+                .setProperty("hibernate.connection.url", dbUrl + Constants.HIBERNATE_DB_URL_SETTINGS)
                 .buildSessionFactory();
     }
 

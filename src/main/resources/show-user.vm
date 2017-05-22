@@ -10,92 +10,7 @@
     #parse("head-links.vm")
 
 
-    <script>
-
-        $(document).ready(function () {
-
-            $('#add-friend').click(function (e) {
-                e.preventDefault();
-
-                $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function(res) {
-                    console.log(res);
-                })
-
-            })
-
-
-
-            $('#remove-friend').click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/protected/removefriend?userId=' + $(this).data('userid'),
-                    success: function(res) {
-                        console.log("res = " + res);
-                    }
-                });
-            });
-
-            $('#remove-friendrequest').click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/protected/removefriendshiprequest?userId=' + $(this).data('userid'),
-                    success: function(res) {
-                        console.log("res = " + res);
-                    }
-                });
-            });
-            $('#accept-friendrequest').click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '/protected/acceptfriendshiprequest?userId=' + $(this).data('userid'),
-                    success: function(res) {
-                        console.log("res = " + res);
-                    }
-                });
-            });
-            $('#decline-friendrequest').click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '/protected/declinefriendshiprequest?userId=' + $(this).data('userid'),
-                    success: function(res) {
-                        console.log("res = " + res);
-                    }
-                });
-            });
-
-
-
-            $('#send-report').click(function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/protected/postreport',
-                    data: $('#makeReport').serialize(),
-                    success: function (res) {
-                        console.log(res);
-                        $('#report').val("");
-                       $('#popupReport').popup('close');
-
-
-
-                    }
-
-                });
-
-
-
-
-
-            })
-        })
-
-    </script>
+    <script src="/js/show-user.js"></script>
 
 
 </head>
@@ -165,9 +80,13 @@
 
                 <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
                     <h4>Playdates</h4>
-                    #foreach($p in $playdates)
+                    #if($playdates.size() == 0)
+                        <p>Den här användaren har inga öppna playdates</p>
+                    #else
+                        #foreach($p in $playdates)
 
-                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                            <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                        #end
                     #end
                 </div>
 

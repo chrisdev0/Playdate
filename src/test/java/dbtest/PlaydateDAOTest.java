@@ -9,6 +9,8 @@ import org.hibernate.Hibernate;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import testutils.ModelCreators;
+import utils.filters.TimeFilterable;
+
 import static testutils.ModelCreators.*;
 
 import java.util.List;
@@ -160,7 +162,7 @@ public class PlaydateDAOTest extends HibernateTests {
         assertTrue(playdateOptional.isPresent());
         assertNotNull(playdate.getId());
 
-        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
+        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId(), TimeFilterable.TimeFilter.ALL);
         assertTrue(playdateByOwnerId.isPresent());
         assertEquals(1, playdateByOwnerId.get().size());
         assertEquals(playdate.getId(), playdateByOwnerId.get().get(0).getId());
@@ -229,7 +231,7 @@ public class PlaydateDAOTest extends HibernateTests {
 
         Invite invite = new Invite(playdate, user);
 
-        save(invite, user, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         remove(invite);
@@ -262,11 +264,11 @@ public class PlaydateDAOTest extends HibernateTests {
 
         assertEquals(playdate1.getParticipants().size(), 1);
 
-        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user);
+        Optional<List<Playdate>> playdatesAttending = PlaydateDAO.getInstance().getPlaydatesAttending(user, TimeFilterable.TimeFilter.ALL);
         assertTrue(playdatesAttending.isPresent());
         assertEquals(1, playdatesAttending.get().size());
 
-        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId());
+        Optional<List<Playdate>> playdateByOwnerId = PlaydateDAO.getInstance().getPlaydateByOwnerId(user.getId(), TimeFilterable.TimeFilter.ALL);
         assertTrue(playdateByOwnerId.isPresent());
         assertEquals(1, playdateByOwnerId.get().size());
 

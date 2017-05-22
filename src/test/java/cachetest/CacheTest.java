@@ -7,7 +7,6 @@ import model.DBAPIImage;
 import model.Place;
 import org.junit.Test;
 
-import secrets.Secrets;
 import spark.Request;
 import spark.Response;
 import testutils.MockTestHelpers;
@@ -50,7 +49,6 @@ public class CacheTest extends MockTestHelpers {
 
     @Test
     public void testPutToCache() throws Exception {
-        Secrets.getInstance().loadSecretsFile("secrets.txt");
         Cache cache = Cache.getInstance();
         byte[] image = new byte[10];
         for (int i = 0; i < image.length; i++) {

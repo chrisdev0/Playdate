@@ -14,7 +14,6 @@ import model.User;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
-import utils.Utils;
 
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +76,7 @@ public class AttendanceInviteHandler {
                 if (playdateOptional.get().getOwner().equals(getUserFromSession(request))) {
                     Optional<Invite> inviteOfUserAndPlaydate = InviteDAO.getInstance().getInviteOfUserAndPlaydate(sendToUser.get(), playdateOptional.get());
                     if (!inviteOfUserAndPlaydate.isPresent()) {
-                        if (InviteDAO.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(playdateOptional.get(), sendToUser.get()), playdateOptional.get())) {
+                        if (InviteDAO.getInstance().addInviteToUserAndPlaydate(new Invite(playdateOptional.get(), sendToUser.get()))) {
                             return "";
                         } else {
                             log.info("couldn't send invite to user " + sendToUserStr);

@@ -2,16 +2,19 @@ package testutils;
 
 import apilayer.Constants;
 import model.User;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Session;
 
 import java.util.HashSet;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MockTestHelpers {
+public class MockTestHelpers extends TestStarter {
 
 
     public Request initRequestMock(User user) {
@@ -41,6 +44,14 @@ public class MockTestHelpers {
 
     public void injectKeyValue(Request request, String key, String value) {
         when(request.queryParams(key)).thenReturn(value);
+    }
+
+    public void assertModelContains(ModelAndView modelAndView, Object object, boolean assertMode) {
+        if (assertMode) {
+            assertTrue(modelAndView.getModel().toString().contains(object.toString()));
+        } else {
+            assertFalse(modelAndView.getModel().toString().contains(object.toString()));
+        }
     }
 
 

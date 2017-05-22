@@ -10,6 +10,8 @@ import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
+import utils.filters.TimeFilterable;
+
 import java.util.Optional;
 import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
@@ -54,16 +56,16 @@ public class PlaydateHandler {
     private static String getValidationError(String header, String description, long startTime, Optional<Place> placeOptional) {
         String ret = "";
         if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header)) {
-            ret += "_header";
+            ret += Constants.MSG.ValidationErrors.ERROR_HEADER;
         }
         if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
-            ret += "_description";
+            ret += Constants.MSG.ValidationErrors.ERROR_DESCRIPTION;
         }
         if (!placeOptional.isPresent()) {
-            ret += "_place";
+            ret += Constants.MSG.ValidationErrors.ERROR_PLACE;
         }
         if(!Utils.validateStartTime(startTime)){
-            ret += "_starttime";
+            ret += Constants.MSG.ValidationErrors.ERROR_STARTTIME;
         }
         return ret;
     }
@@ -152,21 +154,17 @@ public class PlaydateHandler {
         if (placeOptional.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                     .create().toJson(PlaydateDAO.getInstance()
-                            .getPlaydateAtPlace(placeOptional.get())
-                            .stream()
-                            .filter(Playdate::playdateIsInFuture)
-
+                            .getPlaydateAtPlace(placeOptional.get(), TimeFilterable.TimeFilter.FUTURE)
                     );
         }
         return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);
     }
 
     public static Object handleGetFriendsToInvite(Request request, Response response) {
-        User user = getUserFromSession(request);
         Optional<Playdate> playdate = getPlaydateFromRequest(request);
         if (playdate.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(user, playdate.get()));
+                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(playdate.get()));
         } else {
             return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
         }

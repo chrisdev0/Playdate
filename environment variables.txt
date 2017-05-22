@@ -1,0 +1,145 @@
+#######################################################################################################
+######################################         README         #########################################
+#######################################################################################################
+
+För att förenkla deployment av appen så har vi ändrat från
+att ha alla nycklar och värden i secrets.txt till att ha
+värdena sparade i environment variables, detta gör det enkelt
+att sätta värdena i Jenkins och Heroku.
+
+#######################################################################################################
+######################################          HTTPS         #########################################
+#######################################################################################################
+
+För att kunna använda appen på en telefon så måste vi använda https.
+Detta eftersom mobila webbläsare (åtminstone chrome) kräver att sidan är i HTTPS för
+att få tillgång till användarens position
+
+Att fixa HTTPS är lättare än det låter
+Först så genererar man en keystore.jks-fil sen lägger man den filen i samma mapp som secrets.txt
+Lösenordet till keystore.jks och om SSL (HTTPS) ska användas bestäms i environment variables
+Hur man genererar keystore.jks går att läsa här
+https://www.sslshopper.com/article-how-to-create-a-self-signed-certificate-using-java-keytool.html
+Callback för Facebook måste då sättas till https://.... i environment variables
+och callback till https://... måste också läggas in i Facebook Developer
+När ni kört HTTPS en gång så måste ni alltid köra https, Facebook gillar inte att man
+först loggar in med https och sen byter till http, tror jag.
+
+I webbläsaren måste man också skriva HTTPS://localhost:9000
+skriver man bara localhost:9000 så tas man till http://...
+och den finns inte om man kör med SSL
+
+#######################################################################################################
+######################################  ENVIRONMENT VARIABLES  ########################################
+#######################################################################################################
+
+
+Hur man sätter environment variables skiljer sig mellan Mac och Windows
+Window: https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10
+Mac: lägg till en länk här när ni hittat något bra
+Det är alltså 12 värden som ska bestämmas
+
+
+För windows så kan man använda secrets.bat.TEMPLATE (döp om till secrets.bat så att den blir körbar)
+
+Där definieras varje nyckel-värde på följande sätt
+SETX NYCKEL VÄRDE
+exempelvis
+SETX PLAYDATE_CALLBACK http://localhost:9000/callback
+
+SETX gör så att variabeln stannar kvar efter körningen av .bat-filen (och/eller terminalen)
+Man MÅSTE STARTA OM INTELLIJ EFTER ATT MAN KÖRT BAT-FILEN FÖR ATT FÅ DE NYA VÄRDENA (afaik)
+
+Följande environment variables måste vara bestämda:
+PLAYDATE_DB_HOST
+PLAYDATE_DB_USER
+PLAYDATE_DB_PASS
+PLAYDATE_FB_SALT
+PLAYDATE_FB_APP_ID
+PLAYDATE_FB_SECRET
+PLAYDATE_CALLBACK
+PLAYDATE_STOCKHOLM_KEY
+PLAYDATE_GOOGLE_MAPS_KEY
+PLAYDATE_USE_SSL
+PLAYDATE_KEYSTORE_PASS
+PLAYDATE_SERVER_PORT
+
+
+#######     Ni ska inte skriva in värdena här någonstans utan de
+#######     måste läggas till i environment variables
+
+##  PLAYDATE_DB_HOST ska vara satt till URL för databasen
+##  ungefär samma som tidigare fast utan allt efter namnet på
+##  databasen vilket är samma som ert SU användarnamn
+##
+##  Alltså ungefär jdbc:mysql://mysql.dsv.su.se/SU-ANVÄNDARNAMN
+##  och INTE
+##  jdbc:mysql://mysql.dsv.su.se/SU-ANVÄNDARNAMN?blablabla=blabla&blabla=bla
+##
+PLAYDATE_DB_HOST
+
+##  Ska vara användarnamnet till databasen
+##
+PLAYDATE_DB_USER
+
+##  Lösenordet till databasen
+##
+PLAYDATE_DB_PASS
+
+##  Ett salt för FB, osäker på varför vi ska ha detta men
+##  ska bara vara 20 random tecken
+##
+PLAYDATE_FB_SALT
+
+##  ID till appen från facebook developer
+##
+PLAYDATE_FB_APP_ID
+
+##  Secret till appen från facebook developer
+##
+PLAYDATE_FB_SECRET
+
+##  Callback som används när användaren har autentiserat sig med
+##  Facebook
+##
+##  När man utvecklar lokalt och utan SSL så ska callback
+##  vara http://localhost:9000/callback
+##  Eller ett annat portnummer än 9000 om man väljer det senare
+##
+##  Callback måste också vara registrerad i Facebook developer
+##
+##  Använder man SSL så ska det vara https://... istället
+##
+##  Har man deployat appen någonstans så blir det en helt annan url
+##  I inställningarna i heroku har vi exempelvis
+##  https://playdate3.herokuapp.com/callback
+##
+PLAYDATE_CALLBACK
+
+##  Nyckeln till Stockholm API
+##
+PLAYDATE_STOCKHOLM_KEY
+
+##  Nyckel till Google Maps API
+##
+PLAYDATE_GOOGLE_MAPS_KEY
+
+##  Ska vara satt till true om ni ska använda SSL
+##  false om ni inte ska använda SSL
+##  Ska ni använda SSL så måste ni också generera en keystore
+##  som ska heta keystore.jks och ligga i samma
+##  mapp som denna fil
+##  Lösenordet till keystore ska definieras i PLAYDATE_KEYSTORE_PASS
+##
+PLAYDATE_USE_SSL
+
+##  Lösenordet till keystore.jks om ni ska använda
+##  SSL
+##
+PLAYDATE_KEYSTORE_PASS
+
+##  Vilken port som appen kommer att lyssna på
+##  Se till så att den matchar porten i Facebook callback
+##
+PLAYDATE_SERVER_PORT
+

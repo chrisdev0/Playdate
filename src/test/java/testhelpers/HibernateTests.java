@@ -7,8 +7,9 @@ import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import testutils.TestStarter;
 
-public class HibernateTests {
+public class HibernateTests extends TestStarter {
 
     private static HibernateUtil hibernateUtil;
     public Session session;

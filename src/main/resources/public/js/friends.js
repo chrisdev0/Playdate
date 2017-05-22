@@ -1,5 +1,31 @@
 $(document).ready(function () {
 
+    var friendrequests = $('.swipable-friend-request');
+
+    $.each(friendrequests, function (index, f) {
+        var hammertime = new Hammer(friendrequests[index]);
+        hammertime.on('swiperight', function (e) {
+            console.log("swipe");
+            var target = $(e.target).closest('li');
+            target.animate({
+                left: '+=100',
+                opacity: 0.25
+            },750,function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/declinefriendshiprequest?userId=' + $(target).find('.friendship-request-popup').data('userid'),
+                    success: function(res){
+                        target.remove();
+                    },
+                    error: function(res) {
+                        console.log("error removing friendrequest")
+                    }
+                });
+
+            })
+        });
+    });
+
     var potentialfriendsouput = $('#potential-friends-output');
 
     $('#friends-searchterm').on('input', function () {
@@ -24,6 +50,10 @@ $(document).ready(function () {
         output.html(ooutput);
         output.listview('refresh');
     };
+
+
+
+
 
     potentialfriendsouput.on('click', '.add-friend-btn', function (e) {
         e.preventDefault();

@@ -8,6 +8,7 @@ import model.Place;
 import model.Playdate;
 import model.User;
 import org.junit.Test;
+import testutils.TestStarter;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
 import static testutils.ModelCreators.*;
 
 @Slf4j
-public class InviteDAOTest {
+public class InviteDAOTest extends TestStarter {
 
 
     @Test
@@ -32,7 +33,7 @@ public class InviteDAOTest {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);
@@ -57,7 +58,7 @@ public class InviteDAOTest {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);
@@ -89,7 +90,7 @@ public class InviteDAOTest {
         save(playdate);
 
         Invite invite = new Invite(playdate, invited);
-        save(invite, invited, playdate);
+        save(invite);
         assertNotNull(invite.getId());
 
         Optional<List<Invite>> invitesOfUser = InviteDAO.getInstance().getInvitesOfUser(invited);

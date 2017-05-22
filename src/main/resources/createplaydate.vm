@@ -10,12 +10,57 @@
     #parse("head-links.vm")
 
     <link rel="stylesheet" type="text/css" href="/css/jtsage-datebox.css">
+    <script src="/js/CoordinateHandler.js"></script>
     <script src="/js/createplaydate.js"></script>
     <script src="/js/jtsage-datebox.js"></script>
-    <script>
 
+    <script src="/js/init-full-map.js"></script>
+    <script src="/js/init-map.js"></script>
+
+    <style>
+        #map, #popupMap-popup {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        var renderPlace = function(place, placeoutput){
+            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
+            output += '<h3>' + place.name + '</h3>';
+            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
+            output += '<p>' + place.shortDescription + '</p>';
+            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '' +
+                    '<a href="#" class="choose-place-link" data-place-id="'+ place.id +'" data-place-name="'+ place.name +'">Välj</a>' +
+                    '</p>';
+            output += "</div>";
+
+            placeoutput.append(output);
+
+            var ch = new CoordinateHandler();
+
+            latlng = ch.gridToGeodetic(place.geoX, place.geoY);
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
+                title: 'hello'
+            });
+            marker.setMap(window.map);
+            window.markers.push(marker);
+            marker.addListener('click',function() {
+                var anchor = "#marker" + place.id;
+                $('html, body').animate({
+                    scrollTop: $(anchor).offset().top
+                }, 500);
+                $(anchor).collapsible('expand');
+            })
+        }
+    </script>
+    <script>
+        window.placeX;
+        window.placeY;
         $(document).ready(function () {
             #if($playdate)
+                window.placeX = "$!playdate.place.geoX";
+                window.placeY = "$!playdate.place.geoY";
                 console.log("edit playdatemode");
                 $('#create-playdate-form').attr('action', '/protected/updateplaydate');
                 $('#playdateId').val("${playdate.id}");
@@ -51,8 +96,6 @@
     #parse("header.vm")
 
     #parse("footer.vm")
-
-
 
 
 <div data-role="page" id="pageone">
@@ -152,50 +195,16 @@
 <div data-role="page" id="choose-place">
 
     <div data-role="main" class="ui-content">
-        <h2>Sök Plats</h2>
-        <div>
+        <h1>Hitta platser</h1>
+        <a href="#pageone" id="back-to-create" data-ajax="false">Tillbaka</a>
+        <div id="map"> </div>
 
-            <div class="ui-field-contain">
-                <label for="place-search-type">Sökmetod</label>
-                <select name="place-search-type" id="place-search-type">
-                    <option value="0">Sök nära mig</option>
-                    <option value="1">Sök på karta</option>
-                    <option value="2">Sök på namn</option>
-                    <option value="3">Sök på område</option>
-                </select>
-            </div>
-        </div>
-        <div id="place-searcher">
-            <div id="place-searchby-close" class="place-searcher-div" data-search-type-id="0">
-                <a href="#" class="ui-btn">Hämta min plats</a>
-                <p id="place-by-loc-error"></p>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-map" data-search-type-id="1">
-                <a href="#" class="ui-btn">Öppna Karta</a>
-                <p id="place-by-map-error"></p>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-name" data-search-type-id="2">
-                <form>
-                    <label for="place-by-name-field">Sök på namn:</label>
-                    <input type="text" name="place-by-name-field" id="place-by-name-field">
-                    <a href="#" class="ui-btn" id="submit-search-by-name">Sök</a>
-                </form>
-            </div>
-            <div class="hidden place-searcher-div" id="place-searchby-area" data-search-type-id="3">
-                <form>
-                    <label for="place-by-name-field">Sök på områdesnamn:</label>
-                    <div class="ui-field-contain">
-                        <label for="area-name-select">Område:</label>
-                        <select name="area-name-select" id="area-name-select">
-                            <option value="0">Norrmalm</option>
-                            <option value="1">Test2</option>
-                            <option value="2">Test3</option>
-                        </select>
-                    </div>
-                    <a href="#" class="ui-btn" id="submit-search-by-area-name">Sök</a>
-                </form>
-            </div>
-            <div id="place-results"></div>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
+        </script>
+        <div>
+            <h2>Platser:</h2>
+            <div id="place-output"></div>
         </div>
     </div>
 
