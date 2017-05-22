@@ -14,10 +14,9 @@ $(document).ready(function () {
 
     var renderFeedObject = function (feed) {
         var feedObjectType = feed.objectTypeId;
-        var feedObjectTypeStr = feedObjectType == 0 ? 'Playdate' : 'Plats';
         var outputStr = '<div class="feed-content">' +
             '<div class="feed-image-composite">' +
-            '<div class="feed-object-type object-type-'+ feedObjectType+'"><span>' + feedObjectTypeStr + '</span></div>' +
+            '<div class="feed-object-type object-type-'+ feedObjectType+'"><span>' + feed.category + '</span></div>' +
             '<img src="/protected/'+ feed.imageUrl+'">'+
             '<h1>'+feed.header+'</h1>' +
             '</div>' +

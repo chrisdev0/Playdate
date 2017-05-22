@@ -22,13 +22,15 @@ public class FeedObject {
     private String shortDescription;
     private String imageUrl;
     private String placeName;
+    private String category;
     private int objectTypeId;
     private String onClickUrl;
 
-    public FeedObject(Long id, String header, String placeName, String shortDescription, String imageUrl, int objectTypeId, String onClickUrl) {
+    public FeedObject(Long id, String header, String category, String placeName, String shortDescription, String imageUrl, int objectTypeId, String onClickUrl) {
         this.id = id;
         this.header = header;
         this.shortDescription = shortDescription;
+        this.category = category;
         this.placeName = placeName;
         this.imageUrl = imageUrl;
         this.objectTypeId = objectTypeId;
@@ -39,6 +41,7 @@ public class FeedObject {
         return new FeedObject(
                 playdate.getId(),
                 playdate.getHeader(),
+                "Playdate",
                 playdate.getPlace().getName(),
                 playdate.getDescription(),
                 Paths.APIIMAGE + "/" + playdate.getPlace().getImageId(),
@@ -50,6 +53,7 @@ public class FeedObject {
         return new FeedObject(
                 place.getId(),
                 place.getName(),
+                place.getCategory(),
                 place.getName(),
                 place.getShortDescription(),
                 Paths.APIIMAGE + "/" + place.getImageId(),
