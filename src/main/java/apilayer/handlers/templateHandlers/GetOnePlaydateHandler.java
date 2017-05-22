@@ -40,7 +40,7 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
                 map.put("playdate", playdateById.get());
                 return Optional.of(map);
             } else {
-                return Optional.of(onErrorPage("Du har inte tillgång till denna playdate"));
+                return Optional.empty();
             }
         } else {
             return Optional.empty();
@@ -48,7 +48,24 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
     }
 
     private boolean userShouldHaveAccessToPlaydate(Playdate playdate, User user) {
-        return playdate.getOwner().equals(user) || playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC) || playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.FRIENDS_ONLY) && usersAreFriends(playdate.getOwner(), user);
+        if (playdate.getOwner().equals(user) || playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)) {
+            return true;
+        }
+        if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.FRIENDS_ONLY)) {
+            if (usersAreFriends(playdate.getOwner(), user)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PRIVATE)) {
+            if (playdate.getParticipants().contains(user)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     private boolean usersAreFriends(User user, User friend) {
