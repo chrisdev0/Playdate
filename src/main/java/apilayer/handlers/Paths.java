@@ -89,6 +89,8 @@ public class Paths {
     public static final String GETPOTENTIALFRIENDSTOINVITE = "/getpotentialfriendstoinvite";
     public static final String SHOWPLAYDATESONMAP = "/showplaydatesonmap";
     public static final String REMOVEUSER = "/removeuser";
+    public static final String OWNERREMOVEINVITE = "/ownerremoveinvite";
+    public static final String OWNERKICKATTENDINGUSER = "/kickfromplaydate";
 
 
     public static class ADMIN {

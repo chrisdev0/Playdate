@@ -17,6 +17,9 @@ import utils.ParserHelpers;
 
 import java.util.List;
 import java.util.Optional;
+
+import static apilayer.Constants.*;
+import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
 @Slf4j
@@ -30,23 +33,23 @@ public class AttendanceInviteHandler {
         if (playdateById.isPresent()) {
             Playdate playdate = playdateById.get();
             if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)) {
-                if (PlaydateDAO.getInstance().addAttendance(request.session().attribute(Constants.USER_SESSION_KEY), playdate)) {
+                if (PlaydateDAO.getInstance().addAttendance(request.session().attribute(USER_SESSION_KEY), playdate)) {
                     response.status(200);
                     return "";
                 } else {
-                    return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+                    return setStatusCodeAndReturnString(response, 400, ERROR);
                 }
             } else {
-                return setStatusCodeAndReturnString(response, 400, Constants.MSG.PLAYDATE_IS_NOT_PUBLIC);
+                return setStatusCodeAndReturnString(response, 400, PLAYDATE_IS_NOT_PUBLIC);
             }
         }
-        return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_PLAYDATE_WITH_ID);
+        return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
     }
 
     public static Object handleAcceptInviteToPlaydate(Request request, Response response) {
         String inviteIdStr = request.queryParams(Paths.QueryParams.INVITE_BY_ID);
         Long inviteId = ParserHelpers.parseToLong(inviteIdStr);
-        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        User user = request.session().attribute(USER_SESSION_KEY);
         Optional<Invite> inviteById = InviteDAO.getInstance().getInviteById(inviteId);
         if (inviteById.isPresent()) {
             if (inviteById.get().getInvited().equals(user)) {
@@ -81,22 +84,22 @@ public class AttendanceInviteHandler {
                         } else {
                             log.info("couldn't send invite to user " + sendToUserStr);
                             response.status(400);
-                            return Constants.MSG.ERROR;
+                            return ERROR;
                         }
                     } else {
-                        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ALREADY_INVITED);
+                        return setStatusCodeAndReturnString(response, 400, ALREADY_INVITED);
                     }
                 } else {
                     response.status(400);
-                    return Constants.MSG.USER_IS_NOT_OWNER_OF_PLAYDATE;
+                    return USER_IS_NOT_OWNER_OF_PLAYDATE;
                 }
             } else {
                 response.status(400);
-                return Constants.MSG.NO_PLAYDATE_WITH_ID;
+                return NO_PLAYDATE_WITH_ID;
             }
         } else {
             response.status(400);
-            return Constants.MSG.NO_USER_WITH_ID;
+            return NO_USER_WITH_ID;
         }
     }
 
@@ -108,7 +111,7 @@ public class AttendanceInviteHandler {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(invitesOfUser.get());
         }
         response.status(400);
-        return Constants.MSG.ERROR;
+        return ERROR;
     }
 
 
@@ -121,13 +124,51 @@ public class AttendanceInviteHandler {
                 if (InviteDAO.getInstance().removeInvite(inviteById.get(), inviteById.get().getPlaydate(), user)) {
                     return "";
                 } else {
-                    return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+                    return setStatusCodeAndReturnString(response, 400, ERROR);
                 }
             } else {
-                return setStatusCodeAndReturnString(response, 400, Constants.MSG.USER_IS_NOT_OWNER_OF_INVITE);
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_INVITE);
             }
         } else {
-            return setStatusCodeAndReturnString(response, 400, Constants.MSG.NO_INVITE_WITH_ID);
+            return setStatusCodeAndReturnString(response, 400, NO_INVITE_WITH_ID);
+        }
+    }
+
+    public static Object handleRemoveInviteToPlaydate(Request request, Response response) {
+        Long inviteId = ParserHelpers.parseToLong(request.queryParams(Paths.QueryParams.INVITE_BY_ID));
+        Optional<Invite> inviteById = InviteDAO.getInstance().getInviteById(inviteId);
+        if (inviteById.isPresent()) {
+            if (getUserFromSession(request).equals(inviteById.get().getPlaydate().getOwner())) {
+                if(InviteDAO.getInstance().removeInvite(inviteById.get())){
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                } else {
+                    return setStatusCodeAndReturnString(response, 400, ERROR);
+                }
+            } else {
+                log.info("can't remove invite, user not owner of playdate");
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
+            }
+        } else {
+            log.error("no invite with id = " + inviteId);
+            return setStatusCodeAndReturnString(response, 400, NO_INVITE_WITH_ID);
+        }
+    }
+
+    public static Object handleKickUserFromPlaydate(Request request, Response response) {
+        Optional<User> userFromRequestById = getUserFromRequestById(request);
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (userFromRequestById.isPresent() && playdateFromRequest.isPresent()) {
+            if (getUserFromSession(request).equals(playdateFromRequest.get().getOwner())) {
+                if (PlaydateDAO.getInstance().removeAttendance(playdateFromRequest.get(), userFromRequestById.get())) {
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                } else {
+                    return setStatusCodeAndReturnString(response, 400, ERROR);
+                }
+            } else {
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
+            }
+        } else {
+            return setStatusCodeAndReturnString(response, 400, NO_USER_WITH_ID + "_OR_" + NO_PLAYDATE_WITH_ID);
         }
     }
 }

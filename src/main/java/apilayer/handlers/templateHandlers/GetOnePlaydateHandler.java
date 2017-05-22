@@ -5,7 +5,9 @@ import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.Paths;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
+import model.Friendship;
 import model.Playdate;
+import model.PlaydateVisibilityType;
 import model.User;
 import secrets.Secrets;
 import spark.Request;
@@ -34,11 +36,27 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
         Map<String, Object> map = new HashMap<>();
         map.put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
         if (playdateById.isPresent()) {
-            map.put("playdate", playdateById.get());
+            if (userShouldHaveAccessToPlaydate(playdateById.get(), user)) {
+                map.put("playdate", playdateById.get());
+                return Optional.of(map);
+            } else {
+                return Optional.of(onErrorPage("Du har inte tillgång till denna playdate"));
+            }
         } else {
-            throw halt(400);
+            return Optional.empty();
         }
+    }
 
-        return Optional.of(map);
+    private boolean userShouldHaveAccessToPlaydate(Playdate playdate, User user) {
+        return playdate.getOwner().equals(user) || playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC) || playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.FRIENDS_ONLY) && usersAreFriends(playdate.getOwner(), user);
+    }
+
+    private boolean usersAreFriends(User user, User friend) {
+        for (Friendship friendship : user.getFriends()) {
+            if (friendship.getFriend().equals(friend) || friendship.getRequester().equals(friend)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

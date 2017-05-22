@@ -113,6 +113,7 @@ public class ProtectedRoutes {
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
             get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
             get(Paths.GETPOTENTIALFRIENDSTOINVITE, PlaydateHandler::handleGetFriendsToInvite);
+            delete(Paths.OWNERKICKATTENDINGUSER, AttendanceInviteHandler::handleKickUserFromPlaydate);
 
             /*      FriendshipRequest-routes
             * */
@@ -131,6 +132,7 @@ public class ProtectedRoutes {
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
             post(Paths.SENDINVITE, AttendanceInviteHandler::handleSendInviteToPlaydate);
+            delete(Paths.OWNERREMOVEINVITE, AttendanceInviteHandler::handleRemoveInviteToPlaydate);
 
 
             /*      EVENT-routes
