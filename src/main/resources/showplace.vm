@@ -99,7 +99,6 @@
                     <ul id="btns-list" style="float:right;">
                         <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
                         <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
-                        <li><button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-star ui-btn-icon-notext">star</button></li>
                     </ul>
                 </div>
         </div>
