@@ -177,6 +177,8 @@ public class ProtectedRoutes {
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
 
+        get(Paths.SHOWPLAYDATESONMAP, new StaticFileTemplateHandlerImpl("find-playdates.vm",400, true)::handleTemplateFileRequest,new VelocityTemplateEngine());
+
         get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
     }

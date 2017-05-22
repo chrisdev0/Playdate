@@ -369,6 +369,7 @@
 }
 a{
     text-decoration: none;
+    font-size: 12px;
 }
 
 .inviteList li {
@@ -397,14 +398,13 @@ a{
     float: right;
     margin: 0;
 }
-
-
-
 .composite-friend-item img {
     height: 50px;
     width: 50px;
 }
-
 .popup-message{
     padding: 0.3em 0.5em;
+}
+#no-invites-header{
+    font-size: 16px;
 }
