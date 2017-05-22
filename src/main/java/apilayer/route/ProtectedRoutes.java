@@ -55,6 +55,10 @@ public class ProtectedRoutes {
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
 
+            get(Paths.REMOVEUSER, RemoveUserHandler::handleRemoveUser);
+
+            /*  För att injicera data till en användare och logga in som en specifik användare
+            * */
             get(Paths.ADDDATA, DataFillerHandler::injectData);
             get(Paths.FORCELOGIN, DataFillerHandler::forceLoginAsUser);
 

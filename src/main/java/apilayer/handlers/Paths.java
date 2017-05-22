@@ -88,6 +88,7 @@ public class Paths {
     public static final String FORCELOGIN = "/force-login";
     public static final String GETPOTENTIALFRIENDSTOINVITE = "/getpotentialfriendstoinvite";
     public static final String SHOWPLAYDATESONMAP = "/showplaydatesonmap";
+    public static final String REMOVEUSER = "/removeuser";
 
 
     public static class ADMIN {

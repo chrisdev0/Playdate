@@ -94,4 +94,18 @@ $(document).ready(function() {
             }
         });
     })
+
+    $('#remove-profile-btn').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/protected//removeuser',
+            error: function(e){
+                console.log("error removing user");
+            },
+            success: function(){
+                window.location.replace('/')
+            }
+        })
+    })
 });

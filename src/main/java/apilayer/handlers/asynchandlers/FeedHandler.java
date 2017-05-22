@@ -1,9 +1,11 @@
 package apilayer.handlers.asynchandlers;
 
 import com.google.gson.Gson;
+import dblayer.InviteDAO;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Invite;
 import model.Place;
 import model.Playdate;
 import model.User;
@@ -37,8 +39,23 @@ public class FeedHandler {
                 .filter(Playdate::playdateIsInFuture)
                 .map(FeedObject::createFromPlayDate).collect(Collectors.toSet());
         attending.addAll(feedObjects);
+
+        InviteDAO.getInstance().getInvitesOfUser(user).ifPresent(invites -> attending.addAll(invites.stream().filter(invite -> invite.getPlaydate().playdateIsInFuture())
+                .map(FeedObject::createFromInvite).collect(Collectors.toSet())));
+
+
         log.info("Finished request in " + (System.currentTimeMillis() - start) + "ms");
-        return new Gson().toJson(attending);
+        return new Gson().toJson(attending.stream().sorted((o1, o2) -> {
+            if (o1.getObjectTypeId() == FeedObject.ObjectTypeId.INVITE) {
+                if (o2.getObjectTypeId() == FeedObject.ObjectTypeId.INVITE) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else {
+                return 0;
+            }
+        }).collect(Collectors.toList()));
     }
 
 }
