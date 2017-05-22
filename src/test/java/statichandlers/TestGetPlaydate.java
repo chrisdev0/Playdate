@@ -13,6 +13,7 @@ import spark.Request;
 import spark.Response;
 import testutils.MockTestHelpers;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static testutils.ModelCreators.*;
 
@@ -63,13 +64,9 @@ public class TestGetPlaydate extends MockTestHelpers {
                 new KeyValue(Paths.QueryParams.PLAYDATE_BY_ID, -20L)
         );
 
-        ModelAndView modelAndView = null;
-        try {
-            modelAndView = new GetOnePlaydateHandler().handleTemplateFileRequest(request, response);
-            fail();
-        } catch (Exception e) {
+        ModelAndView modelAndView = new GetOnePlaydateHandler().handleTemplateFileRequest(request, response);
+        assertEquals(modelAndView.getViewName(),"on-error-page-logged-in.vm");
 
-        }
 
 
         remove(playdate);

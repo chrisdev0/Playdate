@@ -115,7 +115,7 @@ public class Playdate implements Comparable<Playdate> {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (header != null ? header.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -126,6 +126,18 @@ public class Playdate implements Comparable<Playdate> {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Playdate{" +
+                "id=" + id +
+                ", header='" + header + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", owner=" + owner +
+                ", place=" + place +
+                ", playdateVisibilityType=" + playdateVisibilityType +
+                '}';
+    }
 
     public boolean playdateIsInFuture(){
         return startTime > (System.currentTimeMillis() - Constants.COUNT_PLAYDATE_AS_FUTURE_CUTOFF);

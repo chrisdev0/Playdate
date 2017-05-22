@@ -16,6 +16,7 @@
     <script src="/js/playdate-invites.js"></script>
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
+    <script src="/js/playdate-participant.js"></script>
 
     <style>
         #map, #popupMap-popup {
@@ -151,7 +152,11 @@
                     <p class="popup-message">Den här playdaten har inga deltagare.<br>Testa att bjuda in några vänner</p>
                 #else
                     #foreach($!participant in $!playdate.participants)
-                        <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                        <p class="participant-in-popup"> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a>
+                        #if($playdate.getOwner().equals($user))
+                            <a class="remove-participant-link" href="/protected/kickfromplaydate?userId=$!participant.getId()&playdateId=$!playdate.getId()">Ta bort</a>
+                        #end
+                        </p>
                     #end
                 #end
             </div>

@@ -74,12 +74,8 @@ public class TestPlace extends MockTestHelpers{
         Request request = initRequestMock(user);
         Response response = initResponseMock();
 
-        try {
-            ModelAndView modelAndView = new GetOnePlaceHandler().handleTemplateFileRequest(request, response);
-            fail();
-        } catch (Exception e) {
-
-        }
+        ModelAndView modelAndView = new GetOnePlaceHandler().handleTemplateFileRequest(request, response);
+        assertEquals(modelAndView.getViewName(), "on-error-page-logged-in.vm");
 
 
         remove(place);
