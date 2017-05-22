@@ -34,10 +34,12 @@
 
 
         <h3>Playdates i närheten</h3>
+        <a href="/protected/showplaydatesonmap" data-ajax="false">Visa på karta</a>
         <div id="public-playdates-output"></div>
         <hr>
 
     </div>
+
 
 
 </div>
