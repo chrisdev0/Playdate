@@ -21,10 +21,10 @@ $(document).ready(function () {
             '<h1>'+feed.header+'</h1>' +
             '</div>' +
             '<p class="feed-object-description">'+ feed.shortDescription;
-        if(feedObjectType == 0) {
-            outputStr += '<a data-ajax="false" href="/protected/getoneplaydate?playdateId=' + feed.id + '">Visa Playdate</a>';
+        if(feedObjectType == 0 || feedObjectType == 4) {
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Playdate</a>';
         } else if (feedObjectType == 1) {
-            outputStr += '<a data-ajax="false" href="/protected/showplace?placeId=' + feed.id + '">Visa Plats</a>';
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Plats</a>';
         }
 
         outputStr+= '</p></div>';

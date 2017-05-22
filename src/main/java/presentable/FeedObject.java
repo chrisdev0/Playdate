@@ -2,18 +2,22 @@ package presentable;
 
 import apilayer.handlers.Paths;
 import lombok.Builder;
+import lombok.Getter;
+import model.Invite;
 import model.Place;
 import model.Playdate;
 
 
 @Builder
+@Getter
 public class FeedObject {
 
     public class ObjectTypeId {
-        private static final int PLAYDATE = 0;
-        private static final int PLACE = 1;
-        private static final int AD = 2;
-        private static final int COMMENT = 3;
+        public static final int PLAYDATE = 0;
+        public static final int PLACE = 1;
+        public static final int AD = 2;
+        public static final int COMMENT = 3;
+        public static final int INVITE = 4;
     }
 
     private Long id;
@@ -45,7 +49,7 @@ public class FeedObject {
                 playdate.getPlace().getName(),
                 playdate.getDescription(),
                 Paths.APIIMAGE + "/" + playdate.getPlace().getImageId(),
-                0,
+                ObjectTypeId.PLAYDATE,
                 Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdate.getId());
     }
 
@@ -57,8 +61,21 @@ public class FeedObject {
                 place.getName(),
                 place.getShortDescription(),
                 Paths.APIIMAGE + "/" + place.getImageId(),
-                1,
+                ObjectTypeId.PLACE,
                 Paths.PROTECTED + Paths.SHOWPLACE + "?" + Paths.QueryParams.PLACE_BY_ID + "=" + place.getId()
+        );
+    }
+
+    public static FeedObject createFromInvite(Invite invite) {
+        return new FeedObject(
+                invite.getId(),
+                invite.getPlaydate().getHeader(),
+                "Inbjudan",
+                invite.getPlaydate().getPlace().getName(),
+                invite.getPlaydate().getDescription(),
+                Paths.APIIMAGE + "/" + invite.getPlaydate().getPlace().getImageId(),
+                ObjectTypeId.INVITE,
+                Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + invite.getPlaydate().getId()
         );
     }
 

@@ -327,6 +327,9 @@
 .object-type-1 {
     background: rgba(119, 152, 200, 0.6);
 }
+.object-type-4 {
+    background: rgba(128, 200, 125, 0.6);
+}
 
 .feed-image-composite {
     position: relative;
