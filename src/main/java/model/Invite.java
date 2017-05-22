@@ -49,7 +49,7 @@ import javax.persistence.*;
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + playdate.hashCode();
         result = 31 * result + invited.hashCode();

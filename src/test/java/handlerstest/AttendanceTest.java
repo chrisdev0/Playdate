@@ -1,5 +1,6 @@
 package handlerstest;
 
+import apilayer.Constants;
 import apilayer.handlers.Paths;
 import apilayer.handlers.asynchandlers.AttendanceInviteHandler;
 import dblayer.PlaydateDAO;
@@ -41,6 +42,7 @@ public class AttendanceTest extends MockTestHelpers {
 
         String res = (String) AttendanceInviteHandler.handleKickUserFromPlaydate(request, response);
         log.info(res);
+        assertEquals(Constants.MSG.OK, res);
 
         remove(place);
         remove(playdate);
