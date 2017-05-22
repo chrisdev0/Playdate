@@ -95,17 +95,19 @@ $(document).ready(function() {
         });
     })
 
-    $('#remove-profile-btn').click(function(e) {
+    $('#remove-user').click(function(e) {
         e.preventDefault();
-        $.ajax({
-            type: 'GET',
-            url: '/protected//removeuser',
-            error: function(e){
-                console.log("error removing user");
-            },
-            success: function(){
-                window.location.replace('/')
-            }
-        })
+        if($('#checkbox-mini-0').is(':checked')){
+            $.ajax({
+                type: 'GET',
+                url: '/protected//removeuser',
+                error: function(e){
+                    console.log("error removing user");
+                },
+                success: function(){
+                    window.location.replace('/')
+                }
+            })
+        }
     })
 });
