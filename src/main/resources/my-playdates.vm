@@ -28,18 +28,16 @@
            class="ui-btn ui-icon-plus ui-btn-icon-right ui-btn-corner-all">Skapa ny Playdate</a>
         <hr>
         <h2>Mina:</h2>
-        #foreach($p in $playdatesOwner)
-            <div data-role="collapsible" class="removeable-playdate-parent" data-theme="b" data-content-theme="b">
-                <h4>$!{p.header}</h4>
-                <p>
-                    $!{p.description}
-                    <a data-ajax="false" class="ui-btn" href="/protected/getoneplaydate?playdateId=$!{p.id}">Visa</a>
-                    <a data-ajax="false" class="ui-btn edit-playdate-link"
-                       href="/protected/editplaydate?playdateId=${p.id}">Redigera</a>
-                    <a data-playdateid="$!{p.id}" class="ui-btn remove-playdate-link" href="#">Ta bort</a>
-                </p>
-            </div>
-        #end
+        <div class="listview-borders">
+            <ul data-role="listview" data-inset="true">
+                #foreach($p in $playdatesOwner)
+                    <li>
+                        <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}" class="ui-btn ui-icon-carat-r ui-btn-icon-right"
+                           data-inset="true" >$!{p.header}, $!{p.place.getName()}</a>
+                    </li>
+                #end
+            </ul>
+        </div>
 
         <hr>
         <h2>Andras:</h2>
