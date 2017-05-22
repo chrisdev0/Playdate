@@ -3,7 +3,6 @@ package stockholmapi;
 import apilayer.Constants;
 import cache.Cache;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.DBAPIImage;
 import model.Place;
@@ -15,7 +14,6 @@ import stockholmapi.jsontojava.DetailedServiceUnit;
 import stockholmapi.jsontojava.Value2;
 
 import java.net.URL;
-import java.util.Optional;
 
 import static stockholmapi.helpers.APIUtils.*;
 import static stockholmapi.helpers.APIUtils.API_HUVUDBILD;
@@ -27,28 +25,17 @@ public class APIDataLoader {
 
     public static DBAPIImage loadImage(String id) throws Exception {
         DBAPIImage dbapiImage = new DBAPIImage();
-        byte[] image = imageUrlToByteArray(APIUtils.URLS.urlHelper(APIUtils.URLS.IMAGE_PLACEHOLDER, id, getApiKey()));
+        byte[] image = imageUrlToByteArray(APIUtils.URLS.urlHelper(APIUtils.URLS.IMAGE_PLACEHOLDER, id, Secrets.STHML_API_KEY));
         dbapiImage.setApiResourceId(id);
         dbapiImage.setImageAsByte(image);
         return dbapiImage;
     }
 
-    private static String getApiKey() {
-        if (API_KEY == null) {
-            Optional<String> stockholmAPIKEYOPT = Secrets.getInstance().getValue("stockholmAPIKEY");
-            if (stockholmAPIKEYOPT.isPresent()) {
-                API_KEY = stockholmAPIKEYOPT.get();
-            } else {
-                throw new RuntimeException("Couldn't get stockholm api key from secrets file");
-            }
-        }
-        return API_KEY;
-    }
 
     public static Transaction injectPlaceInfo(Place place,Session session) throws Exception {
         String apiId = place.getSthlmAPIid();
         ObjectMapper objectMapper = new ObjectMapper();
-        URL url = APIUtils.URLS.urlHelper(APIUtils.URLS.DETAILED_INFO_PLACEHOLDER, apiId, getApiKey());
+        URL url = APIUtils.URLS.urlHelper(APIUtils.URLS.DETAILED_INFO_PLACEHOLDER, apiId, Secrets.STHML_API_KEY);
         String placeJson;
         try {
             placeJson = stupidStockholmAPIJSONToNotStupidJSON(getUrl(url));

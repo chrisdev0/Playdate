@@ -1,5 +1,6 @@
 package apilayer;
 
+import secrets.Secrets;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -34,6 +35,7 @@ public abstract class StaticFileTemplateHandler  {
                 injectUser(request, opt.get());
             }
             opt.get().put("Utils", Utils.class);
+            opt.get().put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
             return new ModelAndView(opt.get(), templateName);
         } else {
             throw halt(haltNumber);

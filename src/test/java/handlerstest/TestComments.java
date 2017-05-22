@@ -55,7 +55,7 @@ public class TestComments extends MockTestHelpers {
         Request request = initRequestMock(user);
         Response response = initResponseMock();
 
-        injectKeyValue(request, new KeyValue(Paths.QueryParams.PLACE_BY_ID, place.getId()), new KeyValue(Paths.QueryParams.COMMENT_CONTENT, "kommentar"));
+        injectKeyValue(request, new KeyValue(Paths.QueryParams.PLACE_BY_ID, place.getId()), new KeyValue(Paths.QueryParams.COMMENT_CONTENT, "ganska lång kommentar kommentar"));
 
         String json = (String) CommentsHandler.handlePostPlaceComment(request, response);
 
@@ -83,21 +83,6 @@ public class TestComments extends MockTestHelpers {
         assertEquals(answer, Constants.MSG.NO_PLACE_WITH_ID);
     }
 
-    @Test
-    public void testPostIllegalCommentNoComment() {
-        Request request = initRequestMock(createUser());
-        Response response = initResponseMock();
-
-        Place place = createPlace();
-        save(place);
-
-        injectKeyValue(request, new KeyValue(PLACE_BY_ID, place.getId()), new KeyValue(COMMENT_CONTENT, (String) null));
-
-        String answer = (String) CommentsHandler.handlePostPlaceComment(request, response);
-        assertNotNull(answer);
-        assertTrue(answer.isEmpty());
-        remove(place);
-    }
 
 
 }

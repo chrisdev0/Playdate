@@ -10,6 +10,8 @@ import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
 import utils.Utils;
+import utils.filters.TimeFilterable;
+
 import java.util.Optional;
 import static apilayer.Constants.MSG.*;
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
@@ -28,11 +30,11 @@ public class PlaydateHandler {
         String header = request.queryParams("header");
         String description = request.queryParams("description");
         Optional<Place> placeOptional = getPlaceFromRequest(request);
-        String validaton = getValidationError(header, description, placeOptional);
+        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
+        String validaton = getValidationError(header, description, startTime,  placeOptional);
         if (!validaton.isEmpty()) {
             return setStatusCodeAndReturnString(response, 400, VALIDATION_ERROR + validaton);
         }
-        Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         PlaydateVisibilityType playdateVisibilityType;
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         try {
@@ -43,24 +45,27 @@ public class PlaydateHandler {
         Optional<Playdate> playdateOptional = PlaydateDAO.getInstance()
                 .saveNewPlaydate(new Playdate(header, description, startTime, user, placeOptional.get(), playdateVisibilityType));
         if (playdateOptional.isPresent()) {
-            response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId());
-            return setStatusCodeAndReturnString(response, 200, OK);
+            String redirectUrl = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+            return setStatusCodeAndReturnString(response, 200, redirectUrl);
         } else {
             log.error("couldn't create playdate");
             return setStatusCodeAndReturnString(response, 400, ERROR);
         }
     }
 
-    private static String getValidationError(String header, String description, Optional<Place> placeOptional) {
+    private static String getValidationError(String header, String description, long startTime, Optional<Place> placeOptional) {
         String ret = "";
-        if (!Utils.validateLengthOfString(3, 30, header)) {
-            ret += "_header";
+        if (!Utils.validateLengthOfString(Constants.SHORTDESCMIN, Constants.SHORTDESCMAX, header)) {
+            ret += Constants.MSG.ValidationErrors.ERROR_HEADER;
         }
-        if (!Utils.validateLengthOfString(20, 300, description)) {
-            ret += "_description";
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, description)) {
+            ret += Constants.MSG.ValidationErrors.ERROR_DESCRIPTION;
         }
         if (!placeOptional.isPresent()) {
-            ret += "_place";
+            ret += Constants.MSG.ValidationErrors.ERROR_PLACE;
+        }
+        if(!Utils.validateStartTime(startTime)){
+            ret += Constants.MSG.ValidationErrors.ERROR_STARTTIME;
         }
         return ret;
     }
@@ -90,6 +95,11 @@ public class PlaydateHandler {
         String description = request.queryParams("description");
         Long startTime = ParserHelpers.parseToLong(request.queryParams("startTime"));
         Integer visibilityId = ParserHelpers.parseToInt(request.queryParams("visibilityId"));
+        Optional<Place> placeById = getPlaceFromRequest(request);
+        String validationError = getValidationError(header, description, startTime, placeById);
+        if (!validationError.isEmpty()) {
+            return setStatusCodeAndReturnString(response, 400, VALIDATION_ERROR + validationError);
+        }
         PlaydateVisibilityType playdateVisibilityType;
         try {
             playdateVisibilityType = PlaydateVisibilityType.intToPlaydateVisibilityType(visibilityId);
@@ -97,7 +107,6 @@ public class PlaydateHandler {
             return setStatusCodeAndReturnString(response, 400, ERROR);
         }
         Optional<Playdate> playdateOptional = getPlaydateFromRequest(request);
-        Optional<Place> placeById = getPlaceFromRequest(request);
         if (playdateOptional.isPresent() && placeById.isPresent()) {
             Playdate playdate = playdateOptional.get();
             playdate.setHeader(header);
@@ -106,8 +115,8 @@ public class PlaydateHandler {
             playdate.setPlaydateVisibilityType(playdateVisibilityType);
             playdate.setPlace(placeById.get());
             if (PlaydateDAO.getInstance().updatePlaydate(playdate)) {
-                response.redirect(Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId());
-                return "";
+                String redirectUrl = Paths.PROTECTED + Paths.GETONEPLAYDATE + "?" + Paths.QueryParams.PLAYDATE_BY_ID + "=" + playdateOptional.get().getId();
+                return setStatusCodeAndReturnString(response, 200, redirectUrl);
             } else {
                 log.error("error saving updated playdate");
             }
@@ -144,9 +153,21 @@ public class PlaydateHandler {
         Optional<Place> placeOptional = getPlaceFromRequest(request);
         if (placeOptional.isPresent()) {
             return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-                    .create().toJson(PlaydateDAO.getInstance().getPlaydateAtPlace(placeOptional.get()));
+                    .create().toJson(PlaydateDAO.getInstance()
+                            .getPlaydateAtPlace(placeOptional.get(), TimeFilterable.TimeFilter.FUTURE)
+                    );
         }
         return setStatusCodeAndReturnString(response, 400, NO_PLACE_WITH_ID);
+    }
+
+    public static Object handleGetFriendsToInvite(Request request, Response response) {
+        Optional<Playdate> playdate = getPlaydateFromRequest(request);
+        if (playdate.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+                    .toJson(PlaydateDAO.getInstance().getPotentialFriendsToInvite(playdate.get()));
+        } else {
+            return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
+        }
     }
 
 }

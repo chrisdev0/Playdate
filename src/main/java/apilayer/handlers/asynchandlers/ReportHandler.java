@@ -9,6 +9,7 @@ import model.Report;
 import model.User;
 import spark.*;
 import utils.ParserHelpers;
+import utils.Utils;
 
 import java.util.Optional;
 
@@ -25,6 +26,10 @@ public class ReportHandler {
         Optional<User> reportedUser = getUserFromRequestById(request);
         String reportDescription = request.queryParams(Paths.QueryParams.REPORT_DESCRIPTION);
         User reporter = getUserFromSession(request);
+
+        if (!Utils.validateLengthOfString(Constants.LONGDESCMIN, Constants.LONGDESCMAX, reportDescription)) {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.VALIDATION_ERROR);
+        }
 
         if (reportedUser.isPresent()) {
             if (reportedUser.get().equals(reporter)) {

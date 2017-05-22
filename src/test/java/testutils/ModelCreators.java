@@ -44,7 +44,7 @@ public class ModelCreators {
         place.setImageId(faker.internet().password(19, 20, true, true));
         place.setCityAddress(faker.address().cityName());
         place.setZip(faker.address().zipCode());
-        place.setCategory("TestPlats");
+        place.setCategory("GenereradTestPlats");
         place.setStreetAddress(faker.address().streetAddress());
         place.setTimeUpdated("123");
         return place;
@@ -101,8 +101,8 @@ public class ModelCreators {
         assertTrue(playdateOptional.isPresent());
     }
 
-    public static void save(Invite invite, User user, Playdate playdate) {
-        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(user, invite, playdate);
+    public static void save(Invite invite) {
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
         assertTrue(b);
     }
 
@@ -116,5 +116,6 @@ public class ModelCreators {
         boolean b = UserDAO.getInstance().createFriendship(friendshipRequest).isPresent();
         assertTrue(b);
     }
+
 
 }

@@ -183,7 +183,7 @@
 }
 
 .medium-image {
-    max-width: 18.8em;
+    max-width: 21.5em;
 }
 
 .place-description {
@@ -369,4 +369,42 @@
 }
 a{
     text-decoration: none;
+}
+
+.inviteList li {
+
+}
+
+.inviteList {
+    list-style: none;
+    padding-left: 0;
+}
+
+.composite-friend-item {
+    height: 60px;
+    background: #b6d489;
+}
+
+.composite-friend-item a:first-of-type {
+    vertical-align: top;
+    line-height: 20px;
+    margin-left: 0.5em;
+    display: inline;
+}
+
+.composite-friend-item a:last-of-type {
+    height: 100%;
+    float: right;
+    margin: 0;
+}
+
+
+
+.composite-friend-item img {
+    height: 50px;
+    width: 50px;
+}
+
+.popup-message{
+    padding: 0.3em 0.5em;
 }

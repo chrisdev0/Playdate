@@ -53,6 +53,7 @@ public class Paths {
     public static final String GETMYINVITES = "/getmyinvites";
     public static final String ACCEPTINVITE = "/acceptinvite";
     public static final String DECLINEINVITE = "/declineinvite";
+    public static final String SENDINVITE = "/sendivite";
 
     /**     VÄNNER
      * */
@@ -66,15 +67,26 @@ public class Paths {
 
     /**     EVENTS
      * */
+   /* public static final String GETMYEVENTS = "/getmyinvites";*/
+
+
+    /**     REPORTS
+     * */
+
     public static final String GETMYEVENTS = "/getmyevents";
     public static final String GETUSERATTENDINGPLAYDATES = "/getuserattentindplaydates";
     public static final String GETPLAYDATESWHOUSERMAYWANTTOATTEND = "/getsuggestedplaydates";
     public static final String GETPUBLICPLAYDATESBYLOCATION = "/getpublicplaydatesbylocation";
 
+
     /**     REPORTS
      * */
     public static final String POSTREPORT = "/postreport";
     public static final String GETPOTENTIALFRIENDS = "/getpotentialfriends";
+    public static final String GETSENTFRIENDREQUESTS = "/getsentfriendshiprequest";
+    public static final String ADDDATA = "/add-data";
+    public static final String FORCELOGIN = "/force-login";
+    public static final String GETPOTENTIALFRIENDSTOINVITE = "/getpotentialfriendstoinvite";
 
 
     public static class ADMIN {
@@ -96,6 +108,10 @@ public class Paths {
         public static final String COMMENT_BY_ID = "commentId";
         public static final String INVITE_BY_ID = "inviteId";
         public static final String COMMENT_CONTENT = "comment";
+        public static final String HEADER = "header";
+        public static final String DESCRIPTION = "description";
+        public static final String VISIBILITY_ID = "visibilityId";
+        public static final String STARTTIME = "startTime";
 
         public static final String INVITE_MSG = "inviteMessage";
         public static final String LOC_X = "locX";

@@ -69,18 +69,22 @@ public class AttendanceInviteHandler {
     public static Object handleSendInviteToPlaydate(Request request, Response response) {
         String sendToUserStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
         String playDateIdStr = request.queryParams(Paths.QueryParams.PLAYDATE_BY_ID);
-        String inviteMsg = request.queryParams(Paths.QueryParams.INVITE_MSG);
         Optional<User> sendToUser = UserDAO.getInstance().getUserById(ParserHelpers.parseToLong(sendToUserStr));
         if (sendToUser.isPresent()) {
             Optional<Playdate> playdateOptional = PlaydateDAO.getInstance().getPlaydateById(ParserHelpers.parseToLong(playDateIdStr));
             if (playdateOptional.isPresent()) {
                 if (playdateOptional.get().getOwner().equals(getUserFromSession(request))) {
-                    if (InviteDAO.getInstance().addInviteToUserAndPlaydate(sendToUser.get(), new Invite(inviteMsg, playdateOptional.get(), sendToUser.get()), playdateOptional.get())) {
-                        return "";
+                    Optional<Invite> inviteOfUserAndPlaydate = InviteDAO.getInstance().getInviteOfUserAndPlaydate(sendToUser.get(), playdateOptional.get());
+                    if (!inviteOfUserAndPlaydate.isPresent()) {
+                        if (InviteDAO.getInstance().addInviteToUserAndPlaydate(new Invite(playdateOptional.get(), sendToUser.get()))) {
+                            return "";
+                        } else {
+                            log.info("couldn't send invite to user " + sendToUserStr);
+                            response.status(400);
+                            return Constants.MSG.ERROR;
+                        }
                     } else {
-                        log.info("couldn't send invite to user " + sendToUserStr);
-                        response.status(400);
-                        return Constants.MSG.ERROR;
+                        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ALREADY_INVITED);
                     }
                 } else {
                     response.status(400);
@@ -94,8 +98,8 @@ public class AttendanceInviteHandler {
             response.status(400);
             return Constants.MSG.NO_USER_WITH_ID;
         }
-
     }
+
 
     public static Object getInvitesOfLoggedInUser(Request request, Response response) {
         User user = getUserFromSession(request);

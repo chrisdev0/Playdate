@@ -7,6 +7,7 @@ import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import model.Playdate;
 import model.User;
+import secrets.Secrets;
 import spark.Request;
 import utils.ParserHelpers;
 
@@ -30,19 +31,14 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
         User user = request.session().attribute(Constants.USER_SESSION_KEY);
         Long playdateId = ParserHelpers.parseToLong(placeIdStr);
         Optional<Playdate> playdateById = PlaydateDAO.getInstance().getPlaydateById(playdateId);
-        Optional<Set<User>> friendsOfUser = UserDAO.getInstance().getFriendsOfUser(user);
         Map<String, Object> map = new HashMap<>();
+        map.put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
         if (playdateById.isPresent()) {
             map.put("playdate", playdateById.get());
         } else {
             throw halt(400);
         }
 
-        if (friendsOfUser.isPresent()) {
-            map.put("friends", friendsOfUser.get());
-        } else {
-            throw halt(400);
-        }
         return Optional.of(map);
     }
 }

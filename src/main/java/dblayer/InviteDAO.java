@@ -7,6 +7,7 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,19 +25,19 @@ public class InviteDAO {
         return instance;
     }
 
-    public boolean addInviteToUserAndPlaydate(User user, Invite invite, Playdate playdate) {
+    public boolean addInviteToUserAndPlaydate(Invite invite) {
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            session.update(playdate);
-            session.update(user);
+            session.update(invite.getPlaydate());
+            session.update(invite.getInvited());
             session.save(invite);
 
-            playdate.addInvite(invite);
-            user.addInvite(invite);
+            invite.getPlaydate().addInvite(invite);
+            invite.getInvited().addInvite(invite);
 
             tx.commit();
             ret = true;
@@ -67,6 +68,15 @@ public class InviteDAO {
     public Optional<Invite> getInviteById(Long id) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             return session.byId(Invite.class).loadOptional(id);
+        }
+    }
+
+    public Optional<Invite> getInviteOfUserAndPlaydate(User user, Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "FROM Invite WHERE invited = :user AND playdate = :playdate";
+            return session.createQuery(hql, Invite.class)
+                    .setParameter("user", user)
+                    .setParameter("playdate", playdate).uniqueResultOptional();
         }
     }
 

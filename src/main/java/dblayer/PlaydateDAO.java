@@ -10,15 +10,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import utils.filters.TimeFilterable;
+import utils.filters.TimeFilterable.TimeFilter;
 
 import static spark.Spark.halt;
 
@@ -44,14 +40,17 @@ public class PlaydateDAO {
     }
 
 
-    /** Returnerar alla Playdates som en användare (med ett visst id) är ägare till
-     *  @param id       id för användaren som är ägare till playdate
-     *  @return         en Optional som innehåller alla playdates som användaren med id är ägare till
-     * */
-    public Optional<List<Playdate>> getPlaydateByOwnerId(Long id) {
+    /**
+     * Returnerar alla Playdates som en användare (med ett visst id) är ägare till
+     *
+     * @param id id för användaren som är ägare till playdate
+     * @param timeFilter
+     * @return en Optional som innehåller alla playdates som användaren med id är ägare till
+     */
+    public Optional<List<Playdate>> getPlaydateByOwnerId(Long id, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             try {
-                List<Playdate> owner_id = session.createQuery("FROM Playdate WHERE owner.id = :owner_id", Playdate.class)
+                List<Playdate> owner_id = injectTimeToQuery(session, "FROM Playdate p WHERE p.owner.id = :owner_id", timeFilter)
                         .setParameter("owner_id", id).list();
                 return Optional.of(owner_id);
             } catch (Exception e) {
@@ -65,32 +64,34 @@ public class PlaydateDAO {
      *  Lägger även till de playdates som användaren står som ägare (eftersom användaren inte kommer vara med
      *  i participants-mängden.
      *  @param user         användaren vars playdates som användaren ska attenda som ska returneras
-     *  @return             Listan med playdates
+     *  @param timeFilter
+     * @return             Listan med playdates
      * */
-    public Set<Playdate> getAllPlaydateWhoUserIsAttendingAlsoOwner(User user) {
+    public Set<Playdate> getAllPlaydateWhoUserIsAttendingAlsoOwner(User user, TimeFilter timeFilter) {
         Set<Playdate> playdates = new HashSet<>();
         try (Session session = HibernateUtil.getInstance().openSession()) {
             String hql = "SELECT p FROM Playdate p JOIN p.participants u WHERE u.id = :id";
-            List<Playdate> playdatesList = session.createQuery(hql, Playdate.class).setParameter("id", user.getId()).list();
+            List<Playdate> playdatesList = injectTimeToQuery(session,hql,timeFilter).setParameter("id", user.getId()).list();
             playdatesList.forEach(playdate -> Hibernate.initialize(playdate.getParticipants()));
             playdates.addAll(playdatesList);
-
         }
-        getPlaydateByOwnerId(user.getId()).ifPresent(playdates::addAll);
+        getPlaydateByOwnerId(user.getId(), timeFilter).ifPresent(playdates::addAll);
         return playdates;
     }
 
-    public List<Playdate> getPlaydatesOfMultiplePlace(List<Long> ids) {
+    public List<Playdate> getPlaydatesOfMultiplePlace(List<Long> ids, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            return session.createQuery("FROM Playdate WHERE  playdateVisibilityType = :vis AND place.id IN (:ids)", Playdate.class)
+            return injectTimeToQuery(session, "FROM Playdate WHERE  playdateVisibilityType = :vis AND place.id IN (:ids)", timeFilter)
                     .setParameter("ids", ids).setParameter("vis", PlaydateVisibilityType.PUBLIC).list();
         }
     }
 
-    public Optional<List<Playdate>> getPlaydatesAttending(User user) {
+    public Optional<List<Playdate>> getPlaydatesAttending(User user, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
+            //language=HQL
             String hql = "SELECT p FROM Playdate p JOIN p.participants u WHERE u = :user";
-            return Optional.of(session.createQuery(hql, Playdate.class).setParameter("user", user).list());
+            return Optional.of(injectTimeToQuery(session, hql, timeFilter)
+                    .setParameter("user", user).list());
         }
     }
 
@@ -268,11 +269,11 @@ public class PlaydateDAO {
         return ret;
     }
 
-    public Optional<List<Playdate>> getPublicPlaydatesByLoc(int locX, int locY) {
+    public Optional<List<Playdate>> getPublicPlaydatesByLoc(int locX, int locY, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            return Optional.of(session.createQuery(
-                    "FROM Playdate p WHERE playdateVisibilityType = :vis AND p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
-                            "p.place.geoY <= :yMax AND p.place.geoY >= :yMin", Playdate.class)
+            return Optional.of(
+                    injectTimeToQuery(session,"FROM Playdate p WHERE playdateVisibilityType = :vis AND p.place.geoX <= :xMax AND p.place.geoX >= :xMin AND " +
+                            "p.place.geoY <= :yMax AND p.place.geoY >= :yMin",timeFilter)
                     .setParameter("xMax", locX + Constants.GRID_SEARCH_AREA_SIZE)
                     .setParameter("xMin", locX - Constants.GRID_SEARCH_AREA_SIZE)
                     .setParameter("yMax", locY + Constants.GRID_SEARCH_AREA_SIZE)
@@ -282,9 +283,9 @@ public class PlaydateDAO {
         }
     }
 
-    public List<Playdate> getPlaydateAtPlace(Place place) {
+    public List<Playdate> getPlaydateAtPlace(Place place, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
-            return session.createQuery("FROM Playdate p WHERE place = :place AND playdateVisibilityType = :vis", Playdate.class)
+            return injectTimeToQuery(session,"FROM Playdate p WHERE place = :place AND playdateVisibilityType = :vis",timeFilter)
                     .setParameter("place", place)
                     .setParameter("vis", PlaydateVisibilityType.PUBLIC).list();
         }
@@ -317,12 +318,12 @@ public class PlaydateDAO {
         return Optional.ofNullable(ret);
     }
 
-    public List<Playdate> getPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriend(User user) {
+    public List<Playdate> getPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriend(User user, TimeFilter timeFilter) {
         try (Session session = HibernateUtil.getInstance().openSession()) {
             session.refresh(user);
             String hql = "SELECT distinct p FROM Playdate p, User, Friendship f WHERE f.requester = :user AND f.friend = p.owner " +
                     "AND (p.playdateVisibilityType = :public OR p.playdateVisibilityType = :friendsonly) AND (:userid NOT IN (SELECT par.id FROM p.participants par WHERE par.id = :userid))";
-            return session.createQuery(hql, Playdate.class)
+            return injectTimeToQuery(session, hql, timeFilter)
                     .setParameter("user", user)
                     .setParameter("userid", user.getId())
                     .setParameter("public", PlaydateVisibilityType.PUBLIC)
@@ -331,5 +332,61 @@ public class PlaydateDAO {
         }
     }
 
+    private void injectStartParameter(Query<Playdate> query, TimeFilter timeFilter) {
+        switch (timeFilter) {
+            case FUTURE:
+            case NEAR_FUTURE:
+            case RECENT_HAPPENED:
+                query.setParameter("starttime", TimeFilterable.getStartTime(timeFilter));
+                query.setParameter("starttime", TimeFilterable.getStartTime(timeFilter));
+        }
+    }
+
+
+    private void injectEndParameter(Query<Playdate> query, TimeFilter timeFilter) {
+        switch (timeFilter) {
+            case NEAR_FUTURE:
+            case RECENT_HAPPENED:
+            case HISTORY:
+                query.setParameter("endtime", TimeFilterable.getEndTime(timeFilter));
+        }
+    }
+
+
+
+    private Query<Playdate> injectTimeToQuery(Session session, String hql, TimeFilter timeFilter) {
+        Query<Playdate> query = session.createQuery(injectTimeIntoHQL(hql,timeFilter), Playdate.class);
+        injectStartParameter(query,timeFilter);
+        injectEndParameter(query, timeFilter);
+        return query;
+    }
+
+    private String injectTimeIntoHQL(String hql, TimeFilter timeFilter) {
+        switch (timeFilter) {
+            case NEAR_FUTURE:
+                return hql + " AND p.startTime >= :starttime AND p.startTime <= :endtime";
+            case FUTURE:
+                return hql + " AND p.startTime >= :starttime";
+            case RECENT_HAPPENED:
+            case HISTORY:
+                return hql + " AND p.startTime <= :endtime";
+            default:
+                return hql;
+        }
+    }
+
+    public List<User> getPotentialFriendsToInvite(Playdate playdate) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            String hql = "SELECT DISTINCT fr.friend FROM Friendship fr WHERE fr.requester = :user AND " +
+                    " fr.friend NOT IN " +
+                    "(SELECT participant FROM Playdate p JOIN p.participants participant WHERE p = :playdate) AND " +
+                    "fr.friend NOT IN " +
+                    "(SELECT i.invited FROM Invite i WHERE i.playdate = :playdate)";
+            return session.createQuery(hql, User.class)
+                    .setParameter("user", playdate.getOwner())
+                    .setParameter("playdate",playdate)
+                    .list();
+        }
+    }
 
 }

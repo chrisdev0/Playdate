@@ -11,12 +11,16 @@ import model.User;
 import spark.Response;
 import spark.Request;
 import utils.ParserHelpers;
+import utils.sorters.SearchResultSorter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.getOffsetFromRequest;
 import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
+import static apilayer.handlers.asynchandlers.SparkHelper.setStatusCodeAndReturnString;
 
 @Slf4j
 public class FriendsHandler {
@@ -62,9 +66,20 @@ public class FriendsHandler {
     public static Object getPotentialFriends(Request request, Response response) {
         User user = getUserFromSession(request);
         String search = request.queryParams(Paths.QueryParams.SEARCH_TERM);
-        int offset = getOffsetFromRequest(request);
-        List<User> potentialFriends = UserDAO.getInstance().getPotentialFriends(search, offset, Constants.SEARCH_USER_OFFSET, user);
-        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(potentialFriends);
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                .create().toJson(UserDAO.getInstance().getPotentialFriends(search, user)
+                        .stream().sorted((new SearchResultSorter(search)::compare)).collect(Collectors.toList()));
+    }
+
+    public static Object getSentFriendRequest(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Set<User>> sentFriendRequest = UserDAO.getInstance().getSentFriendRequest(user);
+        if (sentFriendRequest.isPresent()) {
+            return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+                    .toJson(sentFriendRequest.get());
+        } else {
+            return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
+        }
     }
 
 

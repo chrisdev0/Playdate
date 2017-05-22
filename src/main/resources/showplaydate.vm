@@ -8,86 +8,21 @@
     <title>Playdate</title>
 
     #parse("head-links.vm")
-
     <script>
-
-        $(document).ready(function() {
-
-         $.getJSON('/protected/getcommentsofplaydate?playdateId=$!playdate.id',function (res) {
-                console.log(res);
-                $('#show-comments').html("");
-                $.each(res, function (index, comment){
-                    renderComment(comment)
-
-                });
-        })
-
-        var renderComment = function (comment){
-            var output = "<div class='bottom-line'>";
-            output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>"  + comment.commenter.name + "</a>" +
-                    " "+ comment.commentDate +"</p>"
-            output += "<p>" + comment.comment + "</p>"
-            output += "</div>"
-            $('#show-comments').append(output);
-        }
-
-        $('#makeComment').submit(function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            $.ajax({
-                type: 'POST',
-                url: '/protected/postplaydatecomment',
-                data: $('#makeComment').serialize(),
-                success: function(res) {
-                    console.log(res);
-                    res = JSON.parse(res);
-                    $('#comment').val("");
-                    $('#show-comments').html("");
-                    $.each(res,function(index, comment) {
-                        renderComment(comment)
-                    })
-                }
-            })
-        });
-
-            $("#post-comment").one(function(e){
-                e.preventDefault();
-                $("#comment-form").submit();
-                $("#popupBasic").popup('close');
-            });
-
-            $('.remove-playdate-link').click(function (e) {
-                e.preventDefault();
-                var playdateid = $(this).data('playdateid');
-                var div = $(this).closest('.removeable-playdate-parent');
-                console.log("trying to delete playdate with id = " + playdateid);
-                $("#popupYes").attr('href','/protected/deleteplaydate?playdateId=' + playdateid)
-                $("#popupValidate").popup("open");
-
-            });
-            $('#popupYes').click(function (e) {
-                console.log("Yes clicked")
-                e.preventDefault()
-                $.ajax($(this).attr('href'), {
-                    type: 'DELETE',
-                    success: function(res){
-                        window.location.replace("/protected/showplaydates");
-                        console.log("success remove playdate");
-                        console.log(res)
-
-                    },
-                    error: function(res){
-                        console.log("failed to remove playdate")
-                        console.log(res)
-                        alert("Kunde inte ta bort Playdate!")
-                    }
-                });
-            });
-
-
-        });
+        window.playdateid = "$!playdate.id"
+        window.placeX = "$!playdate.place.geoX";
+        window.placeY = "$!playdate.place.geoY";
     </script>
+    <script src="/js/playdate-invites.js"></script>
+    <script src="/js/init-map.js"></script>
+    <script src="/js/CoordinateHandler.js"></script>
+
+    <style>
+        #map, #popupMap-popup {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
 
 
 </head>
@@ -140,7 +75,7 @@
                     #if ($playdate.getOwner()==$user)
                         <li><a data-ajax="false" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-edit ui-btn-icon-notext edit-playdate-link" href="/protected/editplaydate?playdateId=${playdate.id}">Redigera</a></li>
                     #end
-                    <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                    <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
                     #if ($playdate.getOwner()==$user)
                         <li><a href="#popupAdd" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">adduser</a></li>
 
@@ -152,7 +87,7 @@
         <h2>Datum och tid:</h2>
         <div class="descriptionfield-showplaydate">
             <p><script>
-                var timeDateFormat = new Date ($!{playdate.getStartTime()});
+                var timeDateFormat = new Date($!{playdate.getStartTime()});
                 var output = "Den ";
                 output += timeDateFormat.getDate()+"/"+(timeDateFormat.getMonth() +1)
                         +" "+timeDateFormat.getFullYear()+" klockan "+timeDateFormat.getHours()+":";
@@ -188,36 +123,20 @@
 
         <div data-role="popup" id="popupAdd">
 
+
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
                 <h3>Lägg till vän</h3>
             </div>
+
             <div class="listview-borders">
                 <div>
                     <form class="ui-filterable">
                         <input id="myFilter" data-type="search">
                     </form>
-                #* #if($friends.size() == 0)
-                     <h3>Du har inga vänner :(</h3>
-                 #else
-                 *#
-                    <ul data-role="listview"  data-theme="f" data-icon="user"  data-filter="true" data-input="#myFilter"  data-inset="true">
-
-                        #foreach($u in $friends)
-                            <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
-                                <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
-                            </li>
-
-
-                        #end
-
+                    <ul class="inviteList" data-role="listview" data-timeFilter="true" data-input="#myFilter" data-inset="true" id="invite-friends-list">
                     </ul>
-                #* #end *#
                 </div>
-            </div>
-
-            <div data-role="footer" style="text-align: center;">
-                <a href="#" class="ui-btn" id="addparticipant" data-ajax="false">Lägg till</a>
             </div>
 
         </div>
@@ -228,20 +147,33 @@
                 <h3>Deltagare</h3>
             </div>
             <div class="descriptionfield-showplaydate">
-                #foreach($!participant in $!playdate.participants)
-                    <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                #if($playdate.participants.size() == 0){
+                    <p class="popup-message">Den här playdaten har inga deltagare.<br>Testa att bjuda in några vänner</p>
+                #else
+                    #foreach($!participant in $!playdate.participants)
+                        <p> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a> </p>
+                    #end
                 #end
             </div>
+        </div>
 
+        <div data-role="popup" id="popupMap">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <div id="map">
+
+            </div>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initPopupMap">
+            </script>
         </div>
 
         <div data-role="popup" id="popupValidate" data-overlay-theme="d" data-theme="d" data-dismissible="false" style="max-width:400px;">
                 <div role="main" class="ui-content">
                     <h3 class="ui-title">Är du säker på att du vill ta bort Playdaten?</h3>
-                    <div id="two-btn-popup">
-                    <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
-                    <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
-                    </div>
+            <div id="two-btn-popup">
+                            <a href="#" style="width: 5em;" id="popuopNo" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Nej</a>
+                            <a href="#" style="width: 5em;" id="popupYes" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Ja</a>
+            </div>
                 </div>
         </div>
     </div>

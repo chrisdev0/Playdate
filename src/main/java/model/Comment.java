@@ -20,6 +20,7 @@ import java.util.Date;
 
     @Column(nullable = false)
     @Expose
+    @Type(type = "text")
     private String comment;
 
     @ManyToOne

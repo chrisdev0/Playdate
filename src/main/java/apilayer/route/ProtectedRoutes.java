@@ -5,19 +5,12 @@ import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.*;
 import apilayer.handlers.asynchandlers.*;
 import apilayer.handlers.templateHandlers.*;
-import com.google.gson.Gson;
-import dblayer.PaginationWrapper;
-import dblayer.PlaceDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Place;
-import presentable.FeedObject;
 import secrets.Secrets;
 import spark.Request;
 import spark.template.velocity.VelocityTemplateEngine;
-import utils.ParserHelpers;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 import static spark.Spark.delete;
@@ -61,6 +54,9 @@ public class ProtectedRoutes {
             get(Paths.GETFEED, FeedHandler::handleGetFeed);
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
+
+            get(Paths.ADDDATA, DataFillerHandler::injectData);
+            get(Paths.FORCELOGIN, DataFillerHandler::forceLoginAsUser);
 
             /*
             get(Paths.GETFEED, (request, response) -> {
@@ -112,6 +108,7 @@ public class ProtectedRoutes {
             post(Paths.CREATEPLAYDATE, PlaydateHandler::handleMakePlaydate);
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
             get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
+            get(Paths.GETPOTENTIALFRIENDSTOINVITE, PlaydateHandler::handleGetFriendsToInvite);
 
             /*      FriendshipRequest-routes
             * */
@@ -123,11 +120,13 @@ public class ProtectedRoutes {
             delete(Paths.REMOVEFRIENDSHIP, FriendshipHandler::handleRemoveFriend);
             delete(Paths.REMOVEFRIENDSHIPREQUEST, FriendshipHandler::handleRemoveFriendshipRequest);
             get(Paths.GETPOTENTIALFRIENDS, FriendsHandler::getPotentialFriends);
+            get(Paths.GETSENTFRIENDREQUESTS, FriendsHandler::getSentFriendRequest);
 
             /*      INVITE-routes
             * */
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
+            post(Paths.SENDINVITE, AttendanceInviteHandler::handleSendInviteToPlaydate);
 
 
             /*      EVENT-routes
@@ -173,13 +172,7 @@ public class ProtectedRoutes {
             @Override
             public Optional<Map<String, Object>> createModelMap(Request request) {
                 Map<String, Object> map = new HashMap<>();
-                Optional<String> googlemapsAPIKey = Secrets.getInstance().getValue("googlemapsAPIKey");
-                if (googlemapsAPIKey.isPresent()) {
-                    map.put("mapsapikey", googlemapsAPIKey.get());
-                } else {
-                    log.error("no google maps api key");
-                    return Optional.empty();
-                }
+                map.put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());

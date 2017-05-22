@@ -26,7 +26,7 @@ public class ReportTest extends MockTestHelpers {
 
         injectKeyValue(request,
                 new KeyValue(Paths.QueryParams.USER_BY_ID, badUser.getId()),
-                new KeyValue(Paths.QueryParams.REPORT_DESCRIPTION, "rapport")
+                new KeyValue(Paths.QueryParams.REPORT_DESCRIPTION, "rapportrapport")
         );
 
         String res = (String) ReportHandler.createUserReport(request, response);
@@ -35,6 +35,52 @@ public class ReportTest extends MockTestHelpers {
         
         remove(reporter);
         remove(badUser);
+    }
+
+    @Test
+    public void testCreateToShortReport() {
+        User reporter = createUser();
+        User badUser = createUser();
+        save(reporter);
+        save(badUser);
+
+        Request request = initRequestMock(reporter);
+        Response response = initResponseMock();
+
+        injectKeyValue(request,
+                new KeyValue(Paths.QueryParams.USER_BY_ID, badUser.getId()),
+                new KeyValue(Paths.QueryParams.REPORT_DESCRIPTION, "short")
+        );
+
+        String res = (String) ReportHandler.createUserReport(request, response);
+
+        assertTrue(res.equals(Constants.MSG.VALIDATION_ERROR));
+
+        remove(reporter);
+        remove(badUser);
+    }
+
+    @Test
+    public void reportSelf() {
+        User reporter = createUser();
+
+        save(reporter);
+
+
+        Request request = initRequestMock(reporter);
+        Response response = initResponseMock();
+
+        injectKeyValue(request,
+                new KeyValue(Paths.QueryParams.USER_BY_ID, reporter.getId()),
+                new KeyValue(Paths.QueryParams.REPORT_DESCRIPTION, "not to short report message")
+        );
+
+        String res = (String) ReportHandler.createUserReport(request, response);
+
+        assertTrue(res.equals(Constants.MSG.USER_CANT_REPORT_SELF));
+
+        remove(reporter);
+
     }
 
 }

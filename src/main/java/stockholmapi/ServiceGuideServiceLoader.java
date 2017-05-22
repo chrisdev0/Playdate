@@ -20,8 +20,8 @@ public class ServiceGuideServiceLoader {
      *  Konverterar resultatet som innehåller fel som gör att JSON-resultatet inte kan konverteras till POJO
      *  med hjälp av stupidStockholmAPIJSONToNotStupidJSON() (som replacear namnet på de attribut som är okompatibla)
      * */
-    public ServiceUnitTypes[] load() throws Exception {
-        String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(APIUtils.URLS.urlHelper(APIUtils.URLS.BASIC_INFO_PLACEHOLDER, APIUtils.URLS.LEKPLATSER, apiKey)));
+    public ServiceUnitTypes[] load(String apiType) throws Exception {
+        String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(APIUtils.URLS.urlHelper(APIUtils.URLS.BASIC_INFO_PLACEHOLDER, apiType, apiKey)));
         return new ObjectMapper().readValue(json, ServiceUnitTypes[].class);
     }
 

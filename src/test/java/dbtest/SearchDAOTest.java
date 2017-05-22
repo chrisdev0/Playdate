@@ -1,5 +1,6 @@
 package dbtest;
 
+import apilayer.Constants;
 import dblayer.SearchDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Place;
@@ -39,7 +40,7 @@ public class SearchDAOTest extends HibernateTests {
         long start = System.currentTimeMillis();
         List<Place> placeByTermThroughCache = SearchDAO.getInstance().getPlaceByTermThroughCache(search);
         log.info("Getting places through cache took " + (System.currentTimeMillis() - start) + "ms");
-        assertEquals(5, placeByTermThroughCache.size());
+        assertEquals(Constants.QUICK_PLACE_SEARCH_LIMIT, placeByTermThroughCache.size());
 
 
 
