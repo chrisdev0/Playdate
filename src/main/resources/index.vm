@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,6 +13,7 @@
     <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/jquery.mobile.flatui.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/colors.css">
 
     <link rel="stylesheet" href="/css/bubbles.css" />
     <script>
@@ -21,18 +23,14 @@
             })
 
         })
-
     </script>
-    <style>
-        #pageone {
-            background: #D7F7B9;
-        }
 
-    </style>
+
 </head>
 
 <body>
-<div data-role="page" id="pageone">
+<div data-role="page" id="pageone" style="background: #d7f7b9">
+    <div data-role="main" class="ui-content" style="background: #d7f7b9">
     <ul class="bubbles">
         <li></li>
         <li></li>
@@ -59,22 +57,29 @@
         <li></li>
     </ul>
 
-    <div data-role="main" class="ui-content">
+
+
         <div id="logo-container">
-            <img src="/images/pd-logga.png" id="index-logo">
-        </div>
+            <img src="/images/pd-logga.png" id="index-logo" >
+            <br>
+            <form action="/loginfb" id="form" data-ajax="false">
+                <button id="fb-login-btn">Logga in med Facebook</button>
+            </form>
 
-        <form action="/loginfb" id="form" data-ajax="false">
-            <button class="ui-btn" id="fb-login" style="font-size: 1em">Logga in med Facebook</button>
-        </form>
+            <div id="privacy-policy">
+            <p>När du loggar in godkänner du <br> Facebooks <a href="">Privacy Policy</a></p>
+            </div>
+
+        </div>
+        <br>
+
         <div id="kid-container">
-            <img src="/images/barnen.png" id="kids">
+            <img src="/images/barnen.png" id="kids-index">
         </div>
 
 
 
-
-        <a href="#popupInfo" data-rel="popup" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info" data-transition="slideup"> Information</a>
+        <a href="#popupInfo" id="index-popup-btn" data-rel="popup" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info" data-transition="slideup"> Information</a>
 
 
         <div data-role="popup" id="popupInfo">
@@ -91,27 +96,10 @@
                     <p>För att komma igång och delta i din första Playdate kan du logga in och se över din profil för att sedan sätta igång och leta upp en Playdate som du tror skulle vara perfekt för dig och din familj!</p>
                     <p>Lycka till!</p>
             </div>
-                </form>
+            </form>
             </div>
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
-</div>
 </body>
 
 </html>
