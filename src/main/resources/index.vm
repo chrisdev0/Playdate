@@ -65,7 +65,7 @@
         </div>
 
         <form action="/loginfb" id="form" data-ajax="false">
-            <button class="ui-btn" id="fb-login" style="font-size: 3em">Logga in med Facebook</button>
+            <button class="ui-btn" id="fb-login" style="font-size: 1em">Logga in med Facebook</button>
         </form>
         <div id="kid-container">
             <img src="/images/barnen.png" id="kids">
