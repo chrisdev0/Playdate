@@ -24,14 +24,19 @@
 
     <div data-role="main" class="ui-content">
 
-        <h2>Kommande playdates</h2>
+        <h3>Kommande playdates</h3>
         <div id="upcomming-playdates-output"></div>
+        <hr>
 
-        <h2>Playdates jag kan gå med i</h2>
+        <h3>Playdates jag kan gå med i</h3>
         <div id="suggested-playdates-output"></div>
+        <hr>
 
-        <h2>Playdates i närheten</h2>
+
+        <h3>Playdates i närheten</h3>
         <div id="public-playdates-output"></div>
+        <hr>
+
     </div>
 
 
