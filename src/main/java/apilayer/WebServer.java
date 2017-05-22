@@ -17,7 +17,7 @@ import static spark.Spark.*;
 @Slf4j
 public class WebServer {
 
-    private static final boolean SHOULD_LOAD_PLACES = true;
+    private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
         port(getHerokuAssignedPort());

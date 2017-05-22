@@ -501,4 +501,51 @@ public class UserDAO {
                     .list();
         }
     }
+
+
+    public boolean removeAllOfUser(User user) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+
+            int rows = 0;
+            rows += session.createQuery("DELETE FROM Comment c WHERE c.commenter = :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from Comment");
+            rows += session.createQuery("DELETE FROM Report r WHERE r.reportedUser = :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from Report");
+            rows += session.createQuery("DELETE FROM Friendship f WHERE f.friend = :user OR f.requester = :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from Friendship");
+            rows += session.createQuery("DELETE FROM FriendshipRequest fr WHERE fr.receiver = :user OR fr.sender = :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from FriendshipRequest");
+            rows += session.createQuery("DELETE FROM Invite i WHERE i.invited = :user OR i.playdate.owner = :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from Invite");
+            rows += session.createQuery("DELETE FROM Playdate p WHERE p.owner= :user")
+                    .setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from Playdate");
+            rows += session.createQuery("DELETE FROM User WHERE User = :user").setParameter("user", user).executeUpdate();
+            log.info("removed " + rows + " from User");
+
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error removing user", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
 }
