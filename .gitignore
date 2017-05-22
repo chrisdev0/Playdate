@@ -13,3 +13,4 @@ project/
 clientskeystore
 /keystore
 /keystore.jks
+/secrets.bat
