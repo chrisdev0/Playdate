@@ -514,25 +514,19 @@ public class UserDAO {
             int rows = 0;
             rows += session.createQuery("DELETE FROM Comment c WHERE c.commenter = :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from Comment");
             rows += session.createQuery("DELETE FROM Report r WHERE r.reportedUser = :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from Report");
             rows += session.createQuery("DELETE FROM Friendship f WHERE f.friend = :user OR f.requester = :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from Friendship");
             rows += session.createQuery("DELETE FROM FriendshipRequest fr WHERE fr.receiver = :user OR fr.sender = :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from FriendshipRequest");
-            rows += session.createQuery("DELETE FROM Invite i WHERE i.invited = :user OR i.playdate.owner = :user")
+            rows += session.createQuery("DELETE FROM Invite i WHERE i.invited = :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from Invite");
             rows += session.createQuery("DELETE FROM Playdate p WHERE p.owner= :user")
                     .setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from Playdate");
-            rows += session.createQuery("DELETE FROM User WHERE User = :user").setParameter("user", user).executeUpdate();
-            log.info("removed " + rows + " from User");
-
+            rows += session.createQuery("DELETE FROM User u WHERE u.id = :userid")
+                    .setParameter("userid", user.getId()).executeUpdate();
+            log.info("removed " + rows + " rows");
             tx.commit();
             ret = true;
         } catch (Exception e) {
