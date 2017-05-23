@@ -26,40 +26,12 @@ public class APILoader {
         toAddToDB = new ArrayList<>();
     }
 
+    @Deprecated
     public void doLoadOnStartup(String serviceGuideServiceTypeId) throws Exception {
-        final String apiKey = Secrets.STHML_API_KEY;
-        long start = System.currentTimeMillis();
-        log.info("started loading api data");
-        List<GeographicalArea> geographicalAreas = Arrays.stream(new GeographicalAreaLoader(apiKey).load())
-                .map(GeographicalArea::createFromPOJOGeoArea).collect(Collectors.toList());
-        toAddToDB.addAll(geographicalAreas);
-        doLoadDuringRun(apiKey, serviceGuideServiceTypeId);
-        Transaction tx = null;
-        Session session = null;
-        try {
-            session = hibernateUtil.openSession();
-            tx = session.beginTransaction();
-            for (Object object : toAddToDB) {
-                session.saveOrUpdate(object);
-            }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            log.error("error committing startup data", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        log.info("finished loading api data after " + (System.currentTimeMillis() - start) + "ms");
+
+
     }
 
-    public void doLoadDuringRun(String apiKey, String serviceGuideServiceTypeId) throws Exception{
-        new DetailedServiceGuideServiceLoader(apiKey).load(new ServiceGuideServiceLoader(apiKey).load(serviceGuideServiceTypeId), serviceGuideServiceTypeId)
-                .forEach(detailedServiceUnit -> toAddToDB.add(Place.constructFromDetailedServiceUnit(detailedServiceUnit)));
-    }
 
 
 }

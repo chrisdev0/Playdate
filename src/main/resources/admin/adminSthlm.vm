@@ -1,0 +1,154 @@
+#* @vtlvariable name="loadedApis" type="java.util.Collection" *#
+#* @vtlvariable name="api" type="model.APIs" *#
+#* @vtlvariable name="places" type="java.util.Collection" *#
+#* @vtlvariable name="p" type="model.Place" *#
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    #parse("/admin/admin-head.vm")
+</head>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#preselect').change(function() {
+            var api = $('#preselect option:selected').data('apiid');
+            var apiname = $('#preselect option:selected').val();
+
+            $('#apiid-field').val(api)
+            $('#apiname-field').val(apiname);
+        })
+
+        $('#load-api-button').click(function(e) {
+            $.ajax({
+                type: 'POST',
+                url: '/protected/admin/runapi?apiId=' + $('#apiid-field').val().trim() + '&apiName=' + $('#apiname-field').val(),
+                success: function(res) {
+                    console.log(res)
+                    addRunner(res)
+                },
+                error: function(e) {
+                    console.log(e)
+                }
+            })
+        })
+
+        function addRunner(res) {
+            var runnerId = res;
+            var runneroutput = $('#runners-output');
+            var output = '<div id="' + res + '">' +
+                    '<p>Getting places from ' + res +
+                    '</div>';
+            runneroutput.append(output);
+            setTimeout(function () {
+                var intervalId = setInterval(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/protected/admin/getrunnerstatus?runnerId=' + res,
+                        success: function (res) {
+                            if(res !== 'running'){
+                                clearInterval(intervalId);
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function (res) {
+                            alert('error loading');
+                            clearInterval(intervalId);
+                            $('#runners-output').find('#' + runnerId).remove();
+                        }
+                    });
+                }, 500);
+            }, 500);
+        }
+
+        $('.reload-api').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/protected/admin/runapi?apiId=' + $(this).data('apiid') + '&apiName=' + $(this).data('apiname'),
+                success: function (res) {
+                    console.log(res)
+                    addRunner(res)
+                },
+                error: function (e) {
+                    console.log(e)
+                }
+            });
+
+
+        });
+
+
+    });
+
+</script>
+
+<body>
+
+
+<div id="content">
+    <div class="row">
+        <div class="col-md-2"> </div>
+        <div class="col-md-8">
+            #parse("/admin/navbar.vm")
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Ladda ny API</h1>
+                    <form>
+                        <label for="apiid">APIID</label>
+                        <input name="apiid" type="text" id="apiid-field">
+                        <label for="APInamn">APIname</label>
+                        <input name="apiid" type="text" id="apiname-field">
+                        <input type="button" id="load-api-button" value="Load places from api">
+                    </form>
+                    <h2>Förvalda</h2>
+                    <select id="preselect">
+                        <option value="Lekplatser" data-apiid="9da341e4-bdc6-4b51-9563-e65ddc2f7434">Lekplatser</option>
+                        <option value="Motionsspår" data-apiid="a4116a6a-af53-4672-b492-01d7adeae987">Motionsspår</option>
+                        <option value="Badplatser" data-apiid="c1aca600-af0c-43f9-bf6c-cd7b4ec4b2d1">Badplatser</option>
+                        <option value="Museum" data-apiid="ad53d167-dba4-4000-b9b0-89380b89e831">Museum</option>
+                        <option value="Utomhusbassänger" data-apiid="c2b4f305-7304-4eb2-88b0-d67c95f01d7a">Utomhusbassänger</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Loaded apis</h1>
+                    <table>
+                        <thead>
+                        <th>Key</th>
+                        <th>Name</th>
+                        <th>Reload</th>
+                        </thead>
+                        <tbody>
+                            #foreach($api in $loadedApis)
+                            <tr>
+                                <td>$api.stockholmAPIId</td>
+                                <td>$api.typeName</td>
+                                <td class="reloadField"><a class="reload-api" data-apiid="$api.stockholmAPIId" data-apiname="$api.typeName">Ladda om</a></td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h1>Loading</h1>
+                    <div id="runners-output">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"> </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

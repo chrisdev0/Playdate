@@ -58,7 +58,7 @@ public class SparkHelper {
         }
     }
 
-    static Object setStatusCodeAndReturnString(Response response, int statusCode, String returnValue) {
+    public static Object setStatusCodeAndReturnString(Response response, int statusCode, String returnValue) {
         response.status(statusCode);
         return returnValue == null ? "" : returnValue;
     }

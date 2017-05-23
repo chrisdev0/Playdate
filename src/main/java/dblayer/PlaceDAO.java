@@ -2,6 +2,7 @@ package dblayer;
 
 import apilayer.Constants;
 import lombok.extern.slf4j.Slf4j;
+import model.APIs;
 import model.Comment;
 import model.Place;
 import org.hibernate.Hibernate;
@@ -218,4 +219,84 @@ public class PlaceDAO {
             return Optional.ofNullable(place.getComments());
         }
     }
+
+    public void updatePlaceFromAPIEndPoint(List<Place> places) {
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            String hql = "UPDATE Place p SET p.category = :cat, p.name = :name, p.streetAddress = :streetadress, p.geoArea = :geoarea, " +
+                    "p.geoY = :geoY, p.geoX = :geoX, p.cityAddress = :cityadress, p.longDescription = :longdesc, p.shortDescription = :shortdesc, " +
+                    "p.zip = :zip, p.imageId = :imageid, p.timeUpdated = :updated, p.timeCreated = :created " +
+                    "WHERE p.sthlmAPIid = :apiid";
+            for (Place place : places) {
+                int row = session.createQuery(hql)
+                        .setParameter("cat", place.getCategory())
+                        .setParameter("name", place.getName())
+                        .setParameter("streetadress", place.getStreetAddress())
+                        .setParameter("geoarea", place.getGeoArea())
+                        .setParameter("geoY", place.getGeoY())
+                        .setParameter("geoX", place.getGeoX())
+                        .setParameter("cityadress", place.getCityAddress())
+                        .setParameter("zip", place.getZip())
+                        .setParameter("imageid", place.getImageId())
+                        .setParameter("longdesc", place.getLongDescription())
+                        .setParameter("shortdesc", place.getShortDescription())
+                        .setParameter("updated", place.getTimeUpdated())
+                        .setParameter("created", place.getTimeCreated())
+                        .setParameter("apiid", place.getSthlmAPIid())
+                        .executeUpdate();
+                if (row == 0) {
+                    session.save(place);
+                }
+            }
+            tx.commit();
+        } catch (Exception e){
+            log.error("error saving place", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+
+    public void addLoadedAPI(String api, String apiName){
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            String hql = "UPDATE APIs a SET a.typeName = :typeName WHERE a.stockholmAPIId = :api";
+            int i = session.createQuery(hql)
+                    .setParameter("typeName", apiName)
+                    .setParameter("api", api)
+                    .executeUpdate();
+            if (i == 0) {
+                session.save(new APIs(null, api, apiName));
+            }
+            tx.commit();
+        } catch (Exception e) {
+            log.error("error saving", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public List<APIs> getLoadedAPIs(){
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("FROM APIs", APIs.class).list();
+        }
+    }
+
+
 }

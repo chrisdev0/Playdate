@@ -123,7 +123,6 @@
 }
 .on-bottom-button {
     position: relative;
-    margin-top: 8em;
 }
 
 #descriptiontextarea {
@@ -143,14 +142,16 @@
 
 #edit-profile-picture {
     position: absolute;
-    z-index: 1000;
-    right: 1.0em;
-    top: -1.3em;
+    right: 5.8em;
+    top: 5.7em;
     font-size: 1.5em;
     border: 0;
     padding: 0;
 }
 
+#change-profilepic-text{
+    margin-left: 2.5em;
+}
 .profile-page {
     overflow: visible;
 }
@@ -253,7 +254,6 @@
     text-align: center;
     margin: auto;
     font-family:tahoma;
-    text-align: center;
 }
 
 #privacy-policy{
@@ -290,6 +290,8 @@
 #text-popup{
     font-size: 100%;
 }
+
+
 #info-btn{
     height: 1em;
     width: 1em;

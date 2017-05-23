@@ -3,8 +3,7 @@ package apilayer.route;
 import apilayer.Constants;
 import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.Paths;
-import apilayer.handlers.adminhandlers.AdminPlaceHandler;
-import apilayer.handlers.adminhandlers.DashboardHandler;
+import apilayer.handlers.adminhandlers.*;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import spark.template.velocity.VelocityTemplateEngine;
@@ -26,6 +25,13 @@ public class AdminRoutes {
             get(Paths.ADMIN.ADMIN_INDEX, new DashboardHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
             get(Paths.ADMIN.ADMIN_PLACE, new AdminPlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+            get(Paths.ADMIN.ADMIN_STHLM, new AdminSthlmHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+            get(Paths.ADMIN.ADMIN_COMMENTS, new AdminCommentPageHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+            delete(Paths.ADMIN.ADMIN_REMOVE_COMMENT, AdminSmallHandlers::handleRemoveComment);
+
+            post(Paths.ADMIN.RUN_GET_API, AdminStockholmAsyncHandler::reloadAPI);
+            get(Paths.ADMIN.GET_RUNNER_STATUS, AdminStockholmAsyncHandler::getStatusOfRunner);
 
         });
     }

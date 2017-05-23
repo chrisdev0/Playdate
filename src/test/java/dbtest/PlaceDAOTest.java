@@ -12,16 +12,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
-import static testutils.ModelCreators.createPlace;
-import static testutils.ModelCreators.createUser;
-import static testutils.ModelCreators.remove;
+import static testutils.ModelCreators.*;
 
 @Slf4j
 public class PlaceDAOTest extends HibernateTests {
@@ -304,6 +299,57 @@ public class PlaceDAOTest extends HibernateTests {
         remove(outsideArea);
     }
 
+
+    @Test
+    public void testUpdatePlace() {
+        Place place = createPlace();
+        save(place);
+        Place place1 = createPlace();
+        place1.setSthlmAPIid(place.getSthlmAPIid());
+
+        List<Place> places = new ArrayList<>();
+        places.add(place1);
+
+        PlaceDAO.getInstance().updatePlaceFromAPIEndPoint(places);
+
+        Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(place.getId());
+        assertTrue(placeById.isPresent());
+
+        log.info(place.toString());
+        log.info(place1.toString());
+        log.info(placeById.get().toString());
+
+        place1.setId(placeById.get().getId());
+        assertEquals(place1,placeById.get());
+        remove(place);
+    }
+
+    @Test
+    public void testUpdatePlaceWithNewPlace() {
+        Place place = createPlace();
+        Place placeNew = createPlace();
+        save(place);
+        Place place1 = createPlace();
+        place1.setSthlmAPIid(place.getSthlmAPIid());
+
+        List<Place> places = new ArrayList<>();
+        places.add(place1);
+        places.add(placeNew);
+
+        PlaceDAO.getInstance().updatePlaceFromAPIEndPoint(places);
+        assertNotNull(placeNew.getId());
+        Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(place.getId());
+        assertTrue(placeById.isPresent());
+
+        Optional<Place> placeById1 = PlaceDAO.getInstance().getPlaceById(placeNew.getId());
+        assertTrue(placeById1.isPresent());
+        assertEquals(placeNew.getId(), placeById1.get().getId());
+
+        place1.setId(placeById.get().getId());
+        assertEquals(place1,placeById.get());
+        remove(place);
+        remove(placeNew);
+    }
 
 
 }

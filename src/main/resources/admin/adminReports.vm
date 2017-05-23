@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    #parse("/admin/admin-head.vm")
+</head>
+<body>
+
+
+<div id="content">
+
+
+    #parse("/admin/navbar.vm")
+
+    <div class="row">
+        <div class="col-md-2"> </div>
+        <div class="col-md-8">
+            <h1>Content</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>Typ</th>
+                    <th>Antal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Användare</td>
+                    <td>$user_counts</td>
+                </tr>
+                <tr>
+                    <td>Rapporter</td>
+                    <td>$report_counts</td>
+                </tr>
+                <tr>
+                    <td>Platser</td>
+                    <td>$place_counts</td>
+                </tr>
+                <tr>
+                    <td>Playdates</td>
+                    <td>$playdate_counts</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"> </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+#* @vtlvariable name="comments" type="java.util.Collection" *#
+#* @vtlvariable name="comment" type="model.Comment" *#
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    #parse("/admin/admin-head.vm")
+
+    <script>
+        $(document).ready(function () {
+            $('.remove-comment').click(function (e) {
+                e.preventDefault();
+                var row = $(this).closest('.comment-row');
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/admin/removecomment?commentId=' + $(this).data('commentid'),
+                    success: function (res) {
+                        console.log(res);
+                        row.remove();
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        alert('error removing comment');
+                    }
+                });
+
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+
+<div id="content">
+
+
+    #parse("/admin/navbar.vm")
+
+    <div class="row">
+        <div class="col-md-2"> </div>
+        <div class="col-md-8">
+            <h1>Content</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>KommentarId</th>
+                    <th>Kommentar</th>
+                    <th>Användare</th>
+                    <th>Tid</th>
+                    <th>Ta bort</th>
+                </tr>
+                </thead>
+                <tbody>
+                #foreach($comment in $comments)
+                    <tr class="comment-row">
+                        <td>$comment.id</td>
+                        <td>$comment.comment</td>
+                        <td><a href="/protected/showuser?userId=$comment.commenter.id">$comment.commenter.name</a></td>
+                        <td>$comment.commentDate</td>
+                        <td><a  class="remove-comment" href="#" data-commentid="$comment.id">Ta bort</a></td>
+                    </tr>
+                #end
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"> </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
