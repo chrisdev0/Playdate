@@ -53,6 +53,8 @@
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
                 <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
+            </br>
+            </br>
                 <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
 
@@ -87,19 +89,21 @@
                         #end
                     #end
                 </div>
-
             </div>
+            </div>
+
+        <fieldset class="ui-grid-solo">
+        <div class="ui-block-a" style="margin-left:0em;">
+            <hr>
             <h3>Beskrivning:</h3>
-            <p class="profile-description-text">
+            <div class="profile-description-text" style="margin-left:0em;">
                 $!{other-user.description}
-            </p>
+            </div></div></fieldset>
             #if(!$other-user.equals($user))
                 <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
             #end
+
         </div>
-    </div>
-
-
 </div>
 
 </body>
