@@ -31,7 +31,9 @@
     height: 2.7em;
 }
 #head-logo{
-    margin-left: 50%;
+   text-align: center;
+    display: block;
+    margin: auto;
 }
 .close-btn-pos a {
     display: inline;
@@ -234,8 +236,9 @@
     font-size: 15px;
     width: 15em;
     text-align: center;
-    margin-left: 18%;
+    margin: auto;
     font-family:tahoma;
+    text-align: center;
 }
 
 #privacy-policy{
