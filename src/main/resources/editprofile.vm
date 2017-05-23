@@ -51,6 +51,7 @@
                 <h2>Beskrivning:</h2>
                 <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}</textarea>
             </form>
+
         </div>
         <div class="on-bottom-button">
             <a class="ui-btn ui-shadow ui-corner-all" id="update-profile-btn" data-ajax="false">Uppdatera Profil</a>
