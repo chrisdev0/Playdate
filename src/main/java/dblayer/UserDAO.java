@@ -10,12 +10,15 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.mapping.Join;
+import presentable.frontend.UserUserRelationship;
 
 import javax.persistence.JoinColumn;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static presentable.frontend.UserUserRelationship.*;
 import static spark.Spark.halt;
 
 @Slf4j
@@ -181,27 +184,27 @@ public class UserDAO {
     public int getFriendState(User thisUser, User otherUser) {
         if (thisUser.equals(otherUser)) {
             //inloggad användare är samma som användarens profil
-            return 0;
+            return USER_EQUAL_USER.getId();
         } else {
             if (checkIfFriendWithUser(thisUser.getId(), otherUser.getId()).isPresent()) {
                 //inloggad användare är redan vän med användaren
-                return 1;
+                return USERS_ARE_FRIENDS.getId();
             } else {
                 Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(otherUser.getId(), thisUser.getId());
                 if (friendshipRequest.isPresent()) {
                     if (friendshipRequest.get().getReceiver().equals(thisUser)) {
                         //inloggad användare har fått friendshiprequest av användaren
-                        return 2;
+                        return USER_RECIEVED_FRIEND_REQUEST_FROM_USER.getId();
                     } else {
                         //inloggad användare har skickat friendshriprequest till användaren
-                        return 3;
+                        return USER_SENT_FRIEND_REQUEST_TO_USER.getId();
                     }
                 } else {
                     //inloggad användare har inte fått friendshiprequest,
                     //är inte vänner
                     //och har inte skickat friendshriprequest
                     //(och användarna är inte samma)
-                    return 4;
+                    return USER_NO_RELATIONSHIP.getId();
                 }
             }
         }
