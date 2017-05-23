@@ -130,6 +130,7 @@
                     <li class="swipable-friend-request"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                         <a href="#" class="friendship-request-popup" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
+
                 #end
             </ul>
             <h3>Skickade vänförfrågningar</h3>
@@ -156,7 +157,6 @@
     </div>
 
 </div>
-
 
 
 
