@@ -59,11 +59,12 @@
 
 
 
-        <div id="logo-container">
+        <div id="logo-container" >
             <img src="/images/pd-logga.png" id="index-logo" >
             <br>
+
             <form action="/loginfb" id="form" data-ajax="false">
-                <button id="fb-login-btn">Logga in med Facebook</button>
+                <button id="fb-login-btn" text-align="center" >Logga in med Facebook</button>
             </form>
 
             <div id="privacy-policy">

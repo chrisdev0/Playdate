@@ -1,10 +1,8 @@
 #* @vtlvariable name="navbarfriends" type="boolean" *#
 
-<div data-role="header" data-tap-toggle="false" data-position="fixed" class="header-shadow" data-theme="a" id="header-id">
+<div data-role="header" data-tap-toggle="false" data-position="fixed" class="header-shadow" data-theme="a">
     <a href="#side-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">Öppna panelen</a>
-    <img src="/images/playdate_logga_1.png" id="head-logo" style="width:30%">
-    <a data-ajax="false"  href="/protected/feed" data-icon-pos="right" class="ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all">Feed</a>
-
+    <img src="/images/playdate_logga_1.png" id="head-logo" style="width:30%" >
     #if($navbarfriends)
         <div data-role="navbar">
             <ul>
@@ -15,12 +13,3 @@
         </div>
     #end
 </div>
-
-<script>
-    $(document).ready(function () {
-        $('#head-logo').click(function(e) {
-            $("html, body").animate({ scrollTop: 0 }, 300);
-            return false;
-        })
-    });
-</script>

@@ -241,8 +241,9 @@
     font-size: 15px;
     width: 15em;
     text-align: center;
-    margin-left: 18%;
+    margin: auto;
     font-family:tahoma;
+    text-align: center;
 }
 
 #privacy-policy{
