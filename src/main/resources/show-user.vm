@@ -93,7 +93,9 @@
             <p class="profile-description-text">
                 $!{other-user.description}
             </p>
-            <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
+            #if(!$other-user.equals($user))
+                <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
+            #end
         </div>
     </div>
 
