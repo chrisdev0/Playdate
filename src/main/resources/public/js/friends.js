@@ -43,7 +43,7 @@ $(document).ready(function () {
         var ooutput = "";
         $.each(friends, function (index, user) {
             ooutput += '<li>' +
-                '<a href="#"><img src="'+ user.profilePictureUrl +'" class="img-size">' + user.name + '</a>' +
+                '<a data-ajax="false" href="/protected/showuser?userId=' + user.id +'"><img src="'+ user.profilePictureUrl +'" class="img-size">' + user.name + '</a>' +
                 '<a href="#" class="'+btnclass+'" data-userid="'+ user.id +'" data-ajax="false"></a>' +
                 '</li>';
         });
