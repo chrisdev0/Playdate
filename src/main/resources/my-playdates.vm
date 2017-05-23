@@ -27,7 +27,7 @@
         <a href="/protected/createplaydate" data-ajax="false"
            class="ui-btn ui-icon-plus ui-btn-icon-right ui-btn-corner-all">Skapa ny Playdate</a>
         <hr>
-        <h2>Mina:</h2>
+        <h2>Mina Playdates:</h2>
         <div class="listview-borders">
             <ul data-role="listview" data-inset="true">
                 #foreach($p in $playdatesOwner)
@@ -40,7 +40,7 @@
         </div>
 
         <hr>
-        <h2>Andras:</h2>
+        <h2>Andras Playdates:</h2>
 
         <div class="listview-borders">
             <ul data-role="listview" data-inset="true">
@@ -55,7 +55,7 @@
         </div>
 
         <hr>
-        <h2>Tidigare:</h2>
+        <h2>Tidigare Playdates:</h2>
 
         <div class="listview-borders">
             <ul data-role="listview" data-inset="true">
