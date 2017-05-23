@@ -62,6 +62,8 @@ public class Constants {
     }
     
     public class ADMIN {
+        public static final String RUNNER_ALREADY_RUNNING = "api_running";
+
         public class DASHBOARD {
             public static final String REPORT_COUNTS = "report_counts";
             public static final String USER_COUNTS = "user_counts";

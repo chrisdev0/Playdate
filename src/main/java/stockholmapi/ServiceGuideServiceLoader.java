@@ -1,6 +1,7 @@
 package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import secrets.Secrets;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.ServiceUnitTypes;
 
@@ -11,8 +12,8 @@ public class ServiceGuideServiceLoader {
 
     private String apiKey;
 
-    public ServiceGuideServiceLoader(String apiKey) {
-        this.apiKey = apiKey;
+    public ServiceGuideServiceLoader() {
+        this.apiKey = Secrets.STHML_API_KEY;
     }
 
     /** Skapar en URL med hjälp av urlHelper() och en mängd konstanter som finns i APIUtils.URLS

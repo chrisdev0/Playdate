@@ -97,6 +97,9 @@ public class Paths {
         public static final String ADMIN = "/admin";
         public static final String ADMIN_INDEX = "/index";
         public static final String ADMIN_PLACE = "/place";
+        public static final String ADMIN_STHLM = "/sthlm";
+        public static final String RUN_GET_API = "/runapi";
+        public static final String GET_RUNNER_STATUS = "/getrunnerstatus";
     }
 
 

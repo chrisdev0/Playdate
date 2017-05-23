@@ -1,0 +1,76 @@
+#* @vtlvariable name="loadedApis" type="java.util.Collection" *#
+#* @vtlvariable name="api" type="model.APIs" *#
+#* @vtlvariable name="places" type="java.util.Collection" *#
+#* @vtlvariable name="p" type="model.Place" *#
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    #parse("/admin/admin-head.vm")
+</head>
+
+<script>
+
+</script>
+
+<body>
+
+
+<div id="content">
+    #parse("/admin/navbar.vm")
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Ladda ny API</h1>
+            <form>
+                <label for="apiid">APIID</label>
+                <input name="apiid" type="text">
+                <label for="APInamn">APIname</label>
+                <input name="apiid" type="text">
+            </form>
+            <select>
+                <option value="Lekplatser">Lekplatser</option>
+                <option value="Motionsspår">Motionsspår</option>
+                <option value="Badplatser">Badplatser</option>
+                <option value="Museum">Museum</option>
+                <option value="Utomhusbassänger">Utomhusbassänger</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Loaded apis</h1>
+            <table>
+                <thead>
+                <th>Key</th>
+                <th>Name</th>
+                <th>Reload</th>
+                </thead>
+                <tbody>
+                #foreach($api in $loadedApis) -a
+                    <tr>
+                        <td>$api.stockholmAPIId</td>
+                        <td>$api.typeName</td>
+                        <td class="reloadField"><a class="reload-api" data-apiid="$api.stockholmAPIId" data-apiname="$api.typeName">Ladda om</a></td>
+                    </tr>
+                #end
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h1>Loading</h1>
+            <div id="runners-output">
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+</body>
+</html>
