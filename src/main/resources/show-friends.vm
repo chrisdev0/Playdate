@@ -88,8 +88,8 @@
 
                     <ul data-role="listview"  data-theme="f" data-icon="user"  data-timeFilter="true" data-filter="true" data-input="#myFilter"  data-inset="true">
                         #foreach($u in $friends)
-                            <li><a data-ajax="false" href="#"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
-                                <a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"></a>
+                            <li><a data-ajax="false" href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size">$!{u.name}</a>
+
                             </li>
                         #end
                     </ul>
@@ -127,7 +127,7 @@
             <h3>Vänförfrågningar</h3>
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
-                    <li class="swipable-friend-request"><a href="#"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                    <li class="swipable-friend-request"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                         <a href="#" class="friendship-request-popup" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
                 #end
@@ -157,22 +157,7 @@
 
 </div>
 
-<!--
-<div data-role="popup" id="addfriendpopup" data-overlay-theme="b"  data-tolerance="0,0">
-    <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" class="ui-btn-left">Close</a>
-    <div class="listview-borders">
-        <ul data-role="listview" data-theme="f">
-            <li data-icon="user">
-                <a href="#">Visa Profil</a>
-            </li>
-            <li data-icon="check">
-                <a href="#">Lägg Till</a>
-            </li>
 
-        </ul>
-    </div>
-</div>
--->
 
 
 </body>
