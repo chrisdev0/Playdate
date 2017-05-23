@@ -14,9 +14,9 @@ $(document).ready(function () {
         var output = "<div class='bottom-line'>";
         var date = new Date(comment.commentDate);
 
-        output += "<p style='font-weight: bold;'><a href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
+        output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
             " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
-            date.getHours() + ":" + date.getMinutes() + "</p>"
+            date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "</p>";
         output += "<p>" + comment.comment + "</p>"
         output += "</div>"
         $('#show-comments').append(output);

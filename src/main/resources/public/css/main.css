@@ -90,6 +90,11 @@
     font-size: 1.2em;
 }
 
+.user-name-comment {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
 .small-profile img {
     width: 7em;
     max-height: 7em;
