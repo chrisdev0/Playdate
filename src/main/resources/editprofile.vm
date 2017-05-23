@@ -33,6 +33,9 @@
                 <div id="composite-picture">
                     <a href="#" data-rel="popup" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext ui-overlay-shadow" id="edit-profile-picture" data-ajax="false">Edit Icon</a>
                     <img src="$!{user.profilePictureUrl}" class="profile-picture profile-picture-upload" style="width: 9em">
+                    <div id="change-profilepic-text">
+                    <p>Ändra profilbild</p>
+                    </div>
                 </div>
             </div>
             <form action="/protected/editmyprofile" method="POST" id="update-profile-form">
@@ -47,8 +50,9 @@
                                         <option value="1">Kvinna</option>
                                         <option value="2">Annat</option>
                     </select>
-                </div>
-                <h2>Beskrivning:</h2>
+
+                <label for="descriptiontextarea">Beskrivning:</label>
+        </div>
                 <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}</textarea>
             </form>
 
@@ -75,11 +79,10 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div data-role="footer">
             <a href="#" class="ui-btn" id="upload-picture">Ladda upp bild</a>
         </div>
     </div>
+
     <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
         <p></p>
     </div>
