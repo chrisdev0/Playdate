@@ -26,25 +26,36 @@ $(document).ready(function() {
         $.getJSON(url, function(res){
             console.log(res);
 
-            console.log(res.timeSeries[1].parameters[1].values[0]);
+            var dateOfPlaydate = parseInt(window.startTime) + 7200000;
 
-            var dateOfPlaydate = window.startTime;
+            //console.log(dateOfPlaydate);
+            var date = new Date(dateOfPlaydate);
+            console.log(date.toJSON());
+            date.setMinutes(00);
+            date.setSeconds(00);
+            date.setMilliseconds(0);
+            console.log("ISO: "+ date.toISOString().substring(0,19)+'Z')
+            var dateString = date.toISOString().substring(0,19)+'Z';
+            var dateObject = checkDateOfPlaydate(dateString, res);
 
-            console.log(dateOfPlaydate);
-            var date = new Date(parseInt(dateOfPlaydate));
-            console.log(date.toUTCString());
-            //var resArr = res;
-            checkDateOfPlaydate(dateOfPlaydate, res);
+            console.log(dateObject)
+            $("#show-weather").text(dateObject.parameters[1].values[0]);
+
 
         })
 
     }
 
-    function checkDateOfPlaydate(dateOfPlaydate, res){
-        console.log("Här är objekt x inne i " + res.timeSeries[1].parameters[1].values[0]);
-        for(var i; i < res.length; i++){
-            if (res.timeSeries[i].validTime == dateOfPlaydate){
-
+    //setMinute, setSecond till 00:00
+    function checkDateOfPlaydate(dateString, res){
+        console.log("Här är objekt x inne i " + res.timeSeries[10].parameters[1].values[0] +
+            " validTime: " + res.timeSeries[10].validTime + " dateString: " + dateString);
+        console.log("Efter här kommer res")
+        console.log(res.timeSeries);
+        for(var i = 0; i < res.timeSeries.length; i++){
+            if (res.timeSeries[i].validTime == dateString){
+                console.log("korrekt");
+                return res.timeSeries[i];
             }
         }
 
