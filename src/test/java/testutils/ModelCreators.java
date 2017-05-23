@@ -40,7 +40,7 @@ public class ModelCreators {
         place.setGeoY(6000 + faker.random().nextInt(16000));
         place.setGeoX(6000 + faker.random().nextInt(16000));
         place.setGeoArea("TestArea");
-        place.setSthlmAPIid(faker.internet().password(19, 20, true, true));
+        place.setSthlmAPIid(faker.internet().password(19, 20, true, false));
         place.setImageId(faker.internet().password(19, 20, true, true));
         place.setCityAddress(faker.address().cityName());
         place.setZip(faker.address().zipCode());

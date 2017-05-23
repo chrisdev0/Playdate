@@ -29,6 +29,7 @@ public class WebServer {
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
+            Constants.DEV = false;
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
         return Secrets.PORT; //return default port if heroku-port isn't set (i.e. on localhost)

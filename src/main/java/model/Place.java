@@ -68,7 +68,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     private int geoY;
 
     public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
-        this.sthlmAPIid = StringEscapeUtils.escapeHtml(sthlmAPIid);
+        setSthlmAPIid(sthlmAPIid);
         this.name = StringEscapeUtils.escapeHtml(name);
         this.imageId = StringEscapeUtils.escapeHtml(imageId);
         this.timeCreated = timeCreated;
@@ -201,7 +201,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     public Place(ServiceUnitTypes serviceUnitTypes) {
         name = serviceUnitTypes.getName();
-        sthlmAPIid = serviceUnitTypes.getId();
+        setSthlmAPIid(serviceUnitTypes.getId());
         geoX = serviceUnitTypes.getGeographicalPosition().getX();
         geoY = serviceUnitTypes.getGeographicalPosition().getY();
         timeCreated = serviceUnitTypes.getTimeCreated();

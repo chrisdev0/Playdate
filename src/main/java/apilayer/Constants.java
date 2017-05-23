@@ -2,7 +2,7 @@ package apilayer;
 
 public class Constants {
 
-    public static final boolean DEV = false;
+    public static boolean DEV = true;
 
     public static final boolean ENV_PRINT_DEBUG = true;
 
