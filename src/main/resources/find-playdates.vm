@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playdate</title>
+
+    #parse("head-links.vm")
+
+    <script src="/js/CoordinateHandler.js"></script>
+
+    <style>
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+
+    <script src="/js/init-full-mappd.js"></script>
+    <script src="/js/init-map.js"></script>
+
+    <script>
+
+        var renderPlace = function(playdate, playdateoutput){
+            var output = '<div data-role="collapsible" id="marker'+playdate.id+'">';
+            output += '<h3>' + playdate.header + '</h3>';
+            output += '<img>' + '<img src="/protected/apiimage/'+playdate.place.imageId+'" class="medium-image">' + '</img>';
+            output += '<p>' + playdate.description + '</p>';
+            output += '<p>' + '<a href="/protected/getoneplaydate?playdateId='+playdate.id+'" data-ajax="false"> Visa playdate </a>' + '</p>';
+            output += "</div>";
+
+
+            playdateoutput.append(output);
+
+            var ch = new CoordinateHandler();
+
+            latlng = ch.gridToGeodetic(playdate.place.geoX, playdate.place.geoY);
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(latlng.lat), lng: parseFloat(latlng.lon)},
+                title: 'hello'
+            });
+            marker.setMap(window.map);
+            window.markers.push(marker);
+            marker.addListener('click',function() {
+                var anchor = "#marker" + playdate.id;
+                $('html, body').animate({
+                    scrollTop: $(anchor).offset().top
+                }, 500);
+                $(anchor).collapsible('expand');
+            })
+        }
+    </script>
+</head>
+<body>
+
+
+    #parse("side-panel.vm")
+
+    #parse("header.vm")
+
+    #parse("footer.vm")
+
+<div data-role="page" id="pageone">
+
+
+    <div data-role="main" class="ui-content">
+        <h1>Hitta Playdates</h1>
+        <div id="map"> </div>
+
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
+        </script>
+        <div>
+            <h2>Playdates:</h2>
+            <div id="playdate-output"></div>
+        </div>
+
+
+    </div>
+
+</body>
+</html>

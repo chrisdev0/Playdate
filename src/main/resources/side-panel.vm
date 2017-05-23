@@ -10,13 +10,14 @@
         <div class="small-profile">
             <span>$!{user.name}</span>
             <div class="composite-row">
-                <img src="$!{user.profilePictureUrl}" class="profile-picture-upload">
+                <a href="/protected/editmyprofile"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
                 <span>$!{user.description}
                 </span>
             </div>
         </div>
 
         <div class="panel-buttons">
+            <a href="/protected/createplaydate" class="ui-btn ui-corner-all" data-ajax="false">Skapa Playdate</a>
             <a href="/protected/editmyprofile" data-ajax="false" class="ui-btn ui-corner-all">Min Profil</a>
             <a href="/protected/showplaydates" data-ajax="false" class="ui-btn ui-corner-all">Mina Playdates</a>
             <a href="/protected/showmyfriends" class="ui-btn ui-corner-all"  data-ajax="false">Mina Vänner</a>

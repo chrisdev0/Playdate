@@ -180,9 +180,13 @@ public class PlaydateDAO {
         Session session = null;
         Transaction tx = null;
         boolean ret = false;
+        Optional<Invite> inviteOfUserAndPlaydate = InviteDAO.getInstance().getInviteOfUserAndPlaydate(user, playdate);
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+            if (inviteOfUserAndPlaydate.isPresent()) {
+                session.remove(inviteOfUserAndPlaydate.get());
+            }
             session.update(playdate);
             session.update(user);
             playdate.addParticipant(user);
@@ -248,15 +252,18 @@ public class PlaydateDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            if (playdate.removeParticipant(user) && user.removeAttendingPlaydate(playdate)) {
-                session.update(playdate);
-                session.update(user);
-                ret = true;
+            if (playdate.removeParticipant(user)) {
+                if (user.removeAttendingPlaydate(playdate)) {
+                    session.update(playdate);
+                    session.update(user);
+                    ret = true;
+                }
             } else {
                 ret = false;
             }
             tx.commit();
         } catch (Exception e) {
+            log.error("error removing attendance", e);
             if (tx != null) {
                 tx.rollback();
             }

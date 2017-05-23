@@ -51,9 +51,13 @@
                 <h2>Beskrivning:</h2>
                 <textarea cols="40" name="description" rows="20" id="descriptiontextarea" data-autogrow="false">$!{user.description}</textarea>
             </form>
+
         </div>
         <div class="on-bottom-button">
-            <a class="ui-btn" id="update-profile-btn" data-ajax="false">Uppdatera Profil</a>
+            <a class="ui-btn ui-shadow ui-corner-all" id="update-profile-btn" data-ajax="false">Uppdatera Profil</a>
+        </div>
+        <div class="remove-user">
+            <a href="#popup-remove-user" data-rel="popup" class="ui-btn ui-shadow ui-corner-all" id="remove-profile-btn" style="background: #ff4304 !important; color:white !important;" data-transition="pop">Avregistera mig</a>
         </div>
     </div>
     <div data-role="popup" id="popup" data-dismissible="false">
@@ -79,6 +83,23 @@
     <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
         <p></p>
     </div>
+
+    <div data-role="popup" id="popup-remove-user">
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        <div data-role="header" style="font-size: 10px !important;">
+            <h4>Avregistrera användare</h4>
+        </div>
+        <div data-role="main" class="ui-content">
+            <form>
+                <p>Genom att ta bort min profil försvinner alla mina ändringar.</p>
+                <input name="checkbox-mini-0" id="checkbox-mini-0" data-mini="true" type="checkbox">
+                <label for="checkbox-mini-0">Jag godkänner</label>
+            </form>
+        </div>
+            <div data-role="footer">
+                <a href="#" style=" margin-left: 27%;" class="ui-btn ui-corner-all ui-shadow" id="remove-user">Avregistera konto</a>
+            </div>
+        </div>
 </div>
 
 

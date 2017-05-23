@@ -94,4 +94,20 @@ $(document).ready(function() {
             }
         });
     })
+
+    $('#remove-user').click(function(e) {
+        e.preventDefault();
+        if($('#checkbox-mini-0').is(':checked')){
+            $.ajax({
+                type: 'GET',
+                url: '/protected//removeuser',
+                error: function(e){
+                    console.log("error removing user");
+                },
+                success: function(){
+                    window.location.replace('/')
+                }
+            })
+        }
+    })
 });

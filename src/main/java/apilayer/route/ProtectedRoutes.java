@@ -55,6 +55,10 @@ public class ProtectedRoutes {
             get(Paths.APIIMAGE + "/:id", ImageHandler::handleGetAPIImage);
             get(Paths.GETPROFILEPICTURE + "/:id", ImageHandler::handleGetProfilePicture);
 
+            get(Paths.REMOVEUSER, RemoveUserHandler::handleRemoveUser);
+
+            /*  För att injicera data till en användare och logga in som en specifik användare
+            * */
             get(Paths.ADDDATA, DataFillerHandler::injectData);
             get(Paths.FORCELOGIN, DataFillerHandler::forceLoginAsUser);
 
@@ -109,6 +113,7 @@ public class ProtectedRoutes {
             get(Paths.GETPLAYDATEOFPLACE, PlaydateHandler::handleGetPublicPlaydatesOfPlace);
             get(Paths.GETPLAYDATESOFMULTIPLEPLACE, SearchHandlers::searchPublicPlaydatesByMultiPlace);
             get(Paths.GETPOTENTIALFRIENDSTOINVITE, PlaydateHandler::handleGetFriendsToInvite);
+            delete(Paths.OWNERKICKATTENDINGUSER, AttendanceInviteHandler::handleKickUserFromPlaydate);
 
             /*      FriendshipRequest-routes
             * */
@@ -127,6 +132,7 @@ public class ProtectedRoutes {
             post(Paths.ACCEPTINVITE, AttendanceInviteHandler::handleAcceptInviteToPlaydate);
             delete(Paths.DECLINEINVITE, AttendanceInviteHandler::handleDeclineInviteToPlaydate);
             post(Paths.SENDINVITE, AttendanceInviteHandler::handleSendInviteToPlaydate);
+            delete(Paths.OWNERREMOVEINVITE, AttendanceInviteHandler::handleRemoveInviteToPlaydate);
 
 
             /*      EVENT-routes
@@ -176,6 +182,8 @@ public class ProtectedRoutes {
                 return Optional.of(map);
             }
         }::handleTemplateFileRequest, new VelocityTemplateEngine());
+
+        get(Paths.SHOWPLAYDATESONMAP, new StaticFileTemplateHandlerImpl("find-playdates.vm",400, true)::handleTemplateFileRequest,new VelocityTemplateEngine());
 
         get(Paths.GETMYEVENTS, new GetMyEventsHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 

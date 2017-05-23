@@ -12,17 +12,20 @@
         $(document).ready(function() {
             $('.accept-invite').click(function(e) {
                 e.preventDefault();
+                var div = $(this).closest('.invite-collapse')
                 $.post($(this).attr('href'),function (res) {
                     console.log("res of post = " + res);
+                    div.remove();
                 })
             })
             $('.decline-invite').click(function(e) {
                 e.preventDefault();
+                var div = $(this).closest('.invite-collapse')
                 $.ajax($(this).attr('href'), {
                     type: 'DELETE',
                     success: function(res) {
                         console.log("res of post = " + res);
-                        $(this).parent('div').remove();
+                        div.remove();
                     }
                 })
 
@@ -47,11 +50,11 @@
     <div data-role="main" class="ui-content">
         <h3>Mina inbjudningar:</h3>
         #if($invites.size() == 0)
-            <p class="important-msg">Du har inga inbjudningar</p>
-            <a href="#">Klicka här för att hitta playdates</a>
+            <p class="important-msg" id="no-invites-header">Du har inga inbjudningar</p>
+            <a href="#" class="ui-btn ui-corner-all" style="font-size: 0.8em !important;">Klicka här för att hitta playdates</a>
         #else
             #foreach($invite in $invites)
-                <div data-role="collapsible">
+                <div data-role="collapsible" class="invite-collapse">
                     <h3>$invite.playdate.header</h3>
                     <p>$invite.playdate.description</p>
                     <a href="/protected/acceptinvite?inviteId=$invite.id" class="ui-btn accept-invite">Acceptera</a>

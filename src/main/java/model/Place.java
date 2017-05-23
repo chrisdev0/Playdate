@@ -202,7 +202,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (sthlmAPIid != null ? sthlmAPIid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);

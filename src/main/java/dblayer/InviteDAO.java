@@ -80,6 +80,10 @@ public class InviteDAO {
         }
     }
 
+    public boolean removeInvite(Invite invite) {
+        return removeInvite(invite, invite.getPlaydate(), invite.getInvited());
+    }
+
     public boolean removeInvite(Invite invite, Playdate playdate, User user) {
         Session session = null;
         Transaction tx = null;

@@ -14,18 +14,17 @@ $(document).ready(function () {
 
     var renderFeedObject = function (feed) {
         var feedObjectType = feed.objectTypeId;
-        var feedObjectTypeStr = feedObjectType == 0 ? 'Playdate' : 'Plats';
         var outputStr = '<div class="feed-content">' +
             '<div class="feed-image-composite">' +
-            '<div class="feed-object-type object-type-'+ feedObjectType+'"><span>' + feedObjectTypeStr + '</span></div>' +
+            '<div class="feed-object-type object-type-'+ feedObjectType+'"><span>' + feed.category + '</span></div>' +
             '<img src="/protected/'+ feed.imageUrl+'">'+
             '<h1>'+feed.header+'</h1>' +
             '</div>' +
             '<p class="feed-object-description">'+ feed.shortDescription;
-        if(feedObjectType == 0) {
-            outputStr += '<a data-ajax="false" href="/protected/getoneplaydate?playdateId=' + feed.id + '">Visa Playdate</a>';
+        if(feedObjectType == 0 || feedObjectType == 4) {
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Playdate</a>';
         } else if (feedObjectType == 1) {
-            outputStr += '<a data-ajax="false" href="/protected/showplace?placeId=' + feed.id + '">Visa Plats</a>';
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Plats</a>';
         }
 
         outputStr+= '</p></div>';

@@ -55,12 +55,10 @@
                 <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
                 <p>Telefonnummer: $!{other-user.phoneNumber}</p>
                 <p>Kön: $!{other-user.gender.frontname}</p>
-                <h3>Beskrivning:</h3>
-                <p class="profile-description-text">
-                    $!{other-user.description}
-                </p>
+
 
             </div>
+
 
             <div class="ui-block-b profile-right-block" style="margin-top: 20%;">
 
@@ -91,7 +89,13 @@
                 </div>
 
             </div>
-            <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
+            <h3>Beskrivning:</h3>
+            <p class="profile-description-text">
+                $!{other-user.description}
+            </p>
+            #if(!$other-user.equals($user))
+                <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera användare</a>
+            #end
         </div>
     </div>
 

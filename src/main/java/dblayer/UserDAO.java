@@ -10,12 +10,15 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.mapping.Join;
+import presentable.frontend.UserUserRelationship;
 
 import javax.persistence.JoinColumn;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static presentable.frontend.UserUserRelationship.*;
 import static spark.Spark.halt;
 
 @Slf4j
@@ -181,27 +184,27 @@ public class UserDAO {
     public int getFriendState(User thisUser, User otherUser) {
         if (thisUser.equals(otherUser)) {
             //inloggad användare är samma som användarens profil
-            return 0;
+            return USER_EQUAL_USER.getId();
         } else {
             if (checkIfFriendWithUser(thisUser.getId(), otherUser.getId()).isPresent()) {
                 //inloggad användare är redan vän med användaren
-                return 1;
+                return USERS_ARE_FRIENDS.getId();
             } else {
                 Optional<FriendshipRequest> friendshipRequest = checkIfFriendRequestSent(otherUser.getId(), thisUser.getId());
                 if (friendshipRequest.isPresent()) {
                     if (friendshipRequest.get().getReceiver().equals(thisUser)) {
                         //inloggad användare har fått friendshiprequest av användaren
-                        return 2;
+                        return USER_RECIEVED_FRIEND_REQUEST_FROM_USER.getId();
                     } else {
                         //inloggad användare har skickat friendshriprequest till användaren
-                        return 3;
+                        return USER_SENT_FRIEND_REQUEST_TO_USER.getId();
                     }
                 } else {
                     //inloggad användare har inte fått friendshiprequest,
                     //är inte vänner
                     //och har inte skickat friendshriprequest
                     //(och användarna är inte samma)
-                    return 4;
+                    return USER_NO_RELATIONSHIP.getId();
                 }
             }
         }
@@ -501,4 +504,45 @@ public class UserDAO {
                     .list();
         }
     }
+
+
+    public boolean removeAllOfUser(User user) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+
+            int rows = 0;
+            rows += session.createQuery("DELETE FROM Comment c WHERE c.commenter = :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM Report r WHERE r.reportedUser = :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM Friendship f WHERE f.friend = :user OR f.requester = :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM FriendshipRequest fr WHERE fr.receiver = :user OR fr.sender = :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM Invite i WHERE i.invited = :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM Playdate p WHERE p.owner= :user")
+                    .setParameter("user", user).executeUpdate();
+            rows += session.createQuery("DELETE FROM User u WHERE u.id = :userid")
+                    .setParameter("userid", user.getId()).executeUpdate();
+            log.info("removed " + rows + " rows");
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error removing user", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
 }

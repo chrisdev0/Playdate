@@ -48,7 +48,7 @@ public class FriendshipRequest {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (sender != null ? sender.hashCode() : 0);
         result = 31 * result + (receiver != null ? receiver.hashCode() : 0);

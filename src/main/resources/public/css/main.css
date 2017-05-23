@@ -31,7 +31,7 @@
     height: 2.7em;
 }
 #head-logo{
-    margin-left: 35%;
+    margin-left: 50%;
 }
 .close-btn-pos a {
     display: inline;
@@ -206,27 +206,43 @@
     width: 8.6em;
 }
 
-#fb-login {
 
-    background: #4661d9;
+#logo-container{
+    text-align: center;
+    margin-left: auto;
 }
 
 #index-logo {
-    width: 79.9%;
-
+    width: 65%;
 }
 
-#logo-container {
+
+#kids-index{
+    width: 75%;
+}
+
+
+#kid-container {
     text-align: center;
-
+    margin-left: auto;
 }
 
-#kids {
-    width: 66.4%;
-    z-index: 2000000000;
-    margin-top: 5.8em;
-    margin-left: 17.1%;
+#fb-login-btn{
+    background: #3B5998 !important;
+    color: white !important;
+    margin-top: 1em;
+    font-size: 15px;
+    width: 15em;
+    text-align: center;
+    margin-left: 18%;
+    font-family:tahoma;
 }
+
+#privacy-policy{
+    font-size: small;
+}
+
+
 
 .name-with-button {
     margin-right: 0.5em;
@@ -254,7 +270,7 @@
 
 }
 #text-popup{
-    font-size: 200%;
+    font-size: 100%;
 }
 #info-btn{
     height: 1em;
@@ -262,13 +278,15 @@
 }
 
 #popupInfo{
-    margin-bottom: 6em;
     background: beige;
+    margin-top: 0.5em;
 }
 
 #index-popup-btn{
-    height: 15%;
-    width: 13%;
+    color: white !important;
+    width: 90%;
+    float: right;
+    font-size: 75%;
 }
 
 .descriptionfield-showplaydate{
@@ -327,6 +345,9 @@
 .object-type-1 {
     background: rgba(119, 152, 200, 0.6);
 }
+.object-type-4 {
+    background: rgba(128, 200, 125, 0.6);
+}
 
 .feed-image-composite {
     position: relative;
@@ -369,6 +390,7 @@
 }
 a{
     text-decoration: none;
+    font-size: 12px;
 }
 
 .inviteList li {
@@ -397,14 +419,13 @@ a{
     float: right;
     margin: 0;
 }
-
-
-
 .composite-friend-item img {
     height: 50px;
     width: 50px;
 }
-
 .popup-message{
     padding: 0.3em 0.5em;
+}
+#no-invites-header{
+    font-size: 16px;
 }

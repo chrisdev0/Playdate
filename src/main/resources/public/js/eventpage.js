@@ -28,16 +28,22 @@ $(document).ready(function () {
     });
 
 
-    var renderPlaydates = function(playdates, outputDiv) {
+    var renderPlaydates = function(playdates, output) {
         var ooutput = "";
         $.each(playdates, function (index, playdate) {
-            var output = '<div>' +
-                '<p><a data-ajax="false" href="/protected/getoneplaydate?playdateId='+playdate.id+'">' + playdate.header + '</a></p>' +
-                '</div>';
+             var output = '<li>' +
+
+                    '<a data-ajax="false" class="ui-btn" href="/protected/getoneplaydate?playdateId='+playdate.id+'">' + playdate.header + '</a>' +
+
+
+                        '</li>';
+
             ooutput += output;
         });
-        outputDiv.html(ooutput);
+        output.html(ooutput);
+        output.listview('refresh');
     };
+
 
 
 });

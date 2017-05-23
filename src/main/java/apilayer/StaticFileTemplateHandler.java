@@ -28,6 +28,13 @@ public abstract class StaticFileTemplateHandler  {
         this.haltNumber = onErrorHTTPStatusCode;
     }
 
+
+    public Map<String, Object> onErrorPage(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("error_msg", message);
+        return map;
+    }
+
     public ModelAndView handleTemplateFileRequest(Request request, Response response) {
         Optional<Map<String, Object>> opt = createModelMap(request);
         if (opt.isPresent()) {
@@ -38,7 +45,7 @@ public abstract class StaticFileTemplateHandler  {
             opt.get().put("mapsapikey", Secrets.GOOGLE_MAPS_KEY);
             return new ModelAndView(opt.get(), templateName);
         } else {
-            throw halt(haltNumber);
+            return new ModelAndView(onErrorPage("Serverfel, försök igen senare"), "on-error-page-logged-in.vm");
         }
     }
 

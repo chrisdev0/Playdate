@@ -24,15 +24,32 @@
 
     <div data-role="main" class="ui-content">
 
-        <h2>Kommande playdates</h2>
-        <div id="upcomming-playdates-output"></div>
+        <h3>Kommande playdates</h3>
+        <div  class="listview-borders">
 
-        <h2>Playdates jag kan gå med i</h2>
-        <div id="suggested-playdates-output"></div>
+            <ul data-role="listview" id="upcomming-playdates-output"   data-inset="true">
 
-        <h2>Playdates i närheten</h2>
-        <div id="public-playdates-output"></div>
+            </ul>
+        </div>
+
+        <h3>Playdates jag kan gå med i</h3>
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="suggested-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
+
+        <h3>Playdates i närheten</h3>
+            <a href="/protected/showplaydatesonmap" data-ajax="false">Visa på karta</a>
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="public-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
     </div>
+
 
 
 </div>
