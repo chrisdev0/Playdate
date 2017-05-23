@@ -139,17 +139,20 @@
 
 
             <div class="ui-field-contain">
-                <div class="visibility-btn">
-                    <label for="visibility-type">Öppenhetsnivå:
-                        <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id=" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
-                    </label>
-                </div>
+
                 <select name="visibilityId" id="visibility-type">
+                    <div class="visibility-btn">
+                        <a href="#popupBasic" data-rel="popup" style="margin-left:1em;margin-top: 0em; margin-bottom: 3em;id=" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
+                        </label>
+                    </div>
+                    <option selected disabled>Öppenhetsnivå</option>
                     <option value="0">Offentlig</option>
                     <option value="1">Öppen för vänner</option>
                     <option value="2">Privat</option>
                 </select>
+
             </div>
+
             <label>Datum och tid</label>
             <input type="hidden" name="startTime" id="startTime" value="0">
             <div class="date-row">
