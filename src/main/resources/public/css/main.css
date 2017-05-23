@@ -72,7 +72,9 @@
     width: 15em;
 }
 
-.composite-row {}
+.composite-row {
+
+}
 
 .big-profile div input {
     height: 2em;
@@ -80,12 +82,17 @@
 
 .small-profile div span {
     vertical-align: top;
-    font-size: 0.8em;
+    font-size: 1em;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .small-profile img {
-    width: 5em;
-    max-height: 5em;
+    width: 7em;
+    max-height: 7em;
     margin-right: 0.4em;
     display: inline;
     float: left;
@@ -428,4 +435,14 @@ a{
 }
 #no-invites-header{
     font-size: 16px;
+}
+
+#header-id a {
+    font-size: 1.3em;
+}
+
+#logout-btn {
+    background: red !important;
+    border: 1px solid red !important;
+    color: white !important;
 }
