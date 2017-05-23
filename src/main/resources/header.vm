@@ -13,3 +13,12 @@
         </div>
     #end
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#head-logo').click(function(e) {
+            $("html, body").animate({ scrollTop: 0 }, 300);
+            return false;
+        })
+    });
+</script>
