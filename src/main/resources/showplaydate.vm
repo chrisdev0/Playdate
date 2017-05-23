@@ -24,7 +24,7 @@
     <script>
         $(document).ready(function () {
 
-            window.showWeather(window.placeX, window.placeY);
+            var temp = window.showWeather(window.placeX, window.placeY);
         });
 
     </script>
@@ -78,7 +78,7 @@
         </p>
         <p style= "margin-top: -1em; font-size: 14px;"> Skapad av <a data-ajax="false" href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
 
-        <p id="show-weather" style= "margin-top: -1em; font-size: 18px;"> Väderprognos: </p>
+        <p style= "margin-top: -1em; font-size: 18px;"> Väderprognos: <span id="show-weather"></span>°c</p>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
