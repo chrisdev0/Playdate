@@ -24,13 +24,13 @@
         }
     </style>
     <script>
-        var renderPlace = function(place, placeoutput){
-            var output = '<div data-role="collapsible" id="marker'+place.id+'">';
+        var renderPlace = function (place, placeoutput) {
+            var output = '<div data-role="collapsible" id="marker' + place.id + '">';
             output += '<h3>' + place.name + '</h3>';
-            output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
+            output += '<img>' + '<img src="/protected/apiimage/' + place.imageId + '" class="medium-image">' + '</img>';
             output += '<p>' + place.shortDescription + '</p>';
-            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'"> Visa plats </a>' + '' +
-                    '<a href="#" class="choose-place-link" data-place-id="'+ place.id +'" data-place-name="'+ place.name +'">Välj</a>' +
+            output += '<p>' + '<a href="/protected/showplace?placeId=' + place.id + '"> Visa plats </a>' + '' +
+                    '<a href="#" class="choose-place-link" data-place-id="' + place.id + '" data-place-name="' + place.name + '">Välj</a>' +
                     '</p>';
             output += "</div>";
 
@@ -45,7 +45,7 @@
             });
             marker.setMap(window.map);
             window.markers.push(marker);
-            marker.addListener('click',function() {
+            marker.addListener('click', function () {
                 var anchor = "#marker" + place.id;
                 $('html, body').animate({
                     scrollTop: $(anchor).offset().top
@@ -70,8 +70,8 @@
                 console.log("place id = " + "${playdate.getPlace().getId()}");
                 $('#placeId').val("${playdate.getPlace().getId()}");
                 $('#show-place-placeholder').html(
-                        "<p class='name-with-button'>" + "${playdate.getPlace().name}" +"</p>" +
-                        "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" +"'>Visa</a>"
+                        "<p class='name-with-button'>" + "${playdate.getPlace().name}" + "</p>" +
+                        "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'>Visa</a>"
                 );
                 var startTimeDate = new Date(${playdate.startTime})
                 var year = startTimeDate.getFullYear();
@@ -101,10 +101,9 @@
 <div data-role="page" id="pageone">
 
 
-
-
     <div data-role="main" class="ui-content">
         <form id="create-playdate-form" method="POST" action="/protected/createplaydate" data-ajax="false">
+            <input type="hidden" value="-1" name="playdateId" id="playdateId">
             <input type="hidden" value="-1" name="playdateId" id="playdateId">
             <label for="header-field">
                 Rubrik:
@@ -117,7 +116,8 @@
                 <textarea name="description" id="description-field" cols="40" rows="8"></textarea>
             </div>
             <div data-role="popup" id="popupBasic">
-                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                <a href="#" data-rel="back"
+                   class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 
                 <div data-role="main" class="ui-content">
                     <table class="place-info-table">
@@ -137,53 +137,75 @@
                 </div>
             </div>
 
+        </br>
 
-            <div class="ui-field-contain">
-                <div class="visibility-btn">
-                    <label for="visibility-type">Öppenhetsnivå:
-                        <a href="#popupBasic" data-rel="popup" style="margin-left: 7.2em;margin-top: -1.3em; id=" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext" data-transition="pop">info</a>
-                    </label>
-                </div>
-                <select name="visibilityId" id="visibility-type">
-                    <option value="0">Offentlig</option>
-                    <option value="1">Öppen för vänner</option>
-                    <option value="2">Privat</option>
-                </select>
-            </div>
-            <label>Datum och tid</label>
-            <input type="hidden" name="startTime" id="startTime" value="0">
-            <div class="date-row">
-                <div class="date-column">
-                    <input type="text" id="datepicker-field" data-role="datebox" data-options='{"mode":"flipbox", "afterToday": true}'>
-                </div>
-                <div class="date-column">
-                    <input type="text" id="timepicker-field" data-role="datebox" data-options='{"mode":"timebox"}'>
-                </div>
-            </div>
-            <div>
+                <fieldset class="ui-grid-a">
+                    <div class="ui-block-a" style="width:90%">
 
-                <label for="place-input-field">Sök plats:</label>
+                        <select name="visibilityId" id="visibility-type">
 
-                <input type="search" name="place-input-field" id="place-input-field" data-ajax="false">
-                <ul id="search-suggestions" data-role="listview" data-inset="true"  data-input="#place-input-field">
-                </ul>
-                <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära mig</a>
-            </div>
-            <input type="hidden" name="placeId" id="placeId" value="-1">
-            <hr>
-            <div id="show-place-placeholder">
-                <h2>Ingen plats vald</h2>
-            </div>
-            <hr>
-            <div>
-                <input type="submit" class="ui-btn last-button-on-page" data-ajax="false" id="create-playdate-btn"
-                    #if($playdate)
-                       value="Uppdatera Playdate"
-                    #else
-                       value="Skapa Playdate"
-                    #end
-                >
-            </div>
+                            <option selected disabled>Öppenhetsnivå</option>
+                            <option value="0">Offentlig</option>
+                            <option value="1">Öppen för vänner</option>
+                            <option value="2">Privat</option>
+                        </select>
+
+
+                    </div>
+                    <div class="ui-block-b" style="width:10%">
+                    <div class="visibility-btn">
+                        <a href="#popupBasic" data-rel="popup"
+                           class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext"
+                           data-transition="pop"
+                            style="margin-top:0.95em; margin-left:0.1em">info</a>
+                        </label>
+                    </div>
+                    </div>
+                </fieldset>
+            </br>
+
+
+
+
+                    <label>Datum och tid</label>
+                    <input type="hidden" name="startTime" id="startTime" value="0">
+                    <div class="date-row">
+                        <div class="date-column">
+                            <input type="text" id="datepicker-field" data-role="datebox"
+                                   data-options='{"mode":"flipbox", "afterToday": true}'>
+                        </div>
+                        <div class="date-column">
+                            <input type="text" id="timepicker-field" data-role="datebox"
+                                   data-options='{"mode":"timebox"}'>
+                        </div>
+                    </div>
+                    <div>
+
+                        <label for="place-input-field">Sök plats:</label>
+
+                        <input type="search" name="place-input-field" id="place-input-field" data-ajax="false">
+                        <ul id="search-suggestions" data-role="listview" data-inset="true"
+                            data-input="#place-input-field">
+                        </ul>
+                        <a href="#choose-place" class="ui-btn ui-icon-arrow-r ui-btn-icon-right">Hitta platser nära
+                            mig</a>
+                    </div>
+                    <input type="hidden" name="placeId" id="placeId" value="-1">
+                    <hr>
+                    <div id="show-place-placeholder">
+                        <h2>Ingen plats vald</h2>
+                    </div>
+                    <hr>
+                    <div>
+                        <input type="submit" class="ui-btn last-button-on-page" data-ajax="false"
+                               id="create-playdate-btn"
+                            #if($playdate)
+                               value="Uppdatera Playdate"
+                            #else
+                               value="Skapa Playdate"
+                            #end
+                        >
+                    </div>
         </form>
     </div>
     <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
@@ -197,7 +219,7 @@
     <div data-role="main" class="ui-content">
         <h1>Hitta platser</h1>
         <a href="#pageone" id="back-to-create" data-ajax="false">Tillbaka</a>
-        <div id="map"> </div>
+        <div id="map"></div>
 
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initMap">
