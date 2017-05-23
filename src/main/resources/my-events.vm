@@ -32,7 +32,17 @@
             </ul>
         </div>
 
-        <h3>Playdates jag kan gå med i</h3>
+
+        <h3>Playdates i närheten</h3>
+        <a href="/protected/showplaydatesonmap" data-ajax="false" class="ui-corner-all ui-btn ui-icon-location ui-btn-icon-right" style="text-align:left;">Visa på karta</a>
+        <div  class="listview-borders">
+
+            <ul data-role="listview" id="public-playdates-output"   data-inset="true">
+
+            </ul>
+        </div>
+
+        <h3>Tillgängliga Playdates</h3>
         <div  class="listview-borders">
 
             <ul data-role="listview" id="suggested-playdates-output"   data-inset="true">
@@ -40,14 +50,6 @@
             </ul>
         </div>
 
-        <h3>Playdates i närheten</h3>
-            <a href="/protected/showplaydatesonmap" data-ajax="false">Visa på karta</a>
-        <div  class="listview-borders">
-
-            <ul data-role="listview" id="public-playdates-output"   data-inset="true">
-
-            </ul>
-        </div>
     </div>
 
 
