@@ -116,6 +116,11 @@
     float: left;
 }
 
+.show-place-buttons{
+    width: 90%;
+    margin: 0 auto;
+    text-allign: center;
+}
 .on-bottom-button {
     position: relative;
     margin-top: 8em;
@@ -195,7 +200,7 @@
 }
 
 .medium-image {
-    max-width: 21.5em;
+    max-width: 19.1em;
 }
 
 .place-description {

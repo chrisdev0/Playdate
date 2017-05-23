@@ -106,10 +106,7 @@
                 </div>
         </div>
         <div class="show-place-buttons">
-
-            <a href="#playdates-here" class="ui-btn ui-shadow ui-corner-all ui-mini ui-btn-inline" style="width="10%;" margin-left:6%;">Playdates här</a>
-
-            <a href="#" class="ui-btn ui-shadow ui-corner-all ui-mini ui-btn-inline">Platser i närheten</a>
+            <a href="#playdates-here" class="ui-btn ui-shadow ui-corner-all ui-mini ui-btn-inline" >Kommande Playdates på denna plats</a>
 
         </div>
         <p class="place-description">
@@ -146,7 +143,6 @@
             </form>
         </div>
         <div id="show-comments">
-
         </div>
     </div>
 
@@ -164,11 +160,8 @@
 
 <div data-role="page" id="playdates-here">
     <div data-role="main" class="ui-content">
-        <label for="myFilter" >Sök efter Playdates</label>
-        <form class="ui-filterable">
-            <input id="myFilter" data-type="search">
-        </form>
-        <div id="playdates-here-output"></div>
+        <h3>Kommande Playdates vid $!{place.name} </h3>
+        <div id="playdates-here-output" style="margin-top: 1em"></div>
 
     </div>
 </div>
