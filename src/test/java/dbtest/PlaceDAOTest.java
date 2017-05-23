@@ -315,6 +315,10 @@ public class PlaceDAOTest extends HibernateTests {
         Optional<Place> placeById = PlaceDAO.getInstance().getPlaceById(place.getId());
         assertTrue(placeById.isPresent());
 
+        log.info(place.toString());
+        log.info(place1.toString());
+        log.info(placeById.get().toString());
+
         place1.setId(placeById.get().getId());
         assertEquals(place1,placeById.get());
         remove(place);

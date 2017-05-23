@@ -11,13 +11,11 @@ import stockholmapi.APILoader;
 import stockholmapi.helpers.APIUtils;
 
 
-import static dblayer.DBDataCreator.initDEVData;
 import static spark.Spark.*;
 
 @Slf4j
 public class WebServer {
 
-    private static final boolean SHOULD_LOAD_PLACES = false;
 
     public WebServer() {
         port(getHerokuAssignedPort());
@@ -25,18 +23,6 @@ public class WebServer {
         setStaticFilesPath();
         RouteOverview.enableRouteOverview();
         initHibernate();
-        if (SHOULD_LOAD_PLACES) {
-            try {
-                new APILoader().doLoadOnStartup(APIUtils.URLS.LEKPLATSER);
-                new APILoader().doLoadOnStartup(APIUtils.URLS.MOTIONSSPÅR);
-                new APILoader().doLoadOnStartup(APIUtils.URLS.BADPLATSER);
-                new APILoader().doLoadOnStartup(APIUtils.URLS.MUSEUM);
-                new APILoader().doLoadOnStartup(APIUtils.URLS.UTOMHUSBASSÄNGER);
-                initDEVData();
-            } catch (Exception e) {
-                log.error("error loading places ", e);
-            }
-        }
         initRoutes();
     }
 

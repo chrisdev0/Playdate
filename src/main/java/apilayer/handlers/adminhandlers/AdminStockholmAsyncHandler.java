@@ -2,6 +2,7 @@ package apilayer.handlers.adminhandlers;
 
 import apilayer.Constants;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import spark.Request;
 import spark.Response;
@@ -21,11 +22,12 @@ public class AdminStockholmAsyncHandler {
 
     public static Object reloadAPI(Request request, Response response) {
         String apiKey = request.queryParams("apiId");
-        APIDownloader apiDownloader = new APIDownloaderImpl();
+        String apiName = request.queryParams("apiName");
+        log.info("api key = " + apiKey + " api name  = " + apiName);
         if (runners.containsKey(apiKey)) {
             return setStatusCodeAndReturnString(response, 400, Constants.ADMIN.RUNNER_ALREADY_RUNNING);
         }
-        runners.put(apiKey, new Runner(apiKey));
+        runners.put(apiKey, new Runner(apiKey, apiName));
         return setStatusCodeAndReturnString(response, 200, apiKey);
     }
 
@@ -36,7 +38,7 @@ public class AdminStockholmAsyncHandler {
             if (runners.get(runnerKey).apiDownloader.isFinished()) {
                 return setStatusCodeAndReturnString(response, 200, "finished");
             } else {
-                return setStatusCodeAndReturnString(response, 400, "running");
+                return setStatusCodeAndReturnString(response, 200, "running");
             }
         } else {
             return setStatusCodeAndReturnString(response, 400, "no");
@@ -44,14 +46,33 @@ public class AdminStockholmAsyncHandler {
     }
 
 
-    @Data
+
     private static class Runner extends Thread {
-        String apikey;
+        String apikey, apiName;
         APIDownloader apiDownloader;
 
-        public Runner(String apikey) {
+        public Runner(String apikey, String apiName) {
             this.apikey = apikey;
+            this.apiName = apiName;
             start();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            Runner runner = (Runner) o;
+
+            return apikey != null ? apikey.equals(runner.apikey) : runner.apikey == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 0;
+            result = 31 * result + (apikey != null ? apikey.hashCode() : 0);
+            return result;
         }
 
         @Override
@@ -59,7 +80,7 @@ public class AdminStockholmAsyncHandler {
 
             apiDownloader = new APIDownloaderImpl();
             try {
-                apiDownloader.downloadFromAPI(apikey);
+                apiDownloader.downloadFromAPI(apikey, apiName);
                 log.info("finished loading api");
             } catch (Exception e) {
                 log.error("error loading api",e);

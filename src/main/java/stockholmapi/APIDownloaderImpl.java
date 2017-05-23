@@ -22,9 +22,14 @@ public class APIDownloaderImpl implements APIDownloader {
     }
 
     @Override
-    public void downloadFromAPI(String apiId) throws Exception {
+    public void downloadFromAPI(String apiId, String apiName) throws Exception {
         doLoadDuringRun(apiId);
         finished = true;
+        saveLoadedAPI(apiId, apiName);
+    }
+
+    private void saveLoadedAPI(String apiId, String apiName) {
+        PlaceDAO.getInstance().addLoadedAPI(apiId, apiName);
     }
 
 
