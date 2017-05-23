@@ -14,11 +14,10 @@
         <a class="btn btn-default" href="/protected/admin/index" role="button">Dashboard</a>
         <a class="btn btn-default" href="/protected/admin/place" role="button">Platser</a>
         <a class="btn btn-default" href="/protected/admin/sthlm" role="button">StockholmAPI</a>
-        <a class="btn btn-default" href="#" role="button">Användare</a>
-        <a class="btn btn-default" href="#" role="button">Rapporter</a>
-        <a class="btn btn-default" href="#" role="button">Kommentarer</a>
-        <a class="btn btn-default" href="#" role="button">Playdates</a>
-        <a class="btn btn-default" href="#" role="button">Inställningar</a>
+        <a class="btn btn-default" href="/protected/admin/users" role="button">Användare</a>
+        <a class="btn btn-default" href="/protected/admin/reports" role="button">Rapporter</a>
+        <a class="btn btn-default" href="/protected/admin/comments" role="button">Kommentarer</a>
+        <a class="btn btn-default" href="/protected/admin/playdates" role="button">Playdates</a>
     </div>
     <div class="col-md-2"> </div>
 </div>
