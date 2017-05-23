@@ -8,7 +8,7 @@
     </div>
     <div id="inner-panel">
         <div class="small-profile">
-            <span>$!{user.name}</span>
+            <span class="user-name">$!{user.name}</span>
             <div class="composite-row">
                 <a href="/protected/editmyprofile"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
                 <span>$!{user.description}
@@ -17,12 +17,12 @@
         </div>
 
         <div class="panel-buttons">
-            <a href="/protected/createplaydate" class="ui-btn ui-corner-all" data-ajax="false">Skapa Playdate</a>
-            <a href="/protected/editmyprofile" data-ajax="false" class="ui-btn ui-corner-all">Min Profil</a>
-            <a href="/protected/showplaydates" data-ajax="false" class="ui-btn ui-corner-all">Mina Playdates</a>
-            <a href="/protected/showmyfriends" class="ui-btn ui-corner-all"  data-ajax="false">Mina Vänner</a>
-            <a href="/protected/findplaces" class="ui-btn ui-corner-all" data-ajax="false">Hitta Platser</a>
-            <a href="/logout" data-ajax="false" class="ui-btn ui-corner-all ui-icon-logout" data-ajax="false">Logga Ut</a>
+            <a href="/protected/createplaydate" class="ui-btn ui-icon-plus ui-btn-icon-left ui-corner-all" data-ajax="false">Skapa Playdate</a>
+            <a href="/protected/editmyprofile" data-ajax="false" class="ui-btn ui-icon-user ui-btn-icon-left ui-corner-all">Min Profil</a>
+            <a href="/protected/showplaydates" data-ajax="false" class="ui-btn ui-icon-calendar ui-btn-icon-left ui-corner-all">Mina Playdates</a>
+            <a href="/protected/showmyfriends" class="ui-btn ui-icon-heart ui-btn-icon-left ui-corner-all"  data-ajax="false">Mina Vänner</a>
+            <a href="/protected/findplaces" class="ui-btn ui-icon-location ui-btn-icon-left ui-corner-all" data-ajax="false">Hitta Platser</a>
+            <a href="/logout" data-ajax="false" id="logout-btn" class="ui-btn ui-corner-all ui-icon-logout" data-ajax="false">Logga Ut</a>
 
         </div>
     </div>

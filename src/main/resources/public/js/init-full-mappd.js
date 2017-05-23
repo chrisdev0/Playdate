@@ -34,7 +34,7 @@ $(document).ready(function () {
         $.getJSON('/protected/getpublicplaydatesbylocation?locX=' + lat + "&locY=" + lng, function (res) {
             console.log(res)
             if (res.length == 0) {
-                var output = "<h3>Hittade inga platser här</h3><p>Testa att flytta kartan lite</p>"
+                var output = "<h3>Hittade inga playdates här</h3><p>Testa att flytta kartan lite</p>"
                 console.log("hittade inga platser")
                 console.log("sätter output till = " + output);
                 $('#playdate-output').html(output);
