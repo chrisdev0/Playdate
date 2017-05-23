@@ -5,10 +5,7 @@ import apilayer.StaticFileTemplateHandlerImpl;
 import apilayer.handlers.Paths;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
-import model.Friendship;
-import model.Playdate;
-import model.PlaydateVisibilityType;
-import model.User;
+import model.*;
 import secrets.Secrets;
 import spark.Request;
 import utils.ParserHelpers;
@@ -59,13 +56,17 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
             }
         }
         if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PRIVATE)) {
-            if (playdate.getParticipants().contains(user)) {
+            if (playdate.getParticipants().contains(user) || userIsInviteToPlaydate(user, playdate)) {
                 return true;
             } else {
                 return false;
             }
         }
         return false;
+    }
+
+    private boolean userIsInviteToPlaydate(User user, Playdate playdate) {
+        return playdate.getInvites().stream().map(Invite::getInvited).filter(user1 -> user1.equals(user)).count() == 1;
     }
 
     private boolean usersAreFriends(User user, User friend) {
