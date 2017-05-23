@@ -2,6 +2,7 @@ package stockholmapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import secrets.Secrets;
 import stockholmapi.helpers.APIUtils;
 import stockholmapi.jsontojava.DetailedServiceUnit;
 import stockholmapi.jsontojava.ServiceUnitTypes;
@@ -19,8 +20,8 @@ public class DetailedServiceGuideServiceLoader {
 
     private String apiKey;
 
-    public DetailedServiceGuideServiceLoader(String apiKey) {
-        this.apiKey = apiKey;
+    public DetailedServiceGuideServiceLoader() {
+        this.apiKey = Secrets.STHML_API_KEY;
     }
 
 

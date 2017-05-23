@@ -68,7 +68,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
     private int geoY;
 
     public Place(String sthlmAPIid, String name, String imageId, String timeCreated, String timeUpdated, int geoX, int geoY, String shortDescription) {
-        this.sthlmAPIid = StringEscapeUtils.escapeHtml(sthlmAPIid);
+        setSthlmAPIid(sthlmAPIid);
         this.name = StringEscapeUtils.escapeHtml(name);
         this.imageId = StringEscapeUtils.escapeHtml(imageId);
         this.timeCreated = timeCreated;
@@ -82,16 +82,52 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
         this.sthlmAPIid = StringEscapeUtils.escapeHtml(sthlmAPIid);
     }
 
+    public String getSthlmAPIid() {
+        return StringEscapeUtils.unescapeHtml(sthlmAPIid);
+    }
+
     public void setName(String name) {
         this.name = StringEscapeUtils.escapeHtml(name);
+    }
+
+    public String getName() {
+        return StringEscapeUtils.unescapeHtml(name);
     }
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = StringEscapeUtils.escapeHtml(shortDescription);
     }
 
+    public String getShortDescription() {
+        return StringEscapeUtils.unescapeHtml(shortDescription);
+    }
+
+    public String getLongDescription() {
+        return StringEscapeUtils.unescapeHtml(longDescription);
+    }
+
     public void setLongDescription(String longDescription) {
         this.longDescription = StringEscapeUtils.escapeHtml(longDescription);
+    }
+
+    public String getCategory() {
+        return StringEscapeUtils.unescapeHtml(category);
+    }
+
+    public String getGeoArea() {
+        return StringEscapeUtils.unescapeHtml(geoArea);
+    }
+
+    public String getCityAddress() {
+        return StringEscapeUtils.unescapeHtml(cityAddress);
+    }
+
+    public String getZip() {
+        return StringEscapeUtils.unescapeHtml(zip);
+    }
+
+    public String getStreetAddress() {
+        return StringEscapeUtils.unescapeHtml(streetAddress);
     }
 
     public void setCategory(String category) {
@@ -165,7 +201,7 @@ import static stockholmapi.helpers.APIUtils.API_ZIP;
 
     public Place(ServiceUnitTypes serviceUnitTypes) {
         name = serviceUnitTypes.getName();
-        sthlmAPIid = serviceUnitTypes.getId();
+        setSthlmAPIid(serviceUnitTypes.getId());
         geoX = serviceUnitTypes.getGeographicalPosition().getX();
         geoY = serviceUnitTypes.getGeographicalPosition().getY();
         timeCreated = serviceUnitTypes.getTimeCreated();

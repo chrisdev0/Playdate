@@ -51,6 +51,7 @@
         <mapping class="model.ProfilePicture" />
         <mapping class="model.GeographicalArea" />
         <mapping class="model.Report" />
+        <mapping class="model.APIs" />
 
     </session-factory>
 </hibernate-configuration>

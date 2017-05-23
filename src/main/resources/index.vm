@@ -5,6 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
 
     <title>Playdate!</title>
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
@@ -16,6 +17,15 @@
     <link rel="stylesheet" type="text/css" href="/css/colors.css">
 
     <link rel="stylesheet" href="/css/bubbles.css" />
+    <style>
+        body {
+            overflow: hidden;
+            overflow-y: hidden;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             $('#fb-login').one('click', function(e) {
@@ -77,12 +87,7 @@
         <div id="kid-container">
             <img src="/images/barnen.png" id="kids-index">
         </div>
-
-
-
         <a href="#popupInfo" id="index-popup-btn" data-rel="popup" style="float:right;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info" data-transition="slideup"> Information</a>
-
-
         <div data-role="popup" id="popupInfo">
             <div data-role="main" class="ui-content">
                 <form id="text">
