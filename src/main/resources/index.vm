@@ -17,6 +17,15 @@
     <link rel="stylesheet" type="text/css" href="/css/colors.css">
 
     <link rel="stylesheet" href="/css/bubbles.css" />
+    <style>
+        body {
+            overflow: hidden;
+            overflow-y: hidden;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             $('#fb-login').one('click', function(e) {
