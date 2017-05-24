@@ -23,7 +23,8 @@
 
 
     <div data-role="main" class="ui-content">
-
+        <a href="/protected/createplaydate" data-ajax="false" class="ui-corner-all ui-btn ui-icon-plus ui-btn-icon-right" style="text-align: left;">Skapa ny playdate</a>
+        <hr>
         <h3>Kommande playdates</h3>
         <div  class="listview-borders">
 
