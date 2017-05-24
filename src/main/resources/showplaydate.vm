@@ -58,7 +58,7 @@
 
 
         <h2>$!{playdate.header}</h2>
-        <p style= "margin-top: -1.5em;"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+        ##<p style= "margin-top: -1.5em;"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
         <p style= "margin-top: -1em;">
 
             <script>
@@ -80,7 +80,7 @@
         </p>
         <p style= "margin-top: -1em; font-size: 14px;"> Skapad av <a data-ajax="false" href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
 
-        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span><i class="wi wi-celsius"></i> <span id="show-weathersymbol"></span></p>
+        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span> <span id="show-weathersymbol"></span></p>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
@@ -99,6 +99,8 @@
                 </ul>
             </div>
         </div>
+        <p style= "margin-top: -2.5em;"> <a style="font-size: 16px;" data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+
         <h2>Datum och tid:</h2>
         <div class="descriptionfield-showplaydate">
             <p><script>
@@ -167,9 +169,9 @@
                 #else
                     #foreach($!participant in $!playdate.participants)
                         <p class="participant-in-popup"> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a>
-                            #if($playdate.getOwner().equals($user))
-                                <a class="remove-participant-link" href="/protected/kickfromplaydate?userId=$!participant.getId()&playdateId=$!playdate.getId()">Ta bort</a>
-                            #end
+                        #if($playdate.getOwner().equals($user))
+                            <a class="remove-participant-link" href="/protected/kickfromplaydate?userId=$!participant.getId()&playdateId=$!playdate.getId()">Ta bort</a>
+                        #end
                         </p>
                     #end
                 #end
@@ -195,11 +197,6 @@
             </div>
                 </div>
         </div>
-    </div>
-
-
-    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
-        <p></p>
     </div>
 
 </body>
