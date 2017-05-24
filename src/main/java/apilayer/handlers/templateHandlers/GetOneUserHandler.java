@@ -36,7 +36,8 @@ public class GetOneUserHandler extends StaticFileTemplateHandlerImpl {
             if (playdateByOwnerId.isPresent()) {
                 List<Playdate> playdates = playdateByOwnerId.get();
                 playdates.forEach(playdate -> playdate.getPlace().setComments(null));
-                Set<Playdate> collect = playdates.stream().filter(playdate -> playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)).collect(Collectors.toSet());
+                Set<Playdate> collect = playdates.stream().filter(playdate -> playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)).filter(Playdate::playdateIsInFuture)
+                        .collect(Collectors.toSet());
                 map.put("playdates", collect);
                 map.put("friendsetting", UserDAO.getInstance().getFriendState(SparkHelper.getUserFromSession(request), userById.get()));
             }
