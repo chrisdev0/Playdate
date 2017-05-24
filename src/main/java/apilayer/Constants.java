@@ -2,6 +2,7 @@ package apilayer;
 
 public class Constants {
 
+    public static final int IDS_PER_URL = 30;
     public static boolean DEV = true;
 
     public static final boolean ENV_PRINT_DEBUG = true;

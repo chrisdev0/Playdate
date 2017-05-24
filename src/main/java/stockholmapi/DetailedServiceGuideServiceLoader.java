@@ -1,5 +1,6 @@
 package stockholmapi;
 
+import apilayer.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import secrets.Secrets;
@@ -26,7 +27,7 @@ public class DetailedServiceGuideServiceLoader {
 
 
     public List<DetailedServiceUnit> load(ServiceUnitTypes[] serviceUnitTypes, String serviceUnitTypeId) throws Exception {
-        final int idsPerUrl = 30;
+        final int idsPerUrl = Constants.IDS_PER_URL;
         final String baseUrl = APIUtils.URLS.urlHelper(APIUtils.URLS.MULTI_SERVICE_GUIDE_SERVICE_DETAILED_WITH_ID_PLACEHOLDER, serviceUnitTypeId, apiKey).toExternalForm();
         List<DetailedServiceUnit> detailedServiceUnits = new ArrayList<>();
         List<String> urls = new ArrayList<>();
@@ -42,9 +43,16 @@ public class DetailedServiceGuideServiceLoader {
         }
         log.info("Starting loading detailed service info");
         long start = System.currentTimeMillis();
+        int runs = 0;
         for (String urlStr : urls) {
             String json = stupidStockholmAPIJSONToNotStupidJSON(getUrl(new URL(urlStr)));
+            if (urls.size() > 10 && runs == 10) {
+                runs = 0;
+                log.info("sleeping loader thread for 10 seconds");
+                Thread.sleep(10000);
+            }
             detailedServiceUnits.addAll(Arrays.asList(new ObjectMapper().readValue(json, DetailedServiceUnit[].class)));
+            runs++;
         }
         log.info("loading and mapping info took: " + (System.currentTimeMillis() - start) + "ms");
         return detailedServiceUnits;
