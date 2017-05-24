@@ -27,11 +27,15 @@ public class AdminRoutes {
             get(Paths.ADMIN.ADMIN_PLACE, new AdminPlaceHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
             get(Paths.ADMIN.ADMIN_STHLM, new AdminSthlmHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
             get(Paths.ADMIN.ADMIN_COMMENTS, new AdminCommentPageHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+            get(Paths.ADMIN.ADMIN_REPORTS, new AdminReportPageHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
 
             delete(Paths.ADMIN.ADMIN_REMOVE_COMMENT, AdminSmallHandlers::handleRemoveComment);
 
             post(Paths.ADMIN.RUN_GET_API, AdminStockholmAsyncHandler::reloadAPI);
             get(Paths.ADMIN.GET_RUNNER_STATUS, AdminStockholmAsyncHandler::getStatusOfRunner);
+
+            delete(Paths.ADMIN.ADMIN_REMOVE_REPORT, AdminSmallHandlers::handleRemoveReport);
+            delete(Paths.ADMIN.ADMIN_REMOVE_USER, AdminSmallHandlers::handleRemoveUser);
 
         });
     }
