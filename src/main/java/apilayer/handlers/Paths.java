@@ -91,6 +91,10 @@ public class Paths {
     public static final String REMOVEUSER = "/removeuser";
     public static final String OWNERREMOVEINVITE = "/ownerremoveinvite";
     public static final String OWNERKICKATTENDINGUSER = "/kickfromplaydate";
+    public static final String ACCEPTINVITEBYPLAYDATE = "/useracceptinvite";
+    public static final String DECLINEINVITEBYPLAYDATE = "/userdeclineinvite";
+    public static final String USERJOINPLAYDATE = "/joinplaydate";
+    public static final String USERLEAVEPLAYDATE = "/leaveplaydate";
 
 
     public static class ADMIN {

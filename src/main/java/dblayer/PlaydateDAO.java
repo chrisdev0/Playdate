@@ -221,18 +221,31 @@ public class PlaydateDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+            /*
+            session.refresh(user);
+            session.refresh(playdate);
+            session.refresh();
+            */
 
-            playdate.addParticipant(user);
-            user.attendPlaydate(playdate);
-            user.getInvitesToPlaydates().remove(invite);//tror den ska vara här
 
             session.update(playdate);
             session.update(user);
             session.remove(invite);
 
+            playdate.addParticipant(user);
+            user.attendPlaydate(playdate);
+
+            boolean pl = playdate.removeInvite(invite);
+            boolean us = user.removeInvite(invite);
+            log.info("removed invite from playdate = " + pl);
+            log.info("removed invite from user = " + us);
+
+
+
             tx.commit();
             ret = true;
         } catch (Exception e) {
+            log.error("error adding attendance",e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -242,6 +255,7 @@ public class PlaydateDAO {
                 session.close();
             }
         }
+
         return ret;
     }
 
@@ -252,14 +266,16 @@ public class PlaydateDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+            session.update(playdate);
+            session.update(user);
+            session.refresh(user);
             if (playdate.removeParticipant(user)) {
+                log.info("removed participant from playdate");
                 if (user.removeAttendingPlaydate(playdate)) {
-                    session.update(playdate);
-                    session.update(user);
+                    log.info("removed attending playdate from user");
+
                     ret = true;
                 }
-            } else {
-                ret = false;
             }
             tx.commit();
         } catch (Exception e) {

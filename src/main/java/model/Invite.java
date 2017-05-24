@@ -34,9 +34,10 @@ import javax.persistence.*;
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+
 
         Invite invite = (Invite) o;
+
 
         if (id != null && invite.id != null) {
             return id.equals(invite.id);

@@ -32,12 +32,23 @@ public class InviteDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
-            session.update(invite.getPlaydate());
-            session.update(invite.getInvited());
+            log.info("hashcode of invite before save= " + invite.hashCode());
             session.save(invite);
-
+            log.info("hashcode of invite after save = " + invite.hashCode());
             invite.getPlaydate().addInvite(invite);
             invite.getInvited().addInvite(invite);
+            session.update(invite.getPlaydate());
+            session.update(invite.getInvited());
+            log.info("looping through user invites");
+            invite.getInvited().getInvitesToPlaydates().forEach(invite1 -> log.info(invite1.toString()));
+            invite.getInvited().getInvitesToPlaydates().forEach(invite1 -> log.info("" + invite1.hashCode()));
+
+            log.info("looping through playdate invites");
+            invite.getPlaydate().getInvites().forEach(invite1 -> log.info(invite1.toString()));
+            invite.getPlaydate().getInvites().forEach(invite1 -> log.info("" + invite1.hashCode()));
+
+            log.info("invite = " + invite.toString());
+            log.info("invite hashcode = " + invite.hashCode());
 
             tx.commit();
             ret = true;
@@ -52,6 +63,20 @@ public class InviteDAO {
                 session.close();
             }
         }
+
+        log.info("looping through user invites");
+        invite.getInvited().getInvitesToPlaydates().forEach(invite1 -> log.info(invite1.toString()));
+        invite.getInvited().getInvitesToPlaydates().forEach(invite1 -> log.info("" + invite1.hashCode()));
+
+        log.info("looping through playdate invites");
+        invite.getPlaydate().getInvites().forEach(invite1 -> log.info(invite1.toString()));
+        invite.getPlaydate().getInvites().forEach(invite1 -> log.info("" + invite1.hashCode()));
+
+        log.info("invite = " + invite.toString());
+        log.info("invite hashcode = " + invite.hashCode());
+
+
+
         return ret;
     }
 

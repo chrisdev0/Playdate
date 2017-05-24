@@ -7,10 +7,7 @@ import dblayer.InviteDAO;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Invite;
-import model.Playdate;
-import model.PlaydateVisibilityType;
-import model.User;
+import model.*;
 import spark.Request;
 import spark.Response;
 import utils.ParserHelpers;
@@ -68,6 +65,38 @@ public class AttendanceInviteHandler {
         response.status(400);
         return "error";
     }
+
+    public static Object handleAcceptInviteByPlaydate(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (playdateFromRequest.isPresent()) {
+            Optional<Invite> inviteOfUserAndPlaydate = InviteDAO.getInstance().getInviteOfUserAndPlaydate(user, playdateFromRequest.get());
+            if (inviteOfUserAndPlaydate.isPresent()) {
+                if (PlaydateDAO.getInstance().acceptAndAddAttendance(inviteOfUserAndPlaydate.get())) {
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                }
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, ERROR);
+    }
+
+
+    public static Object handleDeclineInviteByPlaydate(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (playdateFromRequest.isPresent()) {
+            Optional<Invite> inviteOfUserAndPlaydate = InviteDAO.getInstance().getInviteOfUserAndPlaydate(user, playdateFromRequest.get());
+            if (inviteOfUserAndPlaydate.isPresent()) {
+                if (InviteDAO.getInstance().removeInvite(inviteOfUserAndPlaydate.get())) {
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                }
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, ERROR);
+    }
+
+
+
 
     public static Object handleSendInviteToPlaydate(Request request, Response response) {
         String sendToUserStr = request.queryParams(Paths.QueryParams.USER_BY_ID);
@@ -170,5 +199,45 @@ public class AttendanceInviteHandler {
         } else {
             return setStatusCodeAndReturnString(response, 400, NO_USER_WITH_ID + "_OR_" + NO_PLAYDATE_WITH_ID);
         }
+    }
+
+    public static Object handleJoinPlaydate(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (playdateFromRequest.isPresent()) {
+            if (userCanJoinPlaydate(user, playdateFromRequest.get())) {
+                if (PlaydateDAO.getInstance().addAttendance(user,playdateFromRequest.get())) {
+                    return setStatusCodeAndReturnString(response, 200, OK);
+                }
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, ERROR);
+    }
+
+    private static boolean userCanJoinPlaydate(User user, Playdate playdate) {
+        if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PRIVATE)) {
+            return false;
+        }
+        if (playdate.getPlaydateVisibilityType().equals(PlaydateVisibilityType.PUBLIC)) {
+            return true;
+        }
+        if (playdate.getOwner().getFriends().stream().map(Friendship::getFriend).filter(user1 -> user1.equals(user)).count() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Object handleUserLeavePlaydate(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (playdateFromRequest.isPresent()) {
+            if (PlaydateDAO.getInstance().removeAttendance(playdateFromRequest.get(),user)) {
+                return setStatusCodeAndReturnString(response, 200, OK);
+            }
+            log.info("failed to remove attendance");
+        } else {
+            log.info("no playdate with id = " + request.queryParams(Paths.QueryParams.PLAYDATE_BY_ID));
+        }
+        return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 }
