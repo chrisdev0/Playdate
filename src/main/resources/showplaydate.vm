@@ -17,18 +17,6 @@
     <script src="/js/playdate-invites.js"></script>
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
-    <script src="/js/weather.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
-    <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
-
-
-    <script>
-        $(document).ready(function () {
-
-            var temp = window.showWeather(window.placeX, window.placeY);
-        });
-
-    </script>
     <script src="/js/playdate-participant.js"></script>
     <script src="/js/weather.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
@@ -64,14 +52,14 @@
 <div data-role="page" id="pageone">
 
 
+
+
     <div data-role="main" class="ui-content">
 
 
         <h2>$!{playdate.header}</h2>
-        <p style="margin-top: -1.5em;"><a data-ajax="false"
-                                          href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a>
-        </p>
-        <p style="margin-top: -1em;">
+        ##<p style= "margin-top: -1.5em;"> <a data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+        <p style= "margin-top: -1em;">
 
             <script>
                 var playdateVisibilityType = $!{playdate.PlaydateVisibilityType.getNr()};
@@ -93,7 +81,7 @@
         <p style="margin-top: -1em; font-size: 14px;"> Skapad av <a data-ajax="false"
                                                                     href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
 
-        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span><i class="wi wi-celsius"></i> <span id="show-weathersymbol"></span></p>
+        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span> <span id="show-weathersymbol"></span></p>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
@@ -141,6 +129,8 @@
                 });
             </script>
         </div>
+        <p style= "margin-top: -2.5em;"> <a style="font-size: 16px;" data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
+
         <h2>Datum och tid:</h2>
         <div class="descriptionfield-showplaydate">
             <p>
