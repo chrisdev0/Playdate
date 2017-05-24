@@ -78,7 +78,7 @@
             </form>
 
             <div id="privacy-policy">
-            <p>När du loggar in godkänner du <br>Playdates <a href="/privacypolicy.html" data-ajax="false">vilkor</a></p>
+            <p>När du loggar in godkänner du <br>Playdates <a href="/privacypolicy.html" target="_blank" data-ajax="false">vilkor</a></p>
             </div>
 
         </div>

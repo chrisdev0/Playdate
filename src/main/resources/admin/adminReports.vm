@@ -1,9 +1,55 @@
+#* @vtlvariable name="reports" type="java.util.Collection" *#
+#* @vtlvariable name="report" type="model.Report" *#
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
     #parse("/admin/admin-head.vm")
+
+    <script>
+        $(document).ready(function () {
+            $('.remove-report').click(function (e) {
+                e.preventDefault();
+                console.log("inside remove")
+                var row = $(this).closest('.report-row');
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/admin/removereport?reportId=' + $(this).data('reportid'),
+                    success: function (res) {
+                        console.log(res);
+                        row.remove();
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        alert('error removing report');
+                    }
+                });
+
+            });
+
+            $('.remove-user').click(function(e) {
+                e.preventDefault();
+                var row = $(this).closest(".report-row")
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/admin/removeuser?userId=' + $(this).data('userid'),
+                    success: function(res) {
+                        row.remove();
+                    },
+                    error: function(res) {
+                        alert("error removing user " + res)
+                    }
+                });
+
+
+
+            })
+
+        });
+
+    </script>
 </head>
 <body>
 
@@ -20,27 +66,27 @@
             <table>
                 <thead>
                 <tr>
-                    <th>Typ</th>
-                    <th>Antal</th>
+                    <th>RapportId</th>
+                    <th>Av</th>
+                    <th>Rapport</th>
+                    <th>Anmäld användare</th>
+                    <th>Skapad</th>
+                    <th>Ta bort rapport</th>
+                    <th>Ta bort användare</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Användare</td>
-                    <td>$user_counts</td>
-                </tr>
-                <tr>
-                    <td>Rapporter</td>
-                    <td>$report_counts</td>
-                </tr>
-                <tr>
-                    <td>Platser</td>
-                    <td>$place_counts</td>
-                </tr>
-                <tr>
-                    <td>Playdates</td>
-                    <td>$playdate_counts</td>
-                </tr>
+                    #foreach($report in $reports)
+                    <tr class="report-row">
+                        <td>$report.id</td>
+                        <td><a href="/protected/showuser?userId=$report.reporter.id">$report.reporter.name</a></td>
+                        <td>$report.reportDescription</td>
+                        <td><a href="/protected/showuser?userId=$report.reportedUser.id">$report.reportedUser.name</a></td>
+                        <td>$report.createdAt</td>
+                        <td><a class="remove-report" href="#" data-reportid="$report.id">Ta bort rapport</a></td>
+                        <td><a class="remove-user" href="#" data-userid="$report.reportedUser.id">Ta bort användare</a></td>
+                    </tr>
+                    #end
                 </tbody>
             </table>
         </div>

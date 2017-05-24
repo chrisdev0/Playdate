@@ -38,6 +38,10 @@ $(document).ready(function () {
                 $.each(res,function(index, comment) {
                     renderComment(comment)
                 })
+            },
+            error: function (res) {
+                $('#validationPopup p').html("Kommentaren måste vara mellan 10 och 300 tecken lång");
+                $('#validationPopup').popup('open');
             }
         })
     });

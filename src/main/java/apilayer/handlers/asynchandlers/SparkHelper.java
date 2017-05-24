@@ -23,17 +23,17 @@ import static utils.ParserHelpers.*;
 public class SparkHelper {
 
 
-    static Optional<Place> getPlaceFromRequest(Request request) {
+    public static Optional<Place> getPlaceFromRequest(Request request) {
         Long placeId = parseToLong(request.queryParams(Paths.QueryParams.PLACE_BY_ID));
         return PlaceDAO.getInstance().getPlaceById(placeId);
     }
 
-    static Optional<Playdate> getPlaydateFromRequest(Request request) {
+    public static Optional<Playdate> getPlaydateFromRequest(Request request) {
         Long playdateId = parseToLong(request.queryParams(Paths.QueryParams.PLAYDATE_BY_ID));
         return PlaydateDAO.getInstance().getPlaydateById(playdateId);
     }
 
-    static Optional<User> getUserFromRequestById(Request request) {
+    public static Optional<User> getUserFromRequestById(Request request) {
         return UserDAO.getInstance().getUserById(parseToLong(request.queryParams(Paths.QueryParams.USER_BY_ID)));
     }
 

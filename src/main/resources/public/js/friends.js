@@ -48,6 +48,7 @@ $(document).ready(function () {
                 '</li>';
         });
         output.html(ooutput);
+        output.listview();
         output.listview('refresh');
     };
 

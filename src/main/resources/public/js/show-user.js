@@ -69,6 +69,10 @@ $(document).ready(function () {
                 $('#report').val("");
                 $('#popupReport').popup('close');
 
+            },
+            error: function (res) {
+                $('#validationPopup p').html("Rapporten måste vara mellan 10 och 300 tecken lång");
+                $('#validationPopup').popup('open');
             }
         });
     })
