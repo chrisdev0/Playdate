@@ -129,9 +129,7 @@
                 });
             </script>
         </div>
-        <p style= "margin-top: -2.5em;"> <a style="font-size: 16px;" data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
-
-        <h2>Datum och tid:</h2>
+        <h3>När?</h3>
         <div class="descriptionfield-showplaydate">
             <p>
                 <script>
@@ -143,9 +141,12 @@
                         output += "0";
                     }
                     output += timeDateFormat.getMinutes();
+                    document.write(output);
                 </script>
             </p>
         </div>
+        <h3>Var?</h3>
+        <p style= "margin-top: -1.25em;"> <a style="font-size: 16px;" data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
         <h3>Beskrivning:</h3>
         <div class="descriptionfield-showplaydate">
             <p>$!{playdate.description}</p>
