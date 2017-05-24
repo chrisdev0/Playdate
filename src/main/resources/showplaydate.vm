@@ -18,6 +18,8 @@
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
     <script src="/js/weather.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
+    <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
 
 
     <script>
@@ -78,7 +80,7 @@
         </p>
         <p style= "margin-top: -1em; font-size: 14px;"> Skapad av <a data-ajax="false" href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
 
-        <p style= "margin-top: -1em; font-size: 18px;"> Väderprognos: <span id="show-weather"></span>°c</p>
+        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span><i class="wi wi-celsius"></i> <span id="show-weathersymbol"></span></p>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">

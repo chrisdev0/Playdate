@@ -40,6 +40,10 @@ $(document).ready(function() {
 
             console.log(dateObject)
             $("#show-weather").text(dateObject.parameters[1].values[0]);
+            //var wSymb = dateObject.parameters[18].values[0];
+            var wSymb = checkWeatherSymbol(dateObject.parameters[18].values[0])
+
+            $("#show-weathersymbol").append(wSymb)
 
 
         })
@@ -56,13 +60,48 @@ $(document).ready(function() {
         console.log("Efter här kommer res")
         console.log(res.timeSeries);
         for(var i = 0; i < res.timeSeries.length; i++){
-            if (res.timeSeries[i].validTime == dateString){
+            if (res.timeSeries[i].validTime === dateString){
                 console.log("korrekt");
                 return res.timeSeries[i];
             }
         }
 
 
+    }
+
+    function checkWeatherSymbol(wSymb){
+        if (wSymb === 1 || wSymb === 2){
+            return '<i class="wi wi-day-sunny">'
+        }
+
+        if (wSymb === 3 || wSymb === 4 || wSymb === 5 || wSymb === 6 ) {
+            return '<i class="wi wi-day-cloudy">'
+
+        }
+
+        if (wSymb === 7){
+            return '<i class="wi wi-fog">'
+        }
+
+        if (wSymb === 8 || wSymb === 12) {
+            return '<i class="wi wi-rain">'
+        }
+
+        if (wSymb === 9 || wSymb === 13) {
+            return '<i class="wi wi-thunderstorm">'
+        }
+
+        if (wSymb === 10 || wSymb === 14) {
+            return '<i class="wi wi-sleet">'
+        }
+
+        if (wSymb === 11 || wSymb === 15) {
+            return '<i class="wi wi-snow">'
+        }
+
+        if (wSymb !== 1){
+            return '<i class="wi wi-alien">'
+        }
     }
 
 })
