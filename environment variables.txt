@@ -143,3 +143,9 @@ PLAYDATE_KEYSTORE_PASS
 ##
 PLAYDATE_SERVER_PORT
 
+
+##  Ska vara nyckeln till trafiklab
+##
+##
+PLAYDATE_TRAFIKLAB_KEY
+
