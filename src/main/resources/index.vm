@@ -70,9 +70,7 @@
 
 
         <div id="logo-container" style="position: relative; z-index: 100">
-            <img src="/images/pd-logga.png" id="index-logo">
-            <br>
-
+            <img src="/images/pd-logga.png" id="index-logo" >
             <form action="/loginfb" id="form" data-ajax="false">
                 <button id="fb-login-btn" text-align="center" >Logga in med Facebook</button>
             </form>

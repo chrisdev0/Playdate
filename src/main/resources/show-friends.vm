@@ -78,6 +78,7 @@
     <div data-role="main" class="ui-content">
         <div class="listview-borders">
             <div>
+                <h3>Mina vänner</h3>
                 <label for="myFilter" >Sök efter vänner</label>
                 <form class="ui-filterable">
                     <input id="myFilter" data-type="search">
@@ -125,10 +126,11 @@
 
         <div class="listview-borders">
             <h3>Vänförfrågningar</h3>
+            <p style="font-size:80%;margin-top:0,2em"> * Avböj genom att swipea åt höger</p>
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
                     <li class="swipable-friend-request"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
-                        <a href="#" class="friendship-request-popup" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
+                        <a href="#" class="friendship-request-popup"  data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
 
                 #end
@@ -144,8 +146,9 @@
 
     <div data-role="main" class="ui-content">
         <form>
-            <label for="search-friends-field">Sök vän genom namn</label>
-            <input type="text" id="friends-searchterm" name="search-friend-name" data-ajax="false">
+            <h3>Lägg till vänner</h3>
+            <label for="myFilter">Sök efter nya vänner</label>
+                <input id="myFilter" data-type="search">
         </form>
         <ul data-role="listview" data-split-icon="plus"  data-inset="true" id="potential-friends-output">
 
