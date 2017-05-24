@@ -29,8 +29,15 @@
             output += '<h3>' + place.name + '</h3>';
             output += '<img>' + '<img src="/protected/apiimage/' + place.imageId + '" class="medium-image">' + '</img>';
             output += '<p>' + place.shortDescription + '</p>';
-            output += '<p>' + '<a href="/protected/showplace?placeId=' + place.id + '"> Visa plats </a>' + '' +
-                    '<a href="#" class="choose-place-link" data-place-id="' + place.id + '" data-place-name="' + place.name + '">Välj</a>' +
+           // output += '<p>' + '<a href="/protected/showplace?placeId=' + place.id + '"> Visa plats </a>' + '' +
+            //       '<a href="#" class="choose-place-link" data-place-id="' + place.id + '" data-place-name="' + place.name + '">Välj</a>' +
+           //       '</p>';
+
+
+
+           // output += '<p >' + '<a href="/protected/showplace?placeId=' + place.id + '"     class="ui-btn ui-btn-inline ui-corner-all"    > Visa plats </a>' + '' +
+            output += '<p >' + '<a href="/protected/showplace?placeId=' + place.id + '"  > <button type="ui-btn ui-btn-inline ui-corner-all" class="ui-btn ui-btn-inline ui-corner-all">Visa plats </button></a>' + '' +
+            '<a href="#" class="choose-place-link" data-place-id="' + place.id + '" data-place-name="' + place.name + '"  ><button type="ui-btn ui-btn-inline ui-corner-all" class="ui-btn ui-btn-inline ui-corner-all">Välj</button></a>' +
                     '</p>';
             output += "</div>";
 
@@ -71,7 +78,8 @@
                 $('#placeId').val("${playdate.getPlace().getId()}");
                 $('#show-place-placeholder').html(
                         "<p class='name-with-button'>" + "${playdate.getPlace().name}" + "</p>" +
-                        "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'>Visa</a>"
+                       "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'>Visa</a>"
+
                 );
                 var startTimeDate = new Date(${playdate.startTime})
                 var year = startTimeDate.getFullYear();
