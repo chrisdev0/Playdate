@@ -8,7 +8,7 @@
     #if($navbarfriends)
         <div data-role="navbar">
             <ul>
-                <li><a href="#show-friends">Mina Vänner</a></li>
+                <li><a href="#show-friends" style="border:none;">Mina Vänner</a></li>
                 <li><a href="#show-friend-request">Vänförfrågning</a></li>
                 <li><a href="#search-friend">Lägg Till Vänner</a></li>
             </ul>
