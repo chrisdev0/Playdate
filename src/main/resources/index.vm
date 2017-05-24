@@ -70,7 +70,7 @@
 
 
         <div id="logo-container" style="position: relative; z-index: 100">
-            <img src="/images/pd-logga.png" id="index-logo" >
+            <img src="/images/pd-logga.png" id="index-logo">
             <br>
 
             <form action="/loginfb" id="form" data-ajax="false">
