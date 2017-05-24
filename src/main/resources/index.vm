@@ -69,7 +69,7 @@
 
 
 
-        <div id="logo-container" >
+        <div id="logo-container" style="position: relative; z-index: 100000000">
             <img src="/images/pd-logga.png" id="index-logo" >
             <br>
 
@@ -78,7 +78,7 @@
             </form>
 
             <div id="privacy-policy">
-            <p>När du loggar in godkänner du <br> Facebooks <a href="">Privacy Policy</a></p>
+            <p>När du loggar in godkänner du <br>Playdates <a href="/privacypolicy.html" data-ajax="false">vilkor</a></p>
             </div>
 
         </div>

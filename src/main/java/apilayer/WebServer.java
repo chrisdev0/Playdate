@@ -7,8 +7,6 @@ import dblayer.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import secrets.Secrets;
 import spark.route.RouteOverview;
-import stockholmapi.APILoader;
-import stockholmapi.helpers.APIUtils;
 
 
 import static spark.Spark.*;
@@ -46,9 +44,6 @@ public class WebServer {
     }
 
     /** Sätter vart statiska filer ska hämtas ifrån
-     *  todo    måste förmodligen köra på "/public" när vi bygger Place med hjälp av Stockholms API
-     *  todo    om vi kör på att skapa statiska resurser för Place bilder istället för att köra på
-     *  todo    typ BLOB i databasen. Fungerar heller inte för velocity-template-filerna
      * */
     private void setStaticFilesPath() {
         if (Constants.DEV) {
