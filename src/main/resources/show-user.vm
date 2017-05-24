@@ -45,6 +45,7 @@
 
             <h2>$!{other-user.name}</h2>
 
+
         </div>
 
         <div class="ui-grid-a">
@@ -57,9 +58,11 @@
 
 
             <div class="ui-block-b profile-right-block">
+
                 #if($friendsetting == 0)
 
-                    <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
+                    <p><a data-ajax="false" href="/protected/editmyprofile" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate"
+                    >Redigera</a></p>
                 #elseif($friendsetting == 1)
                     <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend"
                        class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate"
@@ -97,21 +100,24 @@
 
         <div style="margin-top: 10%;">
             <div style="margin-bottom: 8%;">
-                <p>Telefonnummer: $!{other-user.phoneNumber}</p>
-                <p>Kön: $!{other-user.gender.frontname}</p>
+                <p><B>Telefonnummer:</B> $!{other-user.phoneNumber}</p>
+                <p><b>Kön:</b> $!{other-user.gender.frontname}</p>
             </div>
             <div style="margin-bottom: 2%; font-size: 1.2em;">
-                Beskrivning
+                <hr>
+                <b>Beskrivning</b>
+
             </div>
             <div class="profile-description-text" style="margin-left:0em; margin-top: 0em;">
                 $!{other-user.description}
             </div>
+        </div>
 
             #if(!$other-user.equals($user))
-                <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera
-                    användare</a>
-            #end
-        </div>
+                <a href="#popupReport" id="rapportera-användare" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-alert ui-btn-icon-notext" data-transition="pop">Rapportera</a>
+
+               #end
+
 
             <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
                 <p></p>

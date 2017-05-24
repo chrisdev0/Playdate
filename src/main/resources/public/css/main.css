@@ -407,7 +407,8 @@
     font-size: 10px;
     float: right;
     right: 15px;
-    margin-top:30%;
+    margin-top:20%;
+    color:red;
 }
 a{
     text-decoration: none;
