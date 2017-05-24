@@ -470,3 +470,8 @@ a{
     margin-left: 0em;
     background-color:#3b5998 !important;
 }
+
+#remove-friend {
+    background: red !important;
+    color: white !important;
+}
