@@ -6,6 +6,7 @@
     #parse("head-links.vm")
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
+    <script src="/js/weather.js"></script>
 
     <style>
         #map, #popupMap-popup {

@@ -47,6 +47,9 @@ $(document).ready(function() {
     }
 
     //setMinute, setSecond till 00:00
+    //Det som ej hanterats är prognoser där vi inte har per-timme-rapport
+    // Det är typ 3 dagar in i framtiden, då kommer rapporterna var sjätte timme.
+    // Hur göra? If date > current date med 3 dagar -> typ floor:a?
     function checkDateOfPlaydate(dateString, res){
         console.log("Här är objekt x inne i " + res.timeSeries[10].parameters[1].values[0] +
             " validTime: " + res.timeSeries[10].validTime + " dateString: " + dateString);
