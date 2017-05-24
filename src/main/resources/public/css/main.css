@@ -378,6 +378,8 @@
     color: black;
     font-size: 1em;
     font-family: sans-serif;
+
+    display: block;
 }
 
 .feed-object-description a {

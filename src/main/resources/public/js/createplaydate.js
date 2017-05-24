@@ -38,6 +38,9 @@ $(document).ready(function() {
             $('#show-place-placeholder').html(
                 "<p class='name-with-button'>" + res.name + "</p>" +
                 "<a href='/protected/showplace?placeId=" + res.id +"'>Visa</a>"
+
+
+
             );
 
         });
