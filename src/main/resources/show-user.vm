@@ -52,7 +52,7 @@
                 <div id="composite-picture">
                     <img src="$!{other-user.profilePictureUrl}" class="profile-picture" style="width: 9em">
                 </div>
-                <a href="$!{other-user.facebookLinkUrl}">Visa Facebookprofil</a>
+                <a href="$!{other-user.facebookLinkUrl}" id="visa-fb-profil" class="ui-btn">Visa Facebookprofil</a>
             </div>
 
 
@@ -79,6 +79,7 @@
                         till vän</a>
                 #end
 
+
                 <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
                      data-iconpos="right">
                     <h4>Playdates</h4>
@@ -104,19 +105,18 @@
             <div class="profile-description-text" style="margin-left:0em; margin-top: 0em;">
                 $!{other-user.description}
             </div>
+
+            #if(!$other-user.equals($user))
+                <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera
+                    användare</a>
+            #end
         </div>
 
-        #if(!$other-user.equals($user))
-            <a href="#popupReport" id="rapportera-användare" data-rel="popup" data-transition="slideup">Rapportera
-                användare</a>
-        #end
+            <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
+                <p></p>
+            </div>
 
-
-    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
-        <p></p>
     </div>
-
-</div>
 </div>
 </body>
 </html>

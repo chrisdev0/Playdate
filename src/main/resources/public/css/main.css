@@ -406,7 +406,7 @@
     font-size: 10px;
     float: right;
     right: 15px;
-    margin-top: 95%;
+    margin-top:30%;
 }
 a{
     text-decoration: none;
@@ -458,4 +458,13 @@ a{
     background: red !important;
     border: 1px solid red !important;
     color: white !important;
+}
+
+#visa-fb-profil {
+    width:10.8em;
+    height:1em;
+    font-size: 0.7em;
+    color:#f7f7f7 !important;
+    margin-left: 0em;
+    background-color:#3b5998 !important;
 }
