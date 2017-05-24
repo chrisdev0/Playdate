@@ -10,7 +10,7 @@
         <div class="small-profile">
             <span class="user-name">$!{user.name}</span>
             <div class="composite-row">
-                <a href="/protected/editmyprofile"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
+                <a href="/protected/showuser?userId=${user.id}"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
                 <span>$!{user.description}
                 </span>
             </div>
@@ -18,7 +18,7 @@
 
         <div class="panel-buttons">
             <a href="/protected/createplaydate" class="ui-btn ui-icon-plus ui-btn-icon-left ui-corner-all" data-ajax="false">Skapa Playdate</a>
-            <a href="/protected/editmyprofile" data-ajax="false" class="ui-btn ui-icon-user ui-btn-icon-left ui-corner-all">Min Profil</a>
+            <a href="/protected/showuser?userId=${user.id}" data-ajax="false" class="ui-btn ui-icon-user ui-btn-icon-left ui-corner-all">Min Profil</a>
             <a href="/protected/showplaydates" data-ajax="false" class="ui-btn ui-icon-calendar ui-btn-icon-left ui-corner-all">Mina Playdates</a>
             <a href="/protected/showmyfriends" class="ui-btn ui-icon-heart ui-btn-icon-left ui-corner-all"  data-ajax="false">Mina Vänner</a>
             <a href="/protected/findplaces" class="ui-btn ui-icon-location ui-btn-icon-left ui-corner-all" data-ajax="false">Hitta Platser</a>
