@@ -56,6 +56,10 @@
                     $.each(res,function(index, comment) {
                         renderComment(comment)
                     })
+                },
+                error: function (res) {
+                    $('#validationPopup p').html("Kommentaren måste vara mellan 10 och 300 tecken lång");
+                    $('#validationPopup').popup('open');
                 }
             })
         });
@@ -154,6 +158,11 @@
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=$!{mapsapikey}&callback=initPopupMap">
         </script>
+    </div>
+
+
+    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
+        <p></p>
     </div>
 
 </div>

@@ -137,14 +137,12 @@
                 </div>
             </div>
 
-        </br>
 
                 <fieldset class="ui-grid-a">
                     <div class="ui-block-a" style="width:90%">
 
                         <select name="visibilityId" id="visibility-type">
 
-                            <option selected disabled>Öppenhetsnivå</option>
                             <option value="0">Offentlig</option>
                             <option value="1">Öppen för vänner</option>
                             <option value="2">Privat</option>
@@ -158,11 +156,9 @@
                            class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-info ui-btn-icon-notext"
                            data-transition="pop"
                             style="margin-top:0.95em; margin-left:0.1em">info</a>
-                        </label>
                     </div>
                     </div>
                 </fieldset>
-            </br>
 
 
 

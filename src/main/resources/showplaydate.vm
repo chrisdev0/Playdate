@@ -153,9 +153,9 @@
                 #else
                     #foreach($!participant in $!playdate.participants)
                         <p class="participant-in-popup"> <a data-ajax="false" href="/protected/showuser?userId=$!{participant.id}"> $!{participant.getName()}</a>
-                        #if($playdate.getOwner().equals($user))
-                            <a class="remove-participant-link" href="/protected/kickfromplaydate?userId=$!participant.getId()&playdateId=$!playdate.getId()">Ta bort</a>
-                        #end
+                            #if($playdate.getOwner().equals($user))
+                                <a class="remove-participant-link" href="/protected/kickfromplaydate?userId=$!participant.getId()&playdateId=$!playdate.getId()">Ta bort</a>
+                            #end
                         </p>
                     #end
                 #end
@@ -181,6 +181,11 @@
             </div>
                 </div>
         </div>
+    </div>
+
+
+    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
+        <p></p>
     </div>
 
 </body>
