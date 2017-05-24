@@ -16,6 +16,7 @@
 </head>
 <body>
 
+
     #parse("side-panel.vm")
 
     #parse("header.vm")
@@ -27,12 +28,12 @@
 
     <div data-role="main" class="ui-content">
         <div data-role="popup" id="popupReport">
-            <a href="#" data-rel="back"
-               class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
                 <h1>Rapportera</h1>
             </div>
             <div data-role="main" class="ui-content" id="make-report">
+                <p id="report-validation-message" class="display: none" style="color: red !important;"></p>
                 <form data-ajax="false" id="makeReport" action="/protected/postreport" method="POST">
                     <textarea cols="30" rows="8" name="reportDescription" id="report"
                               placeholder="Skriv anmälan"></textarea>
@@ -87,6 +88,7 @@
                         <p>Den här användaren har inga öppna playdates</p>
                     #else
                         #foreach($p in $playdates)
+
                             <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
                         #end
                     #end

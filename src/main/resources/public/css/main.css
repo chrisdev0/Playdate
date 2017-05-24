@@ -231,7 +231,8 @@
 }
 
 #index-logo {
-    width: 65%;
+    width: 55%;
+    margin-bottom: 2em;
 }
 
 
@@ -302,10 +303,10 @@
     margin-top: 0.5em;
 }
 
-#index-popup-btn{
+#index-popup-btn {
     color: white !important;
-    width: 90%;
-    float: right;
+    width: 30%;
+    margin-right: 30%;
     font-size: 75%;
 }
 
