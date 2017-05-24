@@ -27,12 +27,14 @@
 
 
     <div data-role="main" class="ui-content">
+
         <div data-role="popup" id="popupReport">
             <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <div data-role="header">
                 <h1>Rapportera</h1>
             </div>
             <div data-role="main" class="ui-content" id="make-report">
+                <p id="report-validation-message" class="display: none" style="color: red !important;"></p>
                 <form data-ajax="false" id="makeReport" action="/protected/postreport" method="POST">
                     <textarea cols="30" rows="8" name="reportDescription" id="report" placeholder="Skriv anmälan"></textarea>
                     <input type="hidden" name="userId" value="$!other-user.id">
@@ -61,14 +63,13 @@
 
             </div>
 
-
             <div class="ui-block-b profile-right-block" style="margin-top: 20%;">
 
                 #if($friendsetting == 0)
 
                     <p><a data-ajax="false" href="/protected/editmyprofile">Redigera</a></p>
                 #elseif($friendsetting == 1)
-                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend" class="ui-btn ui-corner-all ui-shadow remove-playdate-link" href="#popupValidate" data-rel="popup">Ta bort vän</a>
+                    <a data-ajax="false" data-userid="$!other-user.id" id="remove-friend" class="ui-btn ui-corner-all ui-shadow remove-playdate-link">Ta bort vän</a>
                 #elseif($friendsetting == 2)
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest" class="ui-btn ui-corner-all ui-shadow">Acceptera vän</a>
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest" class="ui-btn ui-corner-all ui-shadow">Avböj vänförfrågan</a>
@@ -108,9 +109,6 @@
 
 
 
-    <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
-        <p></p>
-    </div>
 
 
 

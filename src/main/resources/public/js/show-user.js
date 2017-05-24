@@ -71,8 +71,8 @@ $(document).ready(function () {
 
             },
             error: function (res) {
-                $('#validationPopup p').html("Rapporten måste vara mellan 10 och 300 tecken lång");
-                $('#validationPopup').popup('open');
+                console.log(res);
+                $('#report-validation-message').show().text("Rapporten måste vara mellan 10 och 300 tecken lång");
             }
         });
     })

@@ -63,7 +63,7 @@ PLAYDATE_GOOGLE_MAPS_KEY
 PLAYDATE_USE_SSL
 PLAYDATE_KEYSTORE_PASS
 PLAYDATE_SERVER_PORT
-
+PLAYDATE_TRAFIKLAB_KEY
 
 #######     Ni ska inte skriva in värdena här någonstans utan de
 #######     måste läggas till i environment variables

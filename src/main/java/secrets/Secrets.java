@@ -14,6 +14,7 @@ public class Secrets {
 
     public static String STHML_API_KEY;
     public static String GOOGLE_MAPS_KEY;
+    public static String TRAFIKLAB_KEY;
 
     public static String FB_SALT;
     public static String FB_APP_ID;
@@ -44,6 +45,8 @@ public class Secrets {
 
         public static String KEY_TO_PORT = "PLAYDATE_SERVER_PORT";
 
+        public static String KEY_TO_TRAFIKLAB_KEY = "PLAYDATE_TRAFIKLAB_KEY";
+
 
     }
 
@@ -67,6 +70,8 @@ public class Secrets {
 
         extractUseSSL(env.get(ENV_KEYS.KEY_TO_USE_SSL));
         KEYSTORE_PASSWORD = env.get(ENV_KEYS.KEY_TO_KEYSTORE_PASSWORD);
+
+        TRAFIKLAB_KEY = env.get(ENV_KEYS.KEY_TO_TRAFIKLAB_KEY);
 
         extractPort(env.get(ENV_KEYS.KEY_TO_PORT));
 

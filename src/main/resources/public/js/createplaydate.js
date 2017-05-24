@@ -121,7 +121,7 @@ $(document).ready(function() {
                             errorsMsg += "Beskrivningen måste vara mellan 10 och 300 tecken lång<br>"
                         }
                         if (split[i] === 'header') {
-                            errorsMsg += "Rubriken måste vara 3 och 30 tecken lång<br>"
+                            errorsMsg += "Rubriken måste vara mellan 3 och 30 tecken lång<br>"
                         }
                         if (split[i] === 'place') {
                             errorsMsg += "Platsen du valt kunde inte hittas<br>"
