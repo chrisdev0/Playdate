@@ -21,10 +21,16 @@ $(document).ready(function () {
             '<h1>'+feed.header+'</h1>' +
             '</a></div>' +
             '<p class="feed-object-description">'+ feed.shortDescription;
+
         if(feedObjectType == 0 || feedObjectType == 4) {
-            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Playdate</a>';
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'"><button type="ui-btn ui-btn-inline ui-corner-all" class="ui-btn ui-btn-inline ui-corner-all">Visa Playdate</button></a>';
+
+
+
         } else if (feedObjectType == 1) {
-            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'">Visa Plats</a>';
+
+            outputStr += '<a data-ajax="false" href="'+ feed.onClickUrl +'"> <button type="ui-btn ui-btn-inline ui-corner-all" class="ui-btn ui-btn-inline ui-corner-all">Visa Plats</button></a>';
+
         }
 
         outputStr+= '</p></div>';

@@ -126,7 +126,7 @@ PLAYDATE_GOOGLE_MAPS_KEY
 
 ##  Ska vara satt till true om ni ska använda SSL
 ##  false om ni inte ska använda SSL
-##  Ska ni använda SSL så måste ni också generera en keystore
+##  Ska ni använda SSL så måste ni också generera en keystore@mysql.dsv.su.se
 ##  som ska heta keystore.jks och ligga i samma
 ##  mapp som denna fil
 ##  Lösenordet till keystore ska definieras i PLAYDATE_KEYSTORE_PASS
