@@ -78,7 +78,7 @@
                 $('#placeId').val("${playdate.getPlace().getId()}");
                 $('#show-place-placeholder').html(
                         "<p class='name-with-button'>" + "${playdate.getPlace().name}" + "</p>" +
-                        "<a href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'><button class='ui-btn ui-btn-inline ui-corner-all'>Visa</button></a>"
+                        "<a data-ajax='false' class='ui-btn ui-btn-inline' href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'></a>"
 
                         );
 
