@@ -182,7 +182,8 @@
                 </div>
                 <div class="date-column">
                     <input type="text" id="timepicker-field" data-role="datebox"
-                           data-options='{"mode":"timebox"}'>
+                           data-options='{"mode":"timeflipbox", "minuteStep": "10",
+                           "useAnimationTime": "200"}'>
                 </div>
             </div>
             <div>
