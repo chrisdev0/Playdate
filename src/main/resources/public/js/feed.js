@@ -2,8 +2,9 @@ $(document).ready(function () {
 
 
     var outputDiv = $('#output');
-
+    outputDiv.html("<h3 align='center'>Laddar feeden...</h3>")
     navigator.geolocation.getCurrentPosition(function (loc) {
+
         console.log(loc)
         outputDiv.html("")
         $.getJSON('/protected/getfeed?locX=' + loc.coords.latitude + '&locY=' + loc.coords.longitude, function (res) {
