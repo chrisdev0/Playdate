@@ -16,47 +16,27 @@
 
 <script>
 
-    $(document).ready(function() {
-        $('.friendship-request-popup').click(function (e) {
+    $(document).ready(function () {
+
+        $('.friendship-request-ok').click(function (e) {
             e.preventDefault();
 
             var userid = $(this).data("userid");
-            console.log("setting popup settings " + userid);
-
-            $('#accept-friendshiprequest').attr('href', '/protected/acceptfriendshiprequest?userId=' + userid);
-            $('#show-user-friendshiprequest').attr('href', '/protected/showuser?userId=' + userid);
-            $('#decline-friendshiprequest').attr('href', '/protected/declinefriendshiprequest?userId=' + userid);
-
-            $('#accept-friendshiprequest').click(function (e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                $.post($(this).attr('href'),function(res) {
-                    console.log(res.statusCode())
-                })
-
+            var li = $(this).closest('li')
+            window.li = li;
+            $.post('/protected/acceptfriendshiprequest?userId=' + userid, function (res) {
+                li.remove();
             });
-
-            $('#decline-friendshiprequest').click(function (e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                $.post($(this).attr('href'),function(res) {
-                    console.log(res.statusCode())
-                })
-
-            });
-
-            $('#popup').popup("open");
-
         });
+
+
 
         $('#add-friend').click(function (e) {
             e.preventDefault();
 
-            $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function(res) {
+            $.post('/protected/sendfriendrequest?friendId=' + $(this).data('userid'), function (res) {
                 console.log(res);
-            })
+            });
 
         })
     })
@@ -106,22 +86,7 @@
 
     <div data-role="main" class="ui-content">
 
-        <div data-role="popup" data-overlay-theme="b" id="popup" data-theme="a" data-tolerance="0,0">
-            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-rel="back" data-theme="a" class="ui-btn-left">Close</a>
-            <div class="listview-borders">
-                <ul data-role="listview" data-theme="f">
-                    <li data-icon="user">
-                        <a href="#" data-ajax="false" id="show-user-friendshiprequest">Visa Profil</a>
-                    </li>
-                    <li data-icon="check">
-                        <a href="#" data-ajax="false" id="accept-friendshiprequest">Acceptera</a>
-                    </li>
-                    <li  data-icon="delete">
-                        <a href="#" data-ajax="false" id="decline-friendshiprequest">Avböj</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+
 
 
         <div class="listview-borders">
@@ -130,7 +95,7 @@
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
                     <li class="swipable-friend-request"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
-                        <a href="#" class="friendship-request-popup"  data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
+                        <a href="#" class="friendship-request-ok" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
                     </li>
 
                 #end
@@ -148,7 +113,7 @@
         <form>
             <h3>Lägg till vänner</h3>
             <label for="myFilter">Sök efter nya vänner</label>
-                <input id="myFilter" data-type="search">
+            <input id="myFilter" data-type="search">
         </form>
         <ul data-role="listview" data-split-icon="plus"  data-inset="true" id="potential-friends-output">
 
