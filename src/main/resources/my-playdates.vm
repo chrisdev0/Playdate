@@ -35,7 +35,7 @@
                         <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}" class="ui-btn ui-icon-carat-r ui-btn-icon-right"
                            data-inset="true" >$!{p.header}, $!{p.place.getName()}</a>
                     </li>
-                #end-+
+                #end
             </ul>
         </div>
 
