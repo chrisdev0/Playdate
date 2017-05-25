@@ -1,8 +1,13 @@
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/images/favicon.ico" />
 <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
 <meta name="theme-color" content="#b6d489" />
+<meta name="msapplication-navbutton-color" content="#b6d489">
+<meta name="apple-mobile-web-app-status-bar-style" content="#b6d489">
+<meta name="mobile-web-app-capable" content="yes">
+
 <script src="//code.jquery.com/jquery-2.1.4.js" integrity="sha256-siFczlgw4jULnUICcdm9gjQPZkw/YPDqhQ9+nAOScE4=" crossorigin="anonymous"></script>
 
 <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
