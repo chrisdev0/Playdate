@@ -48,7 +48,7 @@
 
 
     <div data-role="main" class="ui-content">
-        <h3>Mina inbjudningar:</h3>
+        <h3>Mina inbjudningar</h3>
         #if($invites.size() == 0)
             <p class="important-msg" id="no-invites-header">Du har inga inbjudningar</p>
             <a href="/protected/showplaydatesonmap" class="ui-btn ui-corner-all" data-ajax="false" style="font-size: 0.8em !important;">Klicka här för att hitta playdates</a>
