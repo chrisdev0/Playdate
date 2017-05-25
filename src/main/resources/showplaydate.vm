@@ -23,9 +23,6 @@
     <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
     <script>
         $(document).ready(function () {
-
-            var temp = window.showWeather(window.placeX, window.placeY);
-
             $('.user-playdate-btn').click(function (e) {
                 e.preventDefault();
                 $.ajax({
