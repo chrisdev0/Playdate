@@ -27,6 +27,7 @@ public class WebServer {
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
+            log.info("using heroku port, setting dev to false");
             Constants.DEV = false;
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }

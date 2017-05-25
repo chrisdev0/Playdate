@@ -37,7 +37,7 @@ $(document).ready(function() {
 
             $('#show-place-placeholder').html(
                 "<p class='name-with-button'>" + res.name + "</p>" +
-                "<a href='/protected/showplace?placeId=" + res.id +"'>Visa</a>"
+                "<a data-ajax='false' class='ui-btn-inline ui-btn' href='/protected/showplace?placeId=" + res.id +"'>Visa</a>"
 
 
 
@@ -70,7 +70,7 @@ $(document).ready(function() {
         var placeName = $(this).data('placeName');
         $('#show-place-placeholder').html(
             "<p class='name-with-button'>" + placeName + "</p>" +
-            "<a href='/protected/showplace?placeId= "+ placeId +"'><button class='ui-btn ui-btn-inline ui-corner-all'>Visa</button></a>"
+            "<a href='/protected/showplace?placeId="+ placeId +"'><button class='ui-btn ui-btn-inline ui-corner-all'>Visa</button></a>"
         );
         $('#placeId').val(placeId);
         searchSuggestionts.html('');
@@ -85,7 +85,7 @@ $(document).ready(function() {
         var placeName = $(this).data('placeName');
         $('#show-place-placeholder').html(
             "<p class='name-with-button'>" + placeName + "</p>" +
-            "<a href='/protected/showplace?placeId=" + placeId +"'>Visa</a>"
+            "<a class='ui-btn ui-btn-inline' data-ajax='false' href='/protected/showplace?placeId=" + placeId +"'>Visa</a>"
         );
         $('#placeId').val(placeId);
         $(':mobile-pagecontainer').pagecontainer('change', '#pageone');
