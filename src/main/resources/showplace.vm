@@ -103,7 +103,7 @@
     <div data-role="main" class="ui-content">
         <div class="view-place-head">
         <h2 style="display: inline;">$!{place.name}</h2>
-            <p style= "margin-top: -0.25em; font-size: 18px;"><i class="wi wi-thermometer"></i><span id="show-current-weather"></span><span id="show-weathersymbol"></span></p>
+            <p style= "margin-top: -0.25em; font-size: 18px;"><i class="wi wi-thermometer"></i><span id="show-current-weather"></span> <span id="show-weathersymbol"></span></p>
         </div>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">

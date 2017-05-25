@@ -15,7 +15,6 @@
     <script src="/js/jtsage-datebox.js"></script>
     <script src="/js/init-full-map.js"></script>
     <script src="/js/init-map.js"></script>
-    <script src="/js/weather.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
     <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
 
@@ -97,14 +96,6 @@
         });
 
     </script>
-
-    <script>
-        $(document).ready(function()){
-            var temp = weather.showWeather(placeX, placeY);
-        }
-
-    </script>
-
 
 </head>
 <body>
@@ -211,8 +202,6 @@
             <div id="show-place-placeholder">
                 <h2>Ingen plats vald</h2>
             </div>
-
-            <p style= "margin-top: -0.25em; font-size: 18px;"><i class="wi wi-thermometer"></i><span style="font-size: 15px;"> Temperatur vid planerat datum: </span><span id="show-current-weather"></span><span id="show-weathersymbol"></span></p>
 
             <hr>
             <div>
