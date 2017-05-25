@@ -13,7 +13,8 @@ $(document).ready(function () {
                 renderFeedObject(feedObject);
             })
         });
-    }, function (wrong) {
+    }, function () {
+        outputDiv.html("");
         outputDiv.append("<p>Var god sätt på platstjänster!</p> " +
             "<a class='ui-btn' href='#' onclick='window.location.reload(true)'>Ladda om sidan</a>");
     });
