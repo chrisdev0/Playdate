@@ -158,7 +158,7 @@
         </div>
         <h3>Var?</h3>
         <p style= "margin-top: -1.25em;"> <a style="font-size: 16px;" data-ajax="false" href="/protected/showplace?placeId=$!{playdate.place.id}"> $!{playdate.place.getName()}</a> </p>
-        <h3>Beskrivning:</h3>
+        <h3>Beskrivning</h3>
         <div class="descriptionfield-showplaydate">
             <p>$!{playdate.description}</p>
         </div>
@@ -179,7 +179,7 @@
             <a class="ui-btn user-playdate-btn" data-ajaxmethod="POST" id="join-playdate-btn" data-ajax="false" href="/protected/joinplaydate?playdateId=$playdate.id">Gå med i Playdate</a>
         #end
 
-        <h3>Kommentar:</h3>
+        <h3>Kommentar</h3>
 
 
         <div id="make-comment">
