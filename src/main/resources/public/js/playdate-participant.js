@@ -3,7 +3,7 @@ $(document).ready(function () {
     $('.remove-participant-link').click(function(e){
         e.preventDefault();
         console.log("inside link");
-        var parent = $(this).closest('.participant-in-popup');
+        var parent = $(this).closest('li');
         $.ajax({
             type: 'DELETE',
             url: $(this).attr('href'),

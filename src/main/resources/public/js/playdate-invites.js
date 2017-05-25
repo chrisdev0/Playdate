@@ -107,11 +107,10 @@ $(document).ready(function () {
         invitelist.html("");
         $.each(friends, function (index, user) {
             ooutput += '<li>' +
-                '<p>' +
-                '<img src="' + user.profilePictureUrl + '" class="img-size">' +
-                user.name +
-                '<a href="#" class="add-friend-to-playdate" data-ajax="false" data-userid="' + user.id + '">Bjud in vän</a>' +
-                '</p>' +
+                '<a href="/protected/showuser?userID='+ user.id +'">' +
+                '<img src="' + user.profilePictureUrl + '" class="img-size">' + user.name +
+                '</a><a href="#" class="add-friend-to-playdate" data-ajax="false" data-userid="' + user.id + '">Bjud in vän</a>' +
+                '' +
                 '</li>';
         });
 

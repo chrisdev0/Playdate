@@ -419,14 +419,6 @@ a{
     font-size: 12px;
 }
 
-.inviteList li {
-
-}
-
-.inviteList {
-    list-style: none;
-    padding-left: 0;
-}
 
 .composite-friend-item {
     height: 60px;
@@ -478,4 +470,25 @@ a{
 #remove-friend {
     background: red !important;
     color: white !important;
+}
+
+#popupAdd-popup {
+    width: 100%;
+    position: fixed !important;
+    top: 4em !important;
+}
+
+#popupAdd-popup ul {
+    height: 400px !important;
+    overflow-y: scroll;
+}
+#popupParticipant-popup {
+    width: 100%;
+    position: fixed !important;
+    top: 4em !important;
+}
+
+#popupParticipant-popup ul {
+    height: 400px !important;
+    overflow-y: scroll;
 }
