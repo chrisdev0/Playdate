@@ -21,7 +21,32 @@
     <script src="/js/playdate-participant.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
     <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
+    <script>
+        $(document).ready(function () {
 
+            var temp = window.showWeather(window.placeX, window.placeY);
+
+            $('.user-playdate-btn').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: $(this).data('ajaxmethod'),
+                    url: $(this).attr('href'),
+                    success: function(res){
+                        console.log("success accept");
+
+                        window.location.reload(true);
+                    },
+                    error: function(res) {
+                        console.log("error accept")
+                    }
+                })
+
+            });
+
+
+        });
+
+    </script>
 
     <script>
         $(document).ready(function () {
