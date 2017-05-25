@@ -2,6 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/images/favicon.ico" />
 <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/pd-logga.png" />
+<link rel="icon" type="image/png" href="/images/pd-logga.png" sizes="192x192">
 
 <script src="//code.jquery.com/jquery-2.1.4.js" integrity="sha256-siFczlgw4jULnUICcdm9gjQPZkw/YPDqhQ9+nAOScE4=" crossorigin="anonymous"></script>
 
