@@ -7,6 +7,8 @@
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
     <script src="/js/weather.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
+    <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
 
     <style>
         #map, #popupMap-popup {
@@ -21,6 +23,9 @@
 
 <script>
     $(document).ready(function() {
+
+        var temp = window.showCurrentWeather(window.placeX, window.placeY);
+
         $.getJSON('/protected/commentsofplace?placeId=$!place.id',function(res) {
             console.log(res);
             $('#show-comments').html("");
@@ -98,6 +103,7 @@
     <div data-role="main" class="ui-content">
         <div class="view-place-head">
         <h2 style="display: inline;">$!{place.name}</h2>
+            <p style= "margin-top: -0.25em; font-size: 18px;"><i class="wi wi-thermometer"></i><span id="show-current-weather"></span><span id="show-weathersymbol"></span></p>
         </div>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">

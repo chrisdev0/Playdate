@@ -123,6 +123,62 @@ $(document).ready(function() {
         }
     }
 
+    window.showCurrentWeather = function(placeX, placeY){
+
+        var ch = new CoordinateHandler;
+
+        latlng = ch.gridToGeodetic(placeX, placeY);
+
+
+        var lat = parseFloat(latlng.lat);
+        var lon = parseFloat(latlng.lon);
+
+        //Sätter längd på lat och lon till 6, pga det är max vi får stoppa in i SMHI
+        lat = lat.toFixed(6);
+        lon = lon.toFixed(6);
+
+        var url = 'https://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/{lon}/lat/{lat}/data.json';
+
+        console.log(url);
+
+        url = url.replace("{lat}", lat);
+        url = url.replace("{lon}", lon);
+        $.getJSON(url, function(res){
+            console.log(res);
+
+            var currentTime = new Date();
+
+            currentTime = parseInt(currentTime.getTime()) + 7200000;
+
+            //console.log(dateOfPlaydate);
+            currentTime = new Date(currentTime);
+            //console.log(date.toJSON());
+            currentTime.setMinutes(00);
+            currentTime.setSeconds(00);
+            currentTime.setMilliseconds(0);
+            //console.log("ISO: "+ date.toISOString().substring(0,19)+'Z')
+            var dateString = currentTime.toISOString().substring(0,19)+'Z';
+
+            var dateObject = checkDateOfPlaydate(dateString, res);
+
+            console.log(dateObject)
+            if (dateObject === undefined){
+                $("#show-current-weather").text("Ingen prognos finns");
+            }
+            else {
+                $("#show-current-weather").append(dateObject.parameters[1].values[0] + '<i class="wi wi-celsius"></i>');
+                var wSymb = dateObject.parameters[18].values[0];
+                var wSymbol = checkWeatherSymbol(wSymb)
+                $("#show-weathersymbol").append(wSymbol)
+            }
+        })
+
+    }
+
+
+
+
+
     /*function checkDateOfPlaydate(date, res){
      console.log(res.timeSeries);
      var isAfter = false;
