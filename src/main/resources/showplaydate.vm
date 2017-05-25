@@ -17,6 +17,18 @@
     <script src="/js/playdate-invites.js"></script>
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
+    <script src="/js/weather.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
+    <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
+
+
+    <script>
+        $(document).ready(function () {
+
+            var temp = window.showWeather(window.placeX, window.placeY);
+        });
+
+    </script>
     <script src="/js/playdate-participant.js"></script>
     <script src="/js/weather.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
@@ -52,8 +64,6 @@
 <div data-role="page" id="pageone">
 
 
-
-
     <div data-role="main" class="ui-content">
 
 
@@ -81,7 +91,8 @@
         <p style="margin-top: -1em; font-size: 14px;"> Skapad av <a data-ajax="false"
                                                                     href="/protected/showuser?userId=$!{playdate.owner.id}"> $!{playdate.owner.getName()}</a>
 
-        <p style= "margin-top: -0.75em; font-size: 16px;"> <i class="wi wi-thermometer"></i> <span id="show-weather"></span> <span id="show-weathersymbol"></span></p>
+        <p style="margin-top: -0.75em; font-size: 16px;"><i class="wi wi-thermometer"></i> <span
+                id="show-weather"></span><i class="wi wi-celsius"></i> <span id="show-weathersymbol"></span></p>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
                 <img src="/protected/apiimage/$!{playdate.place.getImageId()}" class="medium-image">
@@ -151,6 +162,23 @@
         <div class="descriptionfield-showplaydate">
             <p>$!{playdate.description}</p>
         </div>
+
+        #if($playdatesetting == 1)
+        ## användare kan lämna playdate
+            <a class="ui-btn user-playdate-btn" id="leave-playdate-btn" data-ajax="false"
+               style="background-color: red !important; border 1px red !important; color: white !important;"
+               href="/protected/leaveplaydate?playdateId=$playdate.id"  data-ajaxmethod="DELETE" >Lämna playdate</a>
+        #elseif($playdatesetting == 2)
+        ## användare kan tacka ja till invite
+            <a class="ui-btn user-playdate-btn"  data-ajaxmethod="POST"  id="accept-invite-btn" data-ajax="false" href="/protected/useracceptinvite?playdateId=$playdate.id">Tacka ja till invite</a>
+            <a class="ui-btn user-playdate-btn" id="decline-invite-btn"  data-ajaxmethod="DELETE" data-ajax="false"
+               style="background-color: red !important; border 1px red !important; color: white !important;"
+               href="/protected/userdeclineinvite?playdateId=$playdate.id">Tacka nej till invite</a>
+        #elseif($playdatesetting == 3)
+        ## användare kan gå med
+            <a class="ui-btn user-playdate-btn" data-ajaxmethod="POST" id="join-playdate-btn" data-ajax="false" href="/protected/joinplaydate?playdateId=$playdate.id">Gå med i Playdate</a>
+        #end
+
         <h3>Kommentar:</h3>
 
 
@@ -245,7 +273,7 @@
                     
             </div>
         </div>
-        </p></div>
+        </div>
 
 
     <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">

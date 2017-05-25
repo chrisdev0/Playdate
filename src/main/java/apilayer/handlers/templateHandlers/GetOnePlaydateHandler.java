@@ -6,6 +6,7 @@ import apilayer.handlers.Paths;
 import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import model.*;
+import presentable.frontend.UserPlaydateRelationship;
 import secrets.Secrets;
 import spark.Request;
 import utils.ParserHelpers;
@@ -35,6 +36,7 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
         if (playdateById.isPresent()) {
             if (userShouldHaveAccessToPlaydate(playdateById.get(), user)) {
                 map.put("playdate", playdateById.get());
+                map.put("playdatesetting", getPlaydateSetting(user, playdateById.get()));
                 return Optional.of(map);
             } else {
                 return Optional.empty();
@@ -42,6 +44,19 @@ public class GetOnePlaydateHandler extends StaticFileTemplateHandlerImpl {
         } else {
             return Optional.empty();
         }
+    }
+
+    private int getPlaydateSetting(User user, Playdate playdate) {
+        if (playdate.getOwner().equals(user)) {
+            return UserPlaydateRelationship.USER_IS_OWNER.getNr();
+        }
+        if (playdate.getParticipants().contains(user)) {
+            return UserPlaydateRelationship.USER_IS_ATTENDING.getNr();
+        }
+        if (playdate.getInvites().stream().map(Invite::getInvited).filter(user1 -> user1.equals(user)).count() == 1) {
+            return UserPlaydateRelationship.USER_IS_INVITED.getNr();
+        }
+        return UserPlaydateRelationship.USER_CAN_JOIN.getNr();
     }
 
     private boolean userShouldHaveAccessToPlaydate(Playdate playdate, User user) {
