@@ -2,14 +2,19 @@ $(document).ready(function () {
 
 
     var outputDiv = $('#output');
+
     navigator.geolocation.getCurrentPosition(function (loc) {
         console.log(loc)
+        outputDiv.html("")
         $.getJSON('/protected/getfeed?locX=' + loc.coords.latitude + '&locY=' + loc.coords.longitude, function (res) {
             console.log(res);
             $.each(res, function (index, feedObject) {
                 renderFeedObject(feedObject);
             })
         });
+    }, function (wrong) {
+        outputDiv.append("<p>Var god sätt på platstjänster!</p> " +
+            "<a class='ui-btn' href='#' onclick='window.location.reload(true)'>Ladda om sidan</a>");
     });
 
     var renderFeedObject = function (feed) {

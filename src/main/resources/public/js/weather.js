@@ -74,12 +74,6 @@ $(document).ready(function() {
 
     }
 
-    //setMinute, setSecond till 00:00
-    //Det som ej hanterats är prognoser där vi inte har per-timme-rapport
-    // Det är typ 3 dagar in i framtiden, då kommer rapporterna var sjätte timme.
-    // Hur göra? If date > current date med 3 dagar -> typ floor:a?
-
-
     function checkDateOfPlaydate(dateString, res){
         console.log(res.timeSeries);
         for(var i = 0; i < res.timeSeries.length; i++){
@@ -150,13 +144,10 @@ $(document).ready(function() {
 
             currentTime = parseInt(currentTime.getTime()) + 7200000;
 
-            //console.log(dateOfPlaydate);
             currentTime = new Date(currentTime);
-            //console.log(date.toJSON());
             currentTime.setMinutes(00);
             currentTime.setSeconds(00);
             currentTime.setMilliseconds(0);
-            //console.log("ISO: "+ date.toISOString().substring(0,19)+'Z')
             var dateString = currentTime.toISOString().substring(0,19)+'Z';
 
             var dateObject = checkDateOfPlaydate(dateString, res);
@@ -172,37 +163,6 @@ $(document).ready(function() {
                 $("#show-weathersymbol").append(wSymbol)
             }
         })
-
     }
-
-
-
-
-
-    /*function checkDateOfPlaydate(date, res){
-     console.log(res.timeSeries);
-     var isAfter = false;
-     var isBefore = false;
-
-     for(var i = 0; i < res.timeSeries.length; i++){
-     if (date < res.timeSeries[i].validTime) {
-     isBefore = true;
-     }
-     else if (date > res.timeSeries[i].validTime){
-     isAfter = true;
-     isBefore = false;
-     }
-     if (isAfter && i !== 0){
-     return res.timeSeries[i-1];
-     }
-     }
-
-     if (!isAfter || !isBefore){
-     return ""
-     }
-
-     return res.timeSeries[i];
-     }*/
-
 })
 
