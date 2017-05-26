@@ -38,14 +38,12 @@
                 <div id="composite-picture">
                     <a href="#" data-rel="popup" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext ui-overlay-shadow" id="edit-profile-picture" data-ajax="false">Edit Icon</a>
                     <img src="$!{user.profilePictureUrl}" class="profile-picture profile-picture-upload" style="width: 9em">
-                    <div id="change-profilepic-text">
-                    <p>Ändra profilbild</p>
-                    </div>
+
                 </div>
             </div>
             <form action="/protected/editmyprofile" method="POST" id="update-profile-form">
                 <div class="ui-block-b">
-
+                    <br>
                     <label for="phoneinput">Telefonnummer:</label>
                     <input type="text" name="phoneinput" id="phoneinput" value="$!{user.phoneNumber}">
 
