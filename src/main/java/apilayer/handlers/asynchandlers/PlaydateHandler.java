@@ -82,7 +82,7 @@ public class PlaydateHandler {
                     return setStatusCodeAndReturnString(response,200, OK);
                 }
             } else {
-                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_COMMENT);
             }
         } else {
             return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);

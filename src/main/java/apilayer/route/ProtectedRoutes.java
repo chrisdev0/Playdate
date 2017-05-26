@@ -79,6 +79,7 @@ public class ProtectedRoutes {
             //playdate
             post(Paths.POSTPLAYDATECOMMENT, CommentsHandler::handlePostPlaydateComment);
             get(Paths.COMMENTSOFPLAYDATE, CommentsHandler::handleGetCommentsOfPlaydate);
+            delete(Paths.REMOVECOMMENT, CommentsHandler::handleRemoveComment);
 
             /* Report-routes */
             post(Paths.POSTREPORT, ReportHandler::createUserReport);

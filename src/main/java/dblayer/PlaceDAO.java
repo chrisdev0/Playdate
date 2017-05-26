@@ -220,6 +220,29 @@ public class PlaceDAO {
         }
     }
 
+    public boolean removeComment(Comment comment) {
+        boolean ret = false;
+        Session session = null;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getInstance().openSession();
+            tx = session.beginTransaction();
+            session.remove(comment);
+            tx.commit();
+            ret = true;
+        } catch (Exception e) {
+            log.error("error saving", e);
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
     public void updatePlaceFromAPIEndPoint(List<Place> places) {
         Session session = null;
         Transaction tx = null;
@@ -289,6 +312,12 @@ public class PlaceDAO {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    public Optional<Comment> getCommentById(Long commentID) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.byId(Comment.class).loadOptional(commentID);
         }
     }
 

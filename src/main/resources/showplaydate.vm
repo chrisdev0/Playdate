@@ -23,6 +23,7 @@
     <script src="/js/playdate-participant.js"></script>
 
     <script>
+        window.userId = ${user.id};
         $(document).ready(function () {
             $('.user-playdate-btn').click(function (e) {
                 e.preventDefault();

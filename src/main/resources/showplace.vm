@@ -21,70 +21,98 @@
         window.placeY = "$!place.geoY";
     </script>
 
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function () {
 
-        var temp = window.showCurrentWeather(window.placeX, window.placeY);
+            var temp = window.showCurrentWeather(window.placeX, window.placeY);
 
-        $.getJSON('/protected/commentsofplace?placeId=$!place.id',function(res) {
-            console.log(res);
-            $('#show-comments').html("");
-            $.each(res, function (index, comment) {
-                renderComment(comment)
-            });
-        })
+            $.getJSON('/protected/commentsofplace?placeId=$!place.id', function (res) {
+                console.log(res);
+                $('#show-comments').html("");
+                $.each(res, function (index, comment) {
+                    renderComment(comment)
+                });
+            })
 
-        var renderComment = function (comment) {
-            var output = "<div class='bottom-line'>";
-            var date = new Date(comment.commentDate);
+            var renderComment = function (comment) {
+                var output = "<div class='bottom-line'>";
+                var date = new Date(comment.commentDate);
+                var userId = ${user.id};
 
-            output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
-                    " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
-                    date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "</p>";
-            output += "<p>" + comment.comment + "</p>"
-            output += "</div>"
-            $('#show-comments').append(output);
-        };
-
-        $('#makeComment').submit(function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            $.ajax({
-                type: 'POST',
-                url: '/protected/postcomment',
-                data: $('#makeComment').serialize(),
-                success: function(res) {
-                    console.log(res);
-                    res = JSON.parse(res);
-                    $('#comment').val("");
-                    $('#show-comments').html("");
-                    $.each(res,function(index, comment) {
-                        renderComment(comment)
-                    })
-                },
-                error: function (res) {
-                    $('#validationPopup p').html("Kommentaren måste vara mellan 10 och 300 tecken lång");
-                    $('#validationPopup').popup('open');
+                var userCanDelete = false;
+                if (userId == comment.commenter.id) {
+                    userCanDelete = true;
                 }
+
+                output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
+                        " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
+                        date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+                output += "</p>";
+                output += "<p>" + comment.comment;
+                if (userCanDelete) {
+                    output += '<a  style="display: block; font-size: 1em" href="/protected/removecomment?commentId=' + comment.id + '" class="remove-comment-link">Ta bort</a>';
+                }
+                output += "</p>"
+                output += "</div>"
+                $('#show-comments').append(output);
+            };
+
+            $('#show-comments').on('click', '.remove-comment-link',function(e) {
+                e.preventDefault();
+                var commenDiv = $(this).closest('.bottom-line');
+                $.ajax({
+                    type: 'DELETE',
+                    url: $(this).attr('href'),
+                    success: function(res) {
+                        commenDiv.remove();
+                    },
+                    error: function(res) {
+                        alert("Fel, kommentaren gick inte att ta bort")
+                    }
+                })
+
+            })
+
+            $('#makeComment').submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/protected/postcomment',
+                    data: $('#makeComment').serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        res = JSON.parse(res);
+                        $('#comment').val("");
+                        $('#show-comments').html("");
+                        $.each(res, function (index, comment) {
+                            renderComment(comment)
+                        })
+                    },
+                    error: function (res) {
+                        $('#validationPopup p').html("Kommentaren måste vara mellan 10 och 300 tecken lång");
+                        $('#validationPopup').popup('open');
+                    }
+                })
+            });
+
+
+            $.getJSON('/protected/playdatesofplace?placeId=$!place.id', function (res) {
+                console.log(res);
+                var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-timeFilter="true" data-input="#myFilter">'
+                $.each(res, function (index, playdate) {
+                    var output = "<li>";
+                    output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-timeFilter='true' data-input='#myFilter'>" + playdate.header + "</a>";
+                    output += "</li>";
+                    ooutput += output;
+                });
+                ooutput += "</ul>"
+                $('#playdates-here-output').html(ooutput);
             })
         });
 
-
-        $.getJSON('/protected/playdatesofplace?placeId=$!place.id',function(res) {
-            console.log(res);
-            var ooutput = '<ul style="margin-top: 2em;" data-role="listview" data-timeFilter="true" data-input="#myFilter">'
-            $.each(res, function (index, playdate) {
-                var output = "<li>";
-                output += "<a href='/protected/getoneplaydate?playdateId=" + playdate.id + "' data-ajax='false' data-timeFilter='true' data-input='#myFilter'>" + playdate.header + "</a>";
-                output += "</li>";
-                ooutput += output;
-            });
-            ooutput += "</ul>"
-            $('#playdates-here-output').html(ooutput);
-        })
-    })
-</script>
+    </script>
 
 </head>
 <body>
@@ -107,14 +135,14 @@
         </div>
         <div class="ui-grid-a place-image-btns">
             <div class="ui-block-a">
-        <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
+                <img src="/protected/apiimage/$!{place.imageId}" class="medium-image">
             </div>
-                <div class="ui-block-b">
-                    <ul id="btns-list" style="float:right;">
-                        <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
-                        <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
-                    </ul>
-                </div>
+            <div class="ui-block-b">
+                <ul id="btns-list" style="float:right;">
+                    <li><a data-ajax="false" href="/protected/createplaydate?placeId=$!place.id" style="float:right; top:-5px;" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-plus ui-btn-icon-notext" data-transition="pop">skapa playdate</a></li>
+                    <li><a href="#popupMap" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-location ui-btn-icon-notext">location</a></li>
+                </ul>
+            </div>
         </div>
         <div class="show-place-buttons">
             <a href="#playdates-here" class="ui-btn ui-shadow ui-corner-all ui-mini ui-btn-inline" >Kommande Playdates på denna plats</a>

@@ -1,22 +1,21 @@
 package apilayer.handlers.asynchandlers;
 
 import apilayer.Constants;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dblayer.PlaceDAO;
 import dblayer.PlaydateDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import model.Place;
-import org.apache.commons.lang.StringEscapeUtils;
+import model.User;
 import model.Playdate;
 import spark.Request;
 import spark.Response;
+import utils.ParserHelpers;
 import utils.Utils;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static apilayer.handlers.asynchandlers.SparkHelper.*;
@@ -89,6 +88,22 @@ public class CommentsHandler {
             response.status(400);
             return "";
         }
+    }
+
+    public static Object handleRemoveComment(Request request, Response response) {
+        User user = getUserFromSession(request);
+        Long commentId = ParserHelpers.parseToLong(request.queryParams("commentId"));
+        Optional<Comment> commentById = PlaceDAO.getInstance().getCommentById(commentId);
+        if (commentById.isPresent()) {
+            if (commentById.get().getCommenter().equals(user)) {
+                if (PlaceDAO.getInstance().removeComment(commentById.get())) {
+                    return setStatusCodeAndReturnString(response, 200, Constants.MSG.OK);
+                }
+            } else {
+                return setStatusCodeAndReturnString(response, 400, Constants.MSG.USER_IS_NOT_OWNER_OF_COMMENT);
+            }
+        }
+        return setStatusCodeAndReturnString(response, 400, Constants.MSG.ERROR);
     }
 
 

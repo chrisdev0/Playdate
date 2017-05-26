@@ -1,6 +1,5 @@
 package apilayer.handlers.asynchandlers;
 
-import apilayer.Constants;
 import apilayer.handlers.Paths;
 import com.google.gson.GsonBuilder;
 import dblayer.InviteDAO;
@@ -120,7 +119,7 @@ public class AttendanceInviteHandler {
                     }
                 } else {
                     response.status(400);
-                    return USER_IS_NOT_OWNER_OF_PLAYDATE;
+                    return USER_IS_NOT_OWNER_OF_COMMENT;
                 }
             } else {
                 response.status(400);
@@ -175,7 +174,7 @@ public class AttendanceInviteHandler {
                 }
             } else {
                 log.info("can't remove invite, user not owner of playdate");
-                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_COMMENT);
             }
         } else {
             log.error("no invite with id = " + inviteId);
@@ -194,7 +193,7 @@ public class AttendanceInviteHandler {
                     return setStatusCodeAndReturnString(response, 400, ERROR);
                 }
             } else {
-                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_PLAYDATE);
+                return setStatusCodeAndReturnString(response, 400, USER_IS_NOT_OWNER_OF_COMMENT);
             }
         } else {
             return setStatusCodeAndReturnString(response, 400, NO_USER_WITH_ID + "_OR_" + NO_PLAYDATE_WITH_ID);

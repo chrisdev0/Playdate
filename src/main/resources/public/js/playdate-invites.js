@@ -14,13 +14,39 @@ $(document).ready(function () {
         var output = "<div class='bottom-line'>";
         var date = new Date(comment.commentDate);
 
+        var userCanDelete = false;
+        if (window.userId == comment.commenter.id) {
+            userCanDelete = true;
+        }
         output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
             " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
             date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "</p>";
-        output += "<p>" + comment.comment + "</p>"
+        output += "<p>" + comment.comment;
+
+        if (userCanDelete) {
+            output += '<a  style="display: block; font-size: 1em" href="/protected/removecomment?commentId=' + comment.id + '" class="remove-comment-link">Ta bort</a>';
+        }
+
+        output += "</p>"
         output += "</div>"
         $('#show-comments').append(output);
     };
+
+    $('#show-comments').on('click', '.remove-comment-link',function(e) {
+        e.preventDefault();
+        var commenDiv = $(this).closest('.bottom-line');
+        $.ajax({
+            type: 'DELETE',
+            url: $(this).attr('href'),
+            success: function(res) {
+                commenDiv.remove();
+            },
+            error: function(res) {
+                alert("Fel, kommentaren gick inte att ta bort")
+            }
+        })
+
+    })
 
     $('#makeComment').submit(function(e) {
         e.preventDefault();

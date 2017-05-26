@@ -46,7 +46,7 @@ public class Constants {
         public static final String NO_PLACE_WITH_ID = "no_place_with_id";
         public static final String NO_USER_WITH_ID = "no_user_with_id";
         public static final String NO_PLAYDATE_WITH_ID = "no_playdate_with_id";
-        public static final String USER_IS_NOT_OWNER_OF_PLAYDATE = "user_is_not_owner_of_playdate";
+        public static final String USER_IS_NOT_OWNER_OF_COMMENT = "user_is_not_owner_of_playdate";
         public static final String ERROR = "error";
         public static final String PLAYDATE_IS_NOT_PUBLIC = "playdate_is_not_public";
         public static final String USER_IS_NOT_OWNER_OF_INVITE = "user_is_not_owner_of_invite";
