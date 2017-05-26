@@ -1,6 +1,6 @@
 package apilayer;
 
-public class StaticFileTemplateHandlerImpl extends StaticFileTemplateHandler{
+public class StaticFileTemplateHandlerImpl extends StaticFileTemplateHandler {
 
     public StaticFileTemplateHandlerImpl(String templateName, int onErrorHTTPStatusCode, boolean injectUser) throws IllegalArgumentException {
         super(templateName, onErrorHTTPStatusCode, injectUser);

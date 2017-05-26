@@ -3,6 +3,7 @@ package apilayer;
 public class Constants {
 
     public static final int IDS_PER_URL = 30;
+
     public static boolean DEV = true;
 
     public static final boolean ENV_PRINT_DEBUG = true;
@@ -10,6 +11,9 @@ public class Constants {
     public static final String HIBERNATE_DB_URL_SETTINGS = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     public static final String FACEBOOK_SCOPE = "public_profile,email";
+
+    public static final String USER_INVITE_COUNT = "invite_count";
+    public static final String USER_FRIENDREQUEST_COUNT = "friendrequest_count";
 
     public static final int GRID_SEARCH_AREA_SIZE = 2000;
 

@@ -28,7 +28,7 @@
     border: 1px solid;
     border-color: #8f8f8f;
     color: white;
-    height: 2.7em;
+    height: 3.04em;
 }
 #head-logo{
     margin-left: 36%;
@@ -491,4 +491,29 @@ a{
 #popupParticipant-popup ul {
     height: 400px !important;
     overflow-y: scroll;
+}
+
+.has-overlay {
+    position: relative;
+}
+
+.has-overlay a {
+    position: relative;
+}
+
+.has-overlay span {
+    border-radius: 100%;
+    color: white;
+    background: red;
+    display: block;
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    padding: 2px 4px 5px 4px;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    top: 2px;
+    left: 61px;
+    z-index: 100;
 }

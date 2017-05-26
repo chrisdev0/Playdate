@@ -104,11 +104,16 @@ public class Paths {
         public static final String ADMIN_STHLM = "/sthlm";
         public static final String RUN_GET_API = "/runapi";
         public static final String GET_RUNNER_STATUS = "/getrunnerstatus";
+
         public static final String ADMIN_COMMENTS = "/comments";
         public static final String ADMIN_REMOVE_COMMENT = "/removecomment";
         public static final String ADMIN_REMOVE_REPORT = "/removereport";
         public static final String ADMIN_REMOVE_USER = "/removeuser";
         public static final String ADMIN_REPORTS = "/reports";
+        public static final String ADMIN_USERS = "/users";
+        public static final String ADMIN_PLAYDATES = "/playdates";
+        public static final String ADMIN_REMOVE_PLAYDATE = "/removeplaydate";
+
     }
 
 

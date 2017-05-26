@@ -1,5 +1,7 @@
 package apilayer;
 
+import dblayer.UserDAO;
+import model.User;
 import secrets.Secrets;
 import spark.ModelAndView;
 import spark.Request;
@@ -50,7 +52,10 @@ public abstract class StaticFileTemplateHandler  {
     }
 
     private void injectUser(Request request, Map<String, Object> map) {
-        map.put(Constants.USER_SESSION_KEY, request.session().attribute(Constants.USER_SESSION_KEY));
+        User user = request.session().attribute(Constants.USER_SESSION_KEY);
+        map.put(Constants.USER_SESSION_KEY, user);
+        map.put(Constants.USER_INVITE_COUNT, UserDAO.getInstance().getUserInviteCount(user));
+        map.put(Constants.USER_FRIENDREQUEST_COUNT, UserDAO.getInstance().getUserFriendshipRequestCount(user));
     }
 
     public Optional<Map<String,Object>> createModelMap(Request request) {

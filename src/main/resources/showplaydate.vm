@@ -17,10 +17,11 @@
     <script src="/js/playdate-invites.js"></script>
     <script src="/js/init-map.js"></script>
     <script src="/js/CoordinateHandler.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/weather-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/weather-wind.min.css">
     <script src="/js/weather.js"></script>
     <script src="/js/playdate-participant.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/weather-icons.css">
-    <link rel="stylesheet" type="text/css" href="/css/weather-wind.css">
+
     <script>
         $(document).ready(function () {
 
@@ -44,14 +45,6 @@
             });
 
 
-        });
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
-
-            var temp = window.showWeather(window.placeX, window.placeY);
         });
 
     </script>

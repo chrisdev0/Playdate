@@ -6,16 +6,18 @@ $(document).ready(function () {
         var hammertime = new Hammer(friendrequests[index]);
         hammertime.on('swiperight', function (e) {
             console.log("swipe");
-            var target = $(e.target).closest('li');
+            var target = $(e.target);
+            console.log(f);
             target.animate({
                 left: '+=100',
                 opacity: 0.25
             },750,function() {
                 $.ajax({
                     type: 'POST',
-                    url: '/protected/declinefriendshiprequest?userId=' + $(target).find('.friendship-request-popup').data('userid'),
+                    url: '/protected/declinefriendshiprequest?userId=' + $(f).data('userid'),
                     success: function(res){
-                        target.remove();
+                        target.closest('li').remove();
+                        decreaseCountInFooter()
                     },
                     error: function(res) {
                         console.log("error removing friendrequest")
@@ -25,6 +27,22 @@ $(document).ready(function () {
             })
         });
     });
+
+
+    function decreaseCountInFooter() {
+        var friendRequestCountSpan = $('#friendrequest-count');
+        var count = parseInt(friendRequestCountSpan.data('count'));
+        console.log('friends count = ' + count);
+        if(count === 1) {
+            friendRequestCountSpan.remove();
+        } else {
+            count = count-1;
+            friendRequestCountSpan.text("" + count);
+            friendRequestCountSpan.data('count', "" + count);
+        }
+
+    }
+
 
     var potentialfriendsouput = $('#potential-friends-output');
 

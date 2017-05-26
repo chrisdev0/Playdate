@@ -545,4 +545,19 @@ public class UserDAO {
         return ret;
     }
 
+    public Long getUserFriendshipRequestCount(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("SELECT COUNT(*) FROM FriendshipRequest fr where fr.receiver = :user", Long.class)
+                    .setParameter("user", user).uniqueResult();
+        }
+    }
+
+    public Long getUserInviteCount(User user) {
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            return session.createQuery("SELECT COUNT(*) FROM Invite i where i.invited = :user", Long.class)
+                    .setParameter("user", user).uniqueResult();
+        }
+    }
+
+
 }
