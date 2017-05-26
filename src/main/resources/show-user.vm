@@ -42,10 +42,10 @@
             </div>
         </div>
         <div class="other-user-reportable">
-
+            #if(!$other-user.equals($user))
+                <a href="#popupReport" id="report-user-button" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-alert ui-btn-icon-notext" style="font-size: 1.15em" data-transition="pop">Rapportera</a>
+            #end
             <h2>$!{other-user.name}</h2>
-
-
         </div>
 
         <div class="ui-grid-a">
@@ -72,11 +72,13 @@
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="accept-friendrequest"
                        class="ui-btn ui-corner-all ui-shadow">Acceptera vän</a>
                     <a href="#" data-ajax="false" data-userid="$other-user.id" id="decline-friendrequest"
-                       class="ui-btn ui-corner-all ui-shadow">Avböj vänförfrågan</a>
+                       class="ui-btn ui-corner-all ui-shadow" style="white-space: normal !important; background-color: red !important; color: white !important; border: 1px solid
+                        black !important;">Avböj vänförfrågan</a>
                 #elseif($friendsetting == 3)
                     <a href="#" data-userid="$!other-user.id" id="remove-friendrequest"
-                       class="ui-btn ui-corner-all ui-shadow" style="font-size: 8px;" data-ajax="false">Ta bort
-                        vänskapsförfrågan</a>
+                       class="ui-btn ui-corner-all ui-shadow" style="white-space: normal !important; background-color: red !important; color: white !important; border: 1px solid
+                        black !important;" data-ajax="false">Ta bort
+                        förfrågan</a>
                 #elseif($friendsetting == 4)
                     <a href="#" id="add-friend" data-userid="$other-user.id" class="ui-btn ui-corner-all ui-shadow">Lägg
                         till vän</a>
@@ -91,7 +93,7 @@
                     #else
                         #foreach($p in $playdates)
 
-                            <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a></br>
+                            <a data-ajax="false" style="display: block;" href="/protected/getoneplaydate?playdateId=$!{p.id}">$p.header</a>
                         #end
                     #end
                 </div>
@@ -113,10 +115,7 @@
             </div>
         </div>
 
-            #if(!$other-user.equals($user))
-                <a href="#popupReport" id="rapportera-användare" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-inline ui-icon-alert ui-btn-icon-notext" data-transition="pop">Rapportera</a>
 
-               #end
 
 
             <div data-role="popup" id="validationPopup" data-position-to="window" data-transition="turn">
