@@ -178,6 +178,7 @@
 
 .other-user-reportable {
     margin-bottom: 0.4em;
+    position: relative;
 }
 
 .other-user-reportable h2 {
@@ -408,12 +409,13 @@
     height: 200px;
     filter: saturate(280%);
 }
-#rapportera-användare{
+#report-user-button{
     font-size: 10px;
     float: right;
-    right: 15px;
-    margin-top:20%;
+    right: 5px;
+    margin-top:0%;
     color:red;
+    position: absolute
 }
 a{
     text-decoration: none;
@@ -445,8 +447,16 @@ a{
 .popup-message{
     padding: 0.3em 0.5em;
 }
+
+
+
 #no-invites-header{
     font-size: 16px;
+}
+
+#popupReport{
+    margin-top: 50%;
+    margin-right: 8%;
 }
 
 #header-id a {
