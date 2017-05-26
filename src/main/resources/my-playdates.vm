@@ -9,7 +9,7 @@
     <title>Playdate</title>
 
     #parse("head-links.vm")
-
+    <script src="/js/hammer.min.js"></script>
     <script src="/js/myplaydates.js"></script>
 
 </head>
@@ -56,11 +56,11 @@
 
         <hr>
         <h2>Tidigare Playdates</h2>
-
+        <p style="font-size:80%;margin-top:0,2em"> * Ta bort playdate genom att swipea åt höger</p>
         <div class="listview-borders">
             <ul data-role="listview" data-inset="true">
                 #foreach($p2 in $playdatehistory)
-                    <li>
+                    <li class="swipable-remove-playdate" data-playdateid="$p2.id">
                         <a data-ajax="false" href="/protected/getoneplaydate?playdateId=$!{p2.id}"
                            class="ui-btn ui-icon-carat-r ui-btn-icon-right"
                            data-inset="true">$!{p2.header}, $!{p2.place.getName()}</a>

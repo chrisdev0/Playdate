@@ -21,4 +21,30 @@ $(document).ready(function () {
 
     });
 
+
+    var swipable = $('.swipable-remove-playdate');
+    $.each(swipable, function (index, s) {
+        var hammer = new Hammer(swipable[index]);
+        hammer.on('swiperight', function(e){
+            console.log('swipe');
+            $(swipable[index]).animate({
+                left: '+=100',
+                opacity: 0.25
+            }, 750, function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/deleteplaydate?playdateId=' + $(s).data('playdateid'),
+                    success: function(res) {
+                        console.log(res);
+                        $(swipable[index]).remove();
+                    },
+                    error: function(res){
+                        console.log('error' + res)
+                    }
+                });
+            });
+        })
+    });
+
+
 });
