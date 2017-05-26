@@ -11,7 +11,7 @@
         window.genderid = $user.gender.id
     </script>
     <script>
-        $(document).ready(function{
+        $(document).ready(function(){
            $('#avreg-popup').enhanceWithin().popup()
         });
         var avregpopup = function () {
