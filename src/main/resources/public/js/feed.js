@@ -2,11 +2,13 @@ $(document).ready(function () {
 
 
     var outputDiv = $('#output');
-    outputDiv.html("<h3 align='center'>Laddar feeden...</h3>")
+    $.mobile.loading('show',{ theme:"b"}).css("box-shadow", "none")
+        .css("border", "none").css("outline", "none")
+
     navigator.geolocation.getCurrentPosition(function (loc) {
 
         console.log(loc)
-        outputDiv.html("")
+        $.mobile.loading('hide')
         $.getJSON('/protected/getfeed?locX=' + loc.coords.latitude + '&locY=' + loc.coords.longitude, function (res) {
             console.log(res);
             $.each(res, function (index, feedObject) {

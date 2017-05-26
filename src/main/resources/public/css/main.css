@@ -142,8 +142,9 @@
 
 #edit-profile-picture {
     position: absolute;
-    right: 5.8em;
-    top: 5.7em;
+    z-index: 1000;
+    right: 1.0em;
+    top: -1.3em;
     font-size: 1.5em;
     border: 0;
     padding: 0;
