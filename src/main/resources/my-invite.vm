@@ -16,6 +16,7 @@
                 $.post($(this).attr('href'),function (res) {
                     console.log("res of post = " + res);
                     div.remove();
+                    decreaseCountInFooter();
                 })
             })
             $('.decline-invite').click(function(e) {
@@ -26,10 +27,28 @@
                     success: function(res) {
                         console.log("res of post = " + res);
                         div.remove();
+                        decreaseCountInFooter();
                     }
                 })
 
             })
+
+
+            function decreaseCountInFooter() {
+                var inviteCountSpan = $('#invite-count');
+                var count = parseInt(inviteCountSpan.data('count'));
+
+                console.log('invite count = ' + count);
+                if(count === 1) {
+                    inviteCountSpan.remove();
+                } else {
+                    count = count-1;
+                    console.log('invite count = ' + count);
+                    inviteCountSpan.text("" + count);
+                    inviteCountSpan.data('count', "" + count);
+                }
+
+            }
         })
     </script>
 

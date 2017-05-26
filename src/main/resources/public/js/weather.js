@@ -17,7 +17,7 @@ $(document).ready(function() {
         lat = lat.toFixed(6);
         lon = lon.toFixed(6);
 
-        var url = 'http://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/{lon}/lat/{lat}/data.json';
+        var url = 'https://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/{lon}/lat/{lat}/data.json';
 
         console.log(url);
 

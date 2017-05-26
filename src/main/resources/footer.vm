@@ -3,12 +3,20 @@
         <!-- todo kontrollera ajax -->
         <div class="ui-block-a center-content"><a data-ajax="false" href="javascript:history.back()"  class="ui-shadow ui-btn ui-corner-all ui-icon-back ui-btn-inline ui-btn-icon-top">Tillbaka</a>
         </div>
-        <div class="ui-block-b center-content"><a data-ajax="false" href="/protected/showmyfriends" class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
+        <div class="ui-block-b center-content has-overlay">
+            #if($friendrequest_count != 0)
+                <span data-count="$friendrequest_count" id="friendrequest-count">$friendrequest_count</span>
+            #end
+            <a data-ajax="false" href="/protected/showmyfriends" class="ui-shadow ui-btn ui-corner-all ui-icon-heart ui-btn-icon-top ui-btn-inline">Vänner</a>
         </div>
 
         <div class="ui-block-d center-content"><a data-ajax="false" href="/protected/getmyevents" class="ui-shadow ui-btn ui-corner-all ui-icon-calendar ui-btn-icon-top ui-btn-inline">Playdates</a>
         </div>
-        <div class="ui-block-e center-content"><a data-ajax="false" href="/protected/getmyinvites" class="ui-shadow ui-btn ui-corner-all ui-icon-mail ui-btn-icon-top ui-btn-inline">Inbjudningar</a>
+        <div class="ui-block-e center-content has-overlay">
+            #if($invite_count != 0)
+                <span data-count="$invite_count" id="invite-count">$invite_count</span>
+            #end
+            <a data-ajax="false" href="/protected/getmyinvites" class="ui-shadow ui-btn ui-corner-all ui-icon-mail ui-btn-icon-top ui-btn-inline">Inbjudningar</a>
         </div>
     </div>
 </div>

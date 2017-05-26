@@ -28,6 +28,9 @@ public class AdminRoutes {
             get(Paths.ADMIN.ADMIN_STHLM, new AdminSthlmHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
             get(Paths.ADMIN.ADMIN_COMMENTS, new AdminCommentPageHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
             get(Paths.ADMIN.ADMIN_REPORTS, new AdminReportPageHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+            get(Paths.ADMIN.ADMIN_USERS, new AdminUserHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+            get(Paths.ADMIN.ADMIN_PLAYDATES, new AdminPlaydatesHandler()::handleTemplateFileRequest, new VelocityTemplateEngine());
+
 
             delete(Paths.ADMIN.ADMIN_REMOVE_COMMENT, AdminSmallHandlers::handleRemoveComment);
 
@@ -36,6 +39,7 @@ public class AdminRoutes {
 
             delete(Paths.ADMIN.ADMIN_REMOVE_REPORT, AdminSmallHandlers::handleRemoveReport);
             delete(Paths.ADMIN.ADMIN_REMOVE_USER, AdminSmallHandlers::handleRemoveUser);
+            delete(Paths.ADMIN.ADMIN_REMOVE_PLAYDATE, AdminSmallHandlers::handleRemovePlaydate);
 
         });
     }

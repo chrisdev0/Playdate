@@ -1,9 +1,32 @@
+#* @vtlvariable name="users" type="java.util.Collection" *#
+#* @vtlvariable name="user" type="model.User" *#
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
     #parse("/admin/admin-head.vm")
+    <script>
+        $(document).ready(function () {
+            $('.remove-user-link').click(function (e) {
+                e.preventDefault();
+                var row = $(this).closest('tr');
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/protected/admin/removeuser=userId=' + $(this).data('userid'),
+                    success: function (res) {
+                        row.remove();
+                    },
+                    error: function (res) {
+                        alert('unable to remove user');
+                    }
+                });
+            });
+        });
+    </script>
+
+
 </head>
 <body>
 
@@ -20,27 +43,21 @@
             <table>
                 <thead>
                 <tr>
-                    <th>Typ</th>
-                    <th>Antal</th>
+                    <th>Id</th>
+                    <th>Namn</th>
+                    <th>Kön</th>
+                    <th>Ta bort</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Användare</td>
-                    <td>$user_counts</td>
-                </tr>
-                <tr>
-                    <td>Rapporter</td>
-                    <td>$report_counts</td>
-                </tr>
-                <tr>
-                    <td>Platser</td>
-                    <td>$place_counts</td>
-                </tr>
-                <tr>
-                    <td>Playdates</td>
-                    <td>$playdate_counts</td>
-                </tr>
+                #foreach($user in $users)
+                    <tr>
+                        <td>$user.id</td>
+                        <td>$user.name</td>
+                        <td>$user.gender.getFrontname()</td>
+                        <td><a data-userid="$user.id" class="remove-user-link">Ta bort</a></td>
+                    </tr>
+                #end
                 </tbody>
             </table>
         </div>

@@ -3,9 +3,11 @@ package apilayer.handlers.adminhandlers;
 import apilayer.Constants;
 import apilayer.handlers.asynchandlers.SparkHelper;
 import dblayer.HibernateUtil;
+import dblayer.PlaydateDAO;
 import dblayer.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comment;
+import model.Playdate;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,9 +18,7 @@ import utils.ParserHelpers;
 import java.util.Optional;
 
 import static apilayer.Constants.MSG.*;
-import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromRequestById;
-import static apilayer.handlers.asynchandlers.SparkHelper.getUserFromSession;
-import static apilayer.handlers.asynchandlers.SparkHelper.setStatusCodeAndReturnString;
+import static apilayer.handlers.asynchandlers.SparkHelper.*;
 
 @Slf4j
 public class AdminSmallHandlers {
@@ -103,5 +103,14 @@ public class AdminSmallHandlers {
         return setStatusCodeAndReturnString(response, 400, ERROR);
     }
 
-
+    public static Object handleRemovePlaydate(Request request, Response response) {
+        Optional<Playdate> playdateFromRequest = getPlaydateFromRequest(request);
+        if (playdateFromRequest.isPresent()) {
+            if (PlaydateDAO.getInstance().deletePlaydate(playdateFromRequest.get())) {
+                return setStatusCodeAndReturnString(response, 200, OK);
+            }
+            return setStatusCodeAndReturnString(response, 400, ERROR);
+        }
+        return setStatusCodeAndReturnString(response, 400, NO_PLAYDATE_WITH_ID);
+    }
 }
