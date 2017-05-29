@@ -23,7 +23,7 @@
             output += '<h3>' + place.name + '</h3>';
             output += '<img>' + '<img src="/protected/apiimage/'+place.imageId+'" class="medium-image">' + '</img>';
             output += '<p>' + place.shortDescription + '</p>';
-            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'" class="ui-btn ui-btn-inline ui-corner-all" > Visa plats </a>' + '</p>';
+            output += '<p>' + '<a href="/protected/showplace?placeId='+place.id+'" class="ui-btn ui-btn-inline ui-corner-all" data-ajax="false"> Visa plats </a>' + '</p>';
 
 
             placeoutput.append(output);
