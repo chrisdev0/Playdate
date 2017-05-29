@@ -7,6 +7,9 @@ $(document).ready(function () {
         hammertime.on('swiperight', function (e) {
             console.log("swipe");
             var target = $(e.target);
+            if(!target.is('li')){
+                target = target.closest('li');
+            }
             console.log(f);
             target.animate({
                 left: '+=100',
@@ -16,7 +19,7 @@ $(document).ready(function () {
                     type: 'POST',
                     url: '/protected/declinefriendshiprequest?userId=' + $(f).data('userid'),
                     success: function(res){
-                        target.closest('li').remove();
+                        target.remove();
                         decreaseCountInFooter()
                     },
                     error: function(res) {
