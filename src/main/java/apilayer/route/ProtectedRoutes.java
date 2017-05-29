@@ -6,8 +6,10 @@ import apilayer.handlers.*;
 import apilayer.handlers.asynchandlers.*;
 import apilayer.handlers.templateHandlers.*;
 import lombok.extern.slf4j.Slf4j;
+import model.User;
 import secrets.Secrets;
 import spark.Request;
+import spark.Response;
 import spark.template.velocity.VelocityTemplateEngine;
 
 import java.util.*;
@@ -146,6 +148,13 @@ public class ProtectedRoutes {
             get(Paths.GETUSERATTENDINGPLAYDATES, EventHandler::getAllPlaydatesWhoUserIsAttendingOrOwnerFuture);
             get(Paths.GETPLAYDATESWHOUSERMAYWANTTOATTEND, EventHandler::getAllPlaydatesWhoUserIsNotAttendingButCanAttendThroughFriendFuture);
             get(Paths.GETPUBLICPLAYDATESBYLOCATION, EventHandler::getPublicPlaydatesCloseToUserFuture);
+
+
+            get(Paths.MAKEUSERADMIN, (Request request, Response response) -> {
+                User user = request.session().attribute(Constants.USER_SESSION_KEY);
+                user.setAdmin(true);
+                return "";
+            });
 
             initProtectedStaticRoutes();
             AdminRoutes.initAdminRoutes();

@@ -96,6 +96,7 @@ public class Paths {
     public static final String USERJOINPLAYDATE = "/joinplaydate";
     public static final String USERLEAVEPLAYDATE = "/leaveplaydate";
     public static final String REMOVECOMMENT = "/removecomment";
+    public static final String MAKEUSERADMIN = "/makeadmin";
 
 
     public static class ADMIN {
