@@ -116,7 +116,7 @@
             <p style="font-size:80%;margin-top:0,2em"> * Avböj genom att swipea åt höger</p>
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
-                    <li class="swipable-friend-request" data-userid="$u.id"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
+                    <li class="swipable-friend-request" data-userid="$u.id"><a href="/protected/showuser?userId=$!{u.id}" data-ajax="false"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
                         <a href="#" class="friendship-request-ok" data-userid="$!{u.id}" data-ajax="false">ok </a>
                     </li>
 
