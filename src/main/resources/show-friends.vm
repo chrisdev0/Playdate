@@ -23,9 +23,16 @@
             var userid = $(this).data("userid");
             var li = $(this).closest('li')
             window.li = li;
-            $.post('/protected/acceptfriendshiprequest?userId=' + userid, function (res) {
-                li.remove();
-                decreaseCountInFooter();
+            li.hide();
+            $.ajax({
+                url: '/protected/acceptfriendshiprequest?userId=' + userid,
+                type: 'POST',
+                success: function (res) {
+                    li.remove()
+                }
+                error: function (res) {
+                    li.show()
+                }
             });
         });
 

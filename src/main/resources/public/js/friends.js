@@ -15,6 +15,7 @@ $(document).ready(function () {
                 left: '+=100',
                 opacity: 0.25
             },750,function() {
+                target.hide();
                 $.ajax({
                     type: 'POST',
                     url: '/protected/declinefriendshiprequest?userId=' + $(f).data('userid'),
@@ -23,7 +24,8 @@ $(document).ready(function () {
                         decreaseCountInFooter()
                     },
                     error: function(res) {
-                        console.log("error removing friendrequest")
+                        console.log("error removing friendrequest");
+                        target.show();
                     }
                 });
 

@@ -111,7 +111,8 @@ $(document).ready(function () {
     invitelist.on('click', '.add-friend-to-playdate', function (e) {
         e.preventDefault();
 
-        var li = $(this).closest('li')
+        var li = $(this).closest('li');
+        li.hide();
         $.ajax({
             type: 'POST',
             url: '/protected/sendivite',
@@ -124,6 +125,7 @@ $(document).ready(function () {
             },
             error: function (res) {
                 console.log(res);
+                li.show();
             }
         })
     });
