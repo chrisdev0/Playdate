@@ -10,7 +10,7 @@
         <div class="small-profile">
             <span class="user-name">$!{user.name}</span>
             <div class="composite-row">
-                <a href="/protected/showuser?userId=${user.id}"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
+                <a href="/protected/showuser?userId=${user.id}" data-ajax="false"> <img src="$!{user.profilePictureUrl}" class="profile-picture-upload"></a>
                 <span>$!{user.description}
                 </span>
             </div>
