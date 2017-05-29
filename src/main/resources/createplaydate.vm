@@ -80,8 +80,7 @@
                 $('#placeId').val("${playdate.getPlace().getId()}");
                 $('#show-place-placeholder').html(
                         "<p class='name-with-button'>" + "${playdate.getPlace().name}" + "</p>" +
-                        "<a data-ajax='false' class='ui-btn ui-btn-inline' href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'></a>"
-
+                        "<a data-ajax='false' class='ui-btn ui-btn-inline' href='/protected/showplace?placeId=" + "${playdate.getPlace().getId()}" + "'>Visa</a>"
                         );
 
                 var startTimeDate = new Date(${playdate.startTime})
