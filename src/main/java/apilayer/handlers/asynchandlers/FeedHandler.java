@@ -26,7 +26,9 @@ public class FeedHandler {
         Long start = System.currentTimeMillis();
         User user = getUserFromSession(request);
         int[] grid = getGridLocationFromRequest(request);
+        long queryStart = System.currentTimeMillis();
         Optional<List<Playdate>> publicPlaydatesByLoc = PlaydateDAO.getInstance().getPublicPlaydatesByLoc(grid[0], grid[1], TimeFilterable.TimeFilter.ALL);
+        log.info("Query took " + (System.currentTimeMillis() - queryStart));
         List<FeedObject> feedObjects = new ArrayList<>();
         publicPlaydatesByLoc.ifPresent(playdates -> feedObjects.addAll(playdates.stream()
                 .filter(Playdate::playdateIsInFuture)
