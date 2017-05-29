@@ -87,20 +87,15 @@ $(document).ready(function () {
         $("#popupValidate").popup("open");
 
     });
-    $('#popupYes').click(function (e) {
-        console.log("Yes clicked")
-        e.preventDefault()
+    $('#popupYes').one('click',function (e) {
+        e.preventDefault();
         $.ajax($(this).attr('href'), {
             type: 'DELETE',
             success: function(res){
                 window.location.replace("/protected/showplaydates");
-                console.log("success remove playdate");
-                console.log(res)
-
             },
             error: function(res){
                 console.log("failed to remove playdate")
-                console.log(res)
                 alert("Kunde inte ta bort Playdate!")
             }
         });
