@@ -27,10 +27,15 @@ $(document).ready(function () {
         var hammer = new Hammer(swipable[index]);
         hammer.on('swiperight', function(e){
             console.log('swipe');
+            var target = $(e.target);
+            if(!target.is('li')){
+                target = target.closest('li');
+            }
             $(swipable[index]).animate({
                 left: '+=100',
                 opacity: 0.25
             }, 750, function () {
+                target.hide();
                 $.ajax({
                     type: 'DELETE',
                     url: '/protected/deleteplaydate?playdateId=' + $(s).data('playdateid'),
@@ -39,6 +44,7 @@ $(document).ready(function () {
                         $(swipable[index]).remove();
                     },
                     error: function(res){
+                        target.show()
                         console.log('error' + res)
                     }
                 });
