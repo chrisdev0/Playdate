@@ -134,8 +134,8 @@
     <div data-role="main" class="ui-content">
         <form>
             <h3>Lägg till vänner</h3>
-            <label for="myFilter">Sök efter nya vänner</label>
-            <input id="myFilter" data-type="search">
+            <label for="search-friends-field">Sök vän genom namn</label>
+            <input type="text" id="friends-searchterm" name="search-friend-name" data-ajax="false">
         </form>
         <ul data-role="listview" data-split-icon="plus"  data-inset="true" id="potential-friends-output">
 

@@ -3,6 +3,7 @@ package dblayer;
 import apilayer.handlers.Paths;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -497,9 +498,9 @@ public class UserDAO {
                     "u.id NOT IN (SELECT f.friend.id FROM Friendship f WHERE f.friend.id = :userid OR f.requester.id = :userid) " +
                     "AND u.id NOT IN (SELECT fr.sender FROM FriendshipRequest fr WHERE fr.sender.id = :userid OR fr.receiver = :userid)" +
                     "AND u.id NOT IN (SELECT fr.receiver FROM FriendshipRequest fr WHERE fr.receiver.id = :userid OR fr.sender = :userid) " +
-                    "AND u.name LIKE :search";
+                    "AND UPPER(u.name) LIKE :search";
             return session.createQuery(hql, User.class)
-                    .setParameter("search", "%" + search.toUpperCase() + "%")
+                    .setParameter("search", "%" + StringEscapeUtils.escapeHtml(search.toUpperCase()) + "%")
                     .setParameter("userid", user.getId())
                     .list();
         }

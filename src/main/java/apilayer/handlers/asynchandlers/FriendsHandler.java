@@ -57,9 +57,12 @@ public class FriendsHandler {
     public static Object getPotentialFriends(Request request, Response response) {
         User user = getUserFromSession(request);
         String search = request.queryParams(Paths.QueryParams.SEARCH_TERM);
+        log.info("search term = " + search);
+        List<User> collect = UserDAO.getInstance().getPotentialFriends(search, user)
+                .stream().sorted((new SearchResultSorter(search)::compare)).collect(Collectors.toList());
+        log.info("found " + collect.size() + " potential friends for term = " + search);
         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-                .create().toJson(UserDAO.getInstance().getPotentialFriends(search, user)
-                        .stream().sorted((new SearchResultSorter(search)::compare)).collect(Collectors.toList()));
+                .create().toJson(collect);
     }
 
     public static Object getSentFriendRequest(Request request, Response response) {
