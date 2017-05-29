@@ -113,6 +113,7 @@ $(document).ready(function () {
     sentRequestOutput.on('click', '.remove-friend-request', function (e) {
         e.preventDefault();
         var li = $(this).closest('li');
+        li.hide();
         $.ajax({
             type: 'DELETE',
             url: '/protected/removefriendshiprequest?userId=' + $(this).data('userid'),
@@ -120,6 +121,7 @@ $(document).ready(function () {
                 li.remove();
             },
             error: function(res){
+                li.show();
                 console.log("error removing friends")
             }
         });
