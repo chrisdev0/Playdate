@@ -20,16 +20,17 @@
 
         $('.friendship-request-ok').click(function (e) {
             e.preventDefault();
+            console.log("ok")
             var userid = $(this).data("userid");
             var li = $(this).closest('li')
-            window.li = li;
             li.hide();
             $.ajax({
                 url: '/protected/acceptfriendshiprequest?userId=' + userid,
                 type: 'POST',
                 success: function (res) {
+                    console.log(res)
                     li.remove()
-                }
+                },
                 error: function (res) {
                     li.show()
                 }
@@ -116,7 +117,7 @@
             <ul data-role="listview" data-split-icon="check" data-theme="f" data-inset="true">
                 #foreach($u in $friendsrequest)
                     <li class="swipable-friend-request" data-userid="$u.id"><a href="/protected/showuser?userId=$!{u.id}"><img src="$!{u.profilePictureUrl}" class="img-size" alt="$!{u.name}">$!{u.name}</a>
-                        <a href="#" class="friendship-request-ok" data-userid="$!{u.id}" data-ajax="false" data-transition="slideup"> </a>
+                        <a href="#" class="friendship-request-ok" data-userid="$!{u.id}" data-ajax="false">ok </a>
                     </li>
 
                 #end
