@@ -73,7 +73,7 @@
         <div class="listview-borders">
             <div>
                 <h3>Mina vänner</h3>
-                <label for="myFilter" >Sök efter vänner</label>
+                <label for="myFilter" >Sök i vänner</label>
                 <form class="ui-filterable">
                     <input id="myFilter" data-type="search">
                 </form>

@@ -12,6 +12,13 @@
     box-shadow: 0px 11px 22px -15px rgba(0, 0, 0, 0.75);
 }
 
+@media (max-width: 640px) {
+
+    #footer div div a {
+        font-size: 11px;
+    }
+}
+
 #footer div div a {
     margin-top: 0.2em;
     margin-bottom: 0.1em;
