@@ -66,7 +66,7 @@ $(document).ready(function () {
                 })
             },
             error: function (res) {
-                $('#validationPopup p').html("Kommentaren måste vara mellan 10 och 300 tecken lång");
+                $('#validationPopup p').html("Kommentaren måste vara mellan 6 och 300 tecken lång");
                 $('#validationPopup').popup('open');
             }
         })
