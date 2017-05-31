@@ -34,8 +34,8 @@ public class Constants {
     public static final int SEARCH_USER_OFFSET = 15;
     public static final Long TIMEDECIDER = 86400000L * 30;
     public static final int SHORTDESCMIN = 3;
-    public static final int SHORTDESCMAX = 20;
-    public static final int LONGDESCMIN = 10;
+    public static final int SHORTDESCMAX = 30;
+    public static final int LONGDESCMIN = 6;
     public static final int LONGDESCMAX = 300;
 
 

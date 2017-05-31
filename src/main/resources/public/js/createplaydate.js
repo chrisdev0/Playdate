@@ -121,7 +121,7 @@ $(document).ready(function() {
                     var errorsMsg = "";
                     for(var i = 0; i < split.length; i++) {
                         if (split[i] === 'description') {
-                            errorsMsg += "Beskrivningen måste vara mellan 10 och 300 tecken lång<br>"
+                            errorsMsg += "Beskrivningen måste vara mellan 6 och 300 tecken lång<br>"
                         }
                         if (split[i] === 'header') {
                             errorsMsg += "Rubriken måste vara mellan 3 och 30 tecken lång<br>"
