@@ -36,7 +36,7 @@ public class GetUserPlaydateHandler extends StaticFileTemplateHandlerImpl {
 
         Set<Playdate> history = new HashSet<>();
         history.addAll(historyPlaydateByOwnerId.get());
-        history.addAll(historyPlaydatesAttending.get());
+        //history.addAll(historyPlaydatesAttending.get());
         map.put("playdatesAttending", playdatesAttending.get());
         map.put("playdatesOwner", playdateByOwnerId.get());
         map.put("playdatehistory", history);
