@@ -1,11 +1,10 @@
 package dbtest;
 
-import dblayer.PlaceDAO;
-import dblayer.PlaydateDAO;
-import dblayer.UserDAO;
+import dblayer.*;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.junit.Test;
 import testhelpers.HibernateTests;
 import testutils.ModelCreators;
@@ -64,6 +63,48 @@ public class PlaydateDAOTest extends HibernateTests {
         remove(user);
         remove(place);
     }
+
+
+    @Test
+    public void testDeletePlaydateWithInvite() {
+        User user = createUser();
+        User invited = createUser();
+        Place place = createPlace();
+        Playdate playdate = createPlaydate(user, place);
+        save(user);
+        save(invited);
+        save(place);
+        save(playdate);
+
+        Invite invite = new Invite(playdate, invited);
+        boolean b = InviteDAO.getInstance().addInviteToUserAndPlaydate(invite);
+        assertTrue(b);
+
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            session.beginTransaction();
+            long rows = session.createQuery("FROM Invite WHERE playdate = :playdate AND invited = :invited", Invite.class)
+                    .setParameter("invited", invited).setParameter("playdate", playdate).list().size();
+            session.getTransaction().commit();
+            assertTrue(rows == 1);
+        }
+
+        PlaydateDAO.getInstance().deletePlaydate(playdate);
+
+        try (Session session = HibernateUtil.getInstance().openSession()) {
+            session.beginTransaction();
+            long rows = session.createQuery("FROM Invite WHERE playdate = :playdate AND invited = :invited", Invite.class)
+                    .setParameter("invited", invited).setParameter("playdate", playdate).list().size();
+            session.getTransaction().commit();
+            assertTrue(rows == 0);
+        }
+        log.info(user.toString());
+        log.info(invite.toString());
+        remove(place);
+        remove(invited);
+        remove(user);
+    }
+
+
 
     @Test
     public void testSavePlaydateComment(){

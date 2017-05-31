@@ -39,8 +39,9 @@ public class Playdate implements Comparable<Playdate> {
     @ManyToMany
     private Set<User> participants = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Invite> invites = new HashSet<>();
+
 
     @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();

@@ -6,10 +6,7 @@ import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -160,6 +157,13 @@ public class PlaydateDAO {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
             session.remove(playdate);
+            Iterator<Invite> itr = playdate.getInvites().iterator();
+            while (itr.hasNext()) {
+                Invite i = itr.next();
+                itr.remove();
+                session.remove(i);
+                session.refresh(i.getInvited());
+            }
             tx.commit();
             ret = true;
         } catch (Exception e) {

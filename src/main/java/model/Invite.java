@@ -16,11 +16,11 @@ import javax.persistence.*;
     @Expose
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Expose
     private Playdate playdate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Expose
     private User invited;
 

@@ -243,6 +243,7 @@ public class UserDAO {
         try {
             session = HibernateUtil.getInstance().openSession();
             tx = session.beginTransaction();
+
             session.remove(user);
             tx.commit();
             ret = true;
