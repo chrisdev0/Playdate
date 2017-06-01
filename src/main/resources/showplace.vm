@@ -45,8 +45,8 @@
                 }
 
                 output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
-                        " den " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " klockan " +
-                        date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+                        " den " + date.getDate() + "/" + (date.getMonth() + 1) + " " + date.getFullYear() + " klockan " +
+                        (date.getHours() + 2 )+ ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
                 output += "</p>";
                 output += "<p>" + comment.comment;
                 if (userCanDelete) {

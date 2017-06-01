@@ -108,6 +108,12 @@ $(document).ready(function() {
                     window.location.replace('/')
                 }
             })
+        } else {
+            $('#avregvalidation').text("Du måste trycka i " + '"Jag godkänner"')
         }
+    })
+
+    $('#checkbox-mini-0').change(function(e) {
+        $('#avregvalidation').text('');
     })
 });

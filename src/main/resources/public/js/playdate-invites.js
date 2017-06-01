@@ -19,8 +19,8 @@ $(document).ready(function () {
             userCanDelete = true;
         }
         output += "<p style='font-weight: bold;'><a class='user-name-comment' href='/protected/showuser?userId=" + comment.commenter.id + "'>" + comment.commenter.name + "</a>" +
-             " " + date.getDate() + "/" + date.getMonth() + " " + date.getFullYear() + " " +
-            date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "</p>";
+             " " + date.getDate() + "/" + (date.getMonth() + 1) + " " + date.getFullYear() + " " +
+            (date.getHours() +2 ) + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "</p>";
         output += "<p>" + comment.comment;
 
         if (userCanDelete) {

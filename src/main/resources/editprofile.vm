@@ -10,14 +10,6 @@
     <script>
         window.genderid = $user.gender.id
     </script>
-    <script>
-        $(document).ready(function(){
-           $('#avreg-popup').enhanceWithin().popup()
-        });
-        var avregpopup = function () {
-            $.mobile.changePage('#avreg-popup')
-        }
-    </script>
 </head>
 
 <body>
@@ -91,7 +83,7 @@
     <div data-role="popup" id="popup-remove-user">
         <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
         <div class="remove-user">
-            <a href="#avreg-popup" class="ui-btn ui-shadow ui-corner-all" id="remove-profile-btn" style="background: #ff4304 !important; color:white !important;" >Avregistera mig</a>
+            <a href="#avreg-popup" class="ui-btn ui-shadow ui-corner-all" id="remove-profile-btn" style="background: #ff4304 !important; color:white !important;">Avregistera mig</a>
         </div>
     </div>
 
@@ -99,15 +91,13 @@
 
 #*utanför page*#
 <div data-role="page" id="avreg-popup">
-    <div data-role="header" style="font-size: 10px !important;">
-        <h4>Avregistrera användare</h4>
-    </div>
     <div data-role="main" class="ui-content">
         <form>
             <p>Genom att ta bort min profil försvinner alla mina ändringar.</p>
             <input name="checkbox-mini-0" id="checkbox-mini-0" data-mini="true" type="checkbox">
             <label for="checkbox-mini-0">Jag godkänner</label>
         </form>
+        <p id="avregvalidation"></p>
         <a href="#" class="ui-btn ui-corner-all ui-shadow" id="remove-user">Avregistera konto</a>
     </div>
 
